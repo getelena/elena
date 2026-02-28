@@ -778,12 +778,45 @@ declare module "react" {
 }
 ```
 
+### TypeScript examples
+
 Elena provides TypeScript examples for the following JavaScript frameworks:
 
 - **[Next.js](https://github.com/getelena/next-example-project)**
 - **[React](https://github.com/getelena/react-example-project)**
 - **[Svelte](https://github.com/getelena/svelte-example-project)**
 - **[Vue](https://github.com/getelena/vue-example-project)**
+
+### Authoring Elena components with TypeScript
+
+When using TypeScript (instead of JavaScript) to author the Elena components, you can simplify the code (like omitting the `constructor` part) and have your type definitions inline:
+
+```ts
+// ░ [ELENA]: Primitive Component
+import { Elena, html } from "@elenajs/core";
+
+export default class Button extends Elena(HTMLElement, {
+  tagName: "elena-button",
+  props: ["variant"],
+}) {
+  /**
+   * The style variant of the component.
+   * @attribute
+   */
+  variant: "default" | "primary" | "danger" = "default";
+
+  /**
+   * Renders the html template.
+   * @internal
+   */
+  render() {
+    return html`
+      <button>${this.text}</button>
+    `;
+  }
+}
+Button.define();
+```
 
 ## CSS styles
 
