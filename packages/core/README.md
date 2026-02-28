@@ -923,8 +923,10 @@ This can be achieved with pseudo elements in CSS by referencing the attributes s
 }
 ```
 
+For more detailed guidelines, see the [Server Side Rendering](#server-side-rendering) section.
+
 > [!TIP]
-> You can skip this section entirely for Composite Components and when you plan to [hide components until loaded](#hide-until-loaded).
+> You can skip this section entirely for Composite Components, when you plan to [hide components until loaded](#hide-until-loaded), or when the rest of your app renders client side only.
 
 ### Styling Composite Components
 
