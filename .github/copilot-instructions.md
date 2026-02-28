@@ -56,6 +56,12 @@ pnpm format               # Prettier on all source files
 pnpm test                 # Vitest integration tests
 ```
 
+CLI package commands (from `packages/cli/`):
+
+```bash
+npx elena-create          # Interactive component scaffolding
+```
+
 ## Monorepo Structure
 
 - **pnpm workspaces** + **Lerna** (independent versioning)
@@ -68,6 +74,7 @@ pnpm test                 # Vitest integration tests
   - `packages/plugin-cem-define/` — `@elenajs/plugin-cem-define` CEM plugin
   - `packages/plugin-cem-tag/` — `@elenajs/plugin-cem-tag` CEM plugin
   - `packages/plugin-cem-typescript/` — `@elenajs/plugin-cem-typescript` CEM plugin
+  - `packages/cli/` — `@elenajs/cli` interactive component scaffolding tool
   - `packages/mcp/` — `@elenajs/mcp` MCP server for AI-assisted component development
 
 ## Architecture
@@ -94,6 +101,13 @@ The build plugins are published as standalone packages (each with `src/index.js`
 - **`packages/plugin-cem-define/`** (`@elenajs/plugin-cem-define`) — CEM plugin that extracts `tagName` from the options object passed to `Elena()` (supports both inline and variable-reference patterns). Peer dep: `@custom-elements-manifest/analyzer`.
 - **`packages/plugin-cem-tag/`** (`@elenajs/plugin-cem-tag`) — CEM plugin that copies custom JSDoc tags (`@status`, `@displayName`) into the CEM class declaration. Peer dep: `@custom-elements-manifest/analyzer`.
 - **`packages/plugin-cem-typescript/`** (`@elenajs/plugin-cem-typescript`) — CEM plugin that generates a `.d.ts` file per component with typed props and event handler fields. Peer dep: `@custom-elements-manifest/analyzer`.
+
+The CLI (`packages/cli/src/`) is an interactive scaffolding tool for creating Elena components:
+
+- **`cli.js`** — Entry point for the `elena-create` binary. Displays an ASCII banner, runs interactive prompts, generates source + CSS files, and writes them to disk.
+- **`prompts.js`** — Interactive prompts using `@inquirer/prompts`. Validates kebab-case component names, asks for type (primitive/composite), language (JS/TS), and output directory.
+- **`generate.js`** — Template generators for all four combinations: primitive/composite × JS/TS, plus CSS generators for both component types. Converts kebab-case names to PascalCase. Output follows all Elena patterns including JSDoc annotations and `@scope` CSS.
+- **`utils/color.js`** — ANSI color helper using Elena's brand color (#f19c77).
 
 The MCP server (`packages/mcp/src/`) provides AI-assisted component development via the Model Context Protocol:
 
