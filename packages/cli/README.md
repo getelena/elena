@@ -31,6 +31,7 @@
   - **[Interactive mode](#interactive-mode)**
   - **[With a component name](#with-a-component-name)**
 - **[Prompts](#prompts)**
+  - **[Component options](#component-options)**
 - **[Generated files](#generated-files)**
   - **[Primitive components](#primitive-components)**
   - **[Composite components](#composite-components)**
@@ -53,51 +54,65 @@ npx elena-create
 
 ### With a component name
 
-Pass a kebab-case name to skip the name prompt:
+Pass a kebab-case name (must contain at least one hyphen) to skip the name prompt:
 
 ```bash
-npx elena-create button
-npx elena-create date-picker
+npx elena-create elena-button
+npx elena-create elena-date-picker
 ```
 
 ## Prompts
 
 The CLI walks you through the following steps:
 
-| Prompt               | Description                                                                    | Default          |
-| -------------------- | ------------------------------------------------------------------------------ | ---------------- |
-| **Component name**   | Kebab-case name (e.g. `button`, `date-picker`). Skipped if passed as argument. | —                |
-| **Component type**   | `Primitive` (owns its own render) or `Composite` (wraps children).             | —                |
-| **Language**         | `JavaScript` or `TypeScript`.                                                  | —                |
-| **Output directory** | Where to generate the component folder.                                        | `src/components` |
+| Prompt                | Description                                                                                                         | Default          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **Component name**    | Kebab-case name with at least one hyphen (e.g. `elena-button`, `elena-date-picker`). Skipped if passed as argument. | —                |
+| **Component type**    | `Primitive` (owns its own render) or `Composite` (wraps children).                                                  | —                |
+| **Component options** | Feature toggles for the generated code. See [Component options](#component-options) below.                          | None selected    |
+| **Language**          | `JavaScript` or `TypeScript`.                                                                                       | —                |
+| **Output directory**  | Where to generate the component folder.                                                                             | `src/components` |
+
+### Component options
+
+After choosing a component type, you can toggle features to include in the generated code:
+
+| Option                    | Primitive | Composite | Description                                                             |
+| ------------------------- | --------- | --------- | ----------------------------------------------------------------------- |
+| **Props**                 | ✓         | ✓         | Adds example props with `@attribute` / `@type` JSDoc annotations.       |
+| **Events**                | ✓         |           | Adds `events` option and `@event` JSDoc annotations.                    |
+| **Methods**               | ✓         | ✓         | Adds an example method stub.                                            |
+| **CSS Custom Properties** | ✓         | ✓         | Adds `@cssprop` JSDoc annotations and CSS custom property declarations. |
+| **CSS Encapsulation**     | ✓         | ✓         | Adds the `all: unset` reset to prevent global styles from leaking in.   |
+| **CSS SSR Pattern**       | ✓         |           | Adds `:scope:not([hydrated])` styles for pre-hydration rendering.       |
 
 ## Generated files
 
-For a component named `date-picker`, the CLI creates:
+For a component named `elena-date-picker`, the CLI creates:
 
 ```
 src/components/date-picker/
-├── date-picker.js (or .ts)
-└── date-picker.css
+├── elena-date-picker.js (or .ts)
+└── elena-date-picker.css
 ```
 
 ### Primitive components
 
 Primitive components own and render their own HTML markup. The generated files include:
 
-- `Elena()` factory with `tagName`, `props`, and `events`
+- `Elena()` factory with `tagName` and optional `props` / `events`
 - A `render()` method returning an `html` tagged template
-- JSDoc annotations for `@displayName`, `@status`, `@event`, and `@cssprop`
-- Scoped CSS with encapsulation reset, public CSS custom properties, and shared pre/post-hydration styles
+- JSDoc annotations for `@displayName` and `@status`, plus `@event` and `@cssprop` when selected
+- Scoped CSS with `@scope`, optional encapsulation reset, CSS custom properties, and SSR pattern
 
 ### Composite components
 
 Composite components wrap and enhance composed children. The generated files include:
 
-- `Elena()` factory with `tagName` and `props`
-- No `render()` method, the light DOM children are untouched
-- JSDoc annotations for `@displayName`, `@slot`, and `@status`
-- Scoped CSS with encapsulation reset and flexbox layout
+- `Elena()` factory with `tagName` and optional `props`
+- No `render()` method — the light DOM children are untouched
+- JSDoc annotations for `@displayName`, `@slot`, and `@status`, plus `@cssprop` when selected
+- Scoped CSS with `@scope`, optional encapsulation reset, and flexbox layout
 
 ## License
 
