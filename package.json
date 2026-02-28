@@ -1,0 +1,35 @@
+{
+  "name": "@elenajs/monorepo",
+  "private": true,
+  "author": "Elena <hi@elenajs.com>",
+  "homepage": "https://elenajs.com/",
+  "license": "MIT",
+  "packageManager": "pnpm@10.20.0+sha256.47a3352808501b8d1ef20112273b6a5dcfa53d28a55bcce36d268e878bd6bfe9",
+  "engines": {
+    "node": ">= 20",
+    "yarn": "please-use-npm"
+  },
+  "resolutions": {
+    "@elenajs/core": "workspace:*",
+    "@elenajs/components": "workspace:*",
+    "@elenajs/bundler": "workspace:*",
+    "@elenajs/plugin-cem-define": "workspace:*",
+    "@elenajs/plugin-cem-tag": "workspace:*",
+    "@elenajs/plugin-cem-typescript": "workspace:*",
+    "@elenajs/plugin-rollup-css": "workspace:*"
+  },
+  "devDependencies": {
+    "eslint": "9.39.2",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-prettier": "5.5.5",
+    "lerna": "9.0.3",
+    "prettier": "3.8.1"
+  },
+  "scripts": {
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "lint": "eslint \"packages/**/*.{js,ts}\" --cache",
+    "release": "pnpm install --frozen-lockfile && lerna version --no-private -m \"[skip ci]: Publish\" && pnpm build && lerna run postbuild && pnpm test && lerna publish from-git",
+    "release:dry-run": "pnpm install --frozen-lockfile && pnpm lerna version --no-private --no-push --no-git-tag-version"
+  }
+}
