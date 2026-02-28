@@ -1,0 +1,27 @@
+{
+  "name": "@elenajs/cli",
+  "version": "0.1.0",
+  "description": "Elena CLI for scaffolding Progressive Web Components.",
+  "author": "Elena <hi@elenajs.com>",
+  "homepage": "https://elenajs.com/",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "bin": {
+    "elena-create": "./src/cli.js"
+  },
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">= 20"
+  },
+  "scripts": {
+    "format": "prettier --write \"src/**/*.js\""
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.0.0"
+  }
+}
