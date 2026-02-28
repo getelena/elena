@@ -1,0 +1,79 @@
+/* ---------------------------------------------
+/ ELENA BUTTON
+/ --------------------------------------------- */
+
+@scope (elena-button) {
+  :scope,
+  *,
+  *::before,
+  *::after {
+    all: unset;
+  }
+
+  :scope {
+    --elena-button-bg: #463630;
+    --elena-button-text: #fff;
+    --elena-button-font: sans-serif;
+    --elena-button-radius: 10rem;
+
+    display: inline-block;
+    border-radius: var(--elena-button-radius);
+  }
+
+  :scope:not([hydrated]),
+  button {
+    background: var(--elena-button-bg);
+    color: var(--elena-button-text);
+    font-family: var(--elena-button-font);
+    border-radius: var(--elena-button-radius);
+
+    appearance: none;
+    user-select: none;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+  }
+
+  button {
+    display: inline-flex;
+  }
+
+  /* ---------------------------------------------
+  / STATES
+  / --------------------------------------------- */
+
+  :scope:hover {
+    opacity: 0.8;
+  }
+
+  :scope:active {
+    opacity: 0.6;
+  }
+
+  :scope:focus-within {
+    outline: 2px solid #f95b1f;
+    outline-offset: 2px;
+  }
+
+  :scope[disabled] {
+    --elena-button-bg: #2b1c15;
+    --elena-button-text: #fff;
+    --elena-button-border: #2b1c15;
+
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* ---------------------------------------------
+  / VARIANTS
+  / --------------------------------------------- */
+
+  :scope[variant="primary"] {
+    --elena-button-bg: #f95b1f;
+  }
+
+  :scope[variant="danger"] {
+    --elena-button-bg: #f91f1f;
+  }
+}
