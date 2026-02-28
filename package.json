@@ -32,6 +32,7 @@
     "test": "lerna run test",
     "lint": "eslint \"packages/**/*.{js,ts}\" --cache",
     "release": "pnpm install --frozen-lockfile && lerna version --no-private -m \"[skip ci]: Publish\" && pnpm build && lerna run postbuild && pnpm test && lerna publish from-git",
-    "release:dry-run": "pnpm install --frozen-lockfile && pnpm lerna version --no-private --no-push --no-git-tag-version"
+    "release:dry-run": "pnpm install --frozen-lockfile && pnpm lerna version --no-private --no-push --no-git-tag-version",
+    "cli": "node packages/cli/src/cli.js"
   }
 }
