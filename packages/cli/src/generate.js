@@ -343,7 +343,9 @@ function compositeJS(name, features) {
   }
 
   if (has(features, "methods")) {
-    if (bodyLines.length > 0) bodyLines.push("");
+    if (bodyLines.length > 0) {
+      bodyLines.push("");
+    }
     bodyLines.push("  myMethod() {", "    console.log(this);", "  }");
   }
 
@@ -387,7 +389,9 @@ function compositeTS(name, features) {
   }
 
   if (has(features, "methods")) {
-    if (bodyLines.length > 0) bodyLines.push("");
+    if (bodyLines.length > 0) {
+      bodyLines.push("");
+    }
     bodyLines.push("  myMethod() {", "    console.log(this);", "  }");
   }
 
