@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, resolve } from "path";
 import { create, ts } from "@custom-elements-manifest/analyzer";
-import globby from "globby";
+import { globby } from "globby";
 import { customElementJsxPlugin as elenaJsxPlugin } from "custom-element-jsx-integration";
 import { elenaDefinePlugin } from "@elenajs/plugin-cem-define";
 import { elenaTagPlugin } from "@elenajs/plugin-cem-tag";

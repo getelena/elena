@@ -26,8 +26,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.0",
-    "zod": "^3.24.0"
+    "@modelcontextprotocol/sdk": "1.27.0",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "vitest": "4.0.18"
