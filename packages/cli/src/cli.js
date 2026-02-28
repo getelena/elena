@@ -16,7 +16,7 @@ const BANNER = `
  ██████████ █████░░██████  ████ █████░░████████
 ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
 
-░█ [ELENA]: Scaffold a Progressive Web Component
+░█ [ELENA]: Generate a Progressive Web Component
 `;
 
 async function main() {

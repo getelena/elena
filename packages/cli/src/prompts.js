@@ -1,4 +1,5 @@
 import { input, select } from "@inquirer/prompts";
+import { highlight, color } from "./utils/color.js";
 
 /**
  * Validates a kebab-case component name.
@@ -23,11 +24,26 @@ function validateName(value) {
  * @returns {Promise<{ name: string, type: "primitive" | "composite", language: "javascript" | "typescript", outputDir: string }>}
  */
 export async function runPrompts(nameArg) {
+  const theme = {
+    prefix: {
+      idle: color("░█ [ELENA]:"),
+      done: color("░█ [ELENA]:"),
+    },
+    style: {
+      message: text => color(text),
+      highlight: text => highlight(text),
+      answer: text => highlight(text),
+      description: text => color(text),
+      keysHelpTip: keys => keys.map(([key, action]) => `${highlight(key)} ${action}`).join(" · "),
+    },
+  };
+
   const name = nameArg
     ? nameArg
     : await input({
         message: "Component name (kebab-case, e.g. date-picker):",
         validate: validateName,
+        theme,
       });
 
   if (nameArg) {
@@ -52,6 +68,7 @@ export async function runPrompts(nameArg) {
         description: "Wraps and enhances composed children",
       },
     ],
+    theme,
   });
 
   const language = await select({
@@ -60,11 +77,13 @@ export async function runPrompts(nameArg) {
       { name: "JavaScript", value: "javascript" },
       { name: "TypeScript", value: "typescript" },
     ],
+    theme,
   });
 
   const outputDir = await input({
     message: "Output directory:",
     default: "src/components",
+    theme,
   });
 
   return { name, type, language, outputDir };
