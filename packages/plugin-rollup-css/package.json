@@ -1,0 +1,27 @@
+{
+  "name": "@elenajs/plugin-rollup-css",
+  "version": "0.3.0",
+  "description": "Rollup plugin that minifies individual CSS files and optionally concatenates them into a single bundle.",
+  "author": "Elena <hi@elenajs.com>",
+  "homepage": "https://elenajs.com/",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">= 20"
+  },
+  "peerDependencies": {
+    "rollup": ">=4.0.0"
+  },
+  "dependencies": {
+    "lightningcss": "^1.31.1"
+  }
+}
