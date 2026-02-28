@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>HTML | Elena Web Components</title>
+    <script src="dist/bundle.js" type="module"></script>
+    <link rel="stylesheet" href="dist/bundle.css" />
+  </head>
+  <body>
+    <h1>Elena + HTML</h1>
+    <p>Demonstrating Elena web components in plain HTML</p>
+
+    <section>
+      <h2>Basic Button</h2>
+      <elena-button>Button</elena-button>
+    </section>
+
+    <section>
+      <h2>Button with custom color</h2>
+      <elena-button style="--elena-button-bg: #1F9BF9;">Button</elena-button>
+    </section>
+
+    <section>
+      <h2>Variants</h2>
+      <elena-stack direction="row">
+        <elena-button variant="default">Default</elena-button>
+        <elena-button variant="primary">Primary</elena-button>
+        <elena-button variant="danger">Danger</elena-button>
+      </elena-stack>
+    </section>
+
+    <section>
+      <h2>Disabled</h2>
+      <elena-button disabled>Disabled</elena-button>
+    </section>
+
+    <section>
+      <h2>Interactive: Counter</h2>
+      <p>Count: <span id="count">0</span></p>
+      <elena-stack direction="row">
+        <elena-button variant="primary" id="increment">Increment</elena-button>
+        <elena-button variant="danger" id="reset">Reset</elena-button>
+      </elena-stack>
+    </section>
+
+    <section>
+      <h2>Dynamic Variant</h2>
+      <elena-stack direction="column">
+        <elena-button class="cycle-button">
+          Click to cycle variant (current: default)
+        </elena-button>
+        <elena-button class="cycle-button">default</elena-button>
+        <p>Current: <span id="current-variant">default</span></p>
+      </elena-stack>
+    </section>
+
+    <script type="module">
+      const variants = ["default", "primary", "danger"];
+      let count = 0;
+      let variantIndex = 0;
+
+      const countEl = document.getElementById("count");
+      const currentVariantEl = document.getElementById("current-variant");
+      const cycleButtons = document.querySelectorAll(".cycle-button");
+
+      function updateVariant() {
+        const currentVariant = variants[variantIndex];
+        cycleButtons.forEach((button, index) => {
+          button.variant = currentVariant;
+          if (index === 0) {
+            button.text = `Click to cycle variant (current: ${currentVariant})`;
+          } else {
+            button.text = currentVariant;
+          }
+        });
+        currentVariantEl.textContent = currentVariant;
+      }
+
+      document.getElementById("increment").addEventListener("click", () => {
+        count++;
+        countEl.textContent = count;
+      });
+
+      document.getElementById("reset").addEventListener("click", () => {
+        count = 0;
+        countEl.textContent = count;
+      });
+
+      cycleButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          variantIndex = (variantIndex + 1) % variants.length;
+          updateVariant();
+        });
+      });
+    </script>
+
+    <style>
+      body {
+        max-inline-size: 600px;
+        margin: 0 auto;
+        padding: 2rem;
+        font-family: sans-serif;
+      }
+      section {
+        margin-block: 2rem;
+      }
+      section h2 {
+        margin-block-end: 0.5rem;
+      }
+    </style>
+  </body>
+</html>

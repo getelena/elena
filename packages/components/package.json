@@ -1,0 +1,42 @@
+{
+  "name": "@elenajs/components",
+  "version": "0.14.0",
+  "description": "Elena component library demonstrating how to build Progressive Web Components.",
+  "author": "Elena <hi@elenajs.com>",
+  "homepage": "https://elenajs.com/",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/custom-elements.d.ts",
+  "customElements": "dist/custom-elements.json",
+  "exports": {
+    ".": {
+      "types": "./dist/custom-elements.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./dist/*.js": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
+    },
+    "./dist/*.css": "./dist/*.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prebuild": "npm run -s clean",
+    "start": "web-dev-server --node-resolve --app-index index.html --open --watch",
+    "build": "elena",
+    "clean": "rm -rf dist/"
+  },
+  "dependencies": {
+    "@elenajs/core": "^0.12.0"
+  },
+  "devDependencies": {
+    "@elenajs/bundler": "^0.6.0",
+    "@web/dev-server": "0.4.6"
+  }
+}
