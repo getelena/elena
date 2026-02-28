@@ -1,5 +1,5 @@
-import { input, select } from "@inquirer/prompts";
-import { highlight, color } from "./utils/color.js";
+import { input, select, checkbox } from "@inquirer/prompts";
+import { comment, highlight, color } from "./utils/color.js";
 
 /**
  * Validates a kebab-case component name.
@@ -9,10 +9,13 @@ import { highlight, color } from "./utils/color.js";
  */
 function validateName(value) {
   if (!value) {
-    return "Component name is required.";
+    return "Component tag name is required.";
   }
-  if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(value)) {
-    return "Use lowercase letters, numbers, and hyphens (e.g. date-picker).";
+  if (!value.includes("-")) {
+    return "Requires at least one hyphen to be valid.";
+  }
+  if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)+$/.test(value)) {
+    return "Use lowercase letters, numbers, and hyphens (e.g. elena-button).";
   }
   return true;
 }
@@ -26,22 +29,25 @@ function validateName(value) {
 export async function runPrompts(nameArg) {
   const theme = {
     prefix: {
-      idle: color("░█ [ELENA]:"),
-      done: color("░█ [ELENA]:"),
+      idle: color("░█"),
+      done: color("░█"),
+    },
+    icon: {
+      cursor: comment("❯"),
     },
     style: {
       message: text => color(text),
       highlight: text => highlight(text),
       answer: text => highlight(text),
       description: text => color(text),
-      keysHelpTip: keys => keys.map(([key, action]) => `${highlight(key)} ${action}`).join(" · "),
+      keysHelpTip: keys => keys.map(([key, action]) => `${comment(key)} ${action}`).join(" · "),
     },
   };
 
   const name = nameArg
     ? nameArg
     : await input({
-        message: "Component name (kebab-case, e.g. date-picker):",
+        message: "Component tag name (kebab-case):",
         validate: validateName,
         theme,
       });
@@ -65,9 +71,32 @@ export async function runPrompts(nameArg) {
       {
         name: "Composite",
         value: "composite",
-        description: "Wraps and enhances composed children",
+        description: "Wraps and enhances composed HTML markup",
       },
     ],
+    theme,
+  });
+
+  const featureChoices =
+    type === "primitive"
+      ? [
+          { name: "Props", value: "props" },
+          { name: "Events", value: "events" },
+          { name: "Methods", value: "methods" },
+          { name: "CSS Custom Properties", value: "cssprops" },
+          { name: "CSS Encapsulation", value: "cssencap" },
+          { name: "CSS SSR Pattern", value: "ssr" },
+        ]
+      : [
+          { name: "Props", value: "props" },
+          { name: "Methods", value: "methods" },
+          { name: "CSS Custom Properties", value: "cssprops" },
+          { name: "CSS Encapsulation", value: "cssencap" },
+        ];
+
+  const features = await checkbox({
+    message: "Component options:",
+    choices: featureChoices,
     theme,
   });
 
@@ -86,5 +115,5 @@ export async function runPrompts(nameArg) {
     theme,
   });
 
-  return { name, type, language, outputDir };
+  return { name, type, language, features, outputDir };
 }
