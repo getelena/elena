@@ -31,7 +31,7 @@
   - **[Interactive mode](#interactive-mode)**
   - **[With a component name](#with-a-component-name)**
 - **[Prompts](#prompts)**
-  - **[Component options](#component-options)**
+  - **[Component features](#component-features)**
 - **[Generated files](#generated-files)**
   - **[Primitive components](#primitive-components)**
   - **[Composite components](#composite-components)**
@@ -65,15 +65,15 @@ npx elena-create elena-date-picker
 
 The CLI walks you through the following steps:
 
-| Prompt                | Description                                                                                                         | Default          |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **Component name**    | Kebab-case name with at least one hyphen (e.g. `elena-button`, `elena-date-picker`). Skipped if passed as argument. | —                |
-| **Component type**    | `Primitive` (owns its own render) or `Composite` (wraps children).                                                  | —                |
-| **Component options** | Feature toggles for the generated code. See [Component options](#component-options) below.                          | None selected    |
-| **Language**          | `JavaScript` or `TypeScript`.                                                                                       | —                |
-| **Output directory**  | Where to generate the component folder.                                                                             | `src/components` |
+| Prompt                 | Description                                                                                                         | Default          |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **Component name**     | Kebab-case name with at least one hyphen (e.g. `elena-button`, `elena-date-picker`). Skipped if passed as argument. | —                |
+| **Component type**     | `Primitive` (owns its own render) or `Composite` (wraps children).                                                  | —                |
+| **Component features** | Feature toggles for the generated code. See [Component features](#component-features) below.                        | None selected    |
+| **Language**           | `JavaScript` or `TypeScript`.                                                                                       | —                |
+| **Output directory**   | Where to generate the component folder.                                                                             | `src/components` |
 
-### Component options
+### Component features
 
 After choosing a component type, you can toggle features to include in the generated code:
 
