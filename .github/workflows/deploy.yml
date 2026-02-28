@@ -1,0 +1,50 @@
+#
+#    ██████████ ████
+#   ░░███░░░░░█░░███
+#    ░███  █ ░  ░███   ██████. ████████    ██████
+#    ░██████    ░███  ███░░███░░███░░███  ░░░░░███
+#    ░███░░█    ░███ ░███████  ░███ ░███   ███████
+#    ░███ ░   █ ░███ ░███░░░   ░███ ░███  ███░░███
+#    ██████████ █████░░██████  ████ █████░░████████
+#   ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+#
+#   ░█ [ELENA]: Elena Custom Element Deploy
+
+name: deploy
+on:
+  workflow_dispatch:
+  #push:
+  #  branches:
+  #    - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+
+      - name: Install and Build
+        run: |
+          pnpm install
+          pnpm build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: packages/components
+          clean: true
