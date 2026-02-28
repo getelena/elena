@@ -32,6 +32,14 @@ export { html, nothing };
  */
 
 /**
+ * @typedef {{ text: string, element: HTMLElement | null, render(): void, updated(): void, connectedCallback(): void, disconnectedCallback(): void }} ElenaInstanceMembers
+ */
+
+/**
+ * @typedef {(new (...args: any[]) => HTMLElement & ElenaInstanceMembers) & { define(): void, readonly observedAttributes: string[] }} ElenaElementConstructor
+ */
+
+/**
  * Factory that creates Elena mixin class.
  *
  * Wraps `superClass` with Elena’s lifecycle, templating, props,
@@ -39,7 +47,7 @@ export { html, nothing };
  *
  * @param {ElenaConstructor} superClass - Base class to extend.
  * @param {ElenaOptions} [options] - Optional configuration options.
- * @returns {CustomElementConstructor} A class ready to be registered.
+ * @returns {ElenaElementConstructor} A class ready to be registered.
  */
 export function Elena(superClass, options) {
   /**
