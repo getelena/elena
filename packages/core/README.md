@@ -719,12 +719,7 @@ The benefit of Elena’s approach is that it doesn’t need any extra logic on t
 For the **Primitive Components**, our recommendation is to ship them with CSS styles that visually matches the `loading` and `hydrated` states without causing FOUC or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
 
 ```css
-/**
- * Recommended: When building Primitive Components, we recommend to
- * target both the non-hydrated host element and the inner element
- * with the same baseline styles. This way the component will look
- * the same before & after client side hydration.
- */
+/* Elena SSR Pattern to avoid layout shift */
 :scope:not([hydrated]),
 .inner-element {
   color: var(--elena-button-text);
@@ -862,21 +857,16 @@ The full baseline pattern for authoring encapsulated component styles looks like
   /* Targets the host element (elena-button) */
   :scope {
 
-    /* Recommended: Public CSS properties */
+    /* Public CSS properties */
     --elena-button-font: sans-serif;
     --elena-button-text: white;
     --elena-button-bg: blue;
 
-    /* Recommended: Display mode for the host element */
+    /* Display mode for the host element */
     display: inline-block;
   }
 
-  /**
-   * Recommended: When building Primitive Components, we recommend to
-   * target both the non-hydrated host element and the inner element
-   * with the same baseline styles. This way the component will look
-   * the same before & after client side hydration.
-   */
+  /* Elena SSR Pattern to avoid layout shift */
   :scope:not([hydrated]),
   button {
     font-family: var(--elena-button-font);

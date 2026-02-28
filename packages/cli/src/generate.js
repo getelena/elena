@@ -241,7 +241,7 @@ function primitiveCSS(name, features) {
   const hasCssEncap = has(features, "cssencap");
   const hasSsr = has(features, "ssr");
 
-  const lines = [`/* Scope makes sure styles don't leak out */`, `@scope (${tagName}) {`];
+  const lines = [`@scope (${tagName}) {`];
 
   if (hasCssEncap) {
     lines.push(
@@ -258,7 +258,7 @@ function primitiveCSS(name, features) {
   if (hasCssProps) {
     lines.push(
       ``,
-      `    /* Recommended: Public CSS properties */`,
+      `    /* Public CSS properties */`,
       `    --${tagName}-font: sans-serif;`,
       `    --${tagName}-text: white;`,
       `    --${tagName}-bg: blue;`
@@ -267,22 +267,14 @@ function primitiveCSS(name, features) {
 
   lines.push(
     ``,
-    `    /* Recommended: Display mode for the host element */`,
+    `    /* Display mode for the host element */`,
     `    display: inline-block;`,
     `  }`,
     ``
   );
 
   if (hasSsr) {
-    lines.push(
-      `  /**`,
-      `   * Recommended: When building Primitive Components, we recommend to`,
-      `   * target both the non-hydrated host element and the inner element`,
-      `   * with the same baseline styles. This way the component will look`,
-      `   * the same before & after client side hydration.`,
-      `   */`,
-      `  :scope:not([hydrated]),`
-    );
+    lines.push(`  /* Elena SSR Pattern to avoid layout shift */`, `  :scope:not([hydrated]),`);
   }
 
   lines.push(`  .${tagName} {`);
@@ -420,7 +412,7 @@ function compositeCSS(name, features) {
   const hasProps = has(features, "props");
   const hasCssEncap = has(features, "cssencap");
 
-  const lines = [`/* Scope makes sure styles don't leak out */`, `@scope (${tagName}) {`];
+  const lines = [`@scope (${tagName}) {`];
 
   if (hasCssEncap) {
     lines.push(
@@ -437,7 +429,7 @@ function compositeCSS(name, features) {
   if (hasCssProps) {
     lines.push(
       ``,
-      `    /* Recommended: Public CSS properties */`,
+      `    /* Public CSS properties */`,
       `    --${tagName}-font: sans-serif;`,
       `    --${tagName}-text: white;`,
       `    --${tagName}-bg: blue;`,
