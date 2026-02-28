@@ -1,0 +1,24 @@
+{
+  "name": "@elenajs/plugin-cem-tag",
+  "version": "0.1.0",
+  "description": "CEM analyzer plugin that copies custom Elena JSDoc tags into the manifest.",
+  "author": "Elena <hi@elenajs.com>",
+  "homepage": "https://elenajs.com/",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">= 20"
+  },
+  "peerDependencies": {
+    "@custom-elements-manifest/analyzer": ">=0.10.0"
+  }
+}
