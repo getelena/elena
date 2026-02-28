@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Elena SSR Visual Test</title>
+    <link rel="stylesheet" href="button.css" />
+    <link rel="stylesheet" href="stack.css" />
+    <script src="button.js" type="module"></script>
+    <script src="stack.js" type="module"></script>
+  </head>
+  <body style="margin: 2rem; font-family: sans-serif; background: white">
+    <elena-stack>
+      <elena-button>Button</elena-button>
+      <elena-button variant="primary">Primary</elena-button>
+      <elena-button variant="danger">Danger</elena-button>
+      <elena-button disabled>Disabled</elena-button>
+      <div>
+        <elena-button>Button</elena-button>
+        <elena-button variant="primary">Primary</elena-button>
+        <elena-button variant="danger">Danger</elena-button>
+        <elena-button disabled>Disabled</elena-button>
+      </div>
+    </elena-stack>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+@scope (elena-stack) {
+  :scope,
+  *,
+  *::before,
+  *::after {
+    all: unset;
+  }
+  :scope {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-flow: column wrap;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  :scope[direction="row"] {
+    flex-direction: row;
+  }
+}
