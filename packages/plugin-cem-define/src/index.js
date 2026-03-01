@@ -23,11 +23,9 @@ export function elenaDefinePlugin() {
         ts.isObjectLiteralExpression(node.initializer)
       ) {
         const varName = node.name.getText();
-        const tagNameProp = node.initializer.properties.find(
-          p => ts.isPropertyAssignment(p) && p.name.getText() === "tagName"
-        );
-        if (tagNameProp && ts.isStringLiteral(tagNameProp.initializer)) {
-          optionsMap.set(varName, tagNameProp.initializer.text);
+        const tagName = getTagName(ts, node.initializer);
+        if (tagName) {
+          optionsMap.set(varName, tagName);
         }
         return;
       }
@@ -41,6 +39,7 @@ export function elenaDefinePlugin() {
         return;
       }
 
+      // Skip classes that don't extend anything (no `extends` clause)
       const heritageClause = node.heritageClauses?.[0];
       if (!heritageClause) {
         return;
@@ -61,12 +60,7 @@ export function elenaDefinePlugin() {
 
         if (ts.isObjectLiteralExpression(optionsArg)) {
           // Inline: Elena(HTMLElement, { tagName: "...", ... })
-          const tagNameProp = optionsArg.properties.find(
-            p => ts.isPropertyAssignment(p) && p.name.getText() === "tagName"
-          );
-          if (tagNameProp && ts.isStringLiteral(tagNameProp.initializer)) {
-            tagName = tagNameProp.initializer.text;
-          }
+          tagName = getTagName(ts, optionsArg);
         } else if (ts.isIdentifier(optionsArg)) {
           // Variable reference: Elena(HTMLElement, options)
           tagName = optionsMap.get(optionsArg.getText());
@@ -90,4 +84,20 @@ export function elenaDefinePlugin() {
       }
     },
   };
+}
+
+/**
+ * Extracts the `tagName` string value from an object literal expression.
+ * @param {import("typescript")} ts
+ * @param {import("typescript").ObjectLiteralExpression} objectLiteral
+ * @returns {string | undefined}
+ */
+function getTagName(ts, objectLiteral) {
+  const prop = objectLiteral.properties.find(
+    p => ts.isPropertyAssignment(p) && p.name.getText() === "tagName"
+  );
+  if (prop && ts.isStringLiteral(prop.initializer)) {
+    return prop.initializer.text;
+  }
+  return undefined;
 }
