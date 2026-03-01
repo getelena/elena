@@ -26,8 +26,6 @@
 
 <br/>
 
-## Elena features
-
 - 🔋 **Extremely lightweight:** Only 2kB minified & gzipped with zero runtime overhead.
 - 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
 - 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
