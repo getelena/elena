@@ -40,6 +40,8 @@
 - 🚀 **Modern & fast:** Ships as ESM modules that work directly in any web browser.
 - 🔷 **TypeScript support:** Full type safety that scales with your design system.
 
+<br/>
+
 ## Table of contents
 
 - **[Core principles](#core-principles)**
