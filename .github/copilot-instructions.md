@@ -64,6 +64,12 @@ CLI package commands (from `packages/cli/`):
 npx elena-create          # Interactive component scaffolding
 ```
 
+SSR package commands (from `packages/ssr/`):
+
+```bash
+pnpm test                 # Vitest tests
+```
+
 ## Monorepo Structure
 
 - **pnpm workspaces** + **Lerna** (independent versioning)
@@ -78,6 +84,7 @@ npx elena-create          # Interactive component scaffolding
   - `packages/plugin-cem-typescript/` — `@elenajs/plugin-cem-typescript` CEM plugin
   - `packages/cli/` — `@elenajs/cli` interactive component scaffolding tool
   - `packages/mcp/` — `@elenajs/mcp` MCP server for AI-assisted component development
+  - `packages/ssr/` — `@elenajs/ssr` server-side rendering for Primitive Components
 
 ## Architecture
 
@@ -125,6 +132,11 @@ The MCP server (`packages/mcp/src/`) provides AI-assisted component development 
 - **`lib/cem-loader.js`** — Loads and mtime-caches `custom-elements.json` from the component project's `dist/` directory.
 - **`lib/cem-helpers.js`** — Extracts and formats component metadata from the CEM.
 - **`lib/patterns-content.js`** — Static markdown content describing Elena authoring patterns.
+
+The SSR package (`packages/ssr/src/`) renders Elena Primitive Components to HTML strings for server-side rendering:
+
+- **`index.js`** — Exports `ssr(html)` and `register(...components)`. Uses `htmlparser2` to parse HTML, walks the tree, expands registered Primitive Components by calling their `render()` method, and preserves Composite Components and plain HTML unchanged.
+- **`utils.js`** — `escapeHtml()` for XSS-safe output and `normalizeWhitespace()` to match Elena's client-side rendering whitespace.
 
 **`elena.config.mjs` options** (all optional):
 
@@ -181,6 +193,19 @@ Elena is written in vanilla JS with JSDoc annotations. `@elenajs/core` ships its
 - ESLint: lenient config, ignores test/dist/coverage dirs
 - All source is vanilla JS with JSDoc annotations (no TypeScript)
 - ESM modules throughout (`"type": "module"`)
+- **`curly: ["error", "all"]`** — Always use braces for `if`, `else`, `for`, `while`, etc. Single-line bodies without braces are **not allowed**:
+
+  ```js
+  // Bad
+  if (condition) doSomething();
+  if (condition)
+    doSomething();
+
+  // Good
+  if (condition) {
+    doSomething();
+  }
+  ```
 
 ## Commit Conventions
 
