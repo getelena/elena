@@ -1,10 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { toPascal, generateSource, generateCSS } from "../src/generate.js";
 
-// ---------------------------------------------------------------------------
-// toPascal
-// ---------------------------------------------------------------------------
-
 describe("toPascal", () => {
   test("single word", () => {
     expect(toPascal("button")).toBe("Button");
@@ -19,11 +15,7 @@ describe("toPascal", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// generateSource — Primitive JavaScript
-// ---------------------------------------------------------------------------
-
-describe("generateSource — primitive JS", () => {
+describe("generateSource, primitive JS", () => {
   const ALL = ["props", "events", "cssprops", "methods"];
   const NONE = [];
 
@@ -64,7 +56,7 @@ describe("generateSource — primitive JS", () => {
   test("no features", () => {
     const out = generateSource("my-button", "primitive", "javascript", NONE);
 
-    // Options — only tagName
+    // Options, only tagName
     expect(out).toContain('tagName: "my-button"');
     expect(out).not.toContain("props:");
     expect(out).not.toContain("events:");
@@ -135,11 +127,7 @@ describe("generateSource — primitive JS", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// generateSource — Primitive TypeScript
-// ---------------------------------------------------------------------------
-
-describe("generateSource — primitive TS", () => {
+describe("generateSource, primitive TS", () => {
   test("all features", () => {
     const out = generateSource("my-button", "primitive", "typescript", [
       "props",
@@ -175,11 +163,7 @@ describe("generateSource — primitive TS", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// generateSource — Composite JavaScript
-// ---------------------------------------------------------------------------
-
-describe("generateSource — composite JS", () => {
+describe("generateSource, composite JS", () => {
   test("all features (props + cssprops + methods)", () => {
     const out = generateSource("my-stack", "composite", "javascript", [
       "props",
@@ -241,11 +225,7 @@ describe("generateSource — composite JS", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// generateSource — Composite TypeScript
-// ---------------------------------------------------------------------------
-
-describe("generateSource — composite TS", () => {
+describe("generateSource, composite TS", () => {
   test("all features", () => {
     const out = generateSource("my-stack", "composite", "typescript", [
       "props",
@@ -271,11 +251,7 @@ describe("generateSource — composite TS", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// generateSource — multi-word names
-// ---------------------------------------------------------------------------
-
-describe("generateSource — multi-word names", () => {
+describe("generateSource, multi-word names", () => {
   test("primitive JS with hyphenated name", () => {
     const out = generateSource("cool-date-picker", "primitive", "javascript", ["props"]);
 
@@ -293,11 +269,7 @@ describe("generateSource — multi-word names", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// generateCSS — Primitive
-// ---------------------------------------------------------------------------
-
-describe("generateCSS — primitive", () => {
+describe("generateCSS, primitive", () => {
   test("all CSS features", () => {
     const out = generateCSS("my-button", "primitive", ["cssprops", "props", "cssencap", "ssr"]);
 
@@ -382,11 +354,7 @@ describe("generateCSS — primitive", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// generateCSS — Composite
-// ---------------------------------------------------------------------------
-
-describe("generateCSS — composite", () => {
+describe("generateCSS, composite", () => {
   test("all CSS features", () => {
     const out = generateCSS("my-stack", "composite", ["cssprops", "props", "cssencap"]);
 

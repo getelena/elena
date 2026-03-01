@@ -110,7 +110,7 @@ Primitive components own and render their own HTML markup. The generated files i
 Composite components wrap and enhance composed children. The generated files include:
 
 - `Elena()` factory with `tagName` and optional `props`
-- No `render()` method — the light DOM children are untouched
+- No `render()` method, the light DOM children are untouched
 - JSDoc annotations for `@displayName`, `@slot`, and `@status`, plus `@cssprop` when selected
 - Scoped CSS with `@scope`, optional encapsulation reset, and flexbox layout
 
