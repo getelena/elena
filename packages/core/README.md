@@ -32,9 +32,9 @@
 - 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
 - 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
 - 🌍 **Standards based:** Built entirely on native custom elements & web standards.
-- ⚡ **Reactive updates:** State changes reflect automatically via a built-in utility.
+- ⚡ **Reactive props:** Prop changes sync to attributes and trigger updates automatically.
 - 🎨 **Scoped styles:** Simple & clean CSS encapsulation without complex workarounds.
-- 🖥️ **SSR friendly:** No special server-side rendering setup or plugins required.
+- 🖥️ **SSR friendly:** Works out of the box, with optional server-side utilities if needed.
 - 🧩 **Zero dependencies:** No runtime dependencies, runs entirely on the web platform.
 - 🔓 **Zero lock-in:** Works with every major framework, or no framework at all.
 
