@@ -1,7 +1,7 @@
 {
   "name": "@elenajs/ssr",
   "version": "0.1.0",
-  "description": "Render Elena components to HTML strings for server side rendering.",
+  "description": "Render Elena Primitive Components to HTML strings for Server Side Rendering.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
   "license": "MIT",

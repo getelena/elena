@@ -7,7 +7,7 @@
   <img src="https://elenajs.com/img/elena.png" alt="Elena" width="201" height="230">
 </picture>
 
-### Render Elena components to HTML strings for Server Side Rendering.
+### Render Elena Primitive Components to HTML strings for SSR.
 
 <br/>
 
