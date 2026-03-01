@@ -710,7 +710,7 @@ Sometimes you may want to hide your web components until they’re hydrated and 
 
 ### Server Side Rendering
 
-Elena’s approach to Server Side Rendering (SSR) is simple & straightforward. Since [Progressive Web Components](#what-is-a-progressive-web-component) are primarily HTML & CSS, you don’t need any special logic on the server to render them. The **[Composite Components](#2-composite-components)** provide a full support for SSR by default, while the **[Primitive Components](#1-primitive-components)** provide a partial support and do the rest of the hydration on the client side.
+Elena’s recommended approach to Server Side Rendering (SSR) is simple & straightforward. Since [Progressive Web Components](#what-is-a-progressive-web-component) are primarily HTML & CSS, you don’t need any special logic on the server to render them. The **[Composite Components](#2-composite-components)** provide a full support for SSR by default, while the **[Primitive Components](#1-primitive-components)** provide a partial support and do the rest of the hydration on the client side.
 
 Partial SSR support for the **Primitive Components** means that the component’s base HTML & CSS lives in the `Light DOM`. The JavaScript lifecycle is then used to progressively enhance the functionality and markup once the element is registered.
 
@@ -731,6 +731,11 @@ Elena currently provides SSR examples for the following frameworks:
 - **[Eleventy](https://github.com/getelena/eleventy-example-project)**
 - **[Plain HTML](https://github.com/getelena/html-example-project)**
 - **[Next.js](https://github.com/getelena/next-example-project)**
+
+In cases where you do want to expand the **Primitive Component** template inline, we also provide a package called [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr) that renders the Elena Primitive Components to HTML strings for full SSR support. Please see the [SSR package’s readme](https://github.com/getelena/elena/tree/main/packages/ssr) for usage guidelines.
+
+> [!WARNING]
+> Please note that `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
 
 ### TypeScript
 
