@@ -64,7 +64,7 @@ Create an `elena.config.mjs` (or `elena.config.js`) at the root of your package:
  * @type {import("@elenajs/bundler").ElenaConfig}
  */
 export default {
-  // Source directory scanned for .js entry files and .css files.
+  // Source directory scanned for .js/.ts entry files and .css files.
   input: "src",
 
   // Rollup output options.
@@ -89,15 +89,15 @@ export default {
 
 ### Options
 
-| Option             | Type              | Default          | Description                                                        |
-| ------------------ | ----------------- | ---------------- | ------------------------------------------------------------------ |
-| `input`            | `string`          | `"src"`          | Source directory to scan for `.js` and `.css` files.               |
-| `output.dir`       | `string`          | `"dist"`         | Output directory for compiled files.                               |
-| `output.format`    | `string`          | `"esm"`          | Rollup output format.                                              |
-| `output.sourcemap` | `boolean`         | `true`           | Whether to emit sourcemaps.                                        |
-| `bundle`           | `string \| false` | `"src/index.js"` | Entry point for the single-file bundle. Set to `false` to disable. |
-| `plugins`          | `Plugin[]`        | `[]`             | Additional Rollup plugins appended after the built-in set.         |
-| `analyze.plugins`  | `Plugin[]`        | `[]`             | Additional CEM analyzer plugins.                                   |
+| Option             | Type              | Default          | Description                                                                                                              |
+| ------------------ | ----------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `input`            | `string`          | `"src"`          | Source directory to scan for `.js`, `.ts`, and `.css` files.                                                             |
+| `output.dir`       | `string`          | `"dist"`         | Output directory for compiled files.                                                                                     |
+| `output.format`    | `string`          | `"esm"`          | Rollup output format.                                                                                                    |
+| `output.sourcemap` | `boolean`         | `true`           | Whether to emit sourcemaps.                                                                                              |
+| `bundle`           | `string \| false` | `"src/index.js"` | Entry point for the single-file bundle. Auto-detects `src/index.ts` if no `.js` entry exists. Set to `false` to disable. |
+| `plugins`          | `Plugin[]`        | `[]`             | Additional Rollup plugins appended after the built-in set.                                                               |
+| `analyze.plugins`  | `Plugin[]`        | `[]`             | Additional CEM analyzer plugins.                                                                                         |
 
 ## Build output
 
@@ -112,6 +112,48 @@ Running `elena build` produces:
 | `dist/custom-elements.json` | [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/) describing all components. |
 | `dist/custom-elements.d.ts` | JSX integration types mapping tag names to prop types.                                               |
 | `dist/*.d.ts`               | Per-component TypeScript declarations with typed props and events.                                   |
+
+## TypeScript support
+
+The bundler supports both JavaScript and TypeScript source files. When `.ts` files are detected in the source directory, the bundler automatically transpiles them to JavaScript using `@rollup/plugin-typescript`. The output is identical to what you get from JavaScript sources.
+
+To use TypeScript, write your components with inline type annotations instead of JSDoc:
+
+```ts
+import { Elena, html } from "@elenajs/core";
+
+export default class Button extends Elena(HTMLElement, {
+  tagName: "elena-button",
+  props: ["variant"],
+}) {
+  /**
+   * The style variant of the component.
+   * @attribute
+   */
+  variant: "default" | "primary" | "danger" = "default";
+
+  render() {
+    return html`<button>${this.text}</button>`;
+  }
+}
+Button.define();
+```
+
+A `tsconfig.json` is required in the project root. A minimal configuration:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}
+```
+
+> **Note:** The bundler handles TypeScript declarations separately via the CEM analyzer, you do not need `declaration: true` in your `tsconfig.json`.
 
 ## Programmatic API
 

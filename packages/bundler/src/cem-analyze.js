@@ -24,8 +24,8 @@ export function createCemConfig(options = {}) {
     outdir,
     watch: false,
     dev: false,
-    globs: [`${src}/**/*.js`],
-    exclude: [`${src}/**/*.ts`, "**/*.test.js", "node_modules"],
+    globs: [`${src}/**/*.js`, `${src}/**/*.ts`],
+    exclude: ["**/*.test.js", "**/*.test.ts", "node_modules"],
     plugins: [
       elenaDefinePlugin(),
       elenaTagPlugin("status"),
@@ -57,14 +57,15 @@ export async function runCemAnalyze(config, cwd = process.cwd()) {
   console.log(` `);
 
   const globs = await globby(
-    [`${src}/**/*.js`, `!${src}/**/*.ts`, "!**/*.test.js", "!node_modules"],
+    [`${src}/**/*.js`, `${src}/**/*.ts`, "!**/*.test.js", "!**/*.test.ts", "!node_modules"],
     { cwd }
   );
 
   const modules = globs.map(glob => {
     const fullPath = resolve(cwd, glob);
     const source = readFileSync(fullPath).toString();
-    return ts.createSourceFile(glob, source, ts.ScriptTarget.ES2015, true);
+    const scriptKind = glob.endsWith(".ts") ? ts.ScriptKind.TS : ts.ScriptKind.JS;
+    return ts.createSourceFile(glob, source, ts.ScriptTarget.ES2015, true, scriptKind);
   });
 
   const plugins = [

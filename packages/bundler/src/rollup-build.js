@@ -1,7 +1,8 @@
-import { readdirSync } from "fs";
+import { existsSync, readdirSync } from "fs";
 import { rollup } from "rollup";
 import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
+import typescript from "@rollup/plugin-typescript";
 import minifyHtmlLiterals from "rollup-plugin-minify-html-literals-v3";
 import summary from "rollup-plugin-summary";
 import { cssPlugin, cssBundlePlugin } from "@elenajs/plugin-rollup-css";
@@ -22,12 +23,33 @@ function onwarn(warning, warn) {
 /**
  * Builds the plugin list for a single Rollup build target.
  *
- * @param {{ src: string; outdir: string; hasSummary: boolean; includeCssBundle: boolean; extraPlugins?: import("rollup").Plugin[] }} opts
+ * @param {{ src: string; outdir: string; hasSummary: boolean; includeCssBundle: boolean; extraPlugins?: import("rollup").Plugin[]; hasTs?: boolean }} opts
  * @returns {import("rollup").Plugin[]}
  */
-function buildPlugins({ src, outdir, hasSummary, includeCssBundle, extraPlugins = [] }) {
-  const plugins = [
-    resolve({ extensions: [".js", ".css"] }),
+function buildPlugins({
+  src,
+  outdir,
+  hasSummary,
+  includeCssBundle,
+  extraPlugins = [],
+  hasTs = false,
+}) {
+  const plugins = [resolve({ extensions: [".js", ".ts", ".css"] })];
+
+  if (hasTs) {
+    plugins.push(
+      typescript({
+        sourceMap: true,
+        compilerOptions: {
+          declaration: false,
+          declarationMap: false,
+        },
+        include: ["**/*.ts"],
+      })
+    );
+  }
+
+  plugins.push(
     minifyHtmlLiterals({
       options: {
         // Elena components use this.template`...` rather than html`...`
@@ -38,8 +60,8 @@ function buildPlugins({ src, outdir, hasSummary, includeCssBundle, extraPlugins 
       ecma: 2020,
       module: true,
     }),
-    cssPlugin(src),
-  ];
+    cssPlugin(src)
+  );
 
   if (includeCssBundle) {
     plugins.push(cssBundlePlugin(src, "bundle.css"));
@@ -67,12 +89,18 @@ export function createRollupConfig(options = {}) {
   const outdir = options.output?.dir ?? "dist";
   const format = options.output?.format ?? "esm";
   const sourcemap = options.output?.sourcemap ?? true;
-  const bundle = options.bundle !== undefined ? options.bundle : "src/index.js";
+  let bundle = options.bundle !== undefined ? options.bundle : "src/index.js";
   const extraPlugins = options.plugins ?? [];
 
   const entries = readdirSync(src, { recursive: true })
-    .filter(f => f.endsWith(".js"))
+    .filter(f => f.endsWith(".js") || f.endsWith(".ts"))
     .map(f => `${src}/${f}`);
+
+  const hasTs = entries.some(f => f.endsWith(".ts"));
+
+  if (bundle === "src/index.js" && !existsSync(bundle) && existsSync("src/index.ts")) {
+    bundle = "src/index.ts";
+  }
 
   const configs = [
     {
@@ -83,8 +111,14 @@ export function createRollupConfig(options = {}) {
         hasSummary: false,
         includeCssBundle: true,
         extraPlugins,
+        hasTs,
       }),
-      output: { format, sourcemap, dir: outdir },
+      output: {
+        format,
+        sourcemap,
+        dir: outdir,
+        ...(hasTs && { entryFileNames: "[name].js" }),
+      },
       preserveEntrySignatures: "strict",
       treeshake: TREESHAKE,
       onwarn,
@@ -100,6 +134,7 @@ export function createRollupConfig(options = {}) {
         hasSummary: true,
         includeCssBundle: false,
         extraPlugins,
+        hasTs,
       }),
       output: { format, sourcemap, file: `${outdir}/bundle.js` },
       preserveEntrySignatures: "strict",
@@ -125,12 +160,18 @@ export async function runRollupBuild(config) {
   const outdir = config.output?.dir ?? "dist";
   const format = config.output?.format ?? "esm";
   const sourcemap = config.output?.sourcemap ?? true;
-  const bundle = config.bundle !== undefined ? config.bundle : "src/index.js";
+  let bundle = config.bundle !== undefined ? config.bundle : "src/index.js";
   const extraPlugins = config.plugins ?? [];
 
   const entries = readdirSync(src, { recursive: true })
-    .filter(f => f.endsWith(".js"))
+    .filter(f => f.endsWith(".js") || f.endsWith(".ts"))
     .map(f => `${src}/${f}`);
+
+  const hasTs = entries.some(f => f.endsWith(".ts"));
+
+  if (bundle === "src/index.js" && !existsSync(bundle) && existsSync("src/index.ts")) {
+    bundle = "src/index.ts";
+  }
 
   // Build 1: individual modules + CSS bundle
   console.log(color(`░█ [ELENA]: Building Progressive Web Components...`));
@@ -141,12 +182,24 @@ export async function runRollupBuild(config) {
 
   const build1 = await rollup({
     input: entries,
-    plugins: buildPlugins({ src, outdir, hasSummary: false, includeCssBundle: true, extraPlugins }),
+    plugins: buildPlugins({
+      src,
+      outdir,
+      hasSummary: false,
+      includeCssBundle: true,
+      extraPlugins,
+      hasTs,
+    }),
     preserveEntrySignatures: "strict",
     treeshake: TREESHAKE,
     onwarn,
   });
-  await build1.write({ format, sourcemap, dir: outdir });
+  await build1.write({
+    format,
+    sourcemap,
+    dir: outdir,
+    ...(hasTs && { entryFileNames: "[name].js" }),
+  });
   await build1.close();
 
   // Build 2: single-file JS bundle (optional)
@@ -162,6 +215,7 @@ export async function runRollupBuild(config) {
         hasSummary: true,
         includeCssBundle: false,
         extraPlugins,
+        hasTs,
       }),
       preserveEntrySignatures: "strict",
       treeshake: TREESHAKE,

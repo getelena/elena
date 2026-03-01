@@ -99,7 +99,7 @@ The core library (`packages/core/src/`) has five files:
 The bundler (`packages/bundler/src/`) is a separate package with its own source layout:
 
 - **`cli.js`** — Entry point for the `elena` binary. Loads `elena.config.mjs` (or `elena.config.js`) from the consumer's working directory, then runs Rollup and CEM analysis in sequence.
-- **`rollup-build.js`** — Orchestrates two Rollup build passes: (1) individual `.js` modules from all files in the source directory plus a concatenated `bundle.css`; (2) an optional single-file `bundle.js`. Applies html-template minification, Terser, and size reporting.
+- **`rollup-build.js`** — Orchestrates two Rollup build passes: (1) individual `.js` modules from all `.js`/`.ts` files in the source directory plus a concatenated `bundle.css`; (2) an optional single-file `bundle.js`. Applies html-template minification, Terser, and size reporting. TypeScript files are transpiled via `@rollup/plugin-typescript` when detected.
 - **`cem-analyze.js`** — Generates the Custom Elements Manifest (`custom-elements.json`) and per-component `.d.ts` TypeScript definitions using `@custom-elements-manifest/analyzer`.
 - **`utils/load-config.js`** — Loads `elena.config.mjs` / `elena.config.js` and merges with defaults.
 - **`utils/color.js`** — ANSI color helper using Elena's brand color (#f19c77) for CLI output.
@@ -140,9 +140,9 @@ The SSR package (`packages/ssr/src/`) renders Elena Primitive Components to HTML
 
 **`elena.config.mjs` options** (all optional):
 
-- `input` — Source directory to scan for `.js` and `.css` files (default: `"src"`).
+- `input` — Source directory to scan for `.js`, `.ts`, and `.css` files (default: `"src"`).
 - `output` — Rollup output options: `dir` (default: `"dist"`), `format` (default: `"esm"`), `sourcemap` (default: `true`).
-- `bundle` — Entry point for the single-file bundle (default: `"src/index.js"`). Set to `false` to disable.
+- `bundle` — Entry point for the single-file bundle (default: `"src/index.js"`; auto-detects `"src/index.ts"` if no `.js` entry exists). Set to `false` to disable.
 - `plugins` — Additional Rollup plugins appended after Elena's built-in set.
 - `analyze.plugins` — Additional CEM plugins.
 

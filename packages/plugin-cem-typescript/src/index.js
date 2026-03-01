@@ -77,7 +77,10 @@ export function elenaTypeScriptPlugin({ outdir = "dist" } = {}) {
         const propsType = `${ceDecl.name}Props`;
         const content = `export type { ${propsType} } from './custom-elements.js';\n\ndeclare class ${ceDecl.name} extends HTMLElement {${body}}\n\nexport default ${ceDecl.name};\n`;
 
-        const fileName = mod.path.split("/").pop().replace(".js", ".d.ts");
+        const fileName = mod.path
+          .split("/")
+          .pop()
+          .replace(/\.(js|ts)$/, ".d.ts");
         writeFileSync(join(outdir, fileName), content);
       }
     },
