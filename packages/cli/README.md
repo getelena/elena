@@ -24,11 +24,6 @@
 
 <br/>
 
-> [!WARNING]
-> Please note that `@elenajs/cli` is in active development and the APIs may still change without notice.
-
-<br/>
-
 ## Table of contents
 
 - **[Install](#install)**
@@ -75,7 +70,7 @@ The CLI walks you through the following steps:
 | **Component name**     | Kebab-case name with at least one hyphen (e.g. `elena-button`, `elena-date-picker`). Skipped if passed as argument. | —                |
 | **Component type**     | `Primitive` (owns its own render) or `Composite` (wraps children).                                                  | —                |
 | **Component features** | Feature toggles for the generated code. See [Component features](#component-features) below.                        | None selected    |
-| **Language**           | `JavaScript`, `TypeScript`, or `HTML`.                                                                               | —                |
+| **Language**           | `JavaScript`, `TypeScript`, or `HTML`.                                                                              | —                |
 | **Output directory**   | Where to generate the component folder.                                                                             | `src/components` |
 
 ### Component features
