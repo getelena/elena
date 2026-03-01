@@ -11,5 +11,5 @@
   "tabWidth": 2,
   "arrowParens": "avoid",
   "proseWrap": "preserve",
-  "embeddedLanguageFormatting": "off",
+  "embeddedLanguageFormatting": "off"
 }
