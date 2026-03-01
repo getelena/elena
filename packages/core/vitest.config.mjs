@@ -16,6 +16,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
+    name: { label: "@elenajs/core", color: "green" },
     environment: "happy-dom",
     include: ["test/**/*.test.js"],
     exclude: ["test/visual/**"],
