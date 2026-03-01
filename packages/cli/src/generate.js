@@ -142,12 +142,7 @@ function primitiveJS(name, features) {
         "  }"
       );
     } else {
-      bodyLines.push(
-        "  constructor() {",
-        "    super();",
-        '    this.variant = "default";',
-        "  }"
-      );
+      bodyLines.push("  constructor() {", "    super();", '    this.variant = "default";', "  }");
     }
   }
 
@@ -161,7 +156,7 @@ function primitiveJS(name, features) {
       "  render() {"
     );
   } else {
-    bodyLines.push("", "  render() {");
+    bodyLines.push("  render() {");
   }
   bodyLines.push(
     "    return html`",
@@ -171,14 +166,13 @@ function primitiveJS(name, features) {
   );
 
   if (has(features, "methods")) {
-    bodyLines.push("", "  myMethod() {", "    console.log(this.element);", "  }");
+    bodyLines.push("  myMethod() {", "    console.log(this.element);", "  }");
   }
 
   const header = hasComments ? "// ░ [ELENA]: Primitive Component\n" : "";
-  const jsdoc = hasComments ? `\n${primitiveJSDoc(className, tagName, features)}` : "";
+  const jsdoc = hasComments ? `${primitiveJSDoc(className, tagName, features)}` : "";
 
   return `${header}import { Elena, html } from "@elenajs/core";
-
 ${opts}
 ${jsdoc}
 export default class ${className} extends Elena(HTMLElement, options) {
@@ -304,8 +298,6 @@ function primitiveCSS(name, features) {
       lines.push(``, `  /* Elena SSR Pattern to avoid layout shift */`);
     }
     lines.push(`  :scope:not([hydrated]),`);
-  } else {
-    lines.push(``);
   }
 
   lines.push(`  .${tagName} {`);
@@ -327,7 +319,7 @@ function primitiveCSS(name, features) {
     lines.push(`  :scope[variant="primary"] {`, `    --${tagName}-bg: red;`, `  }`);
   }
 
-  lines.push(`}`, ``);
+  lines.push(`}`);
   return lines.join("\n");
 }
 
@@ -362,12 +354,7 @@ function compositeJS(name, features) {
         "  }"
       );
     } else {
-      bodyLines.push(
-        "  constructor() {",
-        "    super();",
-        '    this.direction = "column";',
-        "  }"
-      );
+      bodyLines.push("  constructor() {", "    super();", '    this.direction = "column";', "  }");
     }
   }
 
@@ -495,7 +482,7 @@ function compositeCSS(name, features) {
     lines.push(`  :scope[direction="row"] {`, `    flex-direction: row;`, `  }`);
   }
 
-  lines.push(`}`, ``);
+  lines.push(`}`);
   return lines.join("\n");
 }
 
