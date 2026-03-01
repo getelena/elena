@@ -65,6 +65,8 @@
   - **[Project examples](#project-examples)**
   - **[Component examples](#component-examples)**
 - **[Server Side Rendering](#server-side-rendering)**
+  - **[Framework examples](#framework-examples)**
+  - **[Rendering Primitive Components to HTML strings](#rendering-primitive-components-to-html-strings)**
 - **[TypeScript](#typescript)**
   - **[Generating types for components](#generating-types-for-components)**
   - **[Using the generated types](#using-the-generated-types)**
@@ -723,13 +725,17 @@ For the **Primitive Components**, our recommendation is to ship them with CSS st
 }
 ```
 
+### Framework examples
+
 Elena currently provides SSR examples for the following frameworks:
 
 - **[Eleventy](https://github.com/getelena/eleventy-example-project)**
 - **[Plain HTML](https://github.com/getelena/html-example-project)**
 - **[Next.js](https://github.com/getelena/next-example-project)** _(Elena can even be used inside React Server Components, see [src/app/page.tsx](https://github.com/getelena/next-example-project/blob/main/src/app/page.tsx))_
 
-In cases where you do want to expand the **Primitive Component** template inline, we also provide a package called [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr) that renders the Elena Primitive Components to HTML strings for full SSR support. Please see the [SSR package’s readme](https://github.com/getelena/elena/tree/main/packages/ssr) for usage guidelines.
+### Rendering Primitive Components to HTML strings
+
+In cases where you do want to expand the **Primitive Component** templates inline, we also provide a package called [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr) that renders the Elena Primitive Components to HTML strings for full SSR support. Please see the [SSR package’s readme](https://github.com/getelena/elena/tree/main/packages/ssr) for usage guidelines.
 
 > [!WARNING]
 > Please note that `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
