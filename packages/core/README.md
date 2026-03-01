@@ -50,17 +50,21 @@
 - **[Usage examples](#usage-examples)**
   - **[Project examples](#project-examples)**
   - **[Component examples](#component-examples)**
-- **[Misc](#misc)**
-  - **[Load event](#load-event)**
-  - **[Hide until loaded](#hide-until-loaded)**
-  - **[Server Side Rendering](#server-side-rendering)**
-  - **[TypeScript](#typescript)**
+- **[Server Side Rendering](#server-side-rendering)**
+- **[TypeScript](#typescript)**
+  - **[Generating types for components](#generating-types-for-components)**
+  - **[Using the generated types](#using-the-generated-types)**
+  - **[TypeScript examples](#typescript-examples)**
+  - **[Authoring components with TypeScript](#authoring-components-with-typescript)**
 - **[CSS styles](#css-styles)**
   - **[Writing scoped styles](#writing-scoped-styles)**
   - **[Elena CSS Encapsulation Pattern](#elena-css-encapsulation-pattern)**
   - **[Pre-hydration state and styles](#pre-hydration-state-and-styles)**
   - **[Styling Composite Components](#styling-composite-components)**
   - **[Documenting public CSS properties](#documenting-public-css-properties)**
+- **[Misc](#misc)**
+  - **[Load event](#load-event)**
+  - **[Hide until loaded](#hide-until-loaded)**
 - **[Known issues](#known-issues)**
   - **[Browser compatibility](#browser-compatibility)**
   - **[JavaScript frameworks](#javascript-frameworks)**
@@ -665,50 +669,7 @@ export default class Button extends Elena(HTMLElement, options) {
 Button.define();
 ```
 
-## Misc
-
-### Load event
-
-Elena web components are self-contained and can be loaded and defined asynchronously. Therefore an element may not be interactive immediately.
-
-If you set a property on an Elena web component before it has been fully initialized, it will be applied correctly and will use the values once it has finished client side hydration. However, you cannot call a method on an element before the JavaScript has been loaded.
-
-Most of the time this is not an issue, as you will be calling methods through event handlers. In cases where you want to call a method as soon as possible, for example during a page load, you need to wait for the Elena web component to be defined, using `customElements.whenDefined`:
-
-```html
-<script type="module">
-  const button = document.querySelector("elena-button");
-
-  // It's fine to set props while an Elena Element is loading
-  button.variant = "primary";
-
-  // But if you want to immediately call a method, you should
-  // wait for the Elena Element to be defined
-  await customElements.whenDefined("elena-button");
-  button.click();
-</script>
-```
-
-### Hide until loaded
-
-Sometimes you may want to hide your web components until they’re hydrated and interactive. You can achieve that with this small code snippet from [Scott Jehl](https://scottjehl.com/posts/web-component-self-destruct-css/):
-
-```css
-@keyframes hideElena {
-  0%,
-  100% {
-    visibility: hidden;
-  }
-}
-:not(:defined) {
-  animation: hideElena 2s;
-}
-```
-
-> [!TIP]
-> This CSS snippet will take care that as soon as your elements get defined, the hiding will instantly and automatically unapply. But it will also unapply itself after two seconds no matter what, should the JavaScript take that long to do its thing, or fail to run at all.
-
-### Server Side Rendering
+## Server Side Rendering
 
 Elena’s recommended approach to Server Side Rendering (SSR) is simple & straightforward. Since [Progressive Web Components](#what-is-a-progressive-web-component) are primarily HTML & CSS, you don’t need any special logic on the server to render them. The **[Composite Components](#2-composite-components)** provide a full support for SSR by default, while the **[Primitive Components](#1-primitive-components)** provide a partial support and do the rest of the hydration on the client side.
 
@@ -737,7 +698,7 @@ In cases where you do want to expand the **Primitive Component** template inline
 > [!WARNING]
 > Please note that `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
 
-### TypeScript
+## TypeScript
 
 Elena is written in vanilla JavaScript with JSDoc annotations. The **`@elenajs/core`** library ships its own type declarations (`dist/elena.d.ts`) which are generated automatically by `tsc` from the JSDoc so that you get full IntelliSense and type checking.
 
@@ -746,7 +707,7 @@ import { Elena, html, nothing } from "@elenajs/core";
 // Elena, ElenaOptions, html, nothing are all typed
 ```
 
-#### Generating types for your components
+### Generating types for components
 
 When you build your own Elena components, **`@elenajs/bundler`** can generate TypeScript declarations for each one. Running `elena build` (or calling the bundler programmatically) produces:
 
@@ -754,7 +715,7 @@ When you build your own Elena components, **`@elenajs/bundler`** can generate Ty
 - **`custom-elements.json`**: The [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/), a machine-readable description of your components used by IDEs and documentation tools.
 - **`custom-elements.d.ts`**: JSX integration types that map your custom element tag names to their prop types. This enables autocomplete and type checking for `<elena-button variant="primary" />` in JSX/TSX files.
 
-#### Using the generated types in a framework
+### Using the generated types
 
 The generated `custom-elements.d.ts` exports a `CustomElements` type map and a `ScopedElements` helper. To get type checking in JSX (this works with Next.js, see further down for more examples):
 
@@ -787,7 +748,7 @@ Elena provides TypeScript examples for the following JavaScript frameworks:
 - **[Svelte](https://github.com/getelena/svelte-example-project)**
 - **[Vue](https://github.com/getelena/vue-example-project)**
 
-### Authoring Elena components with TypeScript
+### Authoring components with TypeScript
 
 When using TypeScript (instead of JavaScript) to author the Elena components, you can simplify the code (like omitting the `constructor` part) and have your type definitions inline:
 
@@ -982,6 +943,49 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 > [!TIP]
 > **`@elenajs/bundler`** transforms the above JSDocs automatically to Custom Elements Manifest which allows you to generate documentation that surfaces the component’s public CSS properties.
+
+## Misc
+
+### Load event
+
+Elena web components are self-contained and can be loaded and defined asynchronously. Therefore an element may not be interactive immediately.
+
+If you set a property on an Elena web component before it has been fully initialized, it will be applied correctly and will use the values once it has finished client side hydration. However, you cannot call a method on an element before the JavaScript has been loaded.
+
+Most of the time this is not an issue, as you will be calling methods through event handlers. In cases where you want to call a method as soon as possible, for example during a page load, you need to wait for the Elena web component to be defined, using `customElements.whenDefined`:
+
+```html
+<script type="module">
+  const button = document.querySelector("elena-button");
+
+  // It's fine to set props while an Elena Element is loading
+  button.variant = "primary";
+
+  // But if you want to immediately call a method, you should
+  // wait for the Elena Element to be defined
+  await customElements.whenDefined("elena-button");
+  button.click();
+</script>
+```
+
+### Hide until loaded
+
+Sometimes you may want to hide your web components until they’re hydrated and interactive. You can achieve that with this small code snippet from [Scott Jehl](https://scottjehl.com/posts/web-component-self-destruct-css/):
+
+```css
+@keyframes hideElena {
+  0%,
+  100% {
+    visibility: hidden;
+  }
+}
+:not(:defined) {
+  animation: hideElena 2s;
+}
+```
+
+> [!TIP]
+> This CSS snippet will take care that as soon as your elements get defined, the hiding will instantly and automatically unapply. But it will also unapply itself after two seconds no matter what, should the JavaScript take that long to do its thing, or fail to run at all.
 
 ## Known issues
 
