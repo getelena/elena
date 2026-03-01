@@ -20,7 +20,7 @@
 
 <br/>
 
-<p align="center"><strong>@elenajs/bundler</strong> is the build tool for <a href="https://elenajs.com">Elena</a> Progressive Web Component libraries. It bundles JavaScript, minifies CSS, generates a <a href="https://custom-elements-manifest.open-wc.org/">Custom Elements Manifest</a>, and produces TypeScript declarations for Elena components.</p>
+<p align="center"><strong>@elenajs/bundler</strong> is the build tool for <a href="https://elenajs.com">Elena</a> Progressive Web Component libraries. It bundles JavaScript and TypeScript source files, minifies CSS, generates a <a href="https://custom-elements-manifest.open-wc.org/">Custom Elements Manifest</a>, and produces TypeScript declarations for Elena components.</p>
 
 <br/>
 
