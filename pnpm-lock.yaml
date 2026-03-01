@@ -161,22 +161,37 @@ importers:
         version: 4.0.18(@types/node@25.2.3)(happy-dom@20.7.0)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
 
   packages/plugin-cem-define:
-    dependencies:
+    devDependencies:
       '@custom-elements-manifest/analyzer':
-        specifier: '>=0.10.0'
+        specifier: 0.11.0
         version: 0.11.0
+      vitest:
+        specifier: 4.0.18
+        version: 4.0.18(@types/node@25.2.3)(happy-dom@20.7.0)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
 
   packages/plugin-cem-tag:
-    dependencies:
+    devDependencies:
       '@custom-elements-manifest/analyzer':
-        specifier: '>=0.10.0'
+        specifier: 0.11.0
         version: 0.11.0
+      '@elenajs/plugin-cem-define':
+        specifier: workspace:*
+        version: link:../plugin-cem-define
+      vitest:
+        specifier: 4.0.18
+        version: 4.0.18(@types/node@25.2.3)(happy-dom@20.7.0)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
 
   packages/plugin-cem-typescript:
-    dependencies:
+    devDependencies:
       '@custom-elements-manifest/analyzer':
-        specifier: '>=0.10.0'
+        specifier: 0.11.0
         version: 0.11.0
+      '@elenajs/plugin-cem-define':
+        specifier: workspace:*
+        version: link:../plugin-cem-define
+      vitest:
+        specifier: 4.0.18
+        version: 4.0.18(@types/node@25.2.3)(happy-dom@20.7.0)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
 
   packages/plugin-rollup-css:
     dependencies:
@@ -186,6 +201,10 @@ importers:
       rollup:
         specifier: '>=4.0.0'
         version: 4.57.1
+    devDependencies:
+      vitest:
+        specifier: 4.0.18
+        version: 4.0.18(@types/node@25.2.3)(happy-dom@20.7.0)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
 
   packages/ssr:
     dependencies:
