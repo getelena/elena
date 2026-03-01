@@ -36,7 +36,7 @@
 - 🎨 **Scoped styles:** Simple & clean CSS encapsulation without complex workarounds.
 - 🖥️ **SSR friendly:** No special server-side rendering setup or plugins required.
 - 🧩 **Zero dependencies:** No runtime dependencies, runs entirely on the web platform.
-- 0️⃣ **Zero lock-in:** Works with every major framework, or no framework at all.
+- 🔓 **Zero lock-in:** Works with every major framework, or no framework at all.
 - 🚀 **Modern & fast:** Ships as ESM modules that work directly in any web browser.
 - 🔷 **TypeScript support:** Full type safety that scales with your design system.
 
