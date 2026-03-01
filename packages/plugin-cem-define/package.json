@@ -15,10 +15,17 @@
   "files": [
     "src"
   ],
+  "scripts": {
+    "test": "vitest run"
+  },
   "engines": {
     "node": ">= 20"
   },
   "peerDependencies": {
     "@custom-elements-manifest/analyzer": ">=0.10.0"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "0.11.0",
+    "vitest": "4.0.18"
   }
 }
