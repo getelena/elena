@@ -1,7 +1,7 @@
 const Escape = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
 
 /**
- * Replaces HTML special characters with their entity equivalents.
+ * Escape a string for safe insertion into HTML.
  *
  * @param {string} str
  * @returns {string}
@@ -11,7 +11,8 @@ export function escapeHtml(str) {
 }
 
 /**
- * Normalize whitespace to match Elena's client-side fullRender output.
+ * Normalize whitespace to match Elena’s client-side
+ * fullRender output.
  *
  * @param {string} markup
  * @returns {string}
