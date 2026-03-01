@@ -30,7 +30,10 @@ describe("cem-helpers", () => {
     });
 
     it("extracts custom element declarations from CEM", () => {
-      if (!cem) return;
+      if (!cem) {
+        console.log("NO CEMMMM");
+        return;
+      }
       const components = getComponents(cem);
       expect(components.length).toBeGreaterThan(0);
       for (const c of components) {
@@ -40,7 +43,9 @@ describe("cem-helpers", () => {
     });
 
     it("finds elena-button in the CEM", () => {
-      if (!cem) return;
+      if (!cem) {
+        return;
+      }
       const components = getComponents(cem);
       const button = components.find(c => c.tagName === "elena-button");
       expect(button).toBeDefined();
@@ -50,28 +55,36 @@ describe("cem-helpers", () => {
 
   describe("findComponent", () => {
     it("finds by tag name", () => {
-      if (!cem) return;
+      if (!cem) {
+        return;
+      }
       const button = findComponent(cem, "elena-button");
       expect(button).toBeDefined();
       expect(button.name).toBe("Button");
     });
 
     it("finds by class name (case-insensitive)", () => {
-      if (!cem) return;
+      if (!cem) {
+        return;
+      }
       const button = findComponent(cem, "button");
       expect(button).toBeDefined();
       expect(button.tagName).toBe("elena-button");
     });
 
     it("returns undefined for unknown component", () => {
-      if (!cem) return;
+      if (!cem) {
+        return;
+      }
       expect(findComponent(cem, "elena-nonexistent")).toBeUndefined();
     });
   });
 
   describe("getComponentType", () => {
     it("returns 'primitive' for components with render()", () => {
-      if (!cem) return;
+      if (!cem) {
+        return;
+      }
       const button = findComponent(cem, "elena-button");
       // Button has render in its source but CEM may not list it as a member
       // depending on the analyzer config. Check the actual data.
@@ -80,7 +93,9 @@ describe("cem-helpers", () => {
     });
 
     it("returns 'composite' for components without render()", () => {
-      if (!cem) return;
+      if (!cem) {
+        return;
+      }
       const stack = findComponent(cem, "elena-stack");
       expect(getComponentType(stack)).toBe("composite");
     });
@@ -88,7 +103,9 @@ describe("cem-helpers", () => {
 
   describe("formatComponentSummary", () => {
     it("returns summary shape", () => {
-      if (!cem) return;
+      if (!cem) {
+        return;
+      }
       const button = findComponent(cem, "elena-button");
       const summary = formatComponentSummary(button);
       expect(summary).toHaveProperty("name", "Button");
@@ -102,7 +119,9 @@ describe("cem-helpers", () => {
 
   describe("formatComponentDetails", () => {
     it("returns full details with props, events, cssProperties, slots", () => {
-      if (!cem) return;
+      if (!cem) {
+        return;
+      }
       const button = findComponent(cem, "elena-button");
       const details = formatComponentDetails(button);
 
@@ -120,7 +139,9 @@ describe("cem-helpers", () => {
     });
 
     it("includes slots for composite components", () => {
-      if (!cem) return;
+      if (!cem) {
+        return;
+      }
       const stack = findComponent(cem, "elena-stack");
       const details = formatComponentDetails(stack);
       expect(details.slots.length).toBeGreaterThan(0);
