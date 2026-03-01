@@ -1,0 +1,28 @@
+{
+  "name": "@elenajs/ssr",
+  "version": "0.1.0",
+  "description": "Render Elena components to HTML strings for server side rendering.",
+  "author": "Elena <hi@elenajs.com>",
+  "homepage": "https://elenajs.com/",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./src/index.js",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@elenajs/core": ">=0.12.0"
+  },
+  "devDependencies": {
+    "vitest": "4.0.18"
+  },
+  "dependencies": {
+    "htmlparser2": "^10.1.0"
+  }
+}
