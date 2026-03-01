@@ -204,6 +204,7 @@ Elena is written in vanilla JS with JSDoc annotations. `@elenajs/core` ships its
 
 ## Code Style
 
+- **Always run `pnpm lint` after making changes** and fix any errors before moving on.
 - Prettier: single quotes off, trailing commas es5, semicolons required, `printWidth: 100`
 - ESLint: lenient config, ignores test/dist/coverage dirs
 - All source is vanilla JS with JSDoc annotations (no TypeScript)

@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && npx prettier --write \"$TOOL_INPUT_FILE_PATH\" 2>&1 | tail -1 && pnpm lint --no-warn-ignored 2>&1 | head -50"
+          }
+        ]
+      }
+    ]
+  }
+}
