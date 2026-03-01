@@ -436,9 +436,7 @@ describe("lifecycle", () => {
       await import("./fixtures/events-no-element.js");
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
       await createElement("events-no-element");
-      expect(spy).toHaveBeenCalledWith(
-        expect.stringContaining("Cannot delegate events")
-      );
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining("Cannot delegate events"));
       spy.mockRestore();
     });
   });

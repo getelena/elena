@@ -1,6 +1,8 @@
 import { Elena, html } from "../../src/elena.js";
 
-export default class TemplateNoOptions extends Elena(HTMLElement, { tagName: "template-no-options" }) {
+export default class TemplateNoOptions extends Elena(HTMLElement, {
+  tagName: "template-no-options",
+}) {
   constructor() {
     super();
   }
