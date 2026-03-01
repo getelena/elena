@@ -97,10 +97,7 @@ function renderComponent(ComponentClass, attrs, textContent) {
   }
 
   const result = instance.render();
-  if (result && result.toString) {
-    return normalizeWhitespace(result.toString());
-  }
-  return "";
+  return result ? normalizeWhitespace(result.toString()) : "";
 }
 
 /**
@@ -170,32 +167,15 @@ function walk(nodes) {
     const attrs = node.attribs;
     const children = node.children || [];
 
-    const ComponentClass = tag.includes("-") ? registry.get(tag) : null;
-
-    if (ComponentClass) {
-      // Check if it's a primitive component (has a real render method)
-      const isPrimitive =
-        typeof ComponentClass.prototype.render === "function" &&
-        ComponentClass.prototype.render.toString() !== "render() {}";
-
-      if (isPrimitive) {
-        // Primitive: expand render() for inner HTML
-        const textContent = getTextContent(children);
-        const innerHTML = renderComponent(ComponentClass, attrs, textContent);
-        out += `<${tag}${serializeAttrs(attrs)}>${innerHTML}</${tag}>`;
-      } else {
-        // Composite: keep the tag, recursively process children
-        const childHtml = walk(children);
-        out += `<${tag}${serializeAttrs(attrs)}>${childHtml}</${tag}>`;
-      }
+    if (VOID_ELEMENTS.has(tag.toLowerCase())) {
+      out += `<${tag}${serializeAttrs(attrs)}>`;
     } else {
-      // Not a registered component, serialize as-is
-      if (VOID_ELEMENTS.has(tag.toLowerCase())) {
-        out += `<${tag}${serializeAttrs(attrs)}>`;
-      } else {
-        const childHtml = walk(children);
-        out += `<${tag}${serializeAttrs(attrs)}>${childHtml}</${tag}>`;
-      }
+      const ComponentClass = tag.includes("-") ? registry.get(tag) : null;
+      const isPrimitive = ComponentClass && Object.hasOwn(ComponentClass.prototype, "render");
+      const innerHTML = isPrimitive
+        ? renderComponent(ComponentClass, attrs, getTextContent(children))
+        : walk(children);
+      out += `<${tag}${serializeAttrs(attrs)}>${innerHTML}</${tag}>`;
     }
   }
 

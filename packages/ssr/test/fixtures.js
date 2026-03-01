@@ -84,9 +84,7 @@ export const NoRenderComponent = createComponent("elena-empty", [], function () 
  * Create a minimal composite Elena-like class (no render method).
  */
 function createComposite(tagName, props) {
-  class Component {
-    render() {}
-  }
+  class Component {}
 
   Component._tagName = tagName;
 
