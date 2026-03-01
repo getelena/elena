@@ -183,9 +183,11 @@ describe("getProps", () => {
   });
 
   it("falls back to string type for undefined properties", () => {
+    const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const context = {};
     getProps(context, "missing", null, "hello");
     expect(context.missing).toBe("hello");
+    spy.mockRestore();
   });
 });
 

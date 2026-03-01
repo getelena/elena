@@ -29,12 +29,18 @@ importers:
       eslint-plugin-prettier:
         specifier: 5.5.5
         version: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint@9.39.2)(prettier@3.8.1)
+      happy-dom:
+        specifier: 20.7.0
+        version: 20.7.0
       lerna:
         specifier: 9.0.4
         version: 9.0.4(@types/node@25.2.3)
       prettier:
         specifier: 3.8.1
         version: 3.8.1
+      vitest:
+        specifier: ^4.0.18
+        version: 4.0.18(@types/node@25.2.3)(happy-dom@20.7.0)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
 
   packages/bundler:
     dependencies:
