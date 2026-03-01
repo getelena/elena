@@ -114,8 +114,8 @@ The build plugins are published as standalone packages (each with `src/index.js`
 The CLI (`packages/cli/src/`) is an interactive scaffolding tool for creating Elena components:
 
 - **`cli.js`** — Entry point for the `elena-create` binary. Displays an ASCII banner, runs interactive prompts, generates source + CSS files, and writes them to disk.
-- **`prompts.js`** — Interactive prompts using `@inquirer/prompts`. Validates kebab-case component names, asks for type (primitive/composite), language (JS/TS), and output directory.
-- **`generate.js`** — Template generators for all four combinations: primitive/composite × JS/TS, plus CSS generators for both component types. Converts kebab-case names to PascalCase. Output follows all Elena patterns including JSDoc annotations and `@scope` CSS.
+- **`prompts.js`** — Interactive prompts using `@inquirer/prompts`. Validates kebab-case component names, asks for type (primitive/composite), language (JS/TS/HTML), and output directory.
+- **`generate.js`** — Template generators for all combinations: primitive/composite × JS/TS/HTML, plus CSS generators for both component types. Converts kebab-case names to PascalCase. Output follows all Elena patterns including JSDoc annotations and `@scope` CSS. HTML language generates a single-file output with `<style>` and `<script>` blocks plus an example usage. A "Code Comments" feature toggle controls whether JSDoc and CSS comments are included in the generated code.
 - **`utils/color.js`** — ANSI color helper using Elena's brand color (#f19c77).
 
 The MCP server (`packages/mcp/src/`) provides AI-assisted component development via the Model Context Protocol:

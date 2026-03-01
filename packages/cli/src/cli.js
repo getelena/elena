@@ -35,24 +35,33 @@ async function main() {
   const nameArg = process.argv[2];
   const { name, type, language, features, outputDir } = await runPrompts(nameArg);
 
-  const ext = language === "typescript" ? "ts" : "js";
   const componentDir = resolve(process.cwd(), outputDir, name);
-  const sourceFile = join(componentDir, `${name}.${ext}`);
-  const cssFile = join(componentDir, `${name}.css`);
+  await mkdir(componentDir, { recursive: true });
 
   const sourceContent = generateSource(name, type, language, features);
-  const cssContent = generateCSS(name, type, features);
+  const files = [];
 
-  await mkdir(componentDir, { recursive: true });
-  await writeFile(sourceFile, sourceContent);
-  await writeFile(cssFile, cssContent);
+  if (language === "html") {
+    const htmlFile = join(componentDir, `${name}.html`);
+    await writeFile(htmlFile, sourceContent);
+    files.push(htmlFile);
+  } else {
+    const ext = language === "typescript" ? "ts" : "js";
+    const sourceFile = join(componentDir, `${name}.${ext}`);
+    const cssFile = join(componentDir, `${name}.css`);
+    const cssContent = generateCSS(name, type, features);
+    await writeFile(sourceFile, sourceContent);
+    await writeFile(cssFile, cssContent);
+    files.push(sourceFile, cssFile);
+  }
 
   exitAltScreen();
 
   console.log("");
   console.log(color("░█ [ELENA]: Component created succesfully:"));
-  console.log(`   ${sourceFile}`);
-  console.log(`   ${cssFile}`);
+  for (const file of files) {
+    console.log(`   ${file}`);
+  }
   console.log("");
 }
 

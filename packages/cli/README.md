@@ -20,7 +20,7 @@
 
 <br/>
 
-<p align="center"><strong>@elenajs/cli</strong> is an interactive command-line tool for scaffolding <a href="https://elenajs.com">Elena</a> components. It generates JavaScript or TypeScript source files and scoped CSS with all Elena Progressive Web Component patterns pre-configured: <code>Elena()</code> factory, <code>html</code> tagged templates, <code>@scope</code> CSS, JSDoc annotations, and <code>ClassName.define()</code>.</p>
+<p align="center"><strong>@elenajs/cli</strong> is an interactive command-line tool for scaffolding <a href="https://elenajs.com">Elena</a> components. It generates JavaScript, TypeScript, or single-file HTML source files and scoped CSS with all Elena Progressive Web Component patterns pre-configured: <code>Elena()</code> factory, <code>html</code> tagged templates, <code>@scope</code> CSS, JSDoc annotations, and <code>ClassName.define()</code>.</p>
 
 <br/>
 
@@ -75,7 +75,7 @@ The CLI walks you through the following steps:
 | **Component name**     | Kebab-case name with at least one hyphen (e.g. `elena-button`, `elena-date-picker`). Skipped if passed as argument. | —                |
 | **Component type**     | `Primitive` (owns its own render) or `Composite` (wraps children).                                                  | —                |
 | **Component features** | Feature toggles for the generated code. See [Component features](#component-features) below.                        | None selected    |
-| **Language**           | `JavaScript` or `TypeScript`.                                                                                       | —                |
+| **Language**           | `JavaScript`, `TypeScript`, or `HTML`.                                                                               | —                |
 | **Output directory**   | Where to generate the component folder.                                                                             | `src/components` |
 
 ### Component features
@@ -90,6 +90,7 @@ After choosing a component type, you can toggle features to include in the gener
 | **CSS Custom Properties** | ✓         | ✓         | Adds `@cssprop` JSDoc annotations and CSS custom property declarations. |
 | **CSS Encapsulation**     | ✓         | ✓         | Adds the `all: unset` reset to prevent global styles from leaking in.   |
 | **CSS SSR Pattern**       | ✓         |           | Adds `:scope:not([hydrated])` styles for pre-hydration rendering.       |
+| **Code Comments**         | ✓         | ✓         | Includes JSDoc annotations and CSS comments in the generated code.      |
 
 ## Generated files
 
@@ -99,6 +100,13 @@ For a component named `elena-date-picker`, the CLI creates:
 src/components/date-picker/
 ├── elena-date-picker.js (or .ts)
 └── elena-date-picker.css
+```
+
+When using the HTML language, a single file is generated instead:
+
+```
+src/components/date-picker/
+└── elena-date-picker.html
 ```
 
 ### Primitive components

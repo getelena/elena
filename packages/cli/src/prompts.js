@@ -86,12 +86,14 @@ export async function runPrompts(nameArg) {
           { name: "CSS Custom Properties", value: "cssprops" },
           { name: "CSS Encapsulation", value: "cssencap" },
           { name: "CSS SSR Pattern", value: "ssr" },
+          { name: "Code Comments", value: "comments" },
         ]
       : [
           { name: "JS Props", value: "props" },
           { name: "JS Methods", value: "methods" },
           { name: "CSS Custom Properties", value: "cssprops" },
           { name: "CSS Encapsulation", value: "cssencap" },
+          { name: "Code Comments", value: "comments" },
         ];
 
   const features = await checkbox({
@@ -105,6 +107,7 @@ export async function runPrompts(nameArg) {
     choices: [
       { name: "JavaScript", value: "javascript" },
       { name: "TypeScript", value: "typescript" },
+      { name: "HTML", value: "html" },
     ],
     theme,
   });

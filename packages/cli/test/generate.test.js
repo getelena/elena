@@ -16,7 +16,7 @@ describe("toPascal", () => {
 });
 
 describe("generateSource, primitive JS", () => {
-  const ALL = ["props", "events", "cssprops", "methods"];
+  const ALL = ["props", "events", "cssprops", "methods", "comments"];
   const NONE = [];
 
   test("all features", () => {
@@ -90,7 +90,7 @@ describe("generateSource, primitive JS", () => {
   });
 
   test("only events", () => {
-    const out = generateSource("my-button", "primitive", "javascript", ["events"]);
+    const out = generateSource("my-button", "primitive", "javascript", ["events", "comments"]);
 
     expect(out).toContain('events: ["click", "focus", "blur"]');
     expect(out).toContain("@event click");
@@ -102,7 +102,7 @@ describe("generateSource, primitive JS", () => {
   });
 
   test("only cssprops", () => {
-    const out = generateSource("my-button", "primitive", "javascript", ["cssprops"]);
+    const out = generateSource("my-button", "primitive", "javascript", ["cssprops", "comments"]);
 
     expect(out).toContain("@cssprop [--my-button-text]");
 
@@ -134,6 +134,7 @@ describe("generateSource, primitive TS", () => {
       "events",
       "cssprops",
       "methods",
+      "comments",
     ]);
 
     expect(out).toContain('import { Elena, html } from "@elenajs/core"');
@@ -169,6 +170,7 @@ describe("generateSource, composite JS", () => {
       "props",
       "cssprops",
       "methods",
+      "comments",
     ]);
 
     expect(out).toContain('import { Elena } from "@elenajs/core"');
@@ -231,6 +233,7 @@ describe("generateSource, composite TS", () => {
       "props",
       "cssprops",
       "methods",
+      "comments",
     ]);
 
     // TS class field
