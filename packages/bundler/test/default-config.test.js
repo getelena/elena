@@ -1,7 +1,7 @@
 /**
- * Integration test: Default config (no elena.config.mjs present, all defaults apply).
+ * Integration test: Default config
+ * (no elena.config.mjs present, all defaults apply).
  */
-
 import { existsSync, readFileSync, rmSync } from "fs";
 import { join } from "path";
 import { beforeAll, afterAll, describe, test, expect } from "vitest";

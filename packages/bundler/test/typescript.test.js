@@ -1,7 +1,7 @@
 /**
- * Integration test: TypeScript sources (.ts component files produce identical output).
+ * Integration test: TypeScript sources
+ * (.ts component files produce identical output).
  */
-
 import { spawnSync } from "child_process";
 import { existsSync, readFileSync, writeFileSync, rmSync, mkdtempSync, mkdirSync } from "fs";
 import { join } from "path";
@@ -10,7 +10,8 @@ import { beforeAll, afterAll, describe, test, expect } from "vitest";
 import { CLI } from "./helpers.mjs";
 
 /**
- * Sets up a temp directory with TypeScript Elena component sources.
+ * Sets up a temp directory with TypeScript
+ * Elena component sources.
  *
  * @returns {{ tmpDir: string; dist: string }}
  */

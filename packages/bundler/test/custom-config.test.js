@@ -1,7 +1,7 @@
 /**
- * Integration test: Custom config (elena.config.mjs sets sourcemap: false, bundle: false).
+ * Integration test: Custom config
+ * (elena.config.mjs sets sourcemap: false, bundle: false).
  */
-
 import { existsSync, rmSync } from "fs";
 import { join } from "path";
 import { beforeAll, afterAll, describe, test, expect } from "vitest";

@@ -6,10 +6,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-/** Absolute path to the CLI entry point. */
 export const CLI = resolve(__dirname, "../src/cli.js");
-
-/** Source files to build, taken from the real components package. */
 export const COMPONENTS_SRC = resolve(__dirname, "../../components/src");
 
 /**
