@@ -80,18 +80,18 @@ export async function runPrompts(nameArg) {
   const featureChoices =
     type === "primitive"
       ? [
-          { name: "JS Props", value: "props" },
-          { name: "JS Events", value: "events" },
-          { name: "JS Methods", value: "methods" },
-          { name: "CSS Custom Properties", value: "cssprops" },
+          { name: "Props", value: "props" },
+          { name: "Events", value: "events" },
+          { name: "Methods", value: "methods" },
+          { name: "CSS Variables", value: "cssprops" },
           { name: "CSS Encapsulation", value: "cssencap" },
           { name: "CSS SSR Pattern", value: "ssr" },
           { name: "Code Comments", value: "comments" },
         ]
       : [
-          { name: "JS Props", value: "props" },
-          { name: "JS Methods", value: "methods" },
-          { name: "CSS Custom Properties", value: "cssprops" },
+          { name: "Props", value: "props" },
+          { name: "Methods", value: "methods" },
+          { name: "CSS Variables", value: "cssprops" },
           { name: "CSS Encapsulation", value: "cssencap" },
           { name: "Code Comments", value: "comments" },
         ];
