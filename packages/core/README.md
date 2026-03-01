@@ -26,6 +26,20 @@
 
 <br/>
 
+## Elena features
+
+- 🔋 **Extremely lightweight:** Only 2kB minified & gzipped with zero runtime overhead.
+- 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
+- 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
+- 🌍 **Standards based:** Built entirely on native custom elements & web standards.
+- ⚡ **Reactive updates:** State changes reflect automatically via a built-in utility.
+- 🎨 **Scoped styles:** Simple & clean CSS encapsulation without complex workarounds.
+- 🖥️ **SSR friendly:** No special server-side rendering setup or plugins required.
+- 🧩 **Zero dependencies:** No runtime dependencies, runs entirely on the web platform.
+- 0️⃣ **Zero lock-in:** Works with every major framework, or no framework at all.
+- 🚀 **Modern & fast:** Ships as ESM modules that work directly in any web browser.
+- 🔷 **TypeScript support:** Full type safety that scales with your design system.
+
 ## Table of contents
 
 - **[Core principles](#core-principles)**
