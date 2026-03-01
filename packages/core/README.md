@@ -42,7 +42,7 @@
 
 ## Table of contents
 
-- **[Core principles](#core-principles)**
+- **[Design principles](#design-principles)**
 - **[What is a Progressive Web Component?](#what-is-a-progressive-web-component)**
 - **[Getting started](#getting-started)**
   - **[Quick start](#quick-start)**
@@ -87,7 +87,7 @@
 
 <br/>
 
-## Core principles
+## Design principles
 
 - **Progressive:** Renders HTML and CSS first, hydrates it with JavaScript after.
 - **Reliable:** Predictable lifecycle and property syncing with no hidden magic.
