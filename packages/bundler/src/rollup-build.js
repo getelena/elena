@@ -14,7 +14,7 @@ const TREESHAKE = {
 };
 
 /**
- * Suppresses noisy Rollup warnings (e.g. unused external imports).
+ * Suppresses noisy Rollup warnings.
  *
  * @param {import("rollup").RollupWarning} warning
  * @param {function} warn
@@ -84,7 +84,7 @@ function buildPlugins({
 }
 
 /**
- * Returns the Rollup config array for the given Elena config. Useful for advanced
+ * Returns the Rollup config array for the given Elena config. Useful for
  * users who want to call `rollup -c` with a thin wrapper config file.
  *
  * @param {import("./utils/load-config.js").ElenaConfig} [options]
@@ -153,81 +153,30 @@ export function createRollupConfig(options = {}) {
 }
 
 /**
- * Runs both Rollup build targets programmatically using the Rollup Node.js API.
- *
- * Note: the `output` key inside `RollupOptions` is ignored by the `rollup()` API.
- * Output options must be passed separately to `build.write()`.
+ * Runs Rollup build targets programmatically using the Rollup Node.js API.
+ * Reuses `createRollupConfig` to avoid duplicating config resolution logic.
  *
  * @param {import("./utils/load-config.js").ElenaConfig} config
  * @returns {Promise<void>}
  */
 export async function runRollupBuild(config) {
-  const src = config.input ?? "src";
-  const outdir = config.output?.dir ?? "dist";
-  const format = config.output?.format ?? "esm";
-  const sourcemap = config.output?.sourcemap ?? true;
-  let bundle = config.bundle !== undefined ? config.bundle : "src/index.js";
-  const extraPlugins = config.plugins ?? [];
+  const configs = createRollupConfig(config);
 
-  const entries = readdirSync(src, { recursive: true })
-    .filter(f => f.endsWith(".js") || f.endsWith(".ts"))
-    .map(f => `${src}/${f}`);
-
-  const hasTs = entries.some(f => f.endsWith(".ts"));
-
-  if (bundle === "src/index.js" && !existsSync(bundle) && existsSync("src/index.ts")) {
-    bundle = "src/index.ts";
-  }
-
-  // Build 1: individual modules + CSS bundle
   console.log(color(`░█ [ELENA]: Building Progressive Web Components...`));
   console.log(` `);
-  for (const entry of entries) {
-    console.log(color(`░█ [ELENA]: Generating and minifying ${entry}...`));
-  }
 
-  const build1 = await rollup({
-    input: entries,
-    plugins: buildPlugins({
-      src,
-      outdir,
-      hasSummary: false,
-      includeCssBundle: true,
-      extraPlugins,
-      hasTs,
-    }),
-    preserveEntrySignatures: "strict",
-    treeshake: TREESHAKE,
-    onwarn,
-  });
-  await build1.write({
-    format,
-    sourcemap,
-    dir: outdir,
-    ...(hasTs && { entryFileNames: "[name].js" }),
-  });
-  await build1.close();
+  for (const { output, ...inputOpts } of configs) {
+    if (Array.isArray(inputOpts.input)) {
+      for (const entry of inputOpts.input) {
+        console.log(color(`░█ [ELENA]: Generating and minifying ${entry}...`));
+      }
+    } else {
+      console.log(color(`░█ [ELENA]: Generating and minifying JS bundle...`));
+      console.log(` `);
+    }
 
-  // Build 2: single-file JS bundle (optional)
-  if (bundle) {
-    console.log(color(`░█ [ELENA]: Generating and minifying JS bundle...`));
-    console.log(` `);
-
-    const build2 = await rollup({
-      input: bundle,
-      plugins: buildPlugins({
-        src,
-        outdir,
-        hasSummary: true,
-        includeCssBundle: false,
-        extraPlugins,
-        hasTs,
-      }),
-      preserveEntrySignatures: "strict",
-      treeshake: TREESHAKE,
-      onwarn,
-    });
-    await build2.write({ format, sourcemap, file: `${outdir}/bundle.js` });
-    await build2.close();
+    const build = await rollup(inputOpts);
+    await build.write(output);
+    await build.close();
   }
 }
