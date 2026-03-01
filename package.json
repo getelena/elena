@@ -29,8 +29,8 @@
     "prettier": "3.8.1"
   },
   "scripts": {
-    "build": "lerna run build",
-    "test": "lerna run test",
+    "build": "NX_TASKS_RUNNER_DYNAMIC_OUTPUT=false lerna run build",
+    "test": "NX_TASKS_RUNNER_DYNAMIC_OUTPUT=false lerna run test",
     "lint": "eslint \"packages/**/*.{js,ts}\" --cache",
     "release": "pnpm install --frozen-lockfile && lerna version --no-private -m \"[skip ci]: Publish\" && pnpm build && lerna run postbuild && pnpm test && lerna publish from-git",
     "release:dry-run": "pnpm install --frozen-lockfile && pnpm lerna version --no-private --no-push --no-git-tag-version",

@@ -2,7 +2,11 @@
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "npmClient": "pnpm",
   "version": "independent",
+  "loglevel": "warn",
   "command": {
+    "run": {
+      "no-prefix": true
+    },
     "publish": {
       "graphType": "all",
       "ignoreChanges": ["**/usage/**/*", "**/screenshots/**/*", "**/src/**/*.md"]
