@@ -62,9 +62,24 @@ CLI package commands (from `packages/cli/`):
 
 ```bash
 npx elena-create          # Interactive component scaffolding
+pnpm test                 # Vitest tests
+pnpm format               # Prettier on all source files
+```
+
+MCP package commands (from `packages/mcp/`):
+
+```bash
+pnpm test                 # Vitest tests
+pnpm format               # Prettier on all source files
 ```
 
 SSR package commands (from `packages/ssr/`):
+
+```bash
+pnpm test                 # Vitest tests
+```
+
+Plugin package commands (from `packages/plugin-*/`):
 
 ```bash
 pnpm test                 # Vitest tests
