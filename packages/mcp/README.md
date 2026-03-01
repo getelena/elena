@@ -24,6 +24,11 @@
 
 <br/>
 
+> [!WARNING]
+> Please note that `@elenajs/mcp` is an experimental package and not yet ready for production use. APIs may change without notice.
+
+<br/>
+
 ## Table of contents
 
 - **[Install](#install)**

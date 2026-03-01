@@ -24,6 +24,11 @@
 
 <br/>
 
+> [!WARNING]
+> Please note that `@elenajs/cli` is in active development and the APIs may still change without notice.
+
+<br/>
+
 ## Table of contents
 
 - **[Install](#install)**
