@@ -65,8 +65,9 @@
   - **[Project examples](#project-examples)**
   - **[Component examples](#component-examples)**
 - **[Server Side Rendering](#server-side-rendering)**
-  - **[Framework examples](#framework-examples)**
+  - **[Avoiding layout shifts](#avoiding-layout-shifts)**
   - **[Rendering Primitive Components to HTML strings](#rendering-primitive-components-to-html-strings)**
+  - **[Framework examples](#framework-examples)**
 - **[TypeScript](#typescript)**
   - **[Generating types for components](#generating-types-for-components)**
   - **[Using the generated types](#using-the-generated-types)**
@@ -715,7 +716,9 @@ Partial SSR support for the **Primitive Components** means that the component’
 
 The benefit of Elena’s approach is that it doesn’t need any extra logic on the server while still allowing you to ship all your layout components _(the “Composite Components"!)_ with full SSR support.
 
-For the **Primitive Components**, our recommendation is to ship them with CSS styles that visually matches the `loading` and `hydrated` states without causing FOUC or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
+### Avoiding layout shifts
+
+For the **Primitive Components** specifically, our recommendation is to ship them with CSS styles that visually matches the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
 
 ```css
 /* Elena SSR Pattern to avoid layout shift */
@@ -725,6 +728,32 @@ For the **Primitive Components**, our recommendation is to ship them with CSS st
 }
 ```
 
+Since **Primitive Components** are self-contained and render their own HTML markup, you may sometimes need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
+
+```css
+:scope:not([hydrated])::before {
+  content: attr(label);
+  /* etc */
+}
+
+:scope:not([hydrated])::after {
+  content: attr(placeholder);
+  /* etc */
+}
+```
+
+> [!TIP]
+> You can skip this section entirely for Composite Components, when you plan to [hide components until loaded](#hide-until-loaded), or when the rest of your app renders client side only.
+
+### Rendering Primitive Components to HTML strings
+
+When you don’t want to handle the pre-hydration state with CSS, you can expand the **Primitive Component** templates inline by using the provided utility package called [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr) that renders the Elena Primitive Components to HTML strings for full SSR support.
+
+Please see the [SSR package’s readme](https://github.com/getelena/elena/tree/main/packages/ssr) for full usage guidelines.
+
+> [!WARNING]
+> Please note that `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
+
 ### Framework examples
 
 Elena currently provides SSR examples for the following frameworks:
@@ -732,13 +761,6 @@ Elena currently provides SSR examples for the following frameworks:
 - **[Eleventy](https://github.com/getelena/eleventy-example-project)**
 - **[Plain HTML](https://github.com/getelena/html-example-project)**
 - **[Next.js](https://github.com/getelena/next-example-project)** _(Elena can even be used inside React Server Components, see [src/app/page.tsx](https://github.com/getelena/next-example-project/blob/main/src/app/page.tsx))_
-
-### Rendering Primitive Components to HTML strings
-
-In cases where you do want to expand the **Primitive Component** templates inline, we also provide a package called [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr) that renders the Elena Primitive Components to HTML strings for full SSR support. Please see the [SSR package’s readme](https://github.com/getelena/elena/tree/main/packages/ssr) for usage guidelines.
-
-> [!WARNING]
-> Please note that `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
 
 <br/>
 
