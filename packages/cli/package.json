@@ -19,7 +19,6 @@
     "node": ">= 20"
   },
   "scripts": {
-    "format": "prettier --write \"src/**/*.js\"",
     "test": "vitest run"
   },
   "dependencies": {
