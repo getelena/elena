@@ -18,7 +18,8 @@
     "@elenajs/plugin-cem-define": "workspace:*",
     "@elenajs/plugin-cem-tag": "workspace:*",
     "@elenajs/plugin-cem-typescript": "workspace:*",
-    "@elenajs/plugin-rollup-css": "workspace:*"
+    "@elenajs/plugin-rollup-css": "workspace:*",
+    "@elenajs/ssr": "workspace:*"
   },
   "devDependencies": {
     "eslint": "9.39.2",
