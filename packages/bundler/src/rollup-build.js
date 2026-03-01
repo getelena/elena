@@ -13,6 +13,12 @@ const TREESHAKE = {
   propertyReadSideEffects: false,
 };
 
+/**
+ * Suppresses noisy Rollup warnings (e.g. unused external imports).
+ *
+ * @param {import("rollup").RollupWarning} warning
+ * @param {function} warn
+ */
 function onwarn(warning, warn) {
   if (warning.code === "UNUSED_EXTERNAL_IMPORT") {
     return;
@@ -52,7 +58,7 @@ function buildPlugins({
   plugins.push(
     minifyHtmlLiterals({
       options: {
-        // Elena components use this.template`...` rather than html`...`
+        // Minify any template literal containing HTML, regardless of tag name
         shouldMinify: template => template.parts.some(({ text }) => /<[a-z]/i.test(text)),
       },
     }),

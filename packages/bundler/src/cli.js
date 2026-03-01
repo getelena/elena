@@ -18,6 +18,7 @@ const BANNER = `
 
 const [, , command = "build"] = process.argv;
 
+/** Loads the Elena config and runs the Rollup build + CEM analysis. */
 async function main() {
   if (command !== "build") {
     console.error(`Unknown command: ${command}. Usage: elena [build]`);

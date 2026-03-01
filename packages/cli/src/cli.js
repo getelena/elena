@@ -24,6 +24,7 @@ const BANNER = `
 const enterAltScreen = () => process.stdout.write("\x1b[?1049h");
 const exitAltScreen = () => process.stdout.write("\x1b[?1049l");
 
+/** Runs the interactive CLI prompts and writes the generated component files. */
 async function main() {
   enterAltScreen();
 
@@ -58,7 +59,7 @@ async function main() {
   exitAltScreen();
 
   console.log("");
-  console.log(color("░█ [ELENA]: Component created succesfully:"));
+  console.log(color("░█ [ELENA]: Component created successfully:"));
   for (const file of files) {
     console.log(`   ${file}`);
   }
