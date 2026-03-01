@@ -5,5 +5,6 @@ export default defineConfig({
     name: { label: "@elenajs/ssr", color: "blue" },
     environment: "node",
     include: ["test/**/*.test.js"],
+    setupFiles: ["test/setup.js"],
   },
 });

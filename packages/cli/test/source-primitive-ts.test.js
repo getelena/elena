@@ -1,0 +1,39 @@
+import { describe, test, expect } from "vitest";
+import { generateSource } from "../src/generate.js";
+
+describe("generateSource, primitive TS", () => {
+  test("all features", () => {
+    const out = generateSource("my-button", "primitive", "typescript", [
+      "props",
+      "events",
+      "cssprops",
+      "methods",
+      "comments",
+    ]);
+
+    expect(out).toContain('import { Elena, html } from "@elenajs/core"');
+    expect(out).toContain('props: ["variant"]');
+    expect(out).toContain('events: ["click", "focus", "blur"]');
+
+    // TS uses class field syntax, no constructor
+    expect(out).not.toContain("constructor()");
+    expect(out).toContain('variant: "default" | "primary" | "danger" = "default"');
+
+    expect(out).toContain("@event click");
+    expect(out).toContain("@cssprop [--my-button-text]");
+    expect(out).toContain("myMethod()");
+    expect(out).toContain("console.log(this.element)");
+  });
+
+  test("no features", () => {
+    const out = generateSource("my-button", "primitive", "typescript", []);
+
+    expect(out).not.toContain("props:");
+    expect(out).not.toContain("events:");
+    expect(out).not.toContain("variant");
+    expect(out).not.toContain("@event");
+    expect(out).not.toContain("@cssprop");
+    expect(out).not.toContain("myMethod");
+    expect(out).toContain("render()");
+  });
+});
