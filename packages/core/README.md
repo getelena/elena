@@ -987,7 +987,7 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 ### Browser compatibility
 
-- Firefox 148 has an open issue regarding CSS `@scope` and `attr[value]` selector that I’ve [documented here](https://codepen.io/arielsalminen/full/raMazZV). This is already fixed in the pre-release build though and that should be out soon.
+- Firefox 148 has an open issue regarding CSS `@scope` and `attr[value]` selector that we’ve [documented here](https://codepen.io/arielsalminen/full/raMazZV). This is already fixed in the pre-release build though and that should be out soon.
 
 ### JavaScript frameworks
 

@@ -17,6 +17,8 @@ Elena is a lightweight (2kB minified & gzipped) library for building Progressive
 - **Work asynchronously** — run file creation, updates, backups, and research in the background as much as possible. The user often fires off multiple ideas, TODOs, or topics in quick succession. Don't block them waiting for writes and backups to finish.
 - **Confirm briefly, keep moving** — acknowledge what you've captured with a short summary, then be ready for the next input. Don't make the user wait for all the cross-linking and index updates before they can talk again.
 - **Batch background work** — when the user gives multiple things at once, process them in parallel using background tasks.
+- **Voice your concerns** — User should not have to ask you for your opinion explicitly. Always evaluate what the user is asking you to do, and voice your concerns before proceeding if you don’t think it’s a good idea. If possible, propose a better solution, but you can voice concerns even without one.
+- **Always evaluate** — The above applies even to direct requests. Still evaluate whether your original approach was better. The user may be missing important context. If there was a solid reason why you suggested a certain approach (e.g. avoiding code duplication), push back with reasoning instead of silently complying.
 
 ## Commands
 
