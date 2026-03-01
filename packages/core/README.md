@@ -728,6 +728,7 @@ Elena currently provides SSR examples for the following frameworks:
 - **[Eleventy](https://github.com/getelena/eleventy-example-project)**
 - **[Plain HTML](https://github.com/getelena/html-example-project)**
 - **[Next.js](https://github.com/getelena/next-example-project)**
+  - Elena can be used even inside **React Server Components,** see [src/app/page.tsx](https://github.com/getelena/next-example-project/blob/main/src/app/page.tsx).
 
 In cases where you do want to expand the **Primitive Component** template inline, we also provide a package called [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr) that renders the Elena Primitive Components to HTML strings for full SSR support. Please see the [SSR package’s readme](https://github.com/getelena/elena/tree/main/packages/ssr) for usage guidelines.
 
