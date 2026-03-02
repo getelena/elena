@@ -436,8 +436,14 @@ import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
 
 // ...later:
 render() {
-  const icon = this.icon ? unsafeHTML(this.icon) : nothing;
-  return html`<button>${icon}${this.text}</button>`;
+  const icon = this.icon ? unsafeHTML(`<span>${this.icon}</span>`) : nothing;
+
+  return html`
+    <button>
+      ${this.text}
+      ${icon}
+    </button>
+  `;
 }
 ```
 
@@ -518,8 +524,14 @@ import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
 
 // ...later:
 render() {
-  const icon = this.icon ? unsafeHTML(this.icon) : nothing;
-  return html`<button>${icon}${this.text}</button>`;
+  const icon = this.icon ? unsafeHTML(`<span>${this.icon}</span>`) : nothing;
+
+  return html`
+    <button>
+      ${this.text}
+      ${icon}
+    </button>
+  `;
 }
 ```
 
