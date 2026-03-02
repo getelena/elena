@@ -645,7 +645,8 @@ render() {
 
 ## Live demos
 
-- **[Button and stack component demo](https://arielsalminen.com/work/elena/)**
+- **[Client, partial SSR](https://arielsalminen.com/elena/)**
+- **[Server, full SSR](https://arielsalminen.com/elena/server.html)**
 
 <br/>
 
