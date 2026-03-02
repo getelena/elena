@@ -12,6 +12,7 @@ export default defineConfig({
       "packages/plugin-cem-typescript",
       "packages/plugin-rollup-css",
       "packages/bundler",
+      "packages/components",
     ],
   },
 });

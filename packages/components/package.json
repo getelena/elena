@@ -30,13 +30,16 @@
     "prebuild": "npm run -s clean",
     "start": "web-dev-server --node-resolve --app-index index.html --open --watch",
     "build": "elena",
-    "clean": "rm -rf dist/"
+    "clean": "rm -rf dist/",
+    "test": "vitest run"
   },
   "dependencies": {
     "@elenajs/core": "^0.12.0"
   },
   "devDependencies": {
     "@elenajs/bundler": "^0.6.0",
-    "@web/dev-server": "0.4.6"
+    "@web/dev-server": "0.4.6",
+    "happy-dom": "20.7.0",
+    "vitest": "4.0.18"
   }
 }
