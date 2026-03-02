@@ -117,37 +117,7 @@ function renderComponent(ComponentClass, attrs, textContent) {
     return "";
   }
 
-  let innerHTML = normalizeWhitespace(result.toString());
-
-  // Inject reflecting props as attributes on the inner element
-  // so SSR output matches the client-side hydrated state.
-  const reflectProps = ComponentClass._reflectProps;
-  if (reflectProps) {
-    const closeIdx = innerHTML.indexOf(">");
-    const openTag = closeIdx >= 0 ? innerHTML.slice(0, closeIdx + 1) : "";
-    let extra = "";
-    for (const prop of reflectProps) {
-      // Skip if the template already rendered this attribute
-      if (
-        openTag.includes(` ${prop}=`) ||
-        openTag.includes(` ${prop} `) ||
-        openTag.endsWith(` ${prop}>`)
-      ) {
-        continue;
-      }
-      const value = instance._props.get(prop);
-      if (value === true) {
-        extra += ` ${prop}`;
-      } else if (value && value !== "") {
-        extra += ` ${prop}="${escapeHtml(String(value))}"`;
-      }
-    }
-    if (extra) {
-      innerHTML = innerHTML.replace(/^(<\w[\w-]*)/, `$1${extra}`);
-    }
-  }
-
-  return innerHTML;
+  return normalizeWhitespace(result.toString());
 }
 
 /**
