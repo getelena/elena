@@ -15,7 +15,7 @@ export default class BooleanElement extends Elena(HTMLElement, options) {
   }
 
   render() {
-    return html`<input class="inner" type="checkbox" ${this.disabled ? "disabled" : ""} ${this.checked ? "checked" : ""} />`;
+    return html`<input class="inner" type="checkbox" />`;
   }
 }
 BooleanElement.define();

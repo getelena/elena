@@ -10,7 +10,7 @@ export default class BasicElement extends Elena(HTMLElement, options) {
     this.label = "";
   }
   render() {
-    return html`<span class="inner">${this.label || ""}</span>`;
+    return html`<span class="inner">${this.label}</span>`;
   }
 }
 BasicElement.define();

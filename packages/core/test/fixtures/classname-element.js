@@ -13,7 +13,7 @@ export default class ClassnameElement extends Elena(HTMLElement, options) {
   }
 
   render() {
-    return html`<span class="inner">${this.label || ""}</span>`;
+    return html`<span class="inner">${this.label}</span>`;
   }
 }
 ClassnameElement.define();

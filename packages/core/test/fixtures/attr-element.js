@@ -19,7 +19,7 @@ export default class AttrElement extends Elena(HTMLElement, options) {
   }
 
   render() {
-    return html`<span class="inner" variant="${this.variant}">${this.label}</span>`;
+    return html`<span class="inner">${this.label}</span>`;
   }
 }
 AttrElement.define();
