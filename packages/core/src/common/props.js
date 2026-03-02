@@ -71,11 +71,8 @@ export function syncAttribute(element, name, value) {
  *
  * @param {Function} proto - The class prototype
  * @param {string[]} properties - Prop names to define
- * @param {boolean} [syncToElement=true] - Whether to also sync prop attributes to the
- *   inner element ref. Pass false for Composite Components that have no explicit inner
- *   element selector, so props are not leaked onto slotted children.
  */
-export function setProps(proto, properties, syncToElement = true) {
+export function setProps(proto, properties) {
   for (const prop of properties) {
     Object.defineProperty(proto, prop, {
       configurable: true,
@@ -98,7 +95,7 @@ export function setProps(proto, properties, syncToElement = true) {
 
         const attrValue = getPropValue(typeof value, value, "toAttribute");
         syncAttribute(this, prop, attrValue);
-        if (syncToElement && this.element) {
+        if (this._tplStrings && this.element) {
           syncAttribute(this.element, prop, attrValue);
         }
       },

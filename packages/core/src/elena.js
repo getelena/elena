@@ -8,7 +8,7 @@
  *  ██████████ █████░░██████  ████ █████░░████████
  * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
  *
- * Elena: Progressive Web Components
+ * Elena Progressive Web Components
  * https://elenajs.com
  */
 
@@ -199,11 +199,10 @@ export function Elena(superClass, options) {
      */
     _flushProps() {
       if (this._props) {
-        const hasElementSelector = !!(options && options.element);
         for (const [prop, value] of this._props) {
           const attrValue = getPropValue(typeof value, value, "toAttribute");
           syncAttribute(this, prop, attrValue);
-          if (hasElementSelector && this.element) {
+          if (this._tplStrings && this.element) {
             syncAttribute(this.element, prop, attrValue);
           }
         }
@@ -299,7 +298,7 @@ export function Elena(superClass, options) {
           "Rename your prop to avoid overriding the built-in text content feature."
       );
     }
-    setProps(ElenaElement.prototype, options.props, !!(options && options.element));
+    setProps(ElenaElement.prototype, options.props);
   }
 
   if (options && options.tagName) {
