@@ -300,6 +300,9 @@ export default class Button extends Elena(HTMLElement, {
 }
 ```
 
+> [!TIP]
+> When naming properties, keep them simple, easy to understand and a maximum of 1 word only (e.g. `variant`).
+
 ### Reflecting props to attributes
 
 By default, Elena reflects all properties to the inner element as HTML attributes. If you want to disable this feature for a specific property, use `reflect: false`:
