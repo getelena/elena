@@ -1,3 +1,17 @@
+/**
+ *  ██████████ ████
+ * ░░███░░░░░█░░███
+ *  ░███  █ ░  ███   ██████  ████████    ██████
+ *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ██████████ █████░░██████  ████ █████░░████████
+ * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+ *
+ * Elena MCP Server
+ * https://elenajs.com
+ */
+
 import { readFileSync } from "node:fs";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerCatalogResource } from "./resources/catalog.js";

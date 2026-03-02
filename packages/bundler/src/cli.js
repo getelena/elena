@@ -1,9 +1,23 @@
 #!/usr/bin/env node
 
-import { loadConfig } from "./utils/load-config.js";
+/**
+ *  ██████████ ████
+ * ░░███░░░░░█░░███
+ *  ░███  █ ░  ███   ██████  ████████    ██████
+ *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ██████████ █████░░██████  ████ █████░░████████
+ * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+ *
+ * Elena Bundler CLI
+ * https://elenajs.com
+ */
+
+import { loadConfig } from "./common/load-config.js";
 import { runRollupBuild } from "./rollup-build.js";
 import { runCemAnalyze } from "./cem-analyze.js";
-import { color } from "./utils/color.js";
+import { color } from "./common/color.js";
 
 const BANNER = `
  ██████████ ████

@@ -1,9 +1,23 @@
 #!/usr/bin/env node
 
+/**
+ *  ██████████ ████
+ * ░░███░░░░░█░░███
+ *  ░███  █ ░  ███   ██████  ████████    ██████
+ *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ██████████ █████░░██████  ████ █████░░████████
+ * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+ *
+ * Elena CLI
+ * https://elenajs.com
+ */
+
 import { createRequire } from "node:module";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
-import { comment, highlight, color } from "./utils/color.js";
+import { comment, highlight, color } from "./common/color.js";
 import { runPrompts } from "./prompts.js";
 import { generateSource, generateCSS } from "./generate.js";
 

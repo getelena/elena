@@ -1,5 +1,19 @@
+/**
+ *  ██████████ ████
+ * ░░███░░░░░█░░███
+ *  ░███  █ ░  ███   ██████  ████████    ██████
+ *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ██████████ █████░░██████  ████ █████░░████████
+ * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+ *
+ * Elena CLI Prompts
+ * https://elenajs.com
+ */
+
 import { input, select, checkbox } from "@inquirer/prompts";
-import { comment, highlight, color } from "./utils/color.js";
+import { comment, highlight, color } from "./common/color.js";
 
 /**
  * Validates a kebab-case component name.

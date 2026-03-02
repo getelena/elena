@@ -1,3 +1,17 @@
+/**
+ *  ██████████ ████
+ * ░░███░░░░░█░░███
+ *  ░███  █ ░  ███   ██████  ████████    ██████
+ *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ██████████ █████░░██████  ████ █████░░████████
+ * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+ *
+ * Elena Bundler CEM Analyze
+ * https://elenajs.com
+ */
+
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, resolve } from "path";
 import { create, ts } from "@custom-elements-manifest/analyzer";
@@ -6,13 +20,13 @@ import { customElementJsxPlugin as elenaJsxPlugin } from "custom-element-jsx-int
 import { elenaDefinePlugin } from "@elenajs/plugin-cem-define";
 import { elenaTagPlugin } from "@elenajs/plugin-cem-tag";
 import { elenaTypeScriptPlugin } from "@elenajs/plugin-cem-typescript";
-import { color } from "./utils/color.js";
+import { color } from "./common/color.js";
 
 /**
  * Returns the CEM config object for the given Elena config. Useful for advanced
  * users who still call the CEM CLI with a thin `elena.config.js` wrapper.
  *
- * @param {import("./utils/load-config.js").ElenaConfig} [options]
+ * @param {import("./common/load-config.js").ElenaConfig} [options]
  * @returns {object} CEM config object
  */
 export function createCemConfig(options = {}) {
@@ -41,7 +55,7 @@ export function createCemConfig(options = {}) {
  * Runs the CEM analyzer programmatically using `create()` from
  * `@custom-elements-manifest/analyzer`, writes the manifest to disk.
  *
- * @param {import("./utils/load-config.js").ElenaConfig} config
+ * @param {import("./common/load-config.js").ElenaConfig} config
  * @param {string} [cwd]
  * @returns {Promise<void>}
  */

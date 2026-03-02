@@ -1,5 +1,19 @@
+/**
+ *  ██████████ ████
+ * ░░███░░░░░█░░███
+ *  ░███  █ ░  ███   ██████  ████████    ██████
+ *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ██████████ █████░░██████  ████ █████░░████████
+ * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+ *
+ * Elena SSR
+ * https://elenajs.com
+ */
+
 import { parseDocument, ElementType } from "htmlparser2";
-import { normalizeWhitespace, escapeHtml } from "./utils.js";
+import { normalizeWhitespace, escapeHtml } from "./common/utils.js";
 
 /**
  * Render Elena Primitive Components to HTML strings.

@@ -1,4 +1,18 @@
 /**
+ *  ██████████ ████
+ * ░░███░░░░░█░░███
+ *  ░███  █ ░  ███   ██████  ████████    ██████
+ *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ██████████ █████░░██████  ████ █████░░████████
+ * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+ *
+ * Elena CEM Define Plugin
+ * https://elenajs.com
+ */
+
+/**
  * CEM analyzer plugin that reads `tagName` from the options object passed to
  * `Elena(superClass, { tagName: "...", ... })` and registers the element in the manifest.
  *

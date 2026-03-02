@@ -1,3 +1,17 @@
+/**
+ *  ██████████ ████
+ * ░░███░░░░░█░░███
+ *  ░███  █ ░  ███   ██████  ████████    ██████
+ *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ██████████ █████░░██████  ████ █████░░████████
+ * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+ *
+ * Elena Bundler Rollup Config
+ * https://elenajs.com
+ */
+
 import { existsSync, readdirSync } from "fs";
 import { rollup } from "rollup";
 import resolve from "@rollup/plugin-node-resolve";
@@ -6,7 +20,7 @@ import typescript from "@rollup/plugin-typescript";
 import minifyHtmlLiterals from "rollup-plugin-minify-html-literals-v3";
 import summary from "rollup-plugin-summary";
 import { cssPlugin, cssBundlePlugin } from "@elenajs/plugin-rollup-css";
-import { color } from "./utils/color.js";
+import { color } from "./common/color.js";
 
 const TREESHAKE = {
   moduleSideEffects: false,
@@ -99,7 +113,12 @@ export function createRollupConfig(options = {}) {
   const extraPlugins = options.plugins ?? [];
 
   const entries = readdirSync(src, { recursive: true })
-    .filter(f => f.endsWith(".js") || f.endsWith(".ts"))
+    .filter(
+      f =>
+        (f.endsWith(".js") || f.endsWith(".ts")) &&
+        !f.endsWith(".test.js") &&
+        !f.endsWith(".test.ts")
+    )
     .map(f => `${src}/${f}`);
 
   const hasTs = entries.some(f => f.endsWith(".ts"));
