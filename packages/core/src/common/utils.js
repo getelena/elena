@@ -35,13 +35,7 @@ export function escapeHtml(str) {
 export function html(strings, ...values) {
   const result = strings.reduce((acc, str, i) => {
     const v = values[i];
-    const rendered = v && v.__raw ? String(v) : escapeHtml(String(v ?? ""));
-    // Auto-quote when the preceding string ends with `=` (unquoted attribute
-    // value context). This ensures valid HTML in string output (e.g. SSR).
-    if (str.endsWith("=")) {
-      return acc + str + '"' + rendered + '"';
-    }
-    return acc + str + rendered;
+    return acc + str + (v && v.__raw ? String(v) : escapeHtml(String(v ?? "")));
   }, "");
   return { __raw: true, strings, values, toString: () => result };
 }

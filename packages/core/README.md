@@ -483,13 +483,12 @@ export default class Button extends Elena(HTMLElement) {
     return html`
       <a
         class="elena-button"
-        href=${this.href}
-        target=${this.target}
-        ${this.download ? `download` : nothing}
-        ${this.label ? `aria-label=${this.label}` : nothing}
-      >
+        href="${this.href}"
+        target="${this.target}"
+        ${this.download ? "download" : nothing}
+        ${this.label ? html`aria-label="${this.label}"` : nothing}>
           ${template}
-      </button>
+      </a>
     `;
   }
 }
