@@ -5,6 +5,7 @@ import "./fixtures/basic-element.js";
 import "./fixtures/boolean-element.js";
 import "./fixtures/number-element.js";
 import "./fixtures/object-element.js";
+import "./fixtures/no-reflect-element.js";
 
 describe("getPropValue", () => {
   describe("string", () => {
@@ -212,6 +213,48 @@ describe("number props", () => {
     // Before connection, constructor default is available
     expect(el.count).toBe(0);
     expect(el.max).toBe(100);
+  });
+});
+
+describe("reflect: false", () => {
+  it("non-reflecting prop does not sync to host attribute", async () => {
+    const el = await createElement("no-reflect-element");
+    el.content = "<b>html</b>";
+    expect(el.hasAttribute("content")).toBe(false);
+  });
+
+  it("non-reflecting prop does not sync to inner element attribute", async () => {
+    const el = await createElement("no-reflect-element");
+    el.content = "<b>html</b>";
+    expect(el.element.hasAttribute("content")).toBe(false);
+  });
+
+  it("non-reflecting prop still triggers re-render", async () => {
+    const el = await createElement("no-reflect-element");
+    el.content = "updated";
+    expect(el.textContent).toContain("updated");
+  });
+
+  it("attribute set in HTML still updates the property", async () => {
+    const el = await createElement("no-reflect-element", { content: "from-attr" });
+    expect(el.content).toBe("from-attr");
+  });
+
+  it("reflecting prop on same element still works normally", async () => {
+    const el = await createElement("no-reflect-element");
+    el.label = "hello";
+    expect(el.getAttribute("label")).toBe("hello");
+    expect(el.element.getAttribute("label")).toBe("hello");
+  });
+
+  it("non-reflecting prop is not flushed as attribute on connect", async () => {
+    const el = document.createElement("no-reflect-element");
+    el.content = "pre-connect";
+    document.body.appendChild(el);
+    await new Promise(r => requestAnimationFrame(r));
+    expect(el.hasAttribute("content")).toBe(false);
+    expect(el.element.textContent).toContain("pre-connect");
+    el.remove();
   });
 });
 
