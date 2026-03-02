@@ -56,9 +56,8 @@
   - **[Utility methods](#utility-methods)**
   - **[Custom methods](#custom-methods)**
 - **[Templates](#templates)**
-  - **[`html`](#html)**
-  - **[`nothing`](#nothing)**
-  - **[`unsafeHTML`](#unsafehtml)**
+  - **[`nothing`](#nothing-1)**
+  - **[`unsafeHTML`](#unsafehtml-1)**
   - **[Element ref](#element-ref)**
   - **[Text content](#text-content)**
   - **[Advanced template example](#advanced-template-example)**
@@ -491,23 +490,6 @@ render() {
 ```
 
 The content of the `html` method is passed as tagged template literals, which Elena then compiles on the fly.
-
-### `html`
-
-Tagged template for defining an Elena web component’s HTML structure. Return it from `render()`. Dynamic values are auto-escaped, and nested `html` sub-templates pass through as trusted HTML without double-escaping:
-
-```js
-import { Elena, html } from "@elenajs/core";
-
-// ...later:
-render() {
-  return html`
-    <button class="elena-button">
-      ${this.text}
-    </button>
-  `;
-}
-```
 
 ### `nothing`
 
