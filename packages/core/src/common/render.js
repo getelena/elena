@@ -6,14 +6,14 @@ const _stringsCache = new WeakMap();
 /**
  * Render a tagged template into an Elena Element with DOM diffing.
  *
- * On first render, builds the full HTML markup and render.
+ * On first render, builds the full HTML markup and renders it.
  * On re-renders, patches only the text nodes whose values changed,
  * avoiding a full DOM rebuild.
  *
  * Cache state is stored on the element instance:
  * - _tplStrings: reference to the template’s static strings array
  * - _tplValues:  array of escaped values from the last render
- * - _tplParts:   array mapping each value index to its DOM text node
+ * - _tplParts:   array mapping each value index to its DOM text node (or undefined)
  *
  * @param {HTMLElement} element
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
@@ -57,7 +57,7 @@ function patchTextNodes(element, strings, values) {
 
     element._tplValues[i] = newRendered;
 
-    // Raw HTML values or attribute-position values require a full render
+    // Raw HTML values require a full render
     if (isRaw) {
       needsFullRender = true;
     } else {
@@ -66,7 +66,7 @@ function patchTextNodes(element, strings, values) {
         // Value is in a text position, update the DOM node directly
         textNode.textContent = String(v ?? "");
       } else {
-        // Value is in an attribute position, can’t patch, need full render
+        // No mapped text node for this value, need full render
         needsFullRender = true;
       }
     }
@@ -115,8 +115,8 @@ function fullRender(element, strings, values) {
 
 /**
  * Walk the Elena Element’s text nodes and map each escaped value
- * to its corresponding DOM text node. Values in attribute
- * positions won’t have a matching text node and will be null.
+ * to its corresponding DOM text node. Values without a matching
+ * text node will be undefined.
  *
  * Known limitation: text nodes are matched by content. This could
  * cause the wrong node to be patched if a static part of the template
