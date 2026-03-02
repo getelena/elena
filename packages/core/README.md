@@ -50,6 +50,8 @@
   - **[Creating a component](#create-a-composite-component)**
 - **[Options](#options)**
 - **[Props](#props)**
+  - **[Reflecting props to attributes](#reflecting-props-to-attributes)**
+  - **[Documenting props](#documenting-props)**
   - **[Prop types](#prop-types)**
 - **[Events](#events)**
 - **[Methods](#methods)**
@@ -297,6 +299,22 @@ export default class Button extends Elena(HTMLElement, {
   }
 }
 ```
+
+### Reflecting props to attributes
+
+By default, Elena reflects all properties to the inner element as HTML attributes. If you want to disable this feature for a specific property, use `reflect: false`:
+
+```js
+const options = {
+  props: [
+    "variant",
+    "size",
+    { name: "icon", reflect: false },
+  ],
+};
+```
+
+### Documenting props
 
 In addition to declaring props, you can (and should!) document them using a [JSDoc style syntax](https://jsdoc.app):
 
