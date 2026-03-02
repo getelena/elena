@@ -7,10 +7,10 @@ const options = {
     "size",
     "expand",
     "disabled",
-    { name: "label", reflect: false },
+    "label",
     "href",
-    { name: "target", reflect: false },
-    { name: "download", reflect: false },
+    "target",
+    "download",
     "name",
     "value",
     "type",
@@ -142,8 +142,12 @@ export default class Button extends Elena(HTMLElement, options) {
    */
   renderButton(template) {
     return html`
-      <button 
+      <button
         class="elena-button"
+        type=${this.type}
+        ${this.name ? `name=${this.name}` : nothing}
+        ${this.value ? `value=${this.value}` : nothing}
+        ${this.disabled ? "disabled" : nothing}
         ${this.label ? `aria-label=${this.label}` : nothing}
       >
         ${template}
@@ -162,11 +166,11 @@ export default class Button extends Elena(HTMLElement, options) {
         class="elena-button"
         href=${this.href}
         target=${this.target}
-        ${this.download ? `download` : nothing}
+        ${this.download ? "download" : nothing}
         ${this.label ? `aria-label=${this.label}` : nothing}
       >
-          ${template}
-      </button>
+        ${template}
+      </a>
     `;
   }
 

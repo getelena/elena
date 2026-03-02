@@ -305,7 +305,7 @@ export default class Button extends Elena(HTMLElement, {
 
 ### Reflecting props to attributes
 
-By default, Elena reflects all properties to the inner element as HTML attributes. If you want to disable this feature for a specific property, use `reflect: false`:
+By default, Elena reflects all properties to the host element as HTML attributes. If you want to disable this feature for a specific property, use `reflect: false`:
 
 ```js
 const options = {

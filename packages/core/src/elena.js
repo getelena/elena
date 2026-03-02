@@ -147,6 +147,10 @@ export function Elena(superClass, options) {
       const result = this.render();
       if (result && result.strings) {
         renderTemplate(this, result.strings, result.values);
+        // Re-resolve element ref after render in case the DOM was rebuilt.
+        if (this._hydrated) {
+          this.element = resolveElement(this);
+        }
       }
     }
 
@@ -223,9 +227,6 @@ export function Elena(superClass, options) {
           }
           const attrValue = getPropValue(typeof value, value, "toAttribute");
           syncAttribute(this, prop, attrValue);
-          if (this._tplStrings && this.element) {
-            syncAttribute(this.element, prop, attrValue);
-          }
         }
       }
     }
@@ -320,9 +321,6 @@ export function Elena(superClass, options) {
       );
     }
     setProps(ElenaElement.prototype, propNames, noReflect);
-
-    /** @type {string[]} Props that reflect to the inner element as attributes. */
-    ElenaElement._reflectProps = propNames.filter(p => !noReflect.has(p));
   }
 
   if (options && options.tagName) {

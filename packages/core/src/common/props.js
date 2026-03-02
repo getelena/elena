@@ -98,9 +98,6 @@ export function setProps(proto, propNames, noReflect) {
         if (reflects) {
           const attrValue = getPropValue(typeof value, value, "toAttribute");
           syncAttribute(this, prop, attrValue);
-          if (this._tplStrings && this.element) {
-            syncAttribute(this.element, prop, attrValue);
-          }
         } else if (this._hydrated && !this._isRendering) {
           this._isRendering = true;
           this._applyRender();
