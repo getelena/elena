@@ -301,7 +301,7 @@ export default class Button extends Elena(HTMLElement, {
 ```
 
 > [!TIP]
-> When naming properties, keep them simple, easy to understand and a maximum of 1 word only (e.g. `variant`).
+> When naming properties, keep them simple, easy to understand, and a maximum of 1 word (e.g. `variant`).
 
 ### Reflecting props to attributes
 
