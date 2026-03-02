@@ -1016,11 +1016,6 @@ When styling **Composite Components** which wrap and enhance the HTML composed i
 /* Scope makes sure styles don’t leak out */
 @scope (elena-stack) {
 
-  /* Unset makes sure styles don’t leak in */
-  :scope, *, *::before, *::after {
-    all: unset;
-  }
-
   /* Targets the host element (elena-stack) */
   :scope {
     display: flex;
