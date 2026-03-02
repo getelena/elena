@@ -56,7 +56,9 @@
   - **[Utility methods](#utility-methods)**
   - **[Custom methods](#custom-methods)**
 - **[Templates](#templates)**
-  - **[`html` and `nothing`](#html-and-nothing)**
+  - **[`html`](#html)**
+  - **[`nothing`](#nothing)**
+  - **[`unsafeHTML`](#unsafehtml)**
   - **[Element ref](#element-ref)**
   - **[Text content](#text-content)**
   - **[Advanced template example](#advanced-template-example)**
@@ -426,6 +428,20 @@ render() {
 }
 ```
 
+#### `unsafeHTML`
+
+Values interpolated into Elena’s `html` tagged template are auto-escaped to prevent XSS. `unsafeHTML` allows you to bypass this and render a trusted HTML string without escaping, for example an SVG icon or markup from a database.
+
+```js
+import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
+
+// ...later:
+render() {
+  const icon = this.icon ? unsafeHTML(this.icon) : nothing;
+  return html`<button>${icon}${this.text}</button>`;
+}
+```
+
 ### Custom methods
 
 You can also define your own custom methods:
@@ -476,9 +492,26 @@ render() {
 
 The content of the `html` method is passed as tagged template literals, which Elena then compiles on the fly.
 
-### `html` and `nothing`
+### `html`
 
-Use nested `html` sub-templates for conditional HTML blocks. Use `nothing` as a placeholder when a condition is false and there is nothing to render:
+Tagged template for defining an Elena web component’s HTML structure. Return it from `render()`. Dynamic values are auto-escaped, and nested `html` sub-templates pass through as trusted HTML without double-escaping:
+
+```js
+import { Elena, html } from "@elenajs/core";
+
+// ...later:
+render() {
+  return html`
+    <button class="elena-button">
+      ${this.text}
+    </button>
+  `;
+}
+```
+
+### `nothing`
+
+A placeholder you can use in conditional template expressions when there is nothing to render. It always produces an empty string and signals to the template engine that no processing is needed.
 
 ```js
 import { Elena, html, nothing } from "@elenajs/core";
@@ -486,8 +519,25 @@ import { Elena, html, nothing } from "@elenajs/core";
 // ...later:
 render() {
   return html`
-    ${this.error ? html`<div class="error">${this.error}</div>` : nothing}
+    <button>
+      ${this.icon ? html`<span class="icon">${this.icon}</span>` : nothing}
+      ${this.text}
+    </button>
   `;
+}
+```
+
+### `unsafeHTML`
+
+Values interpolated into Elena’s `html` tagged template are auto-escaped to prevent XSS. `unsafeHTML` allows you to bypass this and render a trusted HTML string without escaping, for example an SVG icon or markup from a database.
+
+```js
+import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
+
+// ...later:
+render() {
+  const icon = this.icon ? unsafeHTML(this.icon) : nothing;
+  return html`<button>${icon}${this.text}</button>`;
 }
 ```
 

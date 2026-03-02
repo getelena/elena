@@ -14,10 +14,10 @@
 
 import { setProps, getProps, getPropValue, syncAttribute } from "./common/props.js";
 import { ElenaEvent } from "./common/events.js";
-import { defineElement, html, nothing } from "./common/utils.js";
+import { defineElement, html, unsafeHTML, nothing } from "./common/utils.js";
 import { renderTemplate } from "./common/render.js";
 
-export { html, nothing };
+export { html, unsafeHTML, nothing };
 
 /**
  * @typedef {Object} ElenaOptions

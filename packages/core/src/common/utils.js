@@ -41,6 +41,16 @@ export function html(strings, ...values) {
 }
 
 /**
+ * Renders a string as HTML rather than text.
+ *
+ * @param {string} str - The raw HTML string to trust.
+ * @returns {{ __raw: true, toString(): string }}
+ */
+export function unsafeHTML(str) {
+  return { __raw: true, toString: () => str ?? "" };
+}
+
+/**
  * A placeholder you can return from a conditional expression inside a template
  * to render nothing. Always produces an empty string; signals to the template
  * engine that no further processing is needed.
