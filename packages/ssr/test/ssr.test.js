@@ -4,41 +4,51 @@ import { ssr, register } from "../src/index.js";
 describe("ssr", () => {
   it("renders a primitive component with text content", () => {
     const html = ssr(`<elena-button>Click me</elena-button>`);
-    expect(html).toBe("<elena-button><button>Click me</button></elena-button>");
+    expect(html).toBe(
+      "<elena-button hydrated><button><span>Click me</span></button></elena-button>"
+    );
   });
 
   it("renders a primitive component with attributes", () => {
     const html = ssr(`<elena-button variant="primary">OK</elena-button>`);
-    expect(html).toBe('<elena-button variant="primary"><button>OK</button></elena-button>');
+    expect(html).toBe(
+      '<elena-button variant="primary" hydrated><button variant="primary"><span>OK</span></button></elena-button>'
+    );
   });
 
   it("renders boolean attributes", () => {
     const html = ssr(`<elena-button disabled>No</elena-button>`);
-    expect(html).toBe("<elena-button disabled><button>No</button></elena-button>");
+    expect(html).toBe(
+      "<elena-button disabled hydrated><button disabled><span>No</span></button></elena-button>"
+    );
   });
 
   it("renders attribute interpolation in templates", () => {
     const html = ssr(`<elena-input type="email" placeholder="you@example.com"></elena-input>`);
     expect(html).toBe(
-      '<elena-input type="email" placeholder="you@example.com"><input type="email" placeholder="you@example.com" /></elena-input>'
+      '<elena-input type="email" placeholder="you@example.com" hydrated><input type="email" placeholder="you@example.com" /></elena-input>'
     );
   });
 
   it("renders conditional content (active)", () => {
     const html = ssr(`<elena-conditional label="Go" active></elena-conditional>`);
     expect(html).toBe(
-      '<elena-conditional label="Go" active><button>Go</button></elena-conditional>'
+      '<elena-conditional label="Go" active hydrated><button label="Go" active>Go</button></elena-conditional>'
     );
   });
 
   it("renders conditional content (inactive)", () => {
     const html = ssr(`<elena-conditional label="Go"></elena-conditional>`);
-    expect(html).toBe('<elena-conditional label="Go"><button></button></elena-conditional>');
+    expect(html).toBe(
+      '<elena-conditional label="Go" hydrated><button label="Go"></button></elena-conditional>'
+    );
   });
 
   it("renders nested html templates", () => {
     const html = ssr(`<elena-nested description="Hello"></elena-nested>`);
-    expect(html).toBe('<elena-nested description="Hello"><div><p>Hello</p></div></elena-nested>');
+    expect(html).toBe(
+      '<elena-nested description="Hello" hydrated><div description="Hello"><p>Hello</p></div></elena-nested>'
+    );
   });
 
   it("escapes HTML in text content (XSS prevention)", () => {
@@ -49,7 +59,7 @@ describe("ssr", () => {
 
   it("handles component with no render output", () => {
     const html = ssr(`<elena-empty></elena-empty>`);
-    expect(html).toBe("<elena-empty></elena-empty>");
+    expect(html).toBe("<elena-empty hydrated></elena-empty>");
   });
 
   it("passes through non-Elena HTML unchanged", () => {
@@ -74,7 +84,7 @@ describe("ssr", () => {
       </elena-stack>
     `);
     expect(html).toBe(
-      "<elena-stack><elena-button><button>Send</button></elena-button></elena-stack>"
+      "<elena-stack><elena-button hydrated><button><span>Send</span></button></elena-button></elena-stack>"
     );
   });
 
@@ -87,10 +97,10 @@ describe("ssr", () => {
     `);
     expect(html).toBe(
       '<elena-stack direction="row">' +
-        '<elena-input type="email" placeholder="you@example.com">' +
+        '<elena-input type="email" placeholder="you@example.com" hydrated>' +
         '<input type="email" placeholder="you@example.com" />' +
         "</elena-input>" +
-        "<elena-button><button>Send</button></elena-button>" +
+        "<elena-button hydrated><button><span>Send</span></button></elena-button>" +
         "</elena-stack>"
     );
   });
@@ -107,8 +117,8 @@ describe("ssr", () => {
     expect(html).toBe(
       "<elena-stack>" +
         '<elena-stack direction="row">' +
-        '<elena-button variant="primary"><button>Save</button></elena-button>' +
-        "<elena-button><button>Cancel</button></elena-button>" +
+        '<elena-button variant="primary" hydrated><button variant="primary"><span>Save</span></button></elena-button>' +
+        "<elena-button hydrated><button><span>Cancel</span></button></elena-button>" +
         "</elena-stack>" +
         "</elena-stack>"
     );
@@ -118,7 +128,7 @@ describe("ssr", () => {
     const html = ssr(
       `<elena-complex-input identifier="email" label="Email" type="email" start="@" error="Required"></elena-complex-input>`
     );
-    expect(html).toContain('<label for="email">Email</label>');
+    expect(html).toContain('for="email">Email</label>');
     expect(html).toContain('<div class="elena-input-start">@</div>');
     expect(html).toContain('id="email"');
     expect(html).toContain("elena-input-has-start");
@@ -129,7 +139,7 @@ describe("ssr", () => {
     const html = ssr(
       `<elena-complex-input identifier="name" label="Name" type="text"></elena-complex-input>`
     );
-    expect(html).toContain('<label for="name">Name</label>');
+    expect(html).toContain('for="name">Name</label>');
     expect(html).toContain('id="name"');
     expect(html).not.toContain("elena-input-start");
     expect(html).not.toContain("elena-input-has-start");
@@ -143,10 +153,134 @@ describe("ssr", () => {
         <elena-button>Submit</elena-button>
       </elena-stack>
     `);
-    expect(html).toContain('<label for="email">Email</label>');
+    expect(html).toContain('for="email">Email</label>');
     expect(html).toContain('<div class="elena-input-error">Invalid</div>');
-    expect(html).toContain("<button>Submit</button>");
+    expect(html).toContain("<button><span>Submit</span></button>");
     expect(html).toMatch(/^<elena-stack>.*<\/elena-stack>$/);
+  });
+});
+
+describe("native DOM properties", () => {
+  it("does not crash when setting style, class, or id on a component with native setters", () => {
+    const html = ssr(
+      `<elena-native-test variant="primary" style="color: red" class="my-class" id="my-id">Click</elena-native-test>`
+    );
+    expect(html).toContain("<button>Click</button>");
+    expect(html).toContain('variant="primary"');
+    expect(html).toContain('style="color: red"');
+    expect(html).toContain('class="my-class"');
+    expect(html).toContain('id="my-id"');
+  });
+});
+
+describe("demo page markup", () => {
+  it("renders the full demo page markup without crashing", () => {
+    const markup = `<h1>Elena</h1>
+                <p>
+                  Demonstrating Elena's
+                  <a href="https://github.com/getelena/elena">Progressive Web Components</a> in plain HTML:
+                </p>
+                <!-- uses MIT licensed icons from https://tabler.io/icons -->
+
+                <section>
+                  <h2>Default</h2>
+                  <elena-stack direction="row">
+                    <elena-button>Button</elena-button>
+                    <elena-button icon="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M5 12l5 5l10 -10'/></svg>"> Download </elena-button>
+                    <elena-button label="Settings" icon="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0'/></svg>"></elena-button>
+                  </elena-stack>
+                  <pre>
+            <code>&lt;<i>elena-stack</i> direction="row"&gt;
+              &lt;<i>elena-button</i>&gt;Button&lt;/<i>elena-button</i>&gt;
+            &lt;/<i>elena-stack</i>&gt;</code></pre>
+                </section>
+
+                <section>
+                  <h2>Variant</h2>
+                  <elena-stack direction="row">
+                    <elena-button variant="primary">Primary</elena-button>
+                    <elena-button variant="default">Default</elena-button>
+                    <elena-button variant="danger">Danger</elena-button>
+                    <elena-button variant="outline">Outline</elena-button>
+                    <elena-button disabled>Disabled</elena-button>
+                  </elena-stack>
+                </section>
+
+                <section>
+                  <h2>Style</h2>
+                  <elena-stack direction="row">
+                    <elena-button style="--elena-button-bg: #ffddd2"> Custom style </elena-button>
+                    <elena-button style="--elena-button-bg: #ffddd2" icon="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M7 11v8'/></svg>"> Like </elena-button>
+                  </elena-stack>
+                </section>`;
+
+    const html = ssr(markup);
+
+    // Components expanded
+    expect(html).toContain("<button><span>Button</span></button>");
+    expect(html).toContain('<button variant="primary"><span>Primary</span></button>');
+
+    // Attributes preserved on host
+    expect(html).toContain('variant="primary"');
+    expect(html).toContain('style="--elena-button-bg: #ffddd2"');
+
+    // Pre block entities preserved
+    expect(html).toContain("&lt;");
+    expect(html).toContain("<i>elena-stack</i>");
+
+    // Pre block whitespace preserved
+    expect(html).toContain("\n");
+
+    // Comment preserved
+    expect(html).toContain("<!-- uses MIT licensed icons from https://tabler.io/icons -->");
+  });
+});
+
+describe("text node escaping", () => {
+  it("re-encodes HTML entities decoded by the parser", () => {
+    const html = ssr(`<p>Use &lt;elena-button&gt; for actions</p>`);
+    expect(html).toContain("&lt;elena-button&gt;");
+    expect(html).not.toContain("<elena-button>");
+  });
+
+  it("escapes ampersands in text content", () => {
+    const html = ssr(`<p>Tom &amp; Jerry</p>`);
+    expect(html).toContain("Tom &amp; Jerry");
+  });
+});
+
+describe("pre block whitespace", () => {
+  it("preserves whitespace inside pre elements", () => {
+    const html = ssr(`<pre>  line one\n  line two</pre>`);
+    expect(html).toContain("  line one\n  line two");
+  });
+
+  it("preserves whitespace inside pre > code with entities", () => {
+    const html = ssr(
+      `<pre><code>&lt;elena-button&gt;Click&lt;/elena-button&gt;\n&lt;elena-button variant="primary"&gt;OK&lt;/elena-button&gt;</code></pre>`
+    );
+    expect(html).toContain("&lt;elena-button&gt;Click&lt;/elena-button&gt;");
+    expect(html).toContain(
+      "&lt;elena-button variant=&quot;primary&quot;&gt;OK&lt;/elena-button&gt;"
+    );
+    expect(html).toContain("\n");
+  });
+
+  it("preserves indentation in pre blocks alongside Elena components", () => {
+    const html = ssr(`
+      <elena-stack direction="row">
+        <elena-button>Click</elena-button>
+      </elena-stack>
+      <pre>
+  <code>&lt;elena-stack&gt;
+    &lt;elena-button&gt;Click&lt;/elena-button&gt;
+  &lt;/elena-stack&gt;</code></pre>
+    `);
+    expect(html).toContain(
+      "<elena-button hydrated><button><span>Click</span></button></elena-button>"
+    );
+    expect(html).toContain("&lt;elena-button&gt;Click&lt;/elena-button&gt;");
+    expect(html).toContain("\n");
   });
 });
 

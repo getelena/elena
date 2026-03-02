@@ -8,10 +8,39 @@
 import { html, nothing } from "../../core/src/common/utils.js";
 
 /**
+ * Base class that simulates native HTMLElement property behavior.
+ * Native DOM properties like `style`, `className`, and `id` have
+ * getters/setters that throw "Illegal invocation" when accessed on
+ * objects created via Object.create() instead of real DOM nodes.
+ */
+class FakeHTMLElement {}
+Object.defineProperty(FakeHTMLElement.prototype, "style", {
+  get() {
+    throw new TypeError("Illegal invocation");
+  },
+  set() {
+    throw new TypeError("Illegal invocation");
+  },
+});
+Object.defineProperty(FakeHTMLElement.prototype, "className", {
+  get() {
+    throw new TypeError("Illegal invocation");
+  },
+  set() {
+    throw new TypeError("Illegal invocation");
+  },
+});
+Object.defineProperty(FakeHTMLElement.prototype, "isConnected", {
+  get() {
+    throw new TypeError("Illegal invocation");
+  },
+});
+
+/**
  * Helper to create a minimal Elena-like class with the same
  * prototype shape as real Elena components.
  */
-function createComponent(tagName, props, renderFn) {
+function createComponent(tagName, props, renderFn, noReflect) {
   class Component {
     _text = "";
     get text() {
@@ -25,11 +54,15 @@ function createComponent(tagName, props, renderFn) {
     }
   }
 
+  const propNames = props || [];
+  const noReflectSet = new Set(noReflect || []);
+
   Component._tagName = tagName;
-  Component.observedAttributes = [...(props || []), "text"];
+  Component.observedAttributes = [...propNames, "text"];
+  Component._reflectProps = propNames.filter(p => !noReflectSet.has(p));
 
   // Simulate Elena's setProps: define getters/setters backed by _props Map
-  for (const prop of props || []) {
+  for (const prop of propNames) {
     Object.defineProperty(Component.prototype, prop, {
       configurable: true,
       enumerable: true,
@@ -50,10 +83,12 @@ function createComponent(tagName, props, renderFn) {
 
 export const ButtonComponent = createComponent(
   "elena-button",
-  ["variant", "disabled"],
+  ["variant", "size", "expand", "disabled", "label", "name", "value", "type", "icon"],
   function () {
-    return html`<button>${this.text}</button>`;
-  }
+    const icon = this.icon ? html`<span class="elena-icon">${this.icon}</span>` : nothing;
+    return html`<button>${this.text ? html`<span>${this.text}</span>` : nothing}${icon}</button>`;
+  },
+  ["label", "icon"]
 );
 
 export const InputComponent = createComponent("elena-input", ["type", "placeholder"], function () {
@@ -110,6 +145,47 @@ function createComposite(tagName, props) {
 export const StackComponent = createComposite("elena-stack", ["direction"]);
 export const CardComponent = createComposite("elena-card", ["variant"]);
 export const SectionComponent = createComposite("elena-section", ["title"]);
+
+/**
+ * Component extending FakeHTMLElement to test that SSR handles
+ * native DOM properties (style, className, isConnected) without crashing.
+ */
+export const NativePropComponent = (() => {
+  class Component extends FakeHTMLElement {
+    _text = "";
+    get text() {
+      return this._text ?? "";
+    }
+    set text(value) {
+      this._text = value;
+    }
+    render() {
+      return html`<button>${this.text}</button>`;
+    }
+  }
+  Component._tagName = "elena-native-test";
+  Component.observedAttributes = ["variant", "text"];
+  for (const prop of ["variant"]) {
+    Object.defineProperty(Component.prototype, prop, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        return this._props ? this._props.get(prop) : undefined;
+      },
+      set(value) {
+        if (!this._props) {
+          this._props = new Map();
+        }
+        this._props.set(prop, value);
+        // Simulates Elena's prop setter accessing isConnected
+        if (!this.isConnected) {
+          return;
+        }
+      },
+    });
+  }
+  return Component;
+})();
 
 export const BadgeComponent = createComponent("elena-badge", ["variant"], function () {
   return html`<span class="badge badge-${this.variant}">${this.text}</span>`;
