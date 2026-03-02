@@ -22,7 +22,7 @@ export { html, unsafeHTML, nothing };
 /**
  * @typedef {Object} ElenaOptions
  * @property {string} [tagName] - Custom element tag name to register (e.g. "elena-button").
- * @property {string[]} [props] - Props observed and synced as attributes.
+ * @property {(string | {name: string, reflect?: boolean})[]} [props] - Props observed and synced as attributes.
  * @property {string[]} [events] - Events to delegate from the inner element.
  * @property {string} [element] - CSS selector for the inner element.
  */
@@ -63,6 +63,25 @@ export function Elena(superClass, options) {
     : /^[a-z][a-z0-9-]*$/i.test(options.element)
       ? host => host.getElementsByClassName(options.element)[0]
       : host => host.querySelector(options.element);
+
+  /**
+   * Normalize prop definitions into a names array and a
+   * set of non-reflecting prop names. Props can be plain
+   * strings or objects with { name, reflect? } shape.
+   */
+  const rawProps = options && options.props ? options.props : [];
+  const propNames = [];
+  const noReflect = new Set();
+  for (const p of rawProps) {
+    if (typeof p === "string") {
+      propNames.push(p);
+    } else {
+      propNames.push(p.name);
+      if (p.reflect === false) {
+        noReflect.add(p.name);
+      }
+    }
+  }
 
   /**
    * Set up the initial state and default values for Elena Element.
@@ -108,8 +127,7 @@ export function Elena(superClass, options) {
      * names of the props we want to observe.
      */
     static get observedAttributes() {
-      const props = options && options.props ? options.props : [];
-      return [...props, "text"];
+      return [...propNames, "text"];
     }
 
     /**
@@ -200,6 +218,9 @@ export function Elena(superClass, options) {
     _flushProps() {
       if (this._props) {
         for (const [prop, value] of this._props) {
+          if (noReflect.has(prop)) {
+            continue;
+          }
           const attrValue = getPropValue(typeof value, value, "toAttribute");
           syncAttribute(this, prop, attrValue);
           if (this._tplStrings && this.element) {
@@ -291,14 +312,14 @@ export function Elena(superClass, options) {
     }
   }
 
-  if (options && options.props?.length) {
-    if (options.props.includes("text")) {
+  if (propNames.length) {
+    if (propNames.includes("text")) {
       console.warn(
         '░█ [ELENA]: "text" is a reserved property. ' +
           "Rename your prop to avoid overriding the built-in text content feature."
       );
     }
-    setProps(ElenaElement.prototype, options.props);
+    setProps(ElenaElement.prototype, propNames, noReflect);
   }
 
   if (options && options.tagName) {

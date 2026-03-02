@@ -70,10 +70,12 @@ export function syncAttribute(element, name, value) {
  * via a `_props` Map that is lazily created.
  *
  * @param {Function} proto - The class prototype
- * @param {string[]} properties - Prop names to define
+ * @param {string[]} propNames - Prop names to define
+ * @param {Set<string>} [noReflect] - Props that should not reflect to attributes
  */
-export function setProps(proto, properties) {
-  for (const prop of properties) {
+export function setProps(proto, propNames, noReflect) {
+  for (const prop of propNames) {
+    const reflects = !noReflect || !noReflect.has(prop);
     Object.defineProperty(proto, prop, {
       configurable: true,
       enumerable: true,
@@ -93,10 +95,16 @@ export function setProps(proto, properties) {
           return;
         }
 
-        const attrValue = getPropValue(typeof value, value, "toAttribute");
-        syncAttribute(this, prop, attrValue);
-        if (this._tplStrings && this.element) {
-          syncAttribute(this.element, prop, attrValue);
+        if (reflects) {
+          const attrValue = getPropValue(typeof value, value, "toAttribute");
+          syncAttribute(this, prop, attrValue);
+          if (this._tplStrings && this.element) {
+            syncAttribute(this.element, prop, attrValue);
+          }
+        } else if (this._hydrated && !this._isRendering) {
+          this._isRendering = true;
+          this._applyRender();
+          this._isRendering = false;
         }
       },
     });
