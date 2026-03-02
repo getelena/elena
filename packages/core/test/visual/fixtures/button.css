@@ -1,55 +1,140 @@
 @scope (elena-button) {
   :scope,
-  *,
+  *:not(svg, path),
   *::before,
   *::after {
     all: unset;
   }
   :scope {
-    --elena-button-bg: #463630;
-    --elena-button-text: #fff;
-    --elena-button-font: sans-serif;
-    --elena-button-radius: 10rem;
+    --elena-button-bg: #eaecf0;
+    --elena-button-text: #172b4d;
+    --elena-button-border: #eaecf0;
+    --elena-button-font: system-ui, sans-serif;
+    --elena-button-font-size: 15px;
+    --elena-button-font-weight: 500;
+    --elena-button-radius: 6px;
+    --elena-button-focus: #5a44d4;
+    all: unset;
     display: inline-block;
     border-radius: var(--elena-button-radius);
+    transition:
+      background-color 0.2s ease,
+      filter 0.2s ease;
   }
   :scope:not([hydrated]),
-  button {
-    background: var(--elena-button-bg);
-    color: var(--elena-button-text);
-    font-family: var(--elena-button-font);
-    border-radius: var(--elena-button-radius);
-    appearance: none;
+  .elena-button {
+    -webkit-user-select: none;
     user-select: none;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 0.75rem 1.25rem;
+    font-family: inherit;
     cursor: pointer;
-  }
-  button {
+    box-sizing: border-box;
+    font-weight: var(--elena-button-font-weight);
+    font-family: var(--elena-button-font);
+    font-size: var(--elena-button-font-size);
+    padding: 0.5em 1.1em 0.55em;
+    block-size: calc(var(--elena-button-font) * 4);
+    min-block-size: calc(var(--elena-button-font) * 4);
+    line-height: 1.3;
+    color: var(--elena-button-text);
+    background: var(--elena-button-bg);
+    border: 2px solid var(--elena-button-border);
+    border-radius: var(--elena-button-radius);
+    text-align: center;
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+  }
+  .elena-icon {
+    inline-size: var(--elena-button-font-size);
+    block-size: var(--elena-button-font-size);
+    display: inline-flex;
+    transform: translateZ(0);
+    margin-inline: -0.3rem;
+    margin-block: 0.15rem;
+    fill: currentColor;
+  }
+  span + .elena-icon {
+    margin-inline: 0;
+    margin-inline: 0 -0.3rem;
+  }
+  svg {
+    inline-size: 100%;
+    block-size: 100%;
+    display: block;
+  }
+  :scope[icon]:not([hydrated])::after {
+    content: "";
+    background: var(--elena-button-text);
+    border-radius: var(--elena-button-radius);
+    margin-inline: 0 -0.3rem;
+    margin-block: 0.15rem;
+    opacity: 0.2;
+    width: var(--elena-button-font-size);
+    height: var(--elena-button-font-size);
+    display: inline-block;
+  }
+  :scope[icon]:not([hydrated]):empty::after {
+    margin-inline: -0.3rem;
   }
   :scope:hover {
-    opacity: 0.8;
+    filter: brightness(0.9);
   }
   :scope:active {
-    opacity: 0.6;
+    transition: none;
+    transform: translateY(1px);
+    opacity: 0.9;
   }
   :scope:focus-within {
-    outline: 2px solid #f95b1f;
-    outline-offset: 2px;
+    outline: none;
+    transition: none;
+    box-shadow:
+      0 0 0 1px #fff,
+      0 0 0 3px var(--elena-button-focus);
   }
   :scope[disabled] {
-    --elena-button-bg: #2b1c15;
-    --elena-button-text: #fff;
-    --elena-button-border: #2b1c15;
-    opacity: 0.3;
+    --elena-button-text: #a8b0bd;
+    --elena-button-bg: #f3f4f6;
+    --elena-button-border: #f3f4f6;
+
     pointer-events: none;
   }
   :scope[variant="primary"] {
-    --elena-button-bg: #f95b1f;
+    --elena-button-bg: #5a44d4;
+    --elena-button-border: #5a44d4;
+    --elena-button-text: #fff;
   }
   :scope[variant="danger"] {
-    --elena-button-bg: #f91f1f;
+    --elena-button-bg: #d44444;
+    --elena-button-border: #d44444;
+    --elena-button-text: #fff;
+  }
+  :scope[variant="danger"]:focus-within {
+    --elena-button-focus: #d44444;
+  }
+  :scope[variant="outline"] {
+    --elena-button-bg: transparent;
+    --elena-button-text: #172b4d;
+    --elena-button-border: #172b4d;
+  }
+  :scope[size="sm"] {
+    --elena-button-font-size: 12px;
+  }
+  :scope:not([hydrated])[size="sm"],
+  :scope[size="sm"] .elena-button {
+    padding-block-start: 0.3em;
+    padding-block-end: 0.35em;
+  }
+  :scope[size="lg"] {
+    --elena-button-font-size: 18px;
+  }
+  :scope:not([hydrated])[size="lg"],
+  :scope[size="lg"] .elena-button {
+    padding-block-start: 0.6em;
+    padding-block-end: 0.65em;
+  }
+  :scope[expand],
+  :scope[expand] .elena-button {
+    inline-size: 100%;
   }
 }

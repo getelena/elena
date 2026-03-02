@@ -1,10 +1,4 @@
 @scope (elena-stack) {
-  :scope,
-  *,
-  *::before,
-  *::after {
-    all: unset;
-  }
   :scope {
     display: flex;
     justify-content: flex-start;
