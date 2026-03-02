@@ -95,7 +95,6 @@ describe("DOM removal and re-insertion", () => {
 
       el.label = "after";
       expect(el.getAttribute("label")).toBe("after");
-      expect(el.element.getAttribute("label")).toBe("after");
     });
 
     it("attribute change triggers re-render after re-insertion", async () => {
@@ -118,11 +117,9 @@ describe("DOM removal and re-insertion", () => {
 
       el.disabled = false;
       expect(el.hasAttribute("disabled")).toBe(false);
-      expect(el.element.hasAttribute("disabled")).toBe(false);
 
       el.disabled = true;
       expect(el.hasAttribute("disabled")).toBe(true);
-      expect(el.element.hasAttribute("disabled")).toBe(true);
     });
 
     it("props set while disconnected are reflected after re-insertion", async () => {

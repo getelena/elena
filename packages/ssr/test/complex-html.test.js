@@ -94,21 +94,21 @@ describe("complex HTML structures", () => {
     expect(html).toContain("<strong>bold</strong>");
     expect(html).toContain("<em>italic</em>");
 
-    // Badges expanded (variant reflected to inner span)
+    // Badges expanded
     expect(html).toContain(
-      '<elena-badge variant="success" hydrated><span variant="success" class="badge badge-success">New</span></elena-badge>'
+      '<elena-badge variant="success" hydrated><span class="badge badge-success">New</span></elena-badge>'
     );
     expect(html).toContain(
-      '<elena-badge variant="warning" hydrated><span variant="warning" class="badge badge-warning">Beta</span></elena-badge>'
+      '<elena-badge variant="warning" hydrated><span class="badge badge-warning">Beta</span></elena-badge>'
     );
 
     // Table structure preserved inside composite
     expect(html).toContain("<thead><tr><th>Name</th><th>Value</th></tr></thead>");
     expect(html).toContain("<td>Alpha</td><td>100</td>");
 
-    // Buttons expanded (variant reflected to inner button)
+    // Buttons expanded
     expect(html).toContain(
-      '<elena-button variant="primary" hydrated><button variant="primary"><span>Learn More</span></button></elena-button>'
+      '<elena-button variant="primary" hydrated><button><span>Learn More</span></button></elena-button>'
     );
     expect(html).toContain(
       "<elena-button hydrated><button><span>View Details</span></button></elena-button>"
@@ -184,12 +184,12 @@ describe("complex HTML structures", () => {
       '<elena-link href="/dashboard" target="_self" hydrated><a href="/dashboard" target="_self">Dashboard</a></elena-link>'
     );
     expect(html).toContain(
-      '<elena-button variant="danger" hydrated><button variant="danger"><span>Delete</span></button></elena-button>'
+      '<elena-button variant="danger" hydrated><button><span>Delete</span></button></elena-button>'
     );
 
-    // Badge inside article header (variant reflected to inner span)
+    // Badge inside article header
     expect(html).toContain(
-      '<elena-badge variant="info" hydrated><span variant="info" class="badge badge-info">Published</span></elena-badge>'
+      '<elena-badge variant="info" hydrated><span class="badge badge-info">Published</span></elena-badge>'
     );
 
     // Plain HTML sibling to Elena component inside the same stack
@@ -200,9 +200,9 @@ describe("complex HTML structures", () => {
       'and a <elena-link href="https://example.com" target="_blank" hydrated><a href="https://example.com" target="_blank">link</a></elena-link> in the middle.'
     );
 
-    // Badge inside blockquote > p (variant reflected to inner span)
+    // Badge inside blockquote > p
     expect(html).toContain(
-      '<elena-badge variant="highlight" hydrated><span variant="highlight" class="badge badge-highlight">important</span></elena-badge>'
+      '<elena-badge variant="highlight" hydrated><span class="badge badge-highlight">important</span></elena-badge>'
     );
 
     // Pre/code preserved
@@ -237,7 +237,7 @@ describe("complex HTML structures", () => {
     expect(html).toContain("<hr>");
     expect(html).toContain('<input type="hidden" name="token" value="abc123">');
     expect(html).toContain(
-      '<elena-badge variant="new" hydrated><span variant="new" class="badge badge-new">Featured</span></elena-badge>'
+      '<elena-badge variant="new" hydrated><span class="badge badge-new">Featured</span></elena-badge>'
     );
     expect(html).toContain('for="search">Search</label>');
   });

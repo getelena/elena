@@ -31,8 +31,8 @@ export default class ComplexElement extends Elena(HTMLElement, options) {
         <input
           id="input"
           class="elena-input"
-          type="${this.type}"
-          ${this.name ? `name="${this.name}"` : ""}
+          type=${this.type}
+          ${this.name ? `name=${this.name}` : ""}
           ${this.disabled ? "disabled" : ""}
         />
       </div>

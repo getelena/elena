@@ -40,7 +40,7 @@ Object.defineProperty(FakeHTMLElement.prototype, "isConnected", {
  * Helper to create a minimal Elena-like class with the same
  * prototype shape as real Elena components.
  */
-function createComponent(tagName, props, renderFn, noReflect) {
+function createComponent(tagName, props, renderFn) {
   class Component {
     _text = "";
     get text() {
@@ -55,11 +55,9 @@ function createComponent(tagName, props, renderFn, noReflect) {
   }
 
   const propNames = props || [];
-  const noReflectSet = new Set(noReflect || []);
 
   Component._tagName = tagName;
   Component.observedAttributes = [...propNames, "text"];
-  Component._reflectProps = propNames.filter(p => !noReflectSet.has(p));
 
   // Simulate Elena's setProps: define getters/setters backed by _props Map
   for (const prop of propNames) {
@@ -87,8 +85,7 @@ export const ButtonComponent = createComponent(
   function () {
     const icon = this.icon ? html`<span class="elena-icon">${this.icon}</span>` : nothing;
     return html`<button>${this.text ? html`<span>${this.text}</span>` : nothing}${icon}</button>`;
-  },
-  ["label", "icon"]
+  }
 );
 
 export const InputComponent = createComponent("elena-input", ["type", "placeholder"], function () {

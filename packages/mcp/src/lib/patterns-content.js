@@ -173,9 +173,9 @@ export default class Button extends Elena(HTMLElement, {
 
 When the \`element\` option is omitted, Elena falls back to \`firstElementChild\`, which is more performant for simple templates with many component instances on a page.
 
-### Reflecting Props as Template Attrs
+### Reflecting Props
 
-Elena automatically syncs props and attributes between the host element and the inner element. This means you rarely need to add attributes manually in your template markup — props declared in \`options.props\` are reflected automatically.
+Elena syncs props and attributes on the host element. Props declared in \`options.props\` are reflected as host attributes automatically. For inner element attributes, add them explicitly in your \`render()\` template.
 
 ---
 

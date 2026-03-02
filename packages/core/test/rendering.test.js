@@ -249,7 +249,7 @@ describe("rendering", () => {
 
       // Change attribute-position value: forces cold-path fallback
       el.setAttribute("variant", "primary");
-      expect(el.querySelector(".inner").getAttribute("variant")).toBe("primary");
+      expect(el.getAttribute("variant")).toBe("primary");
       // Text node was not recreated, but instead was updated directly
       expect(el.querySelector(".inner").firstChild).toBe(textNode);
     });

@@ -12,14 +12,14 @@ describe("ssr", () => {
   it("renders a primitive component with attributes", () => {
     const html = ssr(`<elena-button variant="primary">OK</elena-button>`);
     expect(html).toBe(
-      '<elena-button variant="primary" hydrated><button variant="primary"><span>OK</span></button></elena-button>'
+      '<elena-button variant="primary" hydrated><button><span>OK</span></button></elena-button>'
     );
   });
 
   it("renders boolean attributes", () => {
     const html = ssr(`<elena-button disabled>No</elena-button>`);
     expect(html).toBe(
-      "<elena-button disabled hydrated><button disabled><span>No</span></button></elena-button>"
+      "<elena-button disabled hydrated><button><span>No</span></button></elena-button>"
     );
   });
 
@@ -33,21 +33,21 @@ describe("ssr", () => {
   it("renders conditional content (active)", () => {
     const html = ssr(`<elena-conditional label="Go" active></elena-conditional>`);
     expect(html).toBe(
-      '<elena-conditional label="Go" active hydrated><button label="Go" active>Go</button></elena-conditional>'
+      '<elena-conditional label="Go" active hydrated><button>Go</button></elena-conditional>'
     );
   });
 
   it("renders conditional content (inactive)", () => {
     const html = ssr(`<elena-conditional label="Go"></elena-conditional>`);
     expect(html).toBe(
-      '<elena-conditional label="Go" hydrated><button label="Go"></button></elena-conditional>'
+      '<elena-conditional label="Go" hydrated><button></button></elena-conditional>'
     );
   });
 
   it("renders nested html templates", () => {
     const html = ssr(`<elena-nested description="Hello"></elena-nested>`);
     expect(html).toBe(
-      '<elena-nested description="Hello" hydrated><div description="Hello"><p>Hello</p></div></elena-nested>'
+      '<elena-nested description="Hello" hydrated><div><p>Hello</p></div></elena-nested>'
     );
   });
 
@@ -117,7 +117,7 @@ describe("ssr", () => {
     expect(html).toBe(
       "<elena-stack>" +
         '<elena-stack direction="row">' +
-        '<elena-button variant="primary" hydrated><button variant="primary"><span>Save</span></button></elena-button>' +
+        '<elena-button variant="primary" hydrated><button><span>Save</span></button></elena-button>' +
         "<elena-button hydrated><button><span>Cancel</span></button></elena-button>" +
         "</elena-stack>" +
         "</elena-stack>"
@@ -218,7 +218,7 @@ describe("demo page markup", () => {
 
     // Components expanded
     expect(html).toContain("<button><span>Button</span></button>");
-    expect(html).toContain('<button variant="primary"><span>Primary</span></button>');
+    expect(html).toContain("<button><span>Primary</span></button>");
 
     // Attributes preserved on host
     expect(html).toContain('variant="primary"');

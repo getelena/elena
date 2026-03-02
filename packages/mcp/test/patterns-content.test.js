@@ -56,7 +56,7 @@ describe("PATTERNS_CONTENT", () => {
 
   describe("reflecting props", () => {
     it("documents automatic prop/attribute sync", () => {
-      expect(PATTERNS_CONTENT).toContain("automatically syncs props and attributes");
+      expect(PATTERNS_CONTENT).toContain("syncs props and attributes on the host element");
     });
   });
 

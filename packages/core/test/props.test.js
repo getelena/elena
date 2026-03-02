@@ -111,34 +111,23 @@ describe("setProps", () => {
     expect(el.label).toBe("test");
   });
 
-  it("property setter syncs to host and inner element", async () => {
+  it("property setter syncs to host attribute", async () => {
     const el = await createElement("basic-element", { label: "before" });
     el.label = "after";
     expect(el.getAttribute("label")).toBe("after");
-    expect(el.element.getAttribute("label")).toBe("after");
   });
 
-  it("boolean false removes attribute from both host and element", async () => {
+  it("boolean false removes attribute from host", async () => {
     const el = await createElement("boolean-element", { disabled: "" });
     el.disabled = false;
     expect(el.hasAttribute("disabled")).toBe(false);
-    expect(el.element.hasAttribute("disabled")).toBe(false);
   });
 
-  it("empty string default is not set as attribute on host or inner element", async () => {
+  it("empty string default is not set as attribute on host", async () => {
     // basic-element defaults label to "" in its constructor. It should flush
-    // without adding an empty attribute to either the host or inner element
+    // without adding an empty attribute to the host
     const el = await createElement("basic-element");
     expect(el.hasAttribute("label")).toBe(false);
-    expect(el.element.hasAttribute("label")).toBe(false);
-  });
-
-  it("syncs to host attribute only when element ref is null", async () => {
-    const el = await createElement("basic-element", { label: "initial" });
-    // Clear the inner element ref while still connected
-    el.element = null;
-    el.label = "no-inner";
-    expect(el.getAttribute("label")).toBe("no-inner");
   });
 });
 
@@ -200,12 +189,11 @@ describe("number props", () => {
     expect(el.getAttribute("count")).toBe("42");
   });
 
-  it("property setter syncs to host and inner element", async () => {
+  it("property setter syncs to host attribute", async () => {
     const el = await createElement("number-element");
     el.count = 7;
     expect(el.count).toBe(7);
     expect(el.getAttribute("count")).toBe("7");
-    expect(el.element.getAttribute("count")).toBe("7");
   });
 
   it("default value is available before setProps", () => {
@@ -223,12 +211,6 @@ describe("reflect: false", () => {
     expect(el.hasAttribute("content")).toBe(false);
   });
 
-  it("non-reflecting prop does not sync to inner element attribute", async () => {
-    const el = await createElement("no-reflect-element");
-    el.content = "<b>html</b>";
-    expect(el.element.hasAttribute("content")).toBe(false);
-  });
-
   it("non-reflecting prop still triggers re-render", async () => {
     const el = await createElement("no-reflect-element");
     el.content = "updated";
@@ -244,7 +226,6 @@ describe("reflect: false", () => {
     const el = await createElement("no-reflect-element");
     el.label = "hello";
     expect(el.getAttribute("label")).toBe("hello");
-    expect(el.element.getAttribute("label")).toBe("hello");
   });
 
   it("non-reflecting prop is not flushed as attribute on connect", async () => {
