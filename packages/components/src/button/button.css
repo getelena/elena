@@ -35,6 +35,7 @@
     font-family: inherit;
     cursor: pointer;
     box-sizing: border-box;
+    touch-action: manipulation;
     font-weight: var(--elena-button-font-weight);
     font-family: var(--elena-button-font);
     font-size: var(--elena-button-font-size);
