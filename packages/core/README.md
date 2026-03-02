@@ -475,8 +475,22 @@ You can also define your own custom methods:
 
 ```js
 export default class Button extends Elena(HTMLElement) {
-  myMethod() {
-    console.log(this.element);
+  /**
+   * Renders a link: <a href="#">.
+   * @internal
+   */
+  renderLink(template) {
+    return html`
+      <a
+        class="elena-button"
+        href=${this.href}
+        target=${this.target}
+        ${this.download ? `download` : nothing}
+        ${this.label ? `aria-label=${this.label}` : nothing}
+      >
+          ${template}
+      </button>
+    `;
   }
 }
 ```
