@@ -1,8 +1,17 @@
-import { Elena, html } from "@elenajs/core";
+import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
 
 const options = {
   tagName: "elena-button",
-  props: ["variant", "disabled", "name", "value", "type"],
+  props: [
+    "variant",
+    "size",
+    "fit-container",
+    "disabled",
+    "name",
+    "value",
+    "type",
+    { name: "icon", reflect: false },
+  ],
   events: ["click", "focus", "blur"],
 };
 
@@ -29,9 +38,25 @@ export default class Button extends Elena(HTMLElement, options) {
      * The style variant of the button.
      *
      * @attribute
-     * @type {"default" | "primary" | "danger"}
+     * @type {"default" | "primary" | "danger" | "outline"}
      */
     this.variant = "default";
+
+    /**
+     * The size of the button.
+     *
+     * @attribute
+     * @type {"sm" | "md" | "lg"}
+     */
+    this.size = "md";
+
+    /**
+     * Makes the button fit its container.
+     *
+     * @attribute
+     * @type {boolean}
+     */
+    this.expand = false;
 
     /**
      * Makes the component disabled.
@@ -64,6 +89,14 @@ export default class Button extends Elena(HTMLElement, options) {
      * @type {"submit" | "reset" | "button"}
      */
     this.type = "button";
+
+    /**
+     * An SVG icon to display inside the button.
+     *
+     * @attribute
+     * @type {string}
+     */
+    this.icon = "";
   }
 
   /**
@@ -72,7 +105,13 @@ export default class Button extends Elena(HTMLElement, options) {
    * @internal
    */
   render() {
-    return html`<button>${this.text}</button>`;
+    const icon = this.icon ? unsafeHTML(`<span class="elena-icon">${this.icon}</span>`) : nothing;
+    return html`
+      <button class="elena-button">
+        ${this.text ? html`<span>${this.text}</span>` : nothing}
+        ${icon}
+      </button>
+    `;
   }
 }
 
