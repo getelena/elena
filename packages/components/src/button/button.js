@@ -145,10 +145,10 @@ export default class Button extends Elena(HTMLElement, options) {
       <button
         class="elena-button"
         type=${this.type}
-        ${this.name ? `name=${this.name}` : nothing}
-        ${this.value ? `value=${this.value}` : nothing}
+        ${this.name ? html`name="${this.name}"` : nothing}
+        ${this.value ? html`value="${this.value}"` : nothing}
         ${this.disabled ? "disabled" : nothing}
-        ${this.label ? `aria-label=${this.label}` : nothing}
+        ${this.label ? html`aria-label="${this.label}"` : nothing}
       >
         ${template}
       </button>
@@ -167,7 +167,7 @@ export default class Button extends Elena(HTMLElement, options) {
         href=${this.href}
         target=${this.target}
         ${this.download ? "download" : nothing}
-        ${this.label ? `aria-label=${this.label}` : nothing}
+        ${this.label ? html`aria-label="${this.label}"` : nothing}
       >
         ${template}
       </a>

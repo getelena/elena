@@ -101,11 +101,16 @@ const VOID_ELEMENTS = new Set([
  * @returns {string} The inner HTML produced by render().
  */
 function renderComponent(ComponentClass, attrs, textContent) {
-  const instance = Object.create(ComponentClass.prototype);
+  // Use `new` so the constructor runs and sets default prop values.
+  // The constructor only writes to `_props` and checks `isConnected`
+  // (which is falsy outside the DOM), so it is safe to call in Node.
+  const instance = new ComponentClass();
   instance._text = textContent;
 
-  // Populate _props directly instead of going through property setters.
-  instance._props = new Map();
+  // Attrs from the HTML override constructor defaults.
+  if (!instance._props) {
+    instance._props = new Map();
+  }
   for (const [key, value] of Object.entries(attrs)) {
     // htmlparser2 represents boolean attributes (e.g. `active`) as empty
     // strings. Convert to `true` to match Elena's client-side prop handling.

@@ -95,9 +95,15 @@ function fullRender(element, strings, values) {
     _stringsCache.set(strings, processedStrings);
   }
 
-  // Build the complete HTML markup
+  // Build the complete HTML markup, quoting unquoted attribute values.
   const markup = processedStrings
-    .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
+    .reduce((out, str, i) => {
+      const v = renderedValues[i] ?? "";
+      if (str.endsWith("=")) {
+        return out + str + '"' + v + '"';
+      }
+      return out + str + v;
+    }, "")
     .replace(/>\s+</g, "><")
     .replace(/>\s+/g, ">")
     .replace(/\s+</g, "<")
