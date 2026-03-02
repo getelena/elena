@@ -5,7 +5,7 @@ const options = {
   props: [
     "variant",
     "size",
-    "fit-container",
+    "expand",
     "disabled",
     "name",
     "value",
