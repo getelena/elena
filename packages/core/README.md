@@ -440,7 +440,7 @@ render() {
 
   return html`
     <button>
-      ${this.text}
+      ${this.text ? html`<span>${this.text}</span>` : nothing}
       ${icon}
     </button>
   `;
@@ -528,7 +528,7 @@ render() {
 
   return html`
     <button>
-      ${this.text}
+      ${this.text ? html`<span>${this.text}</span>` : nothing}
       ${icon}
     </button>
   `;
