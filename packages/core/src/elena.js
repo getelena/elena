@@ -320,6 +320,9 @@ export function Elena(superClass, options) {
       );
     }
     setProps(ElenaElement.prototype, propNames, noReflect);
+
+    /** @type {string[]} Props that reflect to the inner element as attributes. */
+    ElenaElement._reflectProps = propNames.filter(p => !noReflect.has(p));
   }
 
   if (options && options.tagName) {
