@@ -8,6 +8,9 @@ const options = {
     "expand",
     "disabled",
     { name: "label", reflect: false },
+    "href",
+    { name: "target", reflect: false },
+    { name: "download", reflect: false },
     "name",
     "value",
     "type",
@@ -76,6 +79,30 @@ export default class Button extends Elena(HTMLElement, options) {
     this.label = "";
 
     /**
+     * Renders the button as a link and sets a href for it.
+     *
+     * @attribute
+     * @type {string}
+     */
+    this.href = "";
+
+    /**
+     * Defines where to open the linked URL.
+     *
+     * @attribute
+     * @type {"_self" | "_blank" | "_parent" | "_top"}
+     */
+    this.target = "_self";
+
+    /**
+     * Trigger a file download instead of a page visit.
+     *
+     * @attribute
+     * @type {boolean}
+     */
+    this.download = false;
+
+    /**
      * The name used to identify the button in forms.
      *
      * @attribute
@@ -109,21 +136,53 @@ export default class Button extends Elena(HTMLElement, options) {
   }
 
   /**
+   * Renders a button: <button>.
+   *
+   * @internal
+   */
+  renderButton(template) {
+    return html`
+      <button 
+        class="elena-button"
+        ${this.label ? `aria-label=${this.label}` : nothing}
+      >
+        ${template}
+      </button>
+    `;
+  }
+
+  /**
+   * Renders a link: <a href="#">.
+   *
+   * @internal
+   */
+  renderLink(template) {
+    return html`
+      <a
+        class="elena-button"
+        href=${this.href}
+        target=${this.target}
+        ${this.download ? `download` : nothing}
+        ${this.label ? `aria-label=${this.label}` : nothing}
+      >
+          ${template}
+      </button>
+    `;
+  }
+
+  /**
    * Renders the template.
    *
    * @internal
    */
   render() {
     const icon = this.icon ? unsafeHTML(`<span class="elena-icon">${this.icon}</span>`) : nothing;
-    return html`
-      <button 
-        class="elena-button"
-        ${this.label ? `aria-label=${this.label}` : nothing}
-      >
-          ${this.text ? html`<span>${this.text}</span>` : nothing}
-          ${icon}
-      </button>
+    const markup = html`
+      ${this.text ? html`<span>${this.text}</span>` : nothing}
+      ${icon}
     `;
+
+    return this.href ? this.renderLink(markup) : this.renderButton(markup);
   }
 }
 

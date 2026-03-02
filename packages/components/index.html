@@ -14,7 +14,7 @@
       body {
         background: #fff;
         color: #172b4d;
-        max-inline-size: 740px;
+        max-inline-size: 780px;
         font-size: 15px;
         margin: 0 auto;
         padding: 2rem;
@@ -65,7 +65,7 @@
     <section>
       <h2>Default</h2>
       <elena-stack direction="row">
-        <elena-button>Button</elena-button>
+        <elena-button type="submit">Button</elena-button>
         <elena-button
           icon="<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M20 16a1 1 0 0 1 1 1v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-2a1 1 0 0 1 2 0v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1 -1v-2a1 1 0 0 1 1 -1m-8 -13a1 1 0 0 1 1 1v9.585l3.293 -3.292a1 1 0 0 1 1.414 1.414l-5 5a1 1 0 0 1 -.09 .08l.09 -.08a1 1 0 0 1 -.674 .292l-.033 .001h-.032l-.054 -.004l.086 .004a1 1 0 0 1 -.617 -.213a1 1 0 0 1 -.09 -.08l-5 -5a1 1 0 0 1 1.414 -1.414l3.293 3.292v-9.585a1 1 0 0 1 1 -1' /></svg>"
         >
@@ -77,10 +77,10 @@
         ></elena-button>
       </elena-stack>
       <pre>
-<code>&lt;<i>elena-stack</i> direction="row"&gt;
-  &lt;<i>elena-button</i>&gt;Button&lt;/<i>elena-button</i>&gt;
-  &lt;<i>elena-button</i> icon="&lt;svg/&gt;"&gt;Download&lt;/<i>elena-button</i>&gt;
-  &lt;<i>elena-button</i> label="Settings" icon="&lt;svg/&gt;"&gt;&lt;/<i>elena-button</i>&gt;
+<code>&lt;<i>elena-stack</i>&gt;
+  &lt;<i>elena-button</i> type="submit"&gt;Button&lt;/<i>elena-button</i>&gt;
+  &lt;<i>elena-button</i> icon="&lt;svg&gt;"&gt;Download&lt;/<i>elena-button</i>&gt;
+  &lt;<i>elena-button</i> label="Settings" icon="&lt;svg&gt;"&gt;&lt;/<i>elena-button</i>&gt;
 &lt;/<i>elena-stack</i>&gt;</code></pre>
     </section>
 
@@ -100,9 +100,9 @@
         <elena-button disabled>Disabled</elena-button>
       </elena-stack>
       <pre>
-<code>&lt;<i>elena-stack</i> direction="row"&gt;
+<code>&lt;<i>elena-stack</i>&gt;
   &lt;<i>elena-button</i> variant="primary"&gt;Primary&lt;/<i>elena-button</i>&gt;
-  &lt;<i>elena-button</i> variant="primary" icon="&lt;svg/&gt;"&gt;Primary&lt;/<i>elena-button</i>&gt;
+  &lt;<i>elena-button</i> variant="primary" icon="&lt;svg&gt;"&gt;Primary&lt;/<i>elena-button</i>&gt;
   &lt;<i>elena-button</i>&gt;Default&lt;/<i>elena-button</i>&gt;
   &lt;<i>elena-button</i> variant="danger"&gt;Danger&lt;/<i>elena-button</i>&gt;
   &lt;<i>elena-button</i> variant="outline"&gt;Outline&lt;/<i>elena-button</i>&gt;
@@ -133,10 +133,39 @@
         </elena-button>
       </elena-stack>
       <pre>
-<code>&lt;<i>elena-stack</i> direction="row"&gt;
-  &lt;<i>elena-button</i> size="sm" icon="&lt;svg/&gt;"&gt;Small&lt;/<i>elena-button</i>&gt;
-  &lt;<i>elena-button</i> size="md" icon="&lt;svg/&gt;"&gt;Medium&lt;/<i>elena-button</i>&gt;
-  &lt;<i>elena-button</i> size="lg" icon="&lt;svg/&gt;"&gt;Large&lt;/<i>elena-button</i>&gt;
+<code>&lt;<i>elena-stack</i>&gt;
+  &lt;<i>elena-button</i> size="sm" icon="&lt;svg&gt;"&gt;Small&lt;/<i>elena-button</i>&gt;
+  &lt;<i>elena-button</i> size="md" icon="&lt;svg&gt;"&gt;Medium&lt;/<i>elena-button</i>&gt;
+  &lt;<i>elena-button</i> size="lg" icon="&lt;svg&gt;"&gt;Large&lt;/<i>elena-button</i>&gt;
+&lt;/<i>elena-stack</i>&gt;</code></pre>
+    </section>
+
+    <section>
+      <h2>Link</h2>
+      <elena-stack direction="row">
+        <elena-button href="https://github.com/getelena/elena" variant="primary">
+          Elena on GitHub
+        </elena-button>
+        <elena-button
+          href="https://elenajs.com"
+          target="_blank"
+          icon="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'/><path d='M11 13l9 -9'/><path d='M15 4h5v5'/></svg>"
+        >
+          External
+        </elena-button>
+        <elena-button
+          href="#file"
+          download
+          icon="<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M20 16a1 1 0 0 1 1 1v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-2a1 1 0 0 1 2 0v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1 -1v-2a1 1 0 0 1 1 -1m-8 -13a1 1 0 0 1 1 1v9.585l3.293 -3.292a1 1 0 0 1 1.414 1.414l-5 5a1 1 0 0 1 -.09 .08l.09 -.08a1 1 0 0 1 -.674 .292l-.033 .001h-.032l-.054 -.004l.086 .004a1 1 0 0 1 -.617 -.213a1 1 0 0 1 -.09 -.08l-5 -5a1 1 0 0 1 1.414 -1.414l3.293 3.292v-9.585a1 1 0 0 1 1 -1' /></svg>"
+        >
+          Download
+        </elena-button>
+      </elena-stack>
+      <pre>
+<code>&lt;<i>elena-stack</i>&gt;
+  &lt;<i>elena-button</i> href="https://elenajs.com"&gt;Elena on GitHub&lt;/<i>elena-button</i>&gt;
+  &lt;<i>elena-button</i> href="#" target="_blank" icon="&lt;svg&gt;"&gt;External&lt;/<i>elena-button</i>&gt;
+  &lt;<i>elena-button</i> href="#file" download icon="&lt;svg&gt;"&gt;Download&lt;/<i>elena-button</i>&gt;
 &lt;/<i>elena-stack</i>&gt;</code></pre>
     </section>
 
@@ -148,7 +177,7 @@
       </elena-stack>
       <p><strong>Count:</strong> "<span id="count">0</span>"</p>
       <pre>
-<code>&lt;<i>elena-stack</i> direction="row"&gt;
+<code>&lt;<i>elena-stack</i>&gt;
   &lt;<i>elena-button</i> variant="primary"&gt;Increment&lt;/<i>elena-button</i>&gt;
   &lt;<i>elena-button</i> variant="danger"&gt;Reset&lt;/<i>elena-button</i>&gt;
 &lt;/<i>elena-stack</i>&gt;</code></pre>
@@ -164,8 +193,8 @@
       </elena-stack>
       <p><strong>Current:</strong> "<span id="current-variant">primary</span>"</p>
       <pre>
-<code>&lt;<i>elena-stack</i> direction="row"&gt;
-  &lt;<i>elena-button</i> variant="primary"&gt;Click to cycle (primary)&lt;/<i>elena-button</i>&gt;
+<code>&lt;<i>elena-stack</i>&gt;
+  &lt;<i>elena-button</i> variant="primary"&gt;Click to cycle&lt;/<i>elena-button</i>&gt;
   &lt;<i>elena-button</i> variant="primary"&gt;primary&lt;/<i>elena-button</i>&gt;
 &lt;/<i>elena-stack</i>&gt;</code></pre>
     </section>
@@ -198,10 +227,10 @@
         ></elena-button>
       </elena-stack>
       <pre>
-<code>&lt;<i>elena-stack</i> direction="row"&gt;
-  &lt;<i>elena-button</i> style="--elena-button-bg: #FFDDD2; --elena-button-border: #FFDDD2; --elena-button-text: #463634;"&gt;Custom style&lt;/<i>elena-button</i>&gt;
-  &lt;<i>elena-button</i> style="--elena-button-bg: #FFDDD2; --elena-button-border: #FFDDD2; --elena-button-text: #463634;" icon="&lt;svg/&gt;"&gt;Like&lt;/<i>elena-button</i>&gt;
-  &lt;<i>elena-button</i> style="--elena-button-bg: #FFDDD2; --elena-button-border: #FFDDD2; --elena-button-text: #463634;" label="Love" icon="&lt;svg/&gt;"&gt;&lt;/<i>elena-button</i>&gt;
+<code>&lt;<i>elena-stack</i>&gt;
+  &lt;<i>elena-button</i> style="--bg:x"&gt;Custom style&lt;/<i>elena-button</i>&gt;
+  &lt;<i>elena-button</i> style="--bg:x" icon="&lt;svg&gt;"&gt;Like&lt;/<i>elena-button</i>&gt;
+  &lt;<i>elena-button</i> style="--bg:x" label="Love" icon="&lt;svg&gt;"&gt;&lt;/<i>elena-button</i>&gt;
 &lt;/<i>elena-stack</i>&gt;</code></pre>
     </section>
 
