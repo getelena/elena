@@ -243,15 +243,15 @@ describe("rendering", () => {
       expect(el.querySelector(".inner").textContent).toBe("After");
     });
 
-    it("falls back to innerHTML when attribute-position value changes", () => {
+    it("should not fall back to innerHTML when attribute-position value changes", () => {
       const el = createElement("attr-element", { label: "Hello", variant: "default" });
       const textNode = el.querySelector(".inner").firstChild;
 
       // Change attribute-position value: forces cold-path fallback
       el.setAttribute("variant", "primary");
       expect(el.querySelector(".inner").getAttribute("variant")).toBe("primary");
-      // Text node was recreated (not same object) because innerHTML was used
-      expect(el.querySelector(".inner").firstChild).not.toBe(textNode);
+      // Text node was not recreated, but instead was updated directly
+      expect(el.querySelector(".inner").firstChild).toBe(textNode);
     });
 
     it("skips redundant renders when values are unchanged", () => {
