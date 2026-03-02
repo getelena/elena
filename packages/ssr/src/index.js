@@ -104,14 +104,50 @@ function renderComponent(ComponentClass, attrs, textContent) {
   const instance = Object.create(ComponentClass.prototype);
   instance._text = textContent;
 
+  // Populate _props directly instead of going through property setters.
+  instance._props = new Map();
   for (const [key, value] of Object.entries(attrs)) {
     // htmlparser2 represents boolean attributes (e.g. `active`) as empty
     // strings. Convert to `true` to match Elena's client-side prop handling.
-    instance[key] = value === "" ? true : value;
+    instance._props.set(key, value === "" ? true : value);
   }
 
   const result = instance.render();
-  return result ? normalizeWhitespace(result.toString()) : "";
+  if (!result) {
+    return "";
+  }
+
+  let innerHTML = normalizeWhitespace(result.toString());
+
+  // Inject reflecting props as attributes on the inner element
+  // so SSR output matches the client-side hydrated state.
+  const reflectProps = ComponentClass._reflectProps;
+  if (reflectProps) {
+    const closeIdx = innerHTML.indexOf(">");
+    const openTag = closeIdx >= 0 ? innerHTML.slice(0, closeIdx + 1) : "";
+    let extra = "";
+    for (const prop of reflectProps) {
+      // Skip if the template already rendered this attribute
+      if (
+        openTag.includes(` ${prop}=`) ||
+        openTag.includes(` ${prop} `) ||
+        openTag.endsWith(` ${prop}>`)
+      ) {
+        continue;
+      }
+      const value = instance._props.get(prop);
+      if (value === true) {
+        extra += ` ${prop}`;
+      } else if (value && value !== "") {
+        extra += ` ${prop}="${escapeHtml(String(value))}"`;
+      }
+    }
+    if (extra) {
+      innerHTML = innerHTML.replace(/^(<\w[\w-]*)/, `$1${extra}`);
+    }
+  }
+
+  return innerHTML;
 }
 
 /**
@@ -154,16 +190,22 @@ function serializeAttrs(attrs) {
  * @param {Array} nodes - htmlparser2 DOM nodes.
  * @returns {string}
  */
-function walk(nodes) {
+function walk(nodes, preserveWhitespace = false) {
   let out = "";
 
   for (const node of nodes) {
     if (node.type === ElementType.Text) {
-      // Collapse whitespace-only text between tags to avoid
-      // preserving template literal indentation in output.
-      const trimmed = node.data.replace(/\n\s*/g, "");
-      if (trimmed) {
-        out += trimmed;
+      if (preserveWhitespace) {
+        // Inside <pre>: keep whitespace intact, but re-encode entities
+        // that htmlparser2 decoded during parsing.
+        out += escapeHtml(node.data);
+      } else {
+        // Collapse whitespace-only text between tags to avoid
+        // preserving template literal indentation in output.
+        const trimmed = node.data.replace(/\n\s*/g, "");
+        if (trimmed) {
+          out += escapeHtml(trimmed);
+        }
       }
       continue;
     }
@@ -186,10 +228,16 @@ function walk(nodes) {
     } else {
       const ComponentClass = tag.includes("-") ? registry.get(tag) : null;
       const isPrimitive = ComponentClass && Object.hasOwn(ComponentClass.prototype, "render");
-      const innerHTML = isPrimitive
-        ? renderComponent(ComponentClass, attrs, getTextContent(children))
-        : walk(children);
-      out += `<${tag}${serializeAttrs(attrs)}>${innerHTML}</${tag}>`;
+      const pre = preserveWhitespace || tag === "pre";
+      if (isPrimitive) {
+        const innerHTML = renderComponent(ComponentClass, attrs, getTextContent(children));
+        // Mark as hydrated so CSS targeting :scope:not([hydrated]) doesn't
+        // double-style the host alongside the already-rendered inner element.
+        attrs.hydrated = "";
+        out += `<${tag}${serializeAttrs(attrs)}>${innerHTML}</${tag}>`;
+      } else {
+        out += `<${tag}${serializeAttrs(attrs)}>${walk(children, pre)}</${tag}>`;
+      }
     }
   }
 
