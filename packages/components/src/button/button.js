@@ -7,6 +7,7 @@ const options = {
     "size",
     "expand",
     "disabled",
+    { name: "label", reflect: false },
     "name",
     "value",
     "type",
@@ -67,6 +68,14 @@ export default class Button extends Elena(HTMLElement, options) {
     this.disabled = false;
 
     /**
+     * Sets aria-label for the inner button.
+     *
+     * @attribute
+     * @type {string}
+     */
+    this.label = "";
+
+    /**
      * The name used to identify the button in forms.
      *
      * @attribute
@@ -107,9 +116,12 @@ export default class Button extends Elena(HTMLElement, options) {
   render() {
     const icon = this.icon ? unsafeHTML(`<span class="elena-icon">${this.icon}</span>`) : nothing;
     return html`
-      <button class="elena-button">
-        ${this.text ? html`<span>${this.text}</span>` : nothing}
-        ${icon}
+      <button 
+        class="elena-button"
+        ${this.label ? `aria-label=${this.label}` : nothing}
+      >
+          ${this.text ? html`<span>${this.text}</span>` : nothing}
+          ${icon}
       </button>
     `;
   }

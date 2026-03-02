@@ -7,6 +7,52 @@
     <title>HTML | Elena Web Components</title>
     <script src="dist/bundle.js" type="module"></script>
     <link rel="stylesheet" href="dist/bundle.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: #fff;
+        color: #172B4D;
+        max-inline-size: 740px;
+        font-size: 15px;
+        margin: 0 auto;
+        padding: 2rem;
+        font-family: system-ui, sans-serif;
+      }
+      a {
+        color: #5a44d4;
+      }
+      section {
+        margin-block-start: 3.5rem;
+        padding-block-end: 2.5rem;
+        border-bottom: 1px solid hsl(220, 17%, 86%);
+      }
+      h1 {
+        font-size: 44px;
+      }
+      section h2 {
+        font-size: 21px;
+        margin-block-end: 1rem;
+      }
+      pre {
+        background: hsl(220, 14%, 97%);
+        color: hsl(218, 14%, 50%);
+        overflow-x: auto;
+        padding: 2rem;
+        white-space: pre-wrap;
+        border-radius: 6px;
+        font-family: monospace, monospace;
+        line-height: 1.6;
+        inline-size: 100%;
+        font-size: 14px;
+        margin: 2rem auto 2rem;
+      }
+      pre i {
+        color: #172B4D;
+        font-style: normal;
+      }
+    </style>
   </head>
   <body>
     <h1>Elena</h1>
@@ -26,7 +72,7 @@
           Download
         </elena-button>
         <elena-button
-          aria-label="Settings"
+          label="Settings"
           icon="<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path fill='none' d='M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065' /><path fill='none' d='M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0' /></svg>"
         ></elena-button>
       </elena-stack>
@@ -146,7 +192,7 @@
           Like
         </elena-button>
         <elena-button
-          aria-label="Love"
+          label="Love"
           style="--elena-button-bg:#FFDDD2;--elena-button-border:#FFDDD2;--elena-button-text:#463634;"
           icon="<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572' /></svg>"
         ></elena-button>
@@ -198,52 +244,5 @@
         });
       });
     </script>
-
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        background: #fff;
-        color: #172B4D;
-        max-inline-size: 740px;
-        font-size: 15px;
-        margin: 0 auto;
-        padding: 2rem;
-        font-family: system-ui, sans-serif;
-      }
-      a {
-        color: #5a44d4;
-      }
-      section {
-        margin-block-start: 3.5rem;
-        padding-block-end: 2.5rem;
-        border-bottom: 1px solid hsl(220, 17%, 86%);
-      }
-      h1 {
-        font-size: 44px;
-      }
-      section h2 {
-        font-size: 21px;
-        margin-block-end: 1rem;
-      }
-      pre {
-        background: hsl(220, 14%, 97%);
-        color: hsl(218, 14%, 50%);
-        overflow-x: auto;
-        padding: 2rem;
-        white-space: pre;
-        border-radius: 6px;
-        font-family: monospace, monospace;
-        line-height: 1.6;
-        inline-size: 100%;
-        font-size: 14px;
-        margin: 2rem auto 2rem;
-      }
-      pre i {
-        color: #172B4D;
-        font-style: normal;
-      }
-    </style>
   </body>
 </html>
