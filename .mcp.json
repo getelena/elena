@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "elena": {
-      "command": "node",
-      "args": ["./packages/mcp/src/cli.js", "./packages/components"]
-    }
-  }
-}
