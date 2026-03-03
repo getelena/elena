@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { Elena } from "../src/elena.js";
-import { defineElement, html, nothing } from "../src/common/utils.js";
+import { defineElement, html, nothing, unsafeHTML } from "../src/common/utils.js";
 import { renderHtml, renderTemplate } from "../src/common/render.js";
 import { escapeHtml } from "../src/common/utils.js";
 import NothingElement from "./fixtures/nothing-element.js";
@@ -210,6 +210,25 @@ describe("utils", () => {
       // But nothing avoids this
       const withNothing = html`<span>${nothing}</span>`;
       expect(String(withNothing)).toBe("<span></span>");
+    });
+  });
+
+  describe("unsafeHTML", () => {
+    it("is marked as __raw", () => {
+      expect(unsafeHTML("<b>bold</b>").__raw).toBe(true);
+    });
+
+    it("returns the raw string as-is when converted to string", () => {
+      expect(String(unsafeHTML("<b>bold</b>"))).toBe("<b>bold</b>");
+    });
+
+    it("returns empty string for null input", () => {
+      expect(String(unsafeHTML(null))).toBe("");
+    });
+
+    it("passes through html`` without escaping the raw markup", () => {
+      const result = html`<div>${unsafeHTML("<em>hi</em>")}</div>`;
+      expect(String(result)).toBe("<div><em>hi</em></div>");
     });
   });
 
