@@ -228,6 +228,16 @@ describe("reflect: false", () => {
     expect(el.getAttribute("label")).toBe("hello");
   });
 
+  it("non-reflecting prop setter skips re-render while _isRendering is true", async () => {
+    const el = await createElement("no-reflect-element");
+    el._isRendering = true;
+    const spy = vi.spyOn(el, "_applyRender");
+    el.content = "during-render";
+    expect(spy).not.toHaveBeenCalled();
+    el._isRendering = false;
+    spy.mockRestore();
+  });
+
   it("non-reflecting prop is not flushed as attribute on connect", async () => {
     const el = document.createElement("no-reflect-element");
     el.content = "pre-connect";
