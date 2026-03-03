@@ -5,7 +5,6 @@ export default defineConfig({
     projects: [
       "packages/cli",
       "packages/core",
-      "packages/mcp",
       "packages/ssr",
       "packages/plugin-cem-define",
       "packages/plugin-cem-tag",
