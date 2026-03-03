@@ -1,7 +1,7 @@
 import { Elena, html } from "../../src/elena.js";
 const options = {
   tagName: "no-reflect-element",
-  props: ["label", { name: "content", reflect: false }],
+  props: [{ name: "label" }, { name: "content", reflect: false }],
   element: ".inner",
 };
 export default class NoReflectElement extends Elena(HTMLElement, options) {
