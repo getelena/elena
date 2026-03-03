@@ -1,6 +1,6 @@
 {
   "name": "@elenajs/mcp",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "MCP server that exposes Elena component metadata, scaffolding, and authoring guidance to AI assistants.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
