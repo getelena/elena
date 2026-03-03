@@ -5,7 +5,6 @@ dist
 *.tsbuildinfo
 .nx/cache
 .nx/workspace-data
-.next
 
 # Ignore auto-generated files in the packages
 packages/core/coverage
