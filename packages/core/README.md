@@ -135,7 +135,7 @@ If you just want to quickly test Elena in a web browser, the fastest way is to i
 
 ```html
 <script type="module">
-  import { Elena } from "https://unpkg.com/@elenajs/core@0.13.0";
+  import { Elena } from "https://unpkg.com/@elenajs/core@0.14.0";
 
   export default class MyComponent extends Elena(HTMLElement, {
     tagName: "my-component"
