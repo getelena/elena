@@ -1,6 +1,6 @@
 {
   "name": "@elenajs/bundler",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Bundler for Progressive Web Component libraries built with Elena.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
@@ -28,10 +28,10 @@
   },
   "dependencies": {
     "@custom-elements-manifest/analyzer": "0.11.0",
-    "@elenajs/plugin-cem-define": "^0.2.0",
-    "@elenajs/plugin-cem-tag": "^0.2.0",
-    "@elenajs/plugin-cem-typescript": "^0.3.0",
-    "@elenajs/plugin-rollup-css": "^0.4.0",
+    "@elenajs/plugin-cem-define": "^0.3.0",
+    "@elenajs/plugin-cem-tag": "^0.3.0",
+    "@elenajs/plugin-cem-typescript": "^0.4.0",
+    "@elenajs/plugin-rollup-css": "^0.5.0",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "^12.1.0",

@@ -1,12 +1,14 @@
 {
   "name": "@elenajs/prettier-config",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Prettier config for Elena projects.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
   "license": "MIT",
   "exports": "./index.json",
-  "files": ["index.json"],
+  "files": [
+    "index.json"
+  ],
   "publishConfig": {
     "access": "public"
   }
