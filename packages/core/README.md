@@ -93,8 +93,7 @@
 
 <br/>
 
-<details>
-<summary><h3>Design principles</h3></summary>
+## Design principles
 
 - **Progressive:** Renders HTML and CSS first, hydrates it with JavaScript after.
 - **Reliable:** Predictable lifecycle and property syncing with no hidden magic.
@@ -104,9 +103,9 @@
 - **Lightweight:** 2kB minified & gzipped, zero runtime dependencies.
 - **Accessible:** Built on semantic HTML, assistive technologies supported by default.
 
-</details>
-<details>
-<summary><h3>What is a Progressive Web Component?</h3></summary>
+<br/>
+
+## What is a Progressive Web Component?
 
 A _“Progressive Web Component”_ is a native Custom Element designed in two layers: a base layer of HTML and CSS that renders immediately, without JavaScript, and an enhancement layer of JavaScript that adds reactivity, event handling, and dynamic updates once it loads.
 
@@ -126,9 +125,9 @@ There are two types of Progressive Web Components:
 - Provide styling, layout, and behavior around the composed content.
 - Examples: `stack`, `table`, `layout`, `card`, `banner`, `visually-hidden`, `fieldset`.
 
-</details>
-<details>
-<summary><h3>Getting started</h3></summary>
+<br/>
+
+## Getting started
 
 ### Quick start
 
@@ -242,9 +241,9 @@ Button.define();
 <elena-button>Cancel</elena-button>
 ```
 
-</details>
-<details>
-<summary><h3>Options</h3></summary>
+<br/>
+
+## Options
 
 Elena provides an options object where you can set the following:
 
@@ -278,9 +277,9 @@ Please note though that doing this means that your web component can no longer b
 > [!TIP]
 > When working with Primitive Components, leaving out `element` option means that Elena will try use `firstElementChild` instead, if available. In cases when your template markup is simple, this is actually more performant when you have hundreds or even thousands of Elena components on a page.
 
-</details>
-<details>
-<summary><h3>Props</h3></summary>
+<br/>
+
+## Props
 
 Elena allows you to define prop declarations in its options object. This makes Elena aware of what external props passed to the element should be observed and synced as attributes between the web component host and the inner template element (passed as an `element` in options).
 
@@ -373,9 +372,9 @@ Additionally, you can provide possible prop values using the following syntax:
 /** @type {"default" | "primary" | "danger"} */
 ```
 
-</details>
-<details>
-<summary><h3>Events</h3></summary>
+<br/>
+
+## Events
 
 Elena allows you to define event declarations in its options object. The `events` array is used for determining which events the element should listen to and delegate from the inner template element:
 
@@ -390,9 +389,9 @@ Once declared, Elena will set up the necessary event listeners and dispatching l
 > [!TIP]
 > You can alternatively build your own custom logic inside the web component for events and not rely on the built-in functionality in Elena.
 
-</details>
-<details>
-<summary><h3>Methods</h3></summary>
+<br/>
+
+## Methods
 
 Elena ships with the following built-in lifecycle methods:
 
@@ -512,9 +511,9 @@ export default class Button extends Elena(HTMLElement) {
 }
 ```
 
-</details>
-<details>
-<summary><h3>Templates</h3></summary>
+<br/>
+
+## Templates
 
 Elena uses an HTML-based template syntax built on JavaScript [tagged template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). Return an `html` tagged template from `render()`:
 
@@ -655,16 +654,16 @@ render() {
 }
 ```
 
-</details>
-<details>
-<summary><h3>Live demos</h3></summary>
+<br/>
+
+## Live demos
 
 - **[Client, partial SSR](https://arielsalminen.com/elena/)**
 - **[Server, full SSR](https://arielsalminen.com/elena/server.html)**
 
-</details>
-<details>
-<summary><h3>Usage examples</h3></summary>
+<br/>
+
+## Usage examples
 
 ### Project examples
 
@@ -788,9 +787,9 @@ export default class Button extends Elena(HTMLElement, options) {
 Button.define();
 ```
 
-</details>
-<details>
-<summary><h3>Server Side Rendering</h3></summary>
+<br/>
+
+## Server Side Rendering
 
 Elena’s recommended approach to Server Side Rendering (SSR) is simple & straightforward. Since [Progressive Web Components](#what-is-a-progressive-web-component) are primarily HTML & CSS, you don’t need any special logic on the server to render them. The **[Composite Components](#2-composite-components)** provide a full support for SSR by default, while the **[Primitive Components](#1-primitive-components)** provide a partial support and do the rest of the hydration on the client side.
 
@@ -844,9 +843,9 @@ Elena currently provides SSR examples for the following frameworks:
 - **[Plain HTML](https://github.com/getelena/html-example-project)**
 - **[Next.js](https://github.com/getelena/next-example-project)** _(Elena can even be used inside React Server Components, see [src/app/page.tsx](https://github.com/getelena/next-example-project/blob/main/src/app/page.tsx))_
 
-</details>
-<details>
-<summary><h3>TypeScript</h3></summary>
+<br/>
+
+## TypeScript
 
 Elena is written in vanilla JavaScript with JSDoc annotations. The **`@elenajs/core`** library ships its own type declarations (`dist/elena.d.ts`) which are generated automatically by `tsc` from the JSDoc so that you get full IntelliSense and type checking.
 
@@ -927,9 +926,9 @@ export default class Button extends Elena(HTMLElement, {
 Button.define();
 ```
 
-</details>
-<details>
-<summary><h3>CSS styles</h3></summary>
+<br/>
+
+## CSS styles
 
 These guidelines cover the approaches that we recommend when styling Progressive Web Components to make them work reliably across the lifecycle of a component. You’re obviously able to craft the CSS the best way you see fit for your purpose, but there are some things to take into account that we’ve tried to cover below.
 
@@ -1089,9 +1088,9 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 > [!TIP]
 > **`@elenajs/bundler`** transforms the above JSDocs automatically to Custom Elements Manifest which allows you to generate documentation that surfaces the component’s public CSS properties.
 
-</details>
-<details>
-<summary><h3>Misc</h3></summary>
+<br/>
+
+## Misc
 
 ### Load event
 
@@ -1134,9 +1133,9 @@ Sometimes you may want to hide your web components until they’re hydrated and 
 > [!TIP]
 > This CSS snippet will take care that as soon as your elements get defined, the hiding will instantly and automatically unapply. But it will also unapply itself after two seconds no matter what, should the JavaScript take that long to do its thing, or fail to run at all.
 
-</details>
-<details>
-<summary><h3>Known issues</h3></summary>
+<br/>
+
+## Known issues
 
 ### Browser compatibility
 
@@ -1184,9 +1183,9 @@ Rules that apply to **Primitive Components** when used with a framework:
 > [!WARNING]
 > React 17 does not pass `Array` or `Object` type props or event handlers to web components correctly. Use React 18+ for proper Elena support, or pass all props as string attributes.
 
-</details>
-<details>
-<summary><h3>Packages</h3></summary>
+<br/>
+
+## Packages
 
 Elena is a monorepo containing several packages published to npm under the `@elenajs` scope:
 
@@ -1202,9 +1201,9 @@ Elena is a monorepo containing several packages published to npm under the `@ele
 
 <!-- https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md -->
 
-</details>
-<details>
-<summary><h3>Development</h3></summary>
+<br/>
+
+## Development
 
 ### Commands
 
@@ -1237,17 +1236,14 @@ pnpm start                 # web-dev-server with live reload
 
 For more details about pull requests, commit conventions and code style, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-</details>
-<details>
-<summary><h3>License</h3></summary>
+<br/>
+
+## License
 
 MIT
 
-</details>
-<details>
-<summary><h3>Copyright</h3></summary>
+<br/>
+
+## Copyright
 
 Copyright © 2026 [Ariel Salminen](https://arielsalminen.com)
-
-</details>
-
