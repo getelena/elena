@@ -9,18 +9,23 @@
     "node": ">= 20",
     "yarn": "please-use-npm"
   },
+  "prettier": "@elenajs/prettier-config",
   "resolutions": {
     "@elenajs/core": "workspace:*",
     "@elenajs/components": "workspace:*",
     "@elenajs/bundler": "workspace:*",
     "@elenajs/cli": "workspace:*",
+    "@elenajs/eslint-config": "workspace:*",
     "@elenajs/plugin-cem-define": "workspace:*",
     "@elenajs/plugin-cem-tag": "workspace:*",
     "@elenajs/plugin-cem-typescript": "workspace:*",
     "@elenajs/plugin-rollup-css": "workspace:*",
+    "@elenajs/prettier-config": "workspace:*",
     "@elenajs/ssr": "workspace:*"
   },
   "devDependencies": {
+    "@elenajs/eslint-config": "^0.1.0",
+    "@elenajs/prettier-config": "^0.1.0",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
