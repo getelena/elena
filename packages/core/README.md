@@ -106,7 +106,7 @@
 
 </details>
 <details>
-<summary>What is a Progressive Web Component?</summary>
+<summary><h2>What is a Progressive Web Component?</h2></summary>
 
 A _“Progressive Web Component”_ is a native Custom Element designed in two layers: a base layer of HTML and CSS that renders immediately, without JavaScript, and an enhancement layer of JavaScript that adds reactivity, event handling, and dynamic updates once it loads.
 
