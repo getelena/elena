@@ -49,12 +49,6 @@ function setupTsBuild() {
     join(srcDir, "button.ts"),
     `import { Elena, html } from "@elenajs/core";
 
-const options = {
-  tagName: "elena-button",
-  props: ["variant", "disabled"],
-  events: ["click", "focus", "blur"],
-};
-
 /**
  * Button component written in TypeScript.
  *
@@ -68,7 +62,11 @@ const options = {
  * @cssprop [--elena-button-text] - Overrides the default text color.
  * @cssprop [--elena-button-bg] - Overrides the default background color.
  */
-export default class Button extends Elena(HTMLElement, options) {
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant", "disabled"];
+  static events = ["click", "focus", "blur"];
+
   /**
    * The style variant of the button.
    * @attribute
@@ -98,11 +96,6 @@ Button.define();
     join(srcDir, "stack.ts"),
     `import { Elena } from "@elenajs/core";
 
-const options = {
-  tagName: "elena-stack",
-  props: ["direction"],
-};
-
 /**
  * Stack component manages layout of immediate children.
  *
@@ -110,7 +103,10 @@ const options = {
  * @slot - The stacked content
  * @status alpha
  */
-export default class Stack extends Elena(HTMLElement, options) {
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
+
   /**
    * The direction of the stack.
    * @attribute
