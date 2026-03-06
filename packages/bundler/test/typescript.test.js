@@ -121,7 +121,12 @@ Stack.define();
   writeFileSync(
     join(srcDir, "button.css"),
     `@scope (elena-button) {
-  :scope, *, *::before, *::after { all: unset; }
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
+   all: unset;
+  }
   :scope { display: inline-block; }
   button { display: inline-flex; }
 }
@@ -131,7 +136,12 @@ Stack.define();
   writeFileSync(
     join(srcDir, "stack.css"),
     `@scope (elena-stack) {
-  :scope, *, *::before, *::after { all: unset; }
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
+    all: unset;
+  }
   :scope { display: flex; flex-direction: column; gap: 0.5rem; }
   :scope[direction="row"] { flex-direction: row; }
 }

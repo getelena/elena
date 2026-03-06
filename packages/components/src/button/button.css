@@ -4,10 +4,11 @@
 
 @scope (elena-button) {
   :scope,
-  *:not(svg, path),
+  *:where(:not(img, svg):not(svg *)),
   *::before,
   *::after {
     all: unset;
+    display: revert;
   }
 
   :scope {

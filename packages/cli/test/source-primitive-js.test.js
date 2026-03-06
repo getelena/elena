@@ -11,13 +11,15 @@ describe("generateSource, primitive JS", () => {
     // Imports
     expect(out).toContain('import { Elena, html } from "@elenajs/core"');
 
-    // Options
-    expect(out).toContain('props: ["variant"]');
-    expect(out).toContain('events: ["click", "focus", "blur"]');
+    // Static fields
+    expect(out).toContain('static tagName = "my-button"');
+    expect(out).toContain('static props = ["variant"]');
+    expect(out).toContain('static events = ["click", "focus", "blur"]');
 
-    // Constructor with variant prop
-    expect(out).toContain("constructor()");
-    expect(out).toContain('this.variant = "default"');
+    // No constructor
+    expect(out).not.toContain("constructor()");
+    expect(out).not.toContain("this.variant");
+    expect(out).toContain('variant = "default"');
 
     // Render
     expect(out).toContain("render()");
@@ -42,14 +44,14 @@ describe("generateSource, primitive JS", () => {
   test("no features", () => {
     const out = generateSource("my-button", "primitive", "javascript", NONE);
 
-    // Options, only tagName
-    expect(out).toContain('tagName: "my-button"');
-    expect(out).not.toContain("props:");
-    expect(out).not.toContain("events:");
+    // Static tagName always present
+    expect(out).toContain('static tagName = "my-button"');
+    expect(out).not.toContain("static props");
+    expect(out).not.toContain("static events");
 
     // No constructor or variant
     expect(out).not.toContain("constructor()");
-    expect(out).not.toContain("this.variant");
+    expect(out).not.toContain("variant");
 
     // Still has render
     expect(out).toContain("render()");
@@ -65,11 +67,12 @@ describe("generateSource, primitive JS", () => {
   test("only props", () => {
     const out = generateSource("my-button", "primitive", "javascript", ["props"]);
 
-    expect(out).toContain('props: ["variant"]');
-    expect(out).toContain("constructor()");
-    expect(out).toContain('this.variant = "default"');
+    expect(out).toContain('static props = ["variant"]');
+    expect(out).toContain('variant = "default"');
+    expect(out).not.toContain("constructor()");
+    expect(out).not.toContain("this.variant");
 
-    expect(out).not.toContain("events:");
+    expect(out).not.toContain("static events");
     expect(out).not.toContain("@event");
     expect(out).not.toContain("@cssprop");
     expect(out).not.toContain("myMethod");
@@ -78,10 +81,10 @@ describe("generateSource, primitive JS", () => {
   test("only events", () => {
     const out = generateSource("my-button", "primitive", "javascript", ["events", "comments"]);
 
-    expect(out).toContain('events: ["click", "focus", "blur"]');
+    expect(out).toContain('static events = ["click", "focus", "blur"]');
     expect(out).toContain("@event click");
 
-    expect(out).not.toContain("props:");
+    expect(out).not.toContain("static props");
     expect(out).not.toContain("constructor()");
     expect(out).not.toContain("@cssprop");
     expect(out).not.toContain("myMethod");
@@ -92,8 +95,8 @@ describe("generateSource, primitive JS", () => {
 
     expect(out).toContain("@cssprop [--my-button-text]");
 
-    expect(out).not.toContain("props:");
-    expect(out).not.toContain("events:");
+    expect(out).not.toContain("static props");
+    expect(out).not.toContain("static events");
     expect(out).not.toContain("@event");
     expect(out).not.toContain("constructor()");
     expect(out).not.toContain("myMethod");
@@ -105,8 +108,8 @@ describe("generateSource, primitive JS", () => {
     expect(out).toContain("myMethod()");
     expect(out).toContain("console.log(this.element)");
 
-    expect(out).not.toContain("props:");
-    expect(out).not.toContain("events:");
+    expect(out).not.toContain("static props");
+    expect(out).not.toContain("static events");
     expect(out).not.toContain("@event");
     expect(out).not.toContain("@cssprop");
     expect(out).not.toContain("constructor()");

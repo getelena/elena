@@ -32,9 +32,13 @@
     "happy-dom": "20.7.0",
     "lerna": "9.0.4",
     "prettier": "3.8.1",
-    "vitest": "^4.0.18"
+    "vitepress": "1.6.3",
+    "vitest": "4.0.18"
   },
   "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
     "build": "NX_TASKS_RUNNER_DYNAMIC_OUTPUT=false lerna run build",
     "test": "vitest run",
     "lint": "eslint \"packages/**/*.{js,ts}\" --cache",

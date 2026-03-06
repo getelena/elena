@@ -194,6 +194,7 @@ export function Elena(superClass) {
         if (Object.prototype.hasOwnProperty.call(this, name)) {
           const value = this[name];
           delete this[name];
+          // c8 ignore next: _props can't already contain `name` at this point in normal usage
           if (!this._props || !this._props.has(name)) {
             this[name] = value;
           }
@@ -271,6 +272,7 @@ export function Elena(superClass) {
      */
     _flushProps() {
       if (this._props) {
+        // c8 ignore next: _noReflect is always set by _setupStaticProps before _flushProps runs
         const noReflect = this.constructor._noReflect || new Set();
         for (const [prop, value] of this._props) {
           if (noReflect.has(prop)) {
