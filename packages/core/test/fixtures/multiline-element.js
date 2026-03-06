@@ -1,24 +1,18 @@
 import { Elena, html } from "../../src/elena.js";
 
-const options = {
-  tagName: "multiline-element",
-  props: ["label", "type", "name", "disabled"],
-  events: [],
-  element: ".btn",
-};
-
 /**
  * Test fixture with a multiline template to verify
  * whitespace stripping from template indentation.
  */
-export default class MultilineElement extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
-    this.label = "";
-    this.type = "button";
-    this.name = "";
-    this.disabled = false;
-  }
+export default class MultilineElement extends Elena(HTMLElement) {
+  static tagName = "multiline-element";
+  static props = ["label", "type", "name", "disabled"];
+  static element = ".btn";
+
+  label = "";
+  type = "button";
+  name = "";
+  disabled = false;
 
   render() {
     return html`

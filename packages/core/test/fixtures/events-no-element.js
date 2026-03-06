@@ -1,9 +1,7 @@
 import { Elena } from "../../src/elena.js";
 
-const options = {
-  tagName: "events-no-element",
-  events: ["click"],
-};
-
-export default class EventsNoElement extends Elena(HTMLElement, options) {}
+export default class EventsNoElement extends Elena(HTMLElement) {
+  static tagName = "events-no-element";
+  static events = ["click"];
+}
 EventsNoElement.define();

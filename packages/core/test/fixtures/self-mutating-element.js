@@ -4,14 +4,11 @@ import { Elena, html } from "../../src/elena.js";
  * Test fixture whose render() normalizes its own observed prop.
  * Without the _isRendering guard this would recurse infinitely.
  */
-export default class SelfMutatingElement extends Elena(HTMLElement, {
-  tagName: "self-mutating-element",
-  props: ["label"],
-}) {
-  constructor() {
-    super();
-    this.label = "";
-  }
+export default class SelfMutatingElement extends Elena(HTMLElement) {
+  static tagName = "self-mutating-element";
+  static props = ["label"];
+
+  label = "";
 
   render() {
     // Uppercase the label: this setAttribute call fires attributeChangedCallback

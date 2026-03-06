@@ -1,15 +1,8 @@
 import { Elena, html } from "../../src/elena.js";
 
-const options = {
-  tagName: "no-props-element",
-  events: [],
-  element: ".inner",
-};
-
-export default class NoPropsElement extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
-  }
+export default class NoPropsElement extends Elena(HTMLElement) {
+  static tagName = "no-props-element";
+  static element = ".inner";
 
   render() {
     return html`<span class="inner">static content</span>`;

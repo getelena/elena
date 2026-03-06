@@ -1,15 +1,13 @@
 import { Elena, html } from "../../src/elena.js";
-const options = {
-  tagName: "no-reflect-element",
-  props: [{ name: "label" }, { name: "content", reflect: false }],
-  element: ".inner",
-};
-export default class NoReflectElement extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
-    this.label = "";
-    this.content = "";
-  }
+
+export default class NoReflectElement extends Elena(HTMLElement) {
+  static tagName = "no-reflect-element";
+  static props = [{ name: "label" }, { name: "content", reflect: false }];
+  static element = ".inner";
+
+  label = "";
+  content = "";
+
   render() {
     return html`<span class="inner">${this.label} ${this.content}</span>`;
   }

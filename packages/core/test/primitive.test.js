@@ -136,9 +136,15 @@ describe("Primitive Components", () => {
       expect(el.querySelector(".inner").textContent).toBe("B");
     });
 
-    it("warns when a prop named 'text' is declared", () => {
+    it("warns when a prop named 'text' is declared", async () => {
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
-      Elena(HTMLElement, { props: ["text"] });
+      class TextPropElement extends Elena(HTMLElement) {
+        static tagName = "text-prop-element";
+        static props = ["text"];
+      }
+      TextPropElement.define();
+      const el = document.createElement("text-prop-element");
+      document.body.appendChild(el);
       expect(spy).toHaveBeenCalledWith(expect.stringContaining('"text" is a reserved property'));
       spy.mockRestore();
     });
