@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { createElement } from "./setup.js";
-import "./fixtures/basic-element.js";
+import { Elena, html } from "../src/elena.js";
+import BasicElement from "./fixtures/basic-element.js";
 import "./fixtures/no-template-element.js";
 import "./fixtures/extended-element.js";
 import "./fixtures/no-props-element.js";
@@ -223,7 +224,7 @@ describe("lifecycle", () => {
       // no-template-element uses element: ".missing" which never resolves
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
       const el = await createElement("no-template-element");
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining("No element found"));
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining("Passed element not found."));
       spy.mockRestore();
     });
   });
@@ -436,7 +437,7 @@ describe("lifecycle", () => {
       await import("./fixtures/events-no-element.js");
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
       await createElement("events-no-element");
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining("Cannot delegate events"));
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining("Cannot add events"));
       spy.mockRestore();
     });
   });
@@ -453,6 +454,58 @@ describe("lifecycle", () => {
       const el = await createElement("wrapper-element");
       // wrapper-element is a Composite Component, no events
       expect(() => el.remove()).not.toThrow();
+    });
+  });
+
+  describe("_setupStaticProps (WeakSet guard)", () => {
+    it("runs only once per class: getter is not redefined for a second instance", async () => {
+      await createElement("basic-element");
+      // Capture the getter reference after the first instance ran setup
+      const getterAfterFirst = Object.getOwnPropertyDescriptor(BasicElement.prototype, "label").get;
+
+      const el2 = document.createElement("basic-element");
+      document.body.appendChild(el2);
+      // If setProps ran again it would create a new function object; same ref means it was skipped
+      const getterAfterSecond = Object.getOwnPropertyDescriptor(
+        BasicElement.prototype,
+        "label"
+      ).get;
+
+      expect(getterAfterFirst).toBe(getterAfterSecond);
+    });
+
+    it("observedAttributes includes 'text' even when static props is not defined", () => {
+      class NoPropEl extends Elena(HTMLElement) {}
+      expect(NoPropEl.observedAttributes).toEqual(["text"]);
+    });
+
+    it("subclass gets its own independent setup from its parent Elena component", () => {
+      class ParentComp extends Elena(HTMLElement) {
+        static props = ["base"];
+        base = "parent-default";
+        render() {
+          return html`<span>${this.base}</span>`;
+        }
+      }
+
+      class ChildComp extends ParentComp {
+        static tagName = "test-child-comp-setup";
+        static props = ["base", "extra"];
+        extra = "child-default";
+      }
+      ChildComp.define();
+
+      const el = document.createElement("test-child-comp-setup");
+      document.body.appendChild(el);
+
+      el.extra = "updated";
+      expect(el.extra).toBe("updated");
+
+      // Parent prop still works through the prototype chain
+      el.base = "base-updated";
+      expect(el.base).toBe("base-updated");
+
+      el.remove();
     });
   });
 });

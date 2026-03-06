@@ -267,6 +267,42 @@ describe("utils", () => {
       expect(result.values).toBeDefined();
       expect(result.values[0]).toBe(value);
     });
+
+    it("nested html fragment passes through without double-escaping", () => {
+      const inner = html`<b>${"hello"}</b>`;
+      const outer = html`<div>${inner}</div>`;
+      expect(String(outer)).toBe("<div><b>hello</b></div>");
+    });
+
+    it("nested html fragment escapes its own dynamic values but not the fragment itself", () => {
+      const inner = html`<b>${"<script>"}</b>`;
+      const outer = html`<div>${inner}</div>`;
+      // inner value is escaped, but the html fragment tags are passed through raw
+      expect(String(outer)).toBe("<div><b>&lt;script&gt;</b></div>");
+      expect(String(outer)).not.toContain("<script>");
+    });
+
+    it("deeply nested html fragments compose correctly", () => {
+      const a = html`<em>${"text"}</em>`;
+      const b = html`<span>${a}</span>`;
+      const c = html`<p>${b}</p>`;
+      expect(String(c)).toBe("<p><span><em>text</em></span></p>");
+    });
+
+    it("renders number values as strings", () => {
+      const result = html`<span>${42}</span>`;
+      expect(String(result)).toBe("<span>42</span>");
+    });
+
+    it("renders 0 without treating it as falsy", () => {
+      const result = html`<span>${0}</span>`;
+      expect(String(result)).toBe("<span>0</span>");
+    });
+
+    it("is marked as __raw", () => {
+      const result = html`<span>test</span>`;
+      expect(result.__raw).toBe(true);
+    });
   });
 
   describe("defineElement", () => {

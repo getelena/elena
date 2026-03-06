@@ -103,6 +103,29 @@ describe("Primitive Components", () => {
       expect(el.text).toBe("");
     });
 
+    it("returns empty string before connection when _text is undefined", () => {
+      // Exercises the `this._text ?? ""` fallback in the getter.
+      const el = document.createElement("content-element");
+      expect(el.text).toBe("");
+    });
+
+    it("does not re-render when set to the same value", async () => {
+      const el = await createElement("content-element");
+      el.text = "Hello";
+      const spy = vi.spyOn(el, "render");
+      el.text = "Hello";
+      expect(spy).not.toHaveBeenCalled();
+      spy.mockRestore();
+    });
+
+    it("does not trigger render when set before first connection", () => {
+      const el = document.createElement("content-element");
+      const spy = vi.spyOn(el, "render");
+      el.text = "pre-connect";
+      expect(spy).not.toHaveBeenCalled();
+      spy.mockRestore();
+    });
+
     it("trims whitespace from captured text", () => {
       const el = document.createElement("content-element");
       el.textContent = "  Hello  ";
@@ -145,7 +168,7 @@ describe("Primitive Components", () => {
       TextPropElement.define();
       const el = document.createElement("text-prop-element");
       document.body.appendChild(el);
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining('"text" is a reserved property'));
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining('"text" is a reserved prop.'));
       spy.mockRestore();
     });
   });

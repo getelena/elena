@@ -59,6 +59,9 @@ function elementResolver(selector) {
  * }} ElenaElementConstructor
  */
 
+/** @type {WeakSet<Function>} Tracks which component classes have already been set up. */
+const _setupRegistry = new WeakSet();
+
 /**
  * Creates an Elena component class by extending `superClass`.
  *
@@ -142,7 +145,7 @@ export function Elena(superClass) {
     _setupStaticProps() {
       const component = this.constructor;
 
-      if (Object.prototype.hasOwnProperty.call(component, "_elenaSetup")) {
+      if (_setupRegistry.has(component)) {
         return;
       }
 
@@ -165,10 +168,7 @@ export function Elena(superClass) {
         }
 
         if (names.includes("text")) {
-          console.warn(
-            '░█ [ELENA]: "text" is a reserved property. ' +
-              "Rename your prop to avoid overriding the built-in text content feature."
-          );
+          console.warn('░█ [ELENA]: "text" is a reserved prop.');
         }
 
         setProps(component.prototype, names, noRef);
@@ -177,7 +177,7 @@ export function Elena(superClass) {
       component._noReflect = noRef;
       component._elenaEvents = component.events || null;
       component._resolver = elementResolver(component.element);
-      component._elenaSetup = true;
+      _setupRegistry.add(component);
     }
 
     /**
@@ -261,7 +261,7 @@ export function Elena(superClass) {
           // Only warn when an explicit element selector was provided but didn't match.
           // Composite Components (no element option) intentionally have no inner ref.
           if (this.constructor.element) {
-            console.warn("░█ [ELENA]: No element found, using firstElementChild as fallback.");
+            console.warn("░█ [ELENA]: Passed element not found.");
           }
           this.element = this.firstElementChild;
         }
@@ -298,10 +298,7 @@ export function Elena(superClass) {
 
       if (!this._events && events?.length) {
         if (!this.element) {
-          console.warn(
-            "░█ [ELENA]: Cannot delegate events, no inner element found. " +
-              "Ensure the component renders an element or check your element selector."
-          );
+          console.warn("░█ [ELENA]: Cannot add events, no element found.");
         } else {
           this._events = true;
 
@@ -387,10 +384,7 @@ export function Elena(superClass) {
       if (this.tagName) {
         defineElement(this.tagName, this);
       } else {
-        console.warn(
-          "░█ [ELENA]: define() called without a tagName. " +
-            "Set tagName as a static field on your component class."
-        );
+        console.warn("░█ [ELENA]: define() called without a tagName.");
       }
     }
 

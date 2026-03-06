@@ -34,11 +34,21 @@ console.log(color(`░█ [ELENA]: Found the following JavaScript modules:`));
  * @param {boolean} [options.hasSummary=false] - Whether to print a size summary after the build.
  * @returns {import("rollup").RollupOptions}
  */
-function createConfig({ input, output, hasSummary = false }) {
+function createConfig({ input, output, hasSummary = false, mangleProperties = false }) {
   const plugins = [
     terser({
       ecma: 2020,
       module: true,
+      ...(mangleProperties && {
+        mangle: {
+          properties: {
+            // Mangle all _-prefixed internal properties (e.g. _hydrated, _props, __raw).
+            // Public API properties (element, text, render, etc.) don't start with _.
+            // Only safe in the single-file bundle where Terser sees all code at once.
+            regex: /^_/,
+          },
+        },
+      }),
     }),
     {
       name: "log",
@@ -95,9 +105,11 @@ export default [
     hasSummary: true,
   }),
   // Single-file bundle for consumers who prefer one import.
+  // Property mangling is safe here because Terser sees all code at once.
   createConfig({
     input: "src/elena.js",
     output: { file: "dist/bundle.js" },
     hasSummary: true,
+    mangleProperties: true,
   }),
 ];

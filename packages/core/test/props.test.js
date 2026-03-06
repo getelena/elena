@@ -129,6 +129,14 @@ describe("setProps", () => {
     const el = await createElement("basic-element");
     expect(el.hasAttribute("label")).toBe(false);
   });
+
+  it("setter is a no-op when the same value is assigned again", async () => {
+    const el = await createElement("basic-element", { label: "hello" });
+    const spy = vi.spyOn(el, "setAttribute");
+    el.label = "hello";
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });
 
 describe("syncAttribute", () => {
