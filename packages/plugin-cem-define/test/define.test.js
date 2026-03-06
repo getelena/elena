@@ -42,7 +42,24 @@ describe("elenaDefinePlugin", () => {
     expect(ceDef.name).toBe("elena-input");
   });
 
-  test("skips class with no options argument", () => {
+  test("extracts tagName from static class field", () => {
+    const manifest = analyze(`
+      class Button extends Elena(HTMLElement) {
+        static tagName = "elena-button";
+        static props = ["variant"];
+      }
+    `);
+
+    const mod = manifest.modules[0];
+    const decl = mod.declarations.find(d => d.name === "Button");
+    expect(decl.tagName).toBe("elena-button");
+
+    const ceDef = mod.exports.find(e => e.kind === "custom-element-definition");
+    expect(ceDef.name).toBe("elena-button");
+    expect(ceDef.declaration.name).toBe("Button");
+  });
+
+  test("skips class with no options argument and no static tagName", () => {
     const manifest = analyze(`
       class Plain extends Elena(HTMLElement) {}
     `);
