@@ -95,7 +95,11 @@ export function Elena(superClass) {
         return;
       }
 
+      // Set flag so the property setter skips redundant attribute reflection:
+      // the attribute is already at the new value, no need to set it again.
+      this._syncing = true;
       getProps(this, prop, oldValue, newValue);
+      this._syncing = false;
 
       // Re-render when attributes change (after initial render).
       // Guard against re-entrant renders: if render() itself mutates an observed
@@ -209,6 +213,10 @@ export function Elena(superClass) {
         if (text) {
           this.text = text;
         } else {
+          // Pre-initialize to empty so the microtask doesn’t trigger
+          // a re-render when textContent is still empty.
+          this._text = "";
+
           // Angular sets textContent after the element connects,
           // so we defer capture to the next microtask to pick it up.
           queueMicrotask(() => {
@@ -229,10 +237,12 @@ export function Elena(superClass) {
       const result = this.render();
 
       if (result && result.strings) {
-        renderTemplate(this, result.strings, result.values);
+        const rebuilt = renderTemplate(this, result.strings, result.values);
 
-        // Re-resolve element ref after render in case the DOM was rebuilt.
-        if (this._hydrated) {
+        // Re-resolve element ref only when the DOM was fully rebuilt.
+        // Fast-path text node patching leaves the DOM structure intact,
+        // so the existing ref is still valid.
+        if (this._hydrated && rebuilt) {
           this.element = this.constructor._resolver(this);
         }
       }
