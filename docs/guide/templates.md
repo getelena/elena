@@ -58,15 +58,15 @@ render() {
 
 ## Element ref
 
-Elena provides a special **Ref** to the `element` you pass as a DOM selector:
+Elena provides a special **Ref** to the inner element resolved by `static element`:
 
 ```js
-export default class Button extends Elena(HTMLElement, {
-  element: ".my-button",
-})
+export default class Button extends Elena(HTMLElement) {
+  static element = ".my-button";
+}
 ```
 
-This allows you direct access to the underlying DOM element:
+This gives you direct access to the underlying DOM element:
 
 ```js
 console.log(this.element);

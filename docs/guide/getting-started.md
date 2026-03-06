@@ -6,36 +6,24 @@ If you just want to quickly test Elena in a web browser, the fastest way is to i
 
 ```html
 <script type="module">
-  import { Elena } from "https://unpkg.com/@elenajs/core@0.15.0";
+  import { Elena, html } from "https://unpkg.com/@elenajs/core@0.15.0";
 
-  export default class MyComponent extends Elena(HTMLElement, {
-    tagName: "my-component"
-  }) {
-    // Do something, or leave empty.
-    // This is a valid Elena (composite) component as is.
+  export default class MyComponent extends Elena(HTMLElement) {
+    static tagName = "my-component";
+    static props = ["name"];
+    name = "Somebody";
+    render() {
+      return html`<p>Hello, ${this.name}!</p>`;
+    }
   }
   MyComponent.define();
 </script>
 ```
 
-Once created, add scoped `<style>` for your component as well:
-
-```html
-<style>
-  @scope (my-component) {
-    :scope {
-      display: inline-block;
-      background: pink;
-      color: black;
-    }
-  }
-</style>
-```
-
 Now you can use your component anywhere on the page:
 
 ```html
-<my-component>Hello Elena!</my-component>
+<my-component name="World"></my-component>
 ```
 
 > [!TIP]
@@ -59,14 +47,12 @@ import { Elena } from "@elenajs/core";
 
 ```js
 // ░ [ELENA]: Composite Component
-export default class Stack extends Elena(HTMLElement, {
-  tagName: "elena-stack",
-  props: ["direction"],
-}) {
-  constructor() {
-    super();
-    this.direction = "column";
-  }
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
+
+  direction = "column";
+
   // Note that Composite Components do not call render()
 }
 Stack.define();
@@ -76,10 +62,9 @@ Stack.define();
 
 ```html
 <elena-stack>
-  <elena-input label="Name" type="text"></elena-input>
-  <elena-input label="Email" type="email"></elena-input>
-  <elena-textarea label="Message"></elena-textarea>
-  <elena-button type="submit">Submit</elena-button>
+  <div>Stacked content</div>
+  <div>Stacked content</div>
+  <div>Stacked content</div>
 </elena-stack>
 ```
 
@@ -89,14 +74,12 @@ Stack.define();
 import { Elena, html } from "@elenajs/core";
 
 // ░ [ELENA]: Primitive Component
-export default class Button extends Elena(HTMLElement, {
-  tagName: "elena-button",
-  props: ["variant"],
-}) {
-  constructor() {
-    super();
-    this.variant = "default";
-  }
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant"];
+
+  variant = "default";
+
   // Primitive Components return their `html` in render()
   render() {
     return html`<button>${this.text}</button>`;

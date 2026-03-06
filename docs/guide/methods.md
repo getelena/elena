@@ -1,18 +1,18 @@
 # Methods
 
-Elena ships with the following built-in lifecycle methods:
+Elena ships with the following built-in lifecycle methods that follow the standard [custom elements lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks) while adding optional `render()` and `updated()` methods:
 
 - **`connectedCallback()`:** Called each time the element is added to the DOM.
 - **`disconnectedCallback()`:** Called each time the element is removed from the DOM.
 - **`attributeChangedCallback()`:** Called when Elena's props are changed, added, removed or replaced.
 - **`render()`:** Called whenever there's an update that needs rendering.
-- **`updated()`:** Performs a post-update and adds the `hydrated` attribute to the host element.
+- **`updated()`:** Called once after the element's first connect. Adds the `hydrated` attribute to the host element.
 
 ## Utility methods
 
 ### `ClassName.define()`
 
-Register the web component with SSR guards. Call this on your subclass after the class body is defined. The tag name is read from the `tagName` option set when calling `Elena()`.
+Register the web component with SSR guards. Call this on your subclass after the class body is defined. The tag name is read from the `static tagName` class field.
 
 ```js
 MyElement.define();

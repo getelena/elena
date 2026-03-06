@@ -25,11 +25,6 @@ Below is an example of a **Composite Component** which includes `props` and docu
 // ░ [ELENA]: Composite Component
 import { Elena } from "@elenajs/core";
 
-const options = {
-  tagName: "elena-stack",
-  props: ["direction"],
-};
-
 /**
  * Stack component manages layout of immediate children
  * with optional spacing between each child.
@@ -38,18 +33,18 @@ const options = {
  * @slot - The stacked content
  * @status alpha
  */
-export default class Stack extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
 
-    /**
-     * The direction of the stack.
-     * @attribute
-     * @type {"column" | "row"}
-     */
-    this.direction = "column";
-  }
+  /**
+   * The direction of the stack.
+   * @attribute
+   * @type {"column" | "row"}
+   */
+  direction = "column";
 }
+
 Stack.define();
 ```
 
@@ -60,12 +55,6 @@ Below is an example of a **Primitive Component** which includes `props`, `events
 ```js
 // ░ [ELENA]: Primitive Component
 import { Elena, html } from "@elenajs/core";
-
-const options = {
-  tagName: "elena-button",
-  props: ["variant", "disabled", "type"],
-  events: ["click", "focus", "blur"],
-};
 
 /**
  * The description of the component goes here.
@@ -81,31 +70,31 @@ const options = {
  * @cssprop [--elena-button-bg] - Overrides the default background color.
  * @cssprop [--elena-button-font] - Overrides the default font-family.
  */
-export default class Button extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant", "disabled", "type"];
+  static events = ["click", "focus", "blur"];
 
-    /**
-     * The style variant of the button.
-     * @attribute
-     * @type {"default" | "primary" | "danger"}
-     */
-    this.variant = "default";
+  /**
+   * The style variant of the button.
+   * @attribute
+   * @type {"default" | "primary" | "danger"}
+   */
+  variant = "default";
 
-    /**
-     * Makes the component disabled.
-     * @attribute
-     * @type {Boolean}
-     */
-    this.disabled = false;
+  /**
+   * Makes the component disabled.
+   * @attribute
+   * @type {Boolean}
+   */
+  disabled = false;
 
-    /**
-     * The type of the button.
-     * @attribute
-     * @type {"submit" | "reset" | "button"}
-     */
-    this.type = "button";
-  }
+  /**
+   * The type of the button.
+   * @attribute
+   * @type {"submit" | "reset" | "button"}
+   */
+  type = "button";
 
   /**
    * An example custom method.
@@ -124,5 +113,6 @@ export default class Button extends Elena(HTMLElement, options) {
     `;
   }
 }
+
 Button.define();
 ```

@@ -1,21 +1,17 @@
 # Props
 
-Elena allows you to define prop declarations in its options object. This makes Elena aware of what external props passed to the element should be observed and synced as attributes between the web component host and the inner template element (passed as an `element` in options).
+Elena allows you to define prop declarations using the `static props` field. This makes Elena aware of what external props passed to the element should be observed and synced as attributes between the web component host and the inner template element.
 
-Props are declared in the `props` array in the options object, with default values set inside the `constructor`:
+Props are declared in `static props`, with default values set as instance fields:
 
 ```js
-export default class Button extends Elena(HTMLElement, {
-  props: ["variant", "disabled", "value", "type"],
-}) {
-  constructor() {
-    super();
+export default class Button extends Elena(HTMLElement) {
+  static props = ["variant", "disabled", "value", "type"];
 
-    this.variant = "default";
-    this.disabled = false;
-    this.value = "";
-    this.type = "button";
-  }
+  variant = "default";
+  disabled = false;
+  value = "";
+  type = "button";
 }
 ```
 
@@ -27,13 +23,11 @@ export default class Button extends Elena(HTMLElement, {
 By default, Elena reflects all properties to the host element as HTML attributes. If you want to disable this feature for a specific property, use `reflect: false`:
 
 ```js
-const options = {
-  props: [
-    "variant",
-    "size",
+export default class Button extends Elena(HTMLElement) {
+  static props = [
     { name: "icon", reflect: false },
-  ],
-};
+  ];
+}
 ```
 
 ## Documenting props
@@ -46,28 +40,28 @@ In addition to declaring props, you can (and should!) document them using a [JSD
  * @attribute
  * @type {"default" | "primary" | "danger"}
  */
-this.variant = "default";
+variant = "default";
 
 /**
  * Makes the component disabled.
  * @attribute
  * @type {Boolean}
  */
-this.disabled = false;
+disabled = false;
 
 /**
  * The value used to identify the button in forms.
  * @attribute
  * @type {string}
  */
-this.value = "";
+value = "";
 
 /**
  * The type of the button.
  * @attribute
  * @type {"submit" | "reset" | "button"}
  */
-this.type = "button";
+type = "button";
 ```
 
 > [!TIP]

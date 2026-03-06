@@ -3,8 +3,8 @@
 Elena is written in vanilla JavaScript with JSDoc annotations. The **`@elenajs/core`** library ships its own type declarations (`dist/elena.d.ts`) which are generated automatically by `tsc` from the JSDoc so that you get full IntelliSense and type checking.
 
 ```ts
-import { Elena, html, nothing } from "@elenajs/core";
-// Elena, ElenaOptions, html, nothing are all typed
+import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
+// Elena, ElenaPropObject, ElenaElementConstructor, html, unsafeHTML, nothing are all typed
 ```
 
 ## Generating types for components
@@ -50,16 +50,16 @@ Elena provides TypeScript examples for the following JavaScript frameworks:
 
 ## Authoring components with TypeScript
 
-When using TypeScript (instead of JavaScript) to author the Elena components, you can simplify the code (like omitting the `constructor` part) and have your type definitions inline:
+When using TypeScript to author Elena components, you can add inline type annotations directly to your instance field declarations:
 
 ```ts
 // ░ [ELENA]: Primitive Component
 import { Elena, html } from "@elenajs/core";
 
-export default class Button extends Elena(HTMLElement, {
-  tagName: "elena-button",
-  props: ["variant"],
-}) {
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant"];
+
   /**
    * The style variant of the component.
    * @attribute

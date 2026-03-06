@@ -39,14 +39,14 @@ Elena is built entirely on standards based custom elements and has no external d
 
 ```javascript
 import { Elena } from "@elenajs/core";
-const options = { tagName: "elena-stack", props: ["direction"] };
 
-export default class Stack extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
-    this.direction = "column";
-  }
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
+
+  direction = "column";
 }
+
 Stack.define();
 ```
 ```html

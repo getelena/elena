@@ -1,11 +1,11 @@
 # Events
 
-Elena allows you to define event declarations in its options object. The `events` array is used for determining which events the element should listen to and delegate from the inner template element:
+Elena allows you to define event declarations using the `static events` field. The `events` array determines which events the element should listen to and delegate from the inner template element:
 
 ```js
-export default class Button extends Elena(HTMLElement, {
-  events: ["click", "focus", "blur"],
-})
+export default class Button extends Elena(HTMLElement) {
+  static events = ["click", "focus", "blur"];
+}
 ```
 
 Once declared, Elena will set up the necessary event listeners and dispatching logic and take care of cleanup when the element is removed from the DOM.
@@ -33,5 +33,5 @@ Use the `@event` JSDoc tag on the component class to document which events a com
  * @event focus - Programmatically move focus to the component.
  * @event blur - Programmatically remove focus from the component.
  */
-export default class Button extends Elena(HTMLElement, options) { /*...*/ }
+export default class Button extends Elena(HTMLElement) { /*...*/ }
 ```
