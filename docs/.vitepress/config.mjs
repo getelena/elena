@@ -13,7 +13,7 @@ export default defineConfig({
   themeConfig: {
     logo: "/logo.png",
     nav: [
-      { text: "Docs", link: "/" },
+      { text: "Docs", link: "/", activeMatch: "^(?!/api/)" },
       { text: "API Reference", link: "/api/" },
       {
         text: "Packages",
