@@ -49,7 +49,18 @@ function buildResolver(selector) {
  */
 
 /**
- * @typedef {(new (...args: any[]) => HTMLElement & ElenaInstanceMembers) & { define(): void, readonly observedAttributes: string[] }} ElenaElementConstructor
+ * @typedef {{ name: string, reflect?: boolean }} ElenaPropObject
+ */
+
+/**
+ * @typedef {(new (...args: any[]) => HTMLElement & ElenaInstanceMembers) & {
+ *   define(): void,
+ *   readonly observedAttributes: string[],
+ *   tagName?: string,
+ *   props?: (string | ElenaPropObject)[],
+ *   events?: string[],
+ *   element?: string,
+ * }} ElenaElementConstructor
  */
 
 /**
