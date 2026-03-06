@@ -1,27 +1,21 @@
 import { Elena, html } from "../../src/elena.js";
 
-const options = {
-  tagName: "complex-element",
-  props: ["label", "description", "error", "type", "name", "disabled", "value"],
-  events: [],
-  element: ".elena-input",
-};
-
 /**
  * Test fixture with a complex template containing conditional
  * HTML blocks, conditional attributes, and multiple interpolation types.
  */
-export default class ComplexElement extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
-    this.label = "";
-    this.description = "";
-    this.error = "";
-    this.type = "text";
-    this.name = "";
-    this.disabled = false;
-    this.value = "";
-  }
+export default class ComplexElement extends Elena(HTMLElement) {
+  static tagName = "complex-element";
+  static props = ["label", "description", "error", "type", "name", "disabled", "value"];
+  static element = ".elena-input";
+
+  label = "";
+  description = "";
+  error = "";
+  type = "text";
+  name = "";
+  disabled = false;
+  value = "";
 
   render() {
     return html`

@@ -14,9 +14,12 @@ function analyze(source) {
 }
 
 describe("elenaDefinePlugin", () => {
-  test("extracts inline tagName from Elena() options", () => {
+  test("extracts tagName from static class field", () => {
     const manifest = analyze(`
-      class Button extends Elena(HTMLElement, { tagName: "elena-button", props: ["variant"] }) {}
+      class Button extends Elena(HTMLElement) {
+        static tagName = "elena-button";
+        static props = ["variant"];
+      }
     `);
 
     const mod = manifest.modules[0];
@@ -28,21 +31,7 @@ describe("elenaDefinePlugin", () => {
     expect(ceDef.declaration.name).toBe("Button");
   });
 
-  test("extracts tagName from a variable reference", () => {
-    const manifest = analyze(`
-      const options = { tagName: "elena-input", props: ["value"] };
-      class Input extends Elena(HTMLElement, options) {}
-    `);
-
-    const mod = manifest.modules[0];
-    const decl = mod.declarations.find(d => d.name === "Input");
-    expect(decl.tagName).toBe("elena-input");
-
-    const ceDef = mod.exports.find(e => e.kind === "custom-element-definition");
-    expect(ceDef.name).toBe("elena-input");
-  });
-
-  test("skips class with no options argument", () => {
+  test("skips class without static tagName", () => {
     const manifest = analyze(`
       class Plain extends Elena(HTMLElement) {}
     `);
@@ -51,16 +40,6 @@ describe("elenaDefinePlugin", () => {
     const decl = mod.declarations?.find(d => d.name === "Plain");
     expect(decl?.tagName).toBeUndefined();
     expect(mod.exports?.find(e => e.kind === "custom-element-definition")).toBeUndefined();
-  });
-
-  test("skips options without tagName property", () => {
-    const manifest = analyze(`
-      class NoTag extends Elena(HTMLElement, { props: ["value"] }) {}
-    `);
-
-    const mod = manifest.modules[0];
-    const decl = mod.declarations?.find(d => d.name === "NoTag");
-    expect(decl?.tagName).toBeUndefined();
   });
 
   test("skips class not extending Elena()", () => {

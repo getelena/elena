@@ -1,18 +1,12 @@
 import { Elena, html } from "../../src/elena.js";
 
-const options = {
-  tagName: "extended-element",
-  props: ["label"],
-  events: [],
-  element: ".inner",
-};
+export default class ExtendedElement extends Elena(HTMLElement) {
+  static tagName = "extended-element";
+  static props = ["label"];
+  static element = ".inner";
 
-export default class ExtendedElement extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
-    this.label = "";
-    this._updateCount = 0;
-  }
+  label = "";
+  _updateCount = 0;
 
   connectedCallback() {
     super.connectedCallback();

@@ -66,27 +66,15 @@ export default {
 
 ## How it works
 
-The plugin scans Elena component source files and extracts the `tagName` from the options object passed to `Elena()`. It supports two patterns:
-
-**Inline options:**
+The plugin scans Elena component source files and extracts the value of the `static tagName` class field:
 
 ```js
-class Button extends Elena(HTMLElement, {
-  tagName: "elena-button",
-}) {}
+class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+}
 ```
 
-**Variable reference:**
-
-```js
-const options = {
-  tagName: "elena-button",
-};
-
-class Button extends Elena(HTMLElement, options) {}
-```
-
-In both cases, the plugin adds the `tagName` to the CEM class declaration and creates a `custom-element-definition` export entry, making the component discoverable by IDEs and documentation tools.
+It adds the `tagName` to the CEM class declaration and creates a `custom-element-definition` export entry, making the component discoverable by IDEs and documentation tools.
 
 ## License
 

@@ -1,16 +1,11 @@
 import { Elena, html } from "../../src/elena.js";
 
-const options = {
-  tagName: "classname-element",
-  props: ["label"],
-  element: "inner",
-};
+export default class ClassnameElement extends Elena(HTMLElement) {
+  static tagName = "classname-element";
+  static props = ["label"];
+  static element = "inner";
 
-export default class ClassnameElement extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
-    this.label = "";
-  }
+  label = "";
 
   render() {
     return html`<span class="inner">${this.label}</span>`;

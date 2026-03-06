@@ -1,9 +1,9 @@
 import { Elena, html } from "../../src/elena.js";
-const options = {
-  tagName: "content-element",
-  element: ".inner",
-};
-export default class ContentElement extends Elena(HTMLElement, options) {
+
+export default class ContentElement extends Elena(HTMLElement) {
+  static tagName = "content-element";
+  static element = ".inner";
+
   render() {
     return html`<span class="inner">${this.text}</span>`;
   }

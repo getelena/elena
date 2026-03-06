@@ -20,12 +20,25 @@ import { renderTemplate } from "./common/render.js";
 export { html, unsafeHTML, nothing };
 
 /**
- * @typedef {Object} ElenaOptions
- * @property {string} [tagName] - Custom element tag name to register (e.g. "elena-button").
- * @property {(string | {name: string, reflect?: boolean})[]} [props] - Props observed and synced as attributes.
- * @property {string[]} [events] - Events to delegate from the inner element.
- * @property {string} [element] - CSS selector for the inner element.
+ * Build an element resolver function from a selector string.
+ * Pre-compiled once per class for performance.
+ *
+ * 1. no selector: firstElementChild (property access)
+ * 2. className:   getElementsByClassName (skips full selector parser)
+ * 3. any other:   querySelector (full parser, only when needed)
+ *
+ * @param {string | undefined} selector
+ * @returns {(host: HTMLElement) => HTMLElement | null}
  */
+function buildResolver(selector) {
+  if (!selector) {
+    return host => host.firstElementChild;
+  }
+  if (/^[a-z][a-z0-9-]*$/i.test(selector)) {
+    return host => host.getElementsByClassName(selector)[0];
+  }
+  return host => host.querySelector(selector);
+}
 
 /**
  * @typedef {new (...args: any[]) => HTMLElement} ElenaConstructor
@@ -36,53 +49,32 @@ export { html, unsafeHTML, nothing };
  */
 
 /**
- * @typedef {(new (...args: any[]) => HTMLElement & ElenaInstanceMembers) & { define(): void, readonly observedAttributes: string[] }} ElenaElementConstructor
+ * @typedef {{ name: string, reflect?: boolean }} ElenaPropObject
  */
 
 /**
- * Factory that creates Elena mixin class.
+ * @typedef {(new (...args: any[]) => HTMLElement & ElenaInstanceMembers) & {
+ *   define(): void,
+ *   readonly observedAttributes: string[],
+ *   tagName?: string,
+ *   props?: (string | ElenaPropObject)[],
+ *   events?: string[],
+ *   element?: string,
+ * }} ElenaElementConstructor
+ */
+
+/**
+ * Factory that creates an Elena mixin class.
  *
  * Wraps `superClass` with Elena’s lifecycle, templating, props,
- * and events features. The `options` argument is optional.
+ * and events features. Configure the component using static class
+ * fields: `static tagName`, `static props`, `static events`, and
+ * `static element`.
  *
  * @param {ElenaConstructor} superClass - Base class to extend.
- * @param {ElenaOptions} [options] - Optional configuration options.
  * @returns {ElenaElementConstructor} A class ready to be registered.
  */
-export function Elena(superClass, options) {
-  /**
-   * Pre-compile element resolver once at class definition
-   * time to improve performance:
-   *
-   * 1. no selector: firstElementChild (property access)
-   * 2. className:   getElementsByClassName (skips full selector parser)
-   * 3. any other:   querySelector (full parser, only when needed)
-   */
-  const resolveElement = !(options && options.element)
-    ? host => host.firstElementChild
-    : /^[a-z][a-z0-9-]*$/i.test(options.element)
-      ? host => host.getElementsByClassName(options.element)[0]
-      : host => host.querySelector(options.element);
-
-  /**
-   * Normalize prop definitions into a names array and a
-   * set of non-reflecting prop names. Props can be plain
-   * strings or objects with { name, reflect? } shape.
-   */
-  const rawProps = options && options.props ? options.props : [];
-  const propNames = [];
-  const noReflect = new Set();
-  for (const p of rawProps) {
-    if (typeof p === "string") {
-      propNames.push(p);
-    } else {
-      propNames.push(p.name);
-      if (p.reflect === false) {
-        noReflect.add(p.name);
-      }
-    }
-  }
-
+export function Elena(superClass) {
   /**
    * Set up the initial state and default values for Elena Element.
    */
@@ -90,7 +82,7 @@ export function Elena(superClass, options) {
     /**
      * Reference to the base element in the provided template.
      *
-     * @type {Object}
+     * @type {HTMLElement | null}
      */
     element = null;
 
@@ -123,35 +115,11 @@ export function Elena(superClass, options) {
     }
 
     /**
-     * This static method returns an array containing the
-     * names of the props we want to observe.
+     * Returns the names of the props to observe. Reads the subclass’s
+     * static `props` field so the list is always up to date.
      */
     static get observedAttributes() {
-      return [...propNames, "text"];
-    }
-
-    /**
-     * Override in a subclass to define the element's HTML structure.
-     * Return an `html` tagged template literal.
-     * No-op by default: elements without a render method connect safely.
-     */
-    render() {}
-
-    /**
-     * Calls render() and applies the result to
-     * the DOM via renderTemplate().
-     *
-     * @internal
-     */
-    _applyRender() {
-      const result = this.render();
-      if (result && result.strings) {
-        renderTemplate(this, result.strings, result.values);
-        // Re-resolve element ref after render in case the DOM was rebuilt.
-        if (this._hydrated) {
-          this.element = resolveElement(this);
-        }
-      }
+      return [...(this.props || []).map(p => (typeof p === "string" ? p : p.name)), "text"];
     }
 
     /**
@@ -159,12 +127,78 @@ export function Elena(superClass, options) {
      * is added to the document.
      */
     connectedCallback() {
+      this._setupStaticProps();
+      this._captureClassFieldDefaults();
       this._captureText();
       this._applyRender();
       this._resolveInnerElement();
       this._flushProps();
       this._delegateEvents();
       this.updated();
+    }
+
+    /**
+     * Perform one-time per-class setup: process static props, events,
+     * and element selector. Runs on first connectedCallback for a given class.
+     *
+     * @internal
+     */
+    _setupStaticProps() {
+      const component = this.constructor;
+      if (Object.prototype.hasOwnProperty.call(component, "_elenaSetup")) {
+        return;
+      }
+
+      const noRef = new Set();
+
+      if (component.props) {
+        const names = [];
+        for (const p of component.props) {
+          if (typeof p === "string") {
+            names.push(p);
+          } else {
+            names.push(p.name);
+            if (p.reflect === false) {
+              noRef.add(p.name);
+            }
+          }
+        }
+
+        if (names.includes("text")) {
+          console.warn(
+            '░█ [ELENA]: "text" is a reserved property. ' +
+              "Rename your prop to avoid overriding the built-in text content feature."
+          );
+        }
+
+        setProps(component.prototype, names, noRef);
+      }
+
+      component._noReflect = noRef;
+      component._elenaEvents = component.events || null;
+      component._resolver = buildResolver(component.element);
+      component._elenaSetup = true;
+    }
+
+    /**
+     * Migrate class field own properties into the _props Map so Elena’s
+     * prototype getter/setter handles them.
+     *
+     * @internal
+     */
+    _captureClassFieldDefaults() {
+      const propNames = (this.constructor.props || []).map(p =>
+        typeof p === "string" ? p : p.name
+      );
+      for (const name of propNames) {
+        if (Object.prototype.hasOwnProperty.call(this, name)) {
+          const value = this[name];
+          delete this[name];
+          if (!this._props || !this._props.has(name)) {
+            this[name] = value;
+          }
+        }
+      }
     }
 
     /**
@@ -193,19 +227,36 @@ export function Elena(superClass, options) {
     }
 
     /**
+     * Calls render() and applies the result to
+     * the DOM via renderTemplate().
+     *
+     * @internal
+     */
+    _applyRender() {
+      const result = this.render();
+      if (result && result.strings) {
+        renderTemplate(this, result.strings, result.values);
+        // Re-resolve element ref after render in case the DOM was rebuilt.
+        if (this._hydrated) {
+          this.element = this.constructor._resolver(this);
+        }
+      }
+    }
+
+    /**
      * Resolve the inner element reference via
-     * the pre-compiled selector.
+     * the pre-compiled class resolver.
      *
      * @internal
      */
     _resolveInnerElement() {
       if (!this.element) {
-        this.element = resolveElement(this);
+        this.element = this.constructor._resolver(this);
 
         if (!this.element) {
           // Only warn when an explicit element selector was provided but didn't match.
           // Composite Components (no element option) intentionally have no inner ref.
-          if (options && options.element) {
+          if (this.constructor.element) {
             console.warn("░█ [ELENA]: No element found, using firstElementChild as fallback.");
           }
           this.element = this.firstElementChild;
@@ -214,13 +265,13 @@ export function Elena(superClass, options) {
     }
 
     /**
-     * Flush props set before connection to host and
-     * the inner element attributes.
+     * Flush props set before connection to host attributes.
      *
      * @internal
      */
     _flushProps() {
       if (this._props) {
+        const noReflect = this.constructor._noReflect || new Set();
         for (const [prop, value] of this._props) {
           if (noReflect.has(prop)) {
             continue;
@@ -237,7 +288,8 @@ export function Elena(superClass, options) {
      * @internal
      */
     _delegateEvents() {
-      if (!this._events && options && options.events) {
+      const events = this.constructor._elenaEvents;
+      if (!this._events && events?.length) {
         if (!this.element) {
           console.warn(
             "░█ [ELENA]: Cannot delegate events, no inner element found. " +
@@ -245,13 +297,20 @@ export function Elena(superClass, options) {
           );
         } else {
           this._events = true;
-          options.events?.forEach(e => {
+          events.forEach(e => {
             this.element.addEventListener(e, this);
             this[e] = (...args) => this.element[e](...args);
           });
         }
       }
     }
+
+    /**
+     * Override in a subclass to define the element's HTML structure.
+     * Return an `html` tagged template literal.
+     * No-op by default: elements without a render method connect safely.
+     */
+    render() {}
 
     /**
      * Perform post-update after each render().
@@ -272,7 +331,7 @@ export function Elena(superClass, options) {
     disconnectedCallback() {
       if (this._events) {
         this._events = false;
-        options.events?.forEach(e => {
+        this.constructor._elenaEvents?.forEach(e => {
           this.element?.removeEventListener(e, this);
         });
       }
@@ -284,7 +343,7 @@ export function Elena(superClass, options) {
      * @internal
      */
     handleEvent(event) {
-      if (options.events?.includes(event.type)) {
+      if (this.constructor._elenaEvents?.includes(event.type)) {
         event.stopPropagation();
         /** @internal */
         this.dispatchEvent(new ElenaEvent(event.type, { cancelable: true }));
@@ -313,35 +372,20 @@ export function Elena(superClass, options) {
     }
   }
 
-  if (propNames.length) {
-    if (propNames.includes("text")) {
-      console.warn(
-        '░█ [ELENA]: "text" is a reserved property. ' +
-          "Rename your prop to avoid overriding the built-in text content feature."
-      );
-    }
-    setProps(ElenaElement.prototype, propNames, noReflect);
-  }
-
-  if (options && options.tagName) {
-    /** @type {string} */
-    ElenaElement._tagName = options.tagName;
-  }
-
   /**
    * Register this class as a custom element using the `tagName`
-   * set in options. Must be called on the final subclass, not
+   * static field. Must be called on the final subclass, not
    * on the Elena mixin directly.
    *
    * @this {CustomElementConstructor}
    */
   ElenaElement.define = function () {
-    if (this._tagName) {
-      defineElement(this._tagName, this);
+    if (this.tagName) {
+      defineElement(this.tagName, this);
     } else {
       console.warn(
         "░█ [ELENA]: define() called without a tagName. " +
-          "Set tagName in your Elena options to register the element."
+          "Set tagName as a static field on your component class."
       );
     }
   };
