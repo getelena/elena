@@ -37,24 +37,56 @@ Elena is built entirely on standards based custom elements and has no external d
 
 ### Here is a minimal example
 
-```javascript
+::: code-group
+
+```js [JavaScript]
 import { Elena } from "@elenajs/core";
 
 export default class Stack extends Elena(HTMLElement) {
-  static tagName = "elena-stack";
+  static tagName = "my-stack";
   static props = ["direction"];
 
   direction = "column";
 }
-
 Stack.define();
 ```
+
+```ts [TypeScript]
+import { Elena } from "@elenajs/core";
+
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "my-stack";
+  static props = ["direction"];
+
+  direction: "column" | "row" = "column";
+}
+Stack.define();
+```
+
+```css [Styles]
+@scope (elena-stack) {
+  :scope {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-flow: column wrap;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  :scope[direction="row"] {
+    flex-direction: row;
+  }
+}
+```
+
+:::
+
 ```html
-<elena-stack direction="row">
-  <div>Stacked item</div>
-  <div>Stacked item</div>
-  <div>Stacked item</div>
-</elena-stack>
+<my-stack direction="row">
+  <div>First</div>
+  <div>Second</div>
+  <div>Third</div>
+</my-stack>
 ```
 
 > [!TIP] Prerequisites
