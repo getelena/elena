@@ -89,7 +89,7 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: "Introduction", link: "/" },
-          { text: "Quick Start", link: "/guide/getting-started" },
+          { text: "Quick Start", link: "/guide/quick-start" },
           { text: "Live Demos", link: "/reference/examples" },
         ],
       },
