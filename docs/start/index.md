@@ -6,45 +6,43 @@ The fastest way to get started is to include the following directly into your we
 
 ```html [Primitive Component]
 <script type="module">
-  import { Elena, html } from "https://unpkg.com/@elenajs/core@0.15.0";
+  import { Elena, html } from "https://unpkg.com/@elenajs/core";
 
-  export default class Button extends Elena(HTMLElement) {
-    static tagName = "my-button";
-    static props = ["variant"];
+  export default class MyGreeting extends Elena(HTMLElement) {
+    static tagName = "my-greeting";
+    static props = ["name"];
 
-    variant = "default";
+    name = "Somebody";
 
     render() {
-      return html`<button>${this.text}</button>`;
+      return html`<p>Hello, ${this.name}!</p>`;
     }
   }
-  Button.define();
+  MyGreeting.define();
 </script>
 
-<!-- Now you can use your component anywhere on the page -->
-<my-button variant="primary">Save</my-button>
-<my-button>Cancel</my-button>
+<!-- Use it anywhere on the page: -->
+<my-greeting name="World"></my-greeting>
 ```
 
 ```html [Composite Component]
 <script type="module">
-  import { Elena } from "https://unpkg.com/@elenajs/core@0.15.0";
+  import { Elena } from "https://unpkg.com/@elenajs/core";
 
-  export default class Stack extends Elena(HTMLElement) {
+  export default class MyStack extends Elena(HTMLElement) {
     static tagName = "my-stack";
     static props = ["direction"];
 
     direction = "column";
   }
-  Stack.define();
+  MyStack.define();
 </script>
 
-<!-- Now you can use your component anywhere on the page -->
+<!-- Use it anywhere on the page: -->
 <my-stack direction="row">
   <div>First</div>
   <div>Second</div>
   <div>Third</div>
-  <div>Fourth</div>
 </my-stack>
 ```
 
@@ -85,26 +83,11 @@ import { Elena } from "@elenajs/core";
 
 ## Composite Component
 
-Composite Components wrap and enhance the HTML composed inside them, including other components. They provide styling, layout, and behavior around the composed content. The Composite Components provide [full SSR support](#) by default.
+Composite Components wrap and enhance the HTML composed inside them, including other components. They provide styling, layout, and behavior around the composed content. Composite Components provide [full SSR support](#) by default.
 
 There are two necessary parts to using the Composite Components: the components themselves, and their CSS styles. 
 
 ::: code-group
-
-```js [JavaScript]
-import { Elena } from "@elenajs/core";
-
-export default class Stack extends Elena(HTMLElement) {
-  static tagName = "my-stack";
-  static props = ["direction"];
-
-  direction = "column";
-
-  // Note that Composite Components do not call render()
-}
-
-Stack.define();
-```
 
 ```ts [TypeScript]
 import { Elena } from "@elenajs/core";
@@ -114,8 +97,19 @@ export default class Stack extends Elena(HTMLElement) {
   static props = ["direction"];
 
   direction: "column" | "row" = "column";
+}
 
-  // Note that Composite Components do not call render()
+Stack.define();
+```
+
+```js [JavaScript]
+import { Elena } from "@elenajs/core";
+
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "my-stack";
+  static props = ["direction"];
+
+  direction = "column";
 }
 
 Stack.define();
@@ -146,39 +140,16 @@ Stack.define();
   <div>First</div>
   <div>Second</div>
   <div>Third</div>
-  <div>Fourth</div>
 </my-stack>
 ```
 
 ## Primitive Component
 
-Primitive Components are self-contained components that own and render their own HTML markup. All content is controlled through props, nothing is composed into them except text content. The Primitive Components provide partial support for SSR and do the rest of the hydration on the client side _(unless you [pre-render them](#))._
+Primitive Components are self-contained components that own and render their own HTML markup. All content is controlled through props, nothing is composed into them except text content. Primitive Components provide partial support for SSR and do the rest of the hydration on the client side _(unless you [pre-render them](#))._
 
 There are two necessary parts to using the Primitive Components: the components themselves, and their CSS styles. 
 
-### JavaScript
-
 ::: code-group
-
-```js [JavaScript]
-import { Elena, html } from "@elenajs/core";
-
-export default class Button extends Elena(HTMLElement) {
-  static tagName = "my-button";
-  static props = ["variant"];
-
-  variant = "default";
-
-  render() {
-    return html`
-      <button class="my-button">
-        ${this.text}
-      </button>
-    `;
-  }
-}
-Button.define();
-```
 
 ```ts [TypeScript]
 import { Elena, html } from "@elenajs/core";
@@ -197,6 +168,28 @@ export default class Button extends Elena(HTMLElement) {
     `;
   }
 }
+
+Button.define();
+```
+
+```js [JavaScript]
+import { Elena, html } from "@elenajs/core";
+
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "my-button";
+  static props = ["variant"];
+
+  variant = "default";
+
+  render() {
+    return html`
+      <button class="my-button">
+        ${this.text}
+      </button>
+    `;
+  }
+}
+
 Button.define();
 ```
 

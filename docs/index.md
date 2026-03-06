@@ -39,18 +39,6 @@
 
 ::: code-group
 
-```js [JavaScript]
-import { Elena } from "@elenajs/core";
-
-export default class Stack extends Elena(HTMLElement) {
-  static tagName = "my-stack";
-  static props = ["direction"];
-
-  direction = "column";
-}
-Stack.define();
-```
-
 ```ts [TypeScript]
 import { Elena } from "@elenajs/core";
 
@@ -60,6 +48,20 @@ export default class Stack extends Elena(HTMLElement) {
 
   direction: "column" | "row" = "column";
 }
+
+Stack.define();
+```
+
+```js [JavaScript]
+import { Elena } from "@elenajs/core";
+
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "my-stack";
+  static props = ["direction"];
+
+  direction = "column";
+}
+
 Stack.define();
 ```
 
