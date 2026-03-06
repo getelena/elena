@@ -89,8 +89,8 @@ Stack.define();
 </my-stack>
 ```
 
-> [!TIP] Prerequisites
-> Since Elena is basically a thin layer extending the basic functionality of standards based custom elements, the rest of the documentation assumes basic familiarity with HTML, CSS and JavaScript. If you are totally new to custom elements, it might be a good idea to also see this [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) that covers them in more detail. Prior experience with custom elements helps, but is not required when using Elena.
+> [!WARNING] Prerequisites
+> Since Elena is a thin layer extending the functionality of standard custom elements, the rest of the documentation assumes familiarity with HTML, CSS and JavaScript. If you are totally new to custom elements, it might be a good idea to see the [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) that covers them in detail. Prior experience with custom elements helps, but is not required when using Elena.
 
 
 ## Progressive Web Components
@@ -111,7 +111,7 @@ A _"Progressive Web Component"_ is a native Custom Element designed in two layer
 
 ## Why was Elena created
 
-I’ve worked with [web components](https://arielsalminen.com/2019/why-we-use-web-components/) for about a decade and built various enterprise grade design systems using this technology. While I love what they offer on paper, they also have a lot of issues when it comes to accessibility, server side rendering, layout shifts, FOUC/FOIC, and compatibility with various analytics and testing tools.
+I ([@arielle](https://arielsalminen.com)) have worked with [web components](https://arielsalminen.com/2019/why-we-use-web-components/) for about a decade and built various enterprise grade design systems using this technology. While I love what they offer on paper, they also have a lot of issues when it comes to accessibility, server side rendering, layout shifts, FOUC/FOIC, and compatibility with e.g. various analytics tools.
 
 With Elena, I wanted to solve these problems, as much as possible, while still sticking to web standards and what the web platform has to offer. This is how _“Progressive Web Components”_ were born.
 
@@ -130,12 +130,12 @@ If you answered _“yes”_ to some or all of the above, Elena may just be the r
 
 Before talking about libraries, we need to talk about how Elena compares against the standard web components and what are the key differences:
 
-- Elena does not support [Shadow DOM](#). Instead, everything lives in the Light DOM. This is an intentional design choice to improve accessibility and server side rendering.
+- Elena does not use [Shadow DOM](#). Instead, everything lives in the Light DOM. This is an intentional design choice to improve accessibility and server side rendering.
 - For style encapsulation, Elena provides a [CSS Encapsulation Pattern](#) that prevents the component styles from leaking out and the global styles from leaking in.
-- Elena does not support `<template>`. Instead, all of your text content and most of the HTML markup is placed directly on the consuming webpage. 
+- Elena does not use `<template>`. Instead, all of your text content and most of the HTML markup is placed directly on the consuming webpage. 
 - The only exception to above being [Primitive Components](#) that are self-contained and own and render their own HTML markup. With the primitives, only the host element and its text content live directly on the consuming webpage.
 
-At this point, you may wonder, why are they called **Progressive Web Components** then? Wouldn’t **Progressive Custom Elements** make more sense? Yes and no. _Web Component_ is a much more widely recognized term today, hence Elena also sticks to what is familiar to people. Additionally, many of Elena’s concepts are based on what are now commonly referred to as [HTML Web Components](https://adactio.com/journal/20618).
+At this point, you may wonder, why are they called **Progressive Web Components** then? Wouldn’t **Progressive Custom Elements** make more sense? Yes and no. _Web Component_ is a much more widely recognized term today, hence we stick to what is familiar. Additionally, many of Elena’s concepts are based on what are now commonly referred to as [HTML Web Components](https://adactio.com/journal/20618).
 
 ## Next steps
 
