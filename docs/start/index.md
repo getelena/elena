@@ -2,7 +2,6 @@
 
 The fastest way to get started is to include the following directly into your webpage:
 
-::: code-group
 
 ```html [Primitive Component]
 <script type="module">
@@ -24,29 +23,6 @@ The fastest way to get started is to include the following directly into your we
 <!-- Use it anywhere on the page: -->
 <my-greeting name="World"></my-greeting>
 ```
-
-```html [Composite Component]
-<script type="module">
-  import { Elena } from "https://unpkg.com/@elenajs/core";
-
-  export default class MyStack extends Elena(HTMLElement) {
-    static tagName = "my-stack";
-    static props = ["direction"];
-
-    direction = "column";
-  }
-  MyStack.define();
-</script>
-
-<!-- Use it anywhere on the page: -->
-<my-stack direction="row">
-  <div>First</div>
-  <div>Second</div>
-  <div>Third</div>
-</my-stack>
-```
-
-:::
 
 > [!WARNING]
 > Whilst this is the fastest way to get started, we don't recommend it for production since you would be relying entirely on unpkg CDN. Instead, we recommend installing the [@elenajs/core](https://github.com/getelena/elena/tree/main/packages/core) locally and bundling your component libraries with [@elenajs/bundler](https://github.com/getelena/elena/tree/main/packages/bundler) for optimal performance.
