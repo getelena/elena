@@ -922,8 +922,12 @@ The full baseline pattern for authoring encapsulated component styles looks like
 @scope (elena-button) {
 
   /* Unset makes sure styles don’t leak in */
-  :scope, *, *::before, *::after {
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
     all: unset;
+    display: revert;
   }
 
   /* Targets the host element (elena-button) */
@@ -969,8 +973,12 @@ While the [scoped styles](#writing-scoped-styles) defined earlier prevent the co
 @scope (elena-button) {
 
   /* Unset makes sure styles don’t leak in */
-  :scope, *, *::before, *::after {
-    all: unset; /* Or all: initial */
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
+    all: unset;
+    display: revert;
   }
 
   /* Rest of your component styles */
