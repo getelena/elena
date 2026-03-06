@@ -62,11 +62,11 @@ const registry = new Map();
  */
 export function register(...components) {
   for (const Comp of components) {
-    const tagName = Comp._tagName;
+    const tagName = Comp.tagName;
     if (!tagName) {
       throw new Error(
-        "░█ [ELENA]: Component must have a tagName defined in Elena options. " +
-          "Ensure the class was created with Elena(HTMLElement, { tagName: '...' })."
+        "░█ [ELENA]: Component must have a tagName defined. " +
+          "Set `static tagName = 'your-tag-name'` as a static field on your component class."
       );
     }
     registry.set(tagName, Comp);
