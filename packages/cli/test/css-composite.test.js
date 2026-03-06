@@ -36,7 +36,7 @@ describe("generateCSS, composite", () => {
     const out = generateCSS("my-stack", "composite", ["cssencap"]);
 
     expect(out).toContain("all: unset");
-    expect(out).toContain(":scope, *, *::before, *::after");
+    expect(out).toContain("*:where(:not(img, svg):not(svg *))");
   });
 
   test("without cssencap", () => {

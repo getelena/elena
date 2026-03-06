@@ -13,9 +13,15 @@ describe("generateSource, composite JS", () => {
     expect(out).toContain('import { Elena } from "@elenajs/core"');
     expect(out).not.toContain("html");
 
-    expect(out).toContain('props: ["direction"]');
-    expect(out).toContain("constructor()");
-    expect(out).toContain('this.direction = "column"');
+    // Static fields
+    expect(out).toContain('static tagName = "my-stack"');
+    expect(out).toContain('static props = ["direction"]');
+
+    // No constructor
+    expect(out).not.toContain("constructor()");
+    expect(out).not.toContain("this.direction");
+    expect(out).toContain('direction = "column"');
+
     expect(out).toContain("@cssprop [--my-stack-text]");
     expect(out).toContain("@slot");
 
@@ -28,7 +34,7 @@ describe("generateSource, composite JS", () => {
     expect(out).not.toContain("render()");
 
     // No events option
-    expect(out).not.toContain("events:");
+    expect(out).not.toContain("static events");
     expect(out).not.toContain("@event");
 
     expect(out).toContain("MyStack.define()");
@@ -37,8 +43,8 @@ describe("generateSource, composite JS", () => {
   test("no features", () => {
     const out = generateSource("my-stack", "composite", "javascript", []);
 
-    expect(out).toContain('tagName: "my-stack"');
-    expect(out).not.toContain("props:");
+    expect(out).toContain('static tagName = "my-stack"');
+    expect(out).not.toContain("static props");
     expect(out).not.toContain("constructor()");
     expect(out).not.toContain("@cssprop");
     expect(out).not.toContain("myMethod");
@@ -48,8 +54,10 @@ describe("generateSource, composite JS", () => {
   test("only props", () => {
     const out = generateSource("my-stack", "composite", "javascript", ["props"]);
 
-    expect(out).toContain('props: ["direction"]');
-    expect(out).toContain('this.direction = "column"');
+    expect(out).toContain('static props = ["direction"]');
+    expect(out).toContain('direction = "column"');
+    expect(out).not.toContain("constructor()");
+    expect(out).not.toContain("this.direction");
     expect(out).not.toContain("@cssprop");
     expect(out).not.toContain("myMethod");
   });
@@ -59,7 +67,7 @@ describe("generateSource, composite JS", () => {
 
     expect(out).toContain("myMethod()");
     expect(out).toContain("console.log(this)");
-    expect(out).not.toContain("props:");
+    expect(out).not.toContain("static props");
     expect(out).not.toContain("constructor()");
   });
 });

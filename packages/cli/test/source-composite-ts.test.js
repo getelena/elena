@@ -10,7 +10,11 @@ describe("generateSource, composite TS", () => {
       "comments",
     ]);
 
-    // TS class field
+    // Static fields
+    expect(out).toContain('static tagName = "my-stack"');
+    expect(out).toContain('static props = ["direction"]');
+
+    // TS class field, no constructor
     expect(out).not.toContain("constructor()");
     expect(out).toContain('direction: "column" | "row" = "column"');
     expect(out).toContain("@cssprop [--my-stack-text]");
@@ -21,7 +25,7 @@ describe("generateSource, composite TS", () => {
   test("no features", () => {
     const out = generateSource("my-stack", "composite", "typescript", []);
 
-    expect(out).not.toContain("props:");
+    expect(out).not.toContain("static props");
     expect(out).not.toContain("direction");
     expect(out).not.toContain("@cssprop");
     expect(out).not.toContain("myMethod");

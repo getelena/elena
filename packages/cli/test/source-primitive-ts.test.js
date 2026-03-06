@@ -12,8 +12,11 @@ describe("generateSource, primitive TS", () => {
     ]);
 
     expect(out).toContain('import { Elena, html } from "@elenajs/core"');
-    expect(out).toContain('props: ["variant"]');
-    expect(out).toContain('events: ["click", "focus", "blur"]');
+
+    // Static fields
+    expect(out).toContain('static tagName = "my-button"');
+    expect(out).toContain('static props = ["variant"]');
+    expect(out).toContain('static events = ["click", "focus", "blur"]');
 
     // TS uses class field syntax, no constructor
     expect(out).not.toContain("constructor()");
@@ -28,8 +31,8 @@ describe("generateSource, primitive TS", () => {
   test("no features", () => {
     const out = generateSource("my-button", "primitive", "typescript", []);
 
-    expect(out).not.toContain("props:");
-    expect(out).not.toContain("events:");
+    expect(out).not.toContain("static props");
+    expect(out).not.toContain("static events");
     expect(out).not.toContain("variant");
     expect(out).not.toContain("@event");
     expect(out).not.toContain("@cssprop");
