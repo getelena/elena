@@ -96,8 +96,13 @@ export function setProps(proto, propNames, noReflect) {
         }
 
         if (reflects) {
-          const attrValue = getPropValue(typeof value, value, "toAttribute");
-          syncAttribute(this, prop, attrValue);
+          // Skip reflection when called from attributeChangedCallback. The
+          // attribute is already at the new value, setting it again is redundant
+          // and would fire an extra attributeChangedCallback with identical values.
+          if (!this._syncing) {
+            const attrValue = getPropValue(typeof value, value, "toAttribute");
+            syncAttribute(this, prop, attrValue);
+          }
         } else if (this._hydrated && !this._isRendering) {
           this._safeRender();
         }
