@@ -1,10 +1,5 @@
 import { Elena } from "@elenajs/core";
 
-const options = {
-  tagName: "elena-stack",
-  props: ["direction"],
-};
-
 /**
  * Stack component manages layout of immediate children
  * with optional spacing between each child.
@@ -13,18 +8,17 @@ const options = {
  * @slot - The stacked content
  * @status alpha
  */
-export default class Stack extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
 
-    /**
-     * The direction of the stack.
-     *
-     * @attribute
-     * @type {"column" | "row"}
-     */
-    this.direction = "column";
-  }
+  /**
+   * The direction of the stack.
+   *
+   * @attribute
+   * @type {"column" | "row"}
+   */
+  direction = "column";
 }
 
 /**

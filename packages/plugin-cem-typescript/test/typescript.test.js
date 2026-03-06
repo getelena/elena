@@ -38,7 +38,9 @@ function analyze(source, fileName = "button.js") {
 describe("moduleLinkPhase", () => {
   test("injects text field and attribute when not present", () => {
     const manifest = analyze(`
-      class Button extends Elena(HTMLElement, { tagName: "elena-button", props: ["variant"] }) {
+      class Button extends Elena(HTMLElement) {
+        static tagName = "elena-button";
+        static props = ["variant"];
         constructor() {
           super();
           /** @attribute @type {string} */
@@ -58,7 +60,8 @@ describe("moduleLinkPhase", () => {
 
   test("does not duplicate text field when already present", () => {
     const manifest = analyze(`
-      class Button extends Elena(HTMLElement, { tagName: "elena-button" }) {
+      class Button extends Elena(HTMLElement) {
+        static tagName = "elena-button";
         constructor() {
           super();
           /** @attribute @type {string} */
@@ -76,7 +79,13 @@ describe("moduleLinkPhase", () => {
 describe("packageLinkPhase", () => {
   test("generates .d.ts with fields and events", () => {
     analyze(`
-      class Button extends Elena(HTMLElement, { tagName: "elena-button", props: ["variant"], events: ["click"] }) {
+      /**
+       * @event click - Programmatically fire click on the component.
+       */
+      class Button extends Elena(HTMLElement) {
+        static tagName = "elena-button";
+        static props = ["variant"];
+        static events = ["click"];
         constructor() {
           super();
           /**
@@ -103,7 +112,9 @@ describe("packageLinkPhase", () => {
   test("generates .d.ts for component with no events", () => {
     analyze(
       `
-      class Stack extends Elena(HTMLElement, { tagName: "elena-stack", props: ["direction"] }) {
+      class Stack extends Elena(HTMLElement) {
+        static tagName = "elena-stack";
+        static props = ["direction"];
         constructor() {
           super();
           /** @attribute @type {"column" | "row"} */

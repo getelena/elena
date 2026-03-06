@@ -1,17 +1,11 @@
 import { Elena, html } from "../../src/elena.js";
 
-const options = {
-  tagName: "no-template-element",
-  props: ["label"],
-  events: [],
-  element: ".missing",
-};
+export default class NoTemplateElement extends Elena(HTMLElement) {
+  static tagName = "no-template-element";
+  static props = ["label"];
+  static element = ".missing";
 
-export default class NoTemplateElement extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
-    this.label = "";
-  }
+  label = "";
 
   render() {
     // Intentionally renders nothing.
