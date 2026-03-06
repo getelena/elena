@@ -106,7 +106,7 @@ Stack.define();
 ```
 
 ```tsx [Next.js]
-export default function Page() {
+export default function App() {
   return (
     <my-stack direction="row">
       <div>First</div>
@@ -118,7 +118,7 @@ export default function Page() {
 ```
 
 ```tsx [React]
-function Page() {
+function App() {
   return (
     <my-stack direction="row">
       <div>First</div>
@@ -127,7 +127,7 @@ function Page() {
     </my-stack>
   );
 }
-export default Page;
+export default App;
 ```
 
 ```svelte [Svelte]
