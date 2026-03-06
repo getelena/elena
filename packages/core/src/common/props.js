@@ -99,9 +99,7 @@ export function setProps(proto, propNames, noReflect) {
           const attrValue = getPropValue(typeof value, value, "toAttribute");
           syncAttribute(this, prop, attrValue);
         } else if (this._hydrated && !this._isRendering) {
-          this._isRendering = true;
-          this._applyRender();
-          this._isRendering = false;
+          this._safeRender();
         }
       },
     });

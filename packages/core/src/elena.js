@@ -101,9 +101,7 @@ export function Elena(superClass) {
       // Guard against re-entrant renders: if render() itself mutates an observed
       // attribute, skip the recursive call to prevent an infinite loop.
       if (this._hydrated && oldValue !== newValue && !this._isRendering) {
-        this._isRendering = true;
-        this._applyRender();
-        this._isRendering = false;
+        this._safeRender();
       }
     }
 
@@ -194,10 +192,7 @@ export function Elena(superClass) {
           const value = this[name];
           delete this[name];
 
-          // c8 ignore next: _props can't already contain `name` at this point in normal usage
-          if (!this._props || !this._props.has(name)) {
-            this[name] = value;
-          }
+          this[name] = value;
         }
       }
     }
@@ -270,8 +265,7 @@ export function Elena(superClass) {
      */
     _syncProps() {
       if (this._props) {
-        // c8 ignore next: _noReflect is always set by _setupStaticProps before _syncProps runs
-        const noReflect = this.constructor._noReflect || new Set();
+        const noReflect = this.constructor._noReflect;
 
         for (const [prop, value] of this._props) {
           if (noReflect.has(prop)) {
@@ -370,30 +364,37 @@ export function Elena(superClass) {
       this._text = value;
 
       if (this._hydrated && old !== value && !this._isRendering) {
-        this._isRendering = true;
-        this._applyRender();
-        this._isRendering = false;
+        this._safeRender();
       }
     }
-  }
 
-  /**
-   * Registers the component as a custom element using `static tagName`.
-   * Call this on your component class after the class body is defined,
-   * not on the Elena mixin itself.
-   *
-   * @this {CustomElementConstructor}
-   */
-  ElenaElement.define = function () {
-    if (this.tagName) {
-      defineElement(this.tagName, this);
-    } else {
-      console.warn(
-        "░█ [ELENA]: define() called without a tagName. " +
-          "Set tagName as a static field on your component class."
-      );
+    /**
+     * Registers the component as a custom element using `static tagName`.
+     * Call this on your component class after the class body is defined,
+     * not on the Elena mixin itself.
+     */
+    static define() {
+      if (this.tagName) {
+        defineElement(this.tagName, this);
+      } else {
+        console.warn(
+          "░█ [ELENA]: define() called without a tagName. " +
+            "Set tagName as a static field on your component class."
+        );
+      }
     }
-  };
+
+    /**
+     * Re-renders the component, guarding against re-entrant renders.
+     *
+     * @internal
+     */
+    _safeRender() {
+      this._isRendering = true;
+      this._applyRender();
+      this._isRendering = false;
+    }
+  }
 
   return ElenaElement;
 }
