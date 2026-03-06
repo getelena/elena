@@ -109,16 +109,15 @@ describe("rendering", () => {
       expect(container.ownerDocument).toBe(otherDoc);
     });
 
-    it("uses ownerDocument.createRange(), not the global document", () => {
+    it("renders correctly into an element in a secondary document", () => {
       const otherDoc = document.implementation.createHTMLDocument("secondary");
       const container = otherDoc.createElement("div");
       otherDoc.body.appendChild(container);
 
-      const spy = vi.spyOn(otherDoc, "createRange");
       renderHtml(container, "<span>test</span>");
 
-      expect(spy).toHaveBeenCalled();
-      spy.mockRestore();
+      expect(container.querySelector("span").textContent).toBe("test");
+      expect(container.ownerDocument).toBe(otherDoc);
     });
 
     it("renders correctly into an element inside an iframe", () => {

@@ -4,26 +4,26 @@
  */
 class VanillaElement extends HTMLElement {
   static get observedAttributes() {
-    return ["label"];
+    return ["variant"];
   }
 
   constructor() {
     super();
-    this._label = "";
+    this._variant = "";
   }
 
-  get label() {
-    return this._label;
+  get variant() {
+    return this._variant;
   }
 
-  set label(val) {
-    this._label = val;
-    this.setAttribute("label", val);
+  set variant(val) {
+    this._variant = val;
+    this.setAttribute("variant", val);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "label" && oldValue !== newValue) {
-      this._label = newValue;
+    if (name === "variant" && oldValue !== newValue) {
+      this._variant = newValue;
       if (this._connected) {
         this._render();
       }
@@ -35,7 +35,7 @@ class VanillaElement extends HTMLElement {
     this._render();
 
     // To mimic similar functionality
-    const elementRef = this.querySelector(".inner");
+    const elementRef = this.querySelector("span");
     this._updated(elementRef);
   }
 
@@ -47,7 +47,7 @@ class VanillaElement extends HTMLElement {
   }
 
   _render() {
-    this.innerHTML = `<span class="inner">${this._label}</span>`;
+    this.innerHTML = `<span>${this._variant}</span>`;
   }
 }
 
