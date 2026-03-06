@@ -28,7 +28,7 @@
 
 ## Elena features
 
-- 🔋 **Extremely lightweight:** Only 2kB minified & gzipped with zero runtime overhead.
+- 🔋 **Extremely lightweight:** Only ~2kB minified & compressed with zero runtime overhead.
 - 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
 - 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
 - 🌍 **Standards based:** Built entirely on native custom elements & web standards.
@@ -100,7 +100,7 @@
 - **Interoperable:** Built on web standards; no proprietary abstractions.
 - **Modular:** Small, composable pieces you can use independently.
 - **Universal:** Works across frameworks, tools, and environments.
-- **Lightweight:** 2kB minified & gzipped, zero runtime dependencies.
+- **Lightweight:** ~2kB minified & compressed, zero runtime dependencies.
 - **Accessible:** Built on semantic HTML, assistive technologies supported by default.
 
 <br/>
