@@ -13,29 +13,25 @@
  */
 
 import { setProps, getProps, getPropValue, syncAttribute } from "./common/props.js";
-import { ElenaEvent } from "./common/events.js";
 import { defineElement, html, unsafeHTML, nothing } from "./common/utils.js";
 import { renderTemplate } from "./common/render.js";
+import { ElenaEvent } from "./common/events.js";
 
 export { html, unsafeHTML, nothing };
 
 /**
- * Build an element resolver function from a selector string.
- * Pre-compiled once per class for performance.
+ * Returns a function that finds the inner element using the given selector.
+ * Built once per component class to avoid repeated work.
  *
- * 1. no selector: firstElementChild (property access)
- * 2. className:   getElementsByClassName (skips full selector parser)
- * 3. any other:   querySelector (full parser, only when needed)
+ * - No selector: uses firstElementChild
+ * - Any string: uses querySelector
  *
  * @param {string | undefined} selector
  * @returns {(host: HTMLElement) => HTMLElement | null}
  */
-function buildResolver(selector) {
+function elementResolver(selector) {
   if (!selector) {
     return host => host.firstElementChild;
-  }
-  if (/^[a-z][a-z0-9-]*$/i.test(selector)) {
-    return host => host.getElementsByClassName(selector)[0];
   }
   return host => host.querySelector(selector);
 }
@@ -64,31 +60,30 @@ function buildResolver(selector) {
  */
 
 /**
- * Factory that creates an Elena mixin class.
+ * Creates an Elena component class by extending `superClass`.
  *
- * Wraps `superClass` with Elena’s lifecycle, templating, props,
- * and events features. Configure the component using static class
- * fields: `static tagName`, `static props`, `static events`, and
- * `static element`.
+ * Adds rendering, props, and event handling to your component.
+ * Configure it using static class fields: `static tagName`,
+ * `static props`, `static events`, and `static element`.
  *
- * @param {ElenaConstructor} superClass - Base class to extend.
- * @returns {ElenaElementConstructor} A class ready to be registered.
+ * @param {ElenaConstructor} superClass - The base class to extend (usually `HTMLElement`).
+ * @returns {ElenaElementConstructor} A class ready to be defined as a custom element.
  */
 export function Elena(superClass) {
   /**
-   * Set up the initial state and default values for Elena Element.
+   * The base Elena element class with all built-in behavior.
    */
   class ElenaElement extends superClass {
     /**
-     * Reference to the base element in the provided template.
+     * The inner element rendered by this component.
      *
      * @type {HTMLElement | null}
      */
     element = null;
 
     /**
-     * This method is called when the Elena Element’s
-     * props are changed, added, removed or replaced.
+     * Called by the browser when an observed attribute changes.
+     * Updates the matching prop and re-renders if needed.
      *
      * @param {string} prop
      * @param {string} oldValue
@@ -105,8 +100,6 @@ export function Elena(superClass) {
       // Re-render when attributes change (after initial render).
       // Guard against re-entrant renders: if render() itself mutates an observed
       // attribute, skip the recursive call to prevent an infinite loop.
-      // Use _hydrated (set at end of connectedCallback) rather than this.element
-      // so Composite Components without an inner element ref also re-render correctly.
       if (this._hydrated && oldValue !== newValue && !this._isRendering) {
         this._isRendering = true;
         this._applyRender();
@@ -115,16 +108,17 @@ export function Elena(superClass) {
     }
 
     /**
-     * Returns the names of the props to observe. Reads the subclass’s
-     * static `props` field so the list is always up to date.
+     * Lists the attributes Elena watches for changes.
+     * Reads from the subclass’s `static props` field.
      */
     static get observedAttributes() {
-      return [...(this.props || []).map(p => (typeof p === "string" ? p : p.name)), "text"];
+      const propNames = (this.props || []).map(p => (typeof p === "string" ? p : p.name));
+
+      return [...propNames, "text"];
     }
 
     /**
-     * This method is called each time the Elena Element
-     * is added to the document.
+     * Called by the browser each time the element is added to the page.
      */
     connectedCallback() {
       this._setupStaticProps();
@@ -132,32 +126,36 @@ export function Elena(superClass) {
       this._captureText();
       this._applyRender();
       this._resolveInnerElement();
-      this._flushProps();
+      this._syncProps();
       this._delegateEvents();
       this.updated();
     }
 
     /**
-     * Perform one-time per-class setup: process static props, events,
-     * and element selector. Runs on first connectedCallback for a given class.
+     * Sets up props, events, and the element selector once per component class.
+     * Runs the first time an instance of a given class connects to the page.
      *
      * @internal
      */
     _setupStaticProps() {
       const component = this.constructor;
+
       if (Object.prototype.hasOwnProperty.call(component, "_elenaSetup")) {
         return;
       }
 
+      // Props with reflect: false
       const noRef = new Set();
 
       if (component.props) {
         const names = [];
+
         for (const p of component.props) {
           if (typeof p === "string") {
             names.push(p);
           } else {
             names.push(p.name);
+
             if (p.reflect === false) {
               noRef.add(p.name);
             }
@@ -176,13 +174,13 @@ export function Elena(superClass) {
 
       component._noReflect = noRef;
       component._elenaEvents = component.events || null;
-      component._resolver = buildResolver(component.element);
+      component._resolver = elementResolver(component.element);
       component._elenaSetup = true;
     }
 
     /**
-     * Migrate class field own properties into the _props Map so Elena’s
-     * prototype getter/setter handles them.
+     * Moves class field defaults into Elena’s internal props store
+     * so that getters and setters work correctly.
      *
      * @internal
      */
@@ -190,10 +188,12 @@ export function Elena(superClass) {
       const propNames = (this.constructor.props || []).map(p =>
         typeof p === "string" ? p : p.name
       );
+
       for (const name of propNames) {
         if (Object.prototype.hasOwnProperty.call(this, name)) {
           const value = this[name];
           delete this[name];
+
           // c8 ignore next: _props can't already contain `name` at this point in normal usage
           if (!this._props || !this._props.has(name)) {
             this[name] = value;
@@ -203,40 +203,39 @@ export function Elena(superClass) {
     }
 
     /**
-     * Capture textContent from the light DOM before
-     * the first render.
+     * Saves any text inside the element before the first render.
      *
      * @internal
      */
     _captureText() {
-      if (!this._hydrated) {
-        if (!this._text) {
-          const text = this.textContent.trim();
-          if (text) {
-            this.text = text;
-          } else {
-            // Angular sets textContent after the element connects,
-            // so we defer capture to the next microtask to pick it up.
-            queueMicrotask(() => {
-              if (!this._text) {
-                this.text = this.textContent.trim();
-              }
-            });
-          }
+      if (!this._hydrated && !this._text) {
+        const text = this.textContent.trim();
+
+        if (text) {
+          this.text = text;
+        } else {
+          // Angular sets textContent after the element connects,
+          // so we defer capture to the next microtask to pick it up.
+          queueMicrotask(() => {
+            if (!this._text) {
+              this.text = this.textContent.trim();
+            }
+          });
         }
       }
     }
 
     /**
-     * Calls render() and applies the result to
-     * the DOM via renderTemplate().
+     * Calls render() and updates the DOM with the result.
      *
      * @internal
      */
     _applyRender() {
       const result = this.render();
+
       if (result && result.strings) {
         renderTemplate(this, result.strings, result.values);
+
         // Re-resolve element ref after render in case the DOM was rebuilt.
         if (this._hydrated) {
           this.element = this.constructor._resolver(this);
@@ -245,8 +244,7 @@ export function Elena(superClass) {
     }
 
     /**
-     * Resolve the inner element reference via
-     * the pre-compiled class resolver.
+     * Finds and stores a reference to the inner element.
      *
      * @internal
      */
@@ -266,18 +264,20 @@ export function Elena(superClass) {
     }
 
     /**
-     * Flush props set before connection to host attributes.
+     * Syncs any props that were set before the element connected to the page.
      *
      * @internal
      */
-    _flushProps() {
+    _syncProps() {
       if (this._props) {
-        // c8 ignore next: _noReflect is always set by _setupStaticProps before _flushProps runs
+        // c8 ignore next: _noReflect is always set by _setupStaticProps before _syncProps runs
         const noReflect = this.constructor._noReflect || new Set();
+
         for (const [prop, value] of this._props) {
           if (noReflect.has(prop)) {
             continue;
           }
+
           const attrValue = getPropValue(typeof value, value, "toAttribute");
           syncAttribute(this, prop, attrValue);
         }
@@ -285,12 +285,13 @@ export function Elena(superClass) {
     }
 
     /**
-     * Set up event delegation from inner element to host.
+     * Forwards events from the inner element up to the host element.
      *
      * @internal
      */
     _delegateEvents() {
       const events = this.constructor._elenaEvents;
+
       if (!this._events && events?.length) {
         if (!this.element) {
           console.warn(
@@ -299,6 +300,7 @@ export function Elena(superClass) {
           );
         } else {
           this._events = true;
+
           events.forEach(e => {
             this.element.addEventListener(e, this);
             this[e] = (...args) => this.element[e](...args);
@@ -308,14 +310,14 @@ export function Elena(superClass) {
     }
 
     /**
-     * Override in a subclass to define the element's HTML structure.
-     * Return an `html` tagged template literal.
-     * No-op by default: elements without a render method connect safely.
+     * Define the element's HTML here. Return an `html` tagged template.
+     * If not overridden, the element connects to the page without rendering anything.
      */
     render() {}
 
     /**
-     * Perform post-update after each render().
+     * Called once after the element's first render.
+     * Marks the element as hydrated.
      *
      * @internal
      */
@@ -327,12 +329,12 @@ export function Elena(superClass) {
     }
 
     /**
-     * This method is called each time the Elena Element
-     * is removed from the document.
+     * Called by the browser each time the element is removed from the page.
      */
     disconnectedCallback() {
       if (this._events) {
         this._events = false;
+
         this.constructor._elenaEvents?.forEach(e => {
           this.element?.removeEventListener(e, this);
         });
@@ -340,22 +342,22 @@ export function Elena(superClass) {
     }
 
     /**
-     * Handles events on the Elena Element.
+     * Receives events from the inner element and re-fires them on the host.
      *
      * @internal
      */
     handleEvent(event) {
       if (this.constructor._elenaEvents?.includes(event.type)) {
         event.stopPropagation();
+
         /** @internal */
         this.dispatchEvent(new ElenaEvent(event.type, { cancelable: true }));
       }
     }
 
     /**
-     * The text content of the element, captured from light DOM
-     * before the first render. Setting this property triggers
-     * a re-render.
+     * The text content of the element. Elena reads this from the element's
+     * children before the first render. Updating it triggers a re-render.
      *
      * @type {string}
      */
@@ -366,6 +368,7 @@ export function Elena(superClass) {
     set text(value) {
       const old = this._text;
       this._text = value;
+
       if (this._hydrated && old !== value && !this._isRendering) {
         this._isRendering = true;
         this._applyRender();
@@ -375,9 +378,9 @@ export function Elena(superClass) {
   }
 
   /**
-   * Register this class as a custom element using the `tagName`
-   * static field. Must be called on the final subclass, not
-   * on the Elena mixin directly.
+   * Registers the component as a custom element using `static tagName`.
+   * Call this on your component class after the class body is defined,
+   * not on the Elena mixin itself.
    *
    * @this {CustomElementConstructor}
    */
