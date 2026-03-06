@@ -85,14 +85,14 @@ With Elena, I wanted to solve these problems, as much as possible, while still s
 
 ## Why should I use Elena
 
-A few of questions for you, dear reader:
+A few questions for you, dear reader:
 
 - Have you ever struggled with the [challenges described](#why-was-elena-created) above?
 - Have you ever attempted to use plain custom elements to build something that would be consumed by various JavaScript frameworks such as [Next.js](#), [React](#), or [Vue](#)? 
   - Have you noticed that things get pretty complicated, pretty quickly, when you start to mix in reactivity, property/attribute syncing, and other features that a developer using those frameworks would expect as standard?
 - Do you want your web components to work with [React Server Components](#)? 
 
-If you answered _“yes”_ to some or all of the above, Elena may just be the right tool for you. Mainly, Elena is aimed for building component libraries and its tooling shines at that specifically and provides many useful features to complement those workflows.
+If you answered _“yes”_ to some or all of the above, Elena may just be the right tool for you. Mainly, Elena is aimed at building component libraries. Elena’s tooling shines specifically at this, and provides many useful features to complement those workflows.
 
 ## Elena vs other libraries
 
@@ -101,9 +101,9 @@ Before talking about libraries, we need to talk about how Elena compares against
 - Elena does not support [Shadow DOM](#). Instead, everything lives in the Light DOM. This is an intentional design choice to improve accessibility and server side rendering.
   - For style encapsulation, Elena provides a [CSS Encapsulation Pattern](#) that prevents the component styles from leaking out and the global styles from leaking in.
 - Elena does not support `<template>`. Instead, all of your text content and most of the HTML markup is placed directly on the consuming webpage. 
-  - The only exception being [Primitive Components](#) that are self-contained and own and render their own HTML markup. With the primitives, only the host element and its text content lives directly on the consuming webpage.
+  - The only exception being [Primitive Components](#) that are self-contained and own and render their own HTML markup. With the primitives, only the host element and its text content live directly on the consuming webpage.
 
-At this point, you may wonder, why are they called **Progressive Web Components** then? Wouldn’t **Progressive Custom Elements** make more sense? Yes and no. _Web Component_ is a much more widely recognized term today, hence Elena also sticks to what is familiar to people. Additionally, many of Elena’s concepts are based on something that we call [HTML Web Components](https://adactio.com/journal/20618) nowadays.
+At this point, you may wonder, why are they called **Progressive Web Components** then? Wouldn’t **Progressive Custom Elements** make more sense? Yes and no. _Web Component_ is a much more widely recognized term today, hence Elena also sticks to what is familiar to people. Additionally, many of Elena’s concepts are based on what are now commonly called [HTML Web Components](https://adactio.com/journal/20618).
 
 ## Next steps
 
