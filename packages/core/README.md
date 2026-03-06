@@ -135,36 +135,24 @@ If you just want to quickly test Elena in a web browser, the fastest way is to i
 
 ```html
 <script type="module">
-  import { Elena } from "https://unpkg.com/@elenajs/core@0.15.0";
+  import { Elena, html } from "https://unpkg.com/@elenajs/core@0.15.0";
 
-  export default class MyComponent extends Elena(HTMLElement, {
-    tagName: "my-component"
-  }) {
-    // Do something, or leave empty.
-    // This is a valid Elena (composite) component as is.
+  export default class MyComponent extends Elena(HTMLElement) {
+    static tagName = "my-component";
+    static props = ["name"];
+    name = "Somebody";
+    render() {
+      return html`<p>Hello, ${this.name}!</p>`;
+    }
   }
   MyComponent.define();
 </script>
 ```
 
-Once created, add scoped `<styles>` for your component as well:
-
-```html
-<style>
-  @scope (my-component) {
-    :scope {
-      display: inline-block;
-      background: pink;
-      color: black;
-    }
-  }
-</style>
-```
-
 Now you can use your component anywhere on the page:
 
 ```html
-<my-component>Hello Elena!</my-component>
+<my-component name="World"></my-component>
 ```
 
 > [!TIP]
@@ -188,14 +176,12 @@ import { Elena } from "@elenajs/core";
 
 ```js
 // ░ [ELENA]: Composite Component
-export default class Stack extends Elena(HTMLElement, {
-  tagName: "elena-stack",
-  props: ["direction"],
-}) {
-  constructor() {
-    super();
-    this.direction = "column";
-  }
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
+
+  direction = "column";
+
   // Note that Composite Components do not call render()
 }
 Stack.define();
@@ -205,10 +191,9 @@ Stack.define();
 
 ```html
 <elena-stack>
-  <elena-input label="Name" type="text"></elena-input>
-  <elena-input label="Email" type="email"></elena-input>
-  <elena-textarea label="Message"></elena-textarea>
-  <elena-button type="submit">Submit</elena-button>
+  <div>Stacked content</div>
+  <div>Stacked content</div>
+  <div>Stacked content</div>
 </elena-stack>
 ```
 
@@ -218,14 +203,12 @@ Stack.define();
 import { Elena, html } from "@elenajs/core";
 
 // ░ [ELENA]: Primitive Component
-export default class Button extends Elena(HTMLElement, {
-  tagName: "elena-button",
-  props: ["variant"],
-}) {
-  constructor() {
-    super();
-    this.variant = "default";
-  }
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant"];
+
+  variant = "default";
+  
   // Primitive Components return their `html` in render()
   render() {
     return html`<button>${this.text}</button>`;
@@ -245,58 +228,44 @@ Button.define();
 
 ## Options
 
-Elena provides an options object where you can set the following:
-
-```js
-export default class Button extends Elena(HTMLElement, {
-  // Custom element tag name to register:
-  tagName: "elena-button",
-
-  // Props to observe and sync as attributes:
-  props: ["label", "disabled"],
-
-  // Events to delegate from the inner element:
-  events: ["click", "focus", "blur"],
-
-  // CSS selector for the inner element to be used as Ref:
-  element: ".my-button",
-})
-```
-
-All of Elena’s options are optional. `tagName` is required only if you want Elena to handle the web component registration for you. Otherwise call `customElements.define()` yourself:
+Elena components are configured using static class fields:
 
 ```js
 export default class Button extends Elena(HTMLElement) {
-  // do something...
+  // Custom element tag name to register.
+  static tagName = "elena-button";
+
+  // Props to observe and sync as attributes.
+  static props = ["label", "disabled"];
+
+  // Events to delegate from the inner element.
+  static events = ["click", "focus", "blur"];
+
+  // CSS selector for the inner element ref (this.element).
+  // Omit when the target is the firstElementChild (faster default).
+  static element = ".my-button";
 }
-customElements.define("elena-button", Button);
 ```
 
-Please note though that doing this means that your web component can no longer be used in a server context.
-
 > [!TIP]
-> When working with Primitive Components, leaving out `element` option means that Elena will try use `firstElementChild` instead, if available. In cases when your template markup is simple, this is actually more performant when you have hundreds or even thousands of Elena components on a page.
+> All options are optional. `static element` is a CSS selector for the inner element ref (`this.element`), used for event delegation and direct DOM access. When omitted, Elena uses `firstElementChild` instead, if available.
 
 <br/>
 
 ## Props
 
-Elena allows you to define prop declarations in its options object. This makes Elena aware of what external props passed to the element should be observed and synced as attributes between the web component host and the inner template element (passed as an `element` in options).
+Elena allows you to define prop declarations using the `static props` field. This makes Elena aware of what external props passed to the element should be observed and synced as attributes between the web component host and the inner template element.
 
-Props are declared in the `props` array in the options object, with default values set inside the `constructor`:
+Props are declared in `static props`, with default values set as instance fields:
 
 ```js
-export default class Button extends Elena(HTMLElement, {
-  props: ["variant", "disabled", "value", "type"],
-}) {
-  constructor() {
-    super();
+export default class Button extends Elena(HTMLElement) {
+  static props = ["variant", "disabled", "value", "type"];
 
-    this.variant = "default";
-    this.disabled = false;
-    this.value = "";
-    this.type = "button";
-  }
+  variant = "default";
+  disabled = false;
+  value = "";
+  type = "button";
 }
 ```
 
@@ -308,13 +277,11 @@ export default class Button extends Elena(HTMLElement, {
 By default, Elena reflects all properties to the host element as HTML attributes. If you want to disable this feature for a specific property, use `reflect: false`:
 
 ```js
-const options = {
-  props: [
-    "variant",
-    "size",
+export default class Button extends Elena(HTMLElement) {
+  static props = [
     { name: "icon", reflect: false },
-  ],
-};
+  ];
+}
 ```
 
 ### Documenting props
@@ -327,28 +294,28 @@ In addition to declaring props, you can (and should!) document them using a [JSD
  * @attribute
  * @type {"default" | "primary" | "danger"}
  */
-this.variant = "default";
+variant = "default";
 
 /**
  * Makes the component disabled.
  * @attribute
  * @type {Boolean}
  */
-this.disabled = false;
+disabled = false;
 
 /**
  * The value used to identify the button in forms.
  * @attribute
  * @type {string}
  */
-this.value = "";
+value = "";
 
 /**
  * The type of the button.
  * @attribute
  * @type {"submit" | "reset" | "button"}
  */
-this.type = "button";
+type = "button";
 ```
 
 > [!TIP]
@@ -376,30 +343,30 @@ Additionally, you can provide possible prop values using the following syntax:
 
 ## Events
 
-Elena allows you to define event declarations in its options object. The `events` array is used for determining which events the element should listen to and delegate from the inner template element:
+Elena allows you to define event declarations using the `static events` field. The `events` array determines which events the element should listen to and delegate from the inner template element:
 
 ```js
-export default class Button extends Elena(HTMLElement, {
-  events: ["click", "focus", "blur"],
-})
+export default class Button extends Elena(HTMLElement) {
+  static events = ["click", "focus", "blur"];
+}
 ```
 
 Once declared, Elena will set up the necessary event listeners and dispatching logic and take care of cleanup when the element is removed from the DOM.
 
 > [!TIP]
-> You can alternatively build your own custom logic inside the web component for events and not rely on the built-in functionality in Elena.
+> You can alternatively build your own custom logic inside the Elena component for events and not rely on the built-in functionality.
 
 <br/>
 
 ## Methods
 
-Elena ships with the following built-in lifecycle methods:
+Elena ships with the following built-in lifecycle methods that follow the standard [custom elements lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks) while adding optional `render()` and `updated()` methods:
 
 - **`connectedCallback()`:** Called each time the element is added to the DOM.
 - **`disconnectedCallback()`:** Called each time the element is removed from the DOM.
 - **`attributeChangedCallback()`:** Called when Elena’s props are changed, added, removed or replaced.
 - **`render()`:** Called whenever there’s an update that needs rendering.
-- **`updated()`:** Performs a post-update and adds the `hydrated` attribute to the Host element.
+- **`updated()`:** Called once after the element’s first connect. Adds the `hydrated` attribute to the host element.
 
 ### Utility methods
 
@@ -407,7 +374,7 @@ Additionally, Elena provides the following utility methods:
 
 #### `ClassName.define()`
 
-Register the web component with SSR guards. Call this on your subclass after the class body is defined. The tag name is read from the `tagName` option set when calling `Elena()`.
+Register the web component with SSR guards. Call this on your subclass after the class body is defined. The tag name is read from the `static tagName` class field.
 
 ```js
 MyElement.define();
@@ -573,15 +540,15 @@ render() {
 
 ### Element ref
 
-Elena provides a special **Ref** to the `element` you pass as a DOM selector:
+Elena provides a special **Ref** to the inner element resolved by `static element`:
 
 ```js
-export default class Button extends Elena(HTMLElement, {
-  element: ".my-button",
-})
+export default class Button extends Elena(HTMLElement) {
+  static element = ".my-button";
+}
 ```
 
-This allows you a direct access to the underlying DOM element:
+This gives you direct access to the underlying DOM element:
 
 ```js
 console.log(this.element);
@@ -619,7 +586,7 @@ When used with JavaScript frameworks, passing text as children works for static 
 
 For dynamic text that changes over time, use the `text` property instead, since **Primitive Components** own their internal DOM and frameworks cannot update children after Elena has hydrated the element:
 
-```jsx
+```html
 // React
 <elena-button text={buttonText} />
 
@@ -685,11 +652,6 @@ Below is an example of a **Composite Component** which includes `props` and docu
 // ░ [ELENA]: Composite Component
 import { Elena } from "@elenajs/core";
 
-const options = {
-  tagName: "elena-stack",
-  props: ["direction"],
-};
-
 /**
  * Stack component manages layout of immediate children
  * with optional spacing between each child.
@@ -698,18 +660,18 @@ const options = {
  * @slot - The stacked content
  * @status alpha
  */
-export default class Stack extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
 
-    /**
-     * The direction of the stack.
-     * @attribute
-     * @type {"column" | "row"}
-     */
-    this.direction = "column";
-  }
+  /**
+   * The direction of the stack.
+   * @attribute
+   * @type {"column" | "row"}
+   */
+  direction = "column";
 }
+
 Stack.define();
 ```
 
@@ -720,12 +682,6 @@ Below is an example of a **Primitive Component** which includes `props`, `events
 ```js
 // ░ [ELENA]: Primitive Component
 import { Elena, html } from "@elenajs/core";
-
-const options = {
-  tagName: "elena-button",
-  props: ["variant", "disabled", "type"],
-  events: ["click", "focus", "blur"],
-};
 
 /**
  * The description of the component goes here.
@@ -741,31 +697,31 @@ const options = {
  * @cssprop [--elena-button-bg] - Overrides the default background color.
  * @cssprop [--elena-button-font] - Overrides the default font-family.
  */
-export default class Button extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant", "disabled", "type"];
+  static events = ["click", "focus", "blur"];
 
-    /**
-     * The style variant of the button.
-     * @attribute
-     * @type {"default" | "primary" | "danger"}
-     */
-    this.variant = "default";
+  /**
+   * The style variant of the button.
+   * @attribute
+   * @type {"default" | "primary" | "danger"}
+   */
+  variant = "default";
 
-    /**
-     * Makes the component disabled.
-     * @attribute
-     * @type {Boolean}
-     */
-    this.disabled = false;
+  /**
+   * Makes the component disabled.
+   * @attribute
+   * @type {Boolean}
+   */
+  disabled = false;
 
-    /**
-     * The type of the button.
-     * @attribute
-     * @type {"submit" | "reset" | "button"}
-     */
-    this.type = "button";
-  }
+  /**
+   * The type of the button.
+   * @attribute
+   * @type {"submit" | "reset" | "button"}
+   */
+  type = "button";
 
   /**
    * An example custom method.
@@ -784,6 +740,7 @@ export default class Button extends Elena(HTMLElement, options) {
     `;
   }
 }
+
 Button.define();
 ```
 
@@ -850,8 +807,8 @@ Elena currently provides SSR examples for the following frameworks:
 Elena is written in vanilla JavaScript with JSDoc annotations. The **`@elenajs/core`** library ships its own type declarations (`dist/elena.d.ts`) which are generated automatically by `tsc` from the JSDoc so that you get full IntelliSense and type checking.
 
 ```ts
-import { Elena, html, nothing } from "@elenajs/core";
-// Elena, ElenaOptions, html, nothing are all typed
+import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
+// Elena, ElenaPropObject, ElenaElementConstructor, html, unsafeHTML, nothing are all typed
 ```
 
 ### Generating types for components
@@ -897,16 +854,16 @@ Elena provides TypeScript examples for the following JavaScript frameworks:
 
 ### Authoring components with TypeScript
 
-When using TypeScript (instead of JavaScript) to author the Elena components, you can simplify the code (like omitting the `constructor` part) and have your type definitions inline:
+When using TypeScript to author Elena components, you can add inline type annotations directly to your instance field declarations:
 
 ```ts
 // ░ [ELENA]: Primitive Component
 import { Elena, html } from "@elenajs/core";
 
-export default class Button extends Elena(HTMLElement, {
-  tagName: "elena-button",
-  props: ["variant"],
-}) {
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant"];
+
   /**
    * The style variant of the component.
    * @attribute
@@ -1169,7 +1126,7 @@ Rules that apply to **Primitive Components** when used with a framework:
 
 - You can’t pass dynamic text content as children. Instead use the `text` property, since **Primitive Components** own their internal DOM and frameworks cannot update children after the initial Elena render:
 
-  ```jsx
+  ```html
   // React
   <elena-button text={buttonText} />
 
