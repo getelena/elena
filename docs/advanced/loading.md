@@ -1,4 +1,4 @@
-# Loading
+# Loading Components
 
 ## Load event
 

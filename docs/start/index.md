@@ -50,8 +50,8 @@ The fastest way to get started is to include the following directly into your we
 
 :::
 
-> [!WARNING] TIP
-> Whilst this is the fastest way to get started, we don't recommend it for production since you would be relying entirely on unpkg CDN. Instead, we recommend installing the [@elenajs/core](https://github.com/getelena/elena/tree/main/packages/core) locally, and using [@elenajs/bundler](https://github.com/getelena/elena/tree/main/packages/bundler) for optimal performance.
+> [!WARNING]
+> Whilst this is the fastest way to get started, we don't recommend it for production since you would be relying entirely on unpkg CDN. Instead, we recommend installing the [@elenajs/core](https://github.com/getelena/elena/tree/main/packages/core) locally and bundling your component libraries with [@elenajs/bundler](https://github.com/getelena/elena/tree/main/packages/bundler) for optimal performance.
 
 ## Installation
 

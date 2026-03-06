@@ -1,4 +1,4 @@
-# CSS Styles
+# Styles
 
 These guidelines cover the approaches that we recommend when styling Progressive Web Components to make them work reliably across the lifecycle of a component. You're obviously able to craft the CSS the best way you see fit for your purpose, but there are some things to take into account that we've tried to cover below.
 

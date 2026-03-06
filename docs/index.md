@@ -21,7 +21,7 @@
 
 **Elena is a simple, tiny library (2kB) for building [Progressive Web Components](#progressive-web-components).** With Elena, you can immediately render the component's base HTML & CSS, then progressively enhance the experience with JavaScript rather than relying on it from the start. 
 
-Elena is built entirely on standards based custom elements and has no external dependencies. More than a library, it is a methodology for making [custom elements](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) work progressively across all client and server side frameworks _(e.g. Next.js, React or Vue)._
+<!-- Elena is built entirely on standards based custom elements and has no external dependencies. More than a library, it is a methodology for making [custom elements](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) work progressively across all client and server side frameworks _(e.g. Next.js, React or Vue)._-->
 
 ### Elena’s features
 
@@ -89,7 +89,7 @@ Stack.define();
 </my-stack>
 ```
 
-> [!WARNING] Prerequisites
+> [!TIP] Prerequisites
 > Since Elena is a thin layer extending the functionality of standard custom elements, the rest of the documentation assumes familiarity with HTML, CSS and JavaScript. If you are totally new to custom elements, it might be a good idea to see the [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) that covers them in detail. Prior experience with custom elements helps, but is not required when using Elena.
 
 
