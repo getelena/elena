@@ -21,7 +21,7 @@
 | `tagName` | `string` | The HTML tag name for this component (e.g. `"elena-button"`). Required for `define()` to register the element. |
 | `props` | `(string \| { name: string, reflect?: boolean })[]` | The list of props this component accepts. Each prop stays in sync with its matching HTML attribute. Use `{ name, reflect: false }` to keep a prop JS-only without writing it back to the attribute. |
 | `events` | `string[]` | Events to forward from the inner element up to the host (e.g. `["click", "focus", "blur"]`). |
-| `element` | `string` | How to find the inner element that `this.element` points to. A plain word (e.g. `"inner"`) matches by class name; anything else is treated as a CSS selector. Defaults to the first child element when omitted. |
+| `element` | `string` | A CSS selector for the inner element that `this.element` points to (e.g. `".inner"`, `"button"`). Defaults to the first child element when omitted. |
 
 ### Instance Properties
 

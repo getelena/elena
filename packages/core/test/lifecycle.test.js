@@ -160,7 +160,7 @@ describe("lifecycle", () => {
       expect(el.element).toBe(el.firstElementChild);
     });
 
-    it("resolves via getElementsByClassName for a bare class name", async () => {
+    it("resolves via querySelector for a CSS class selector", async () => {
       await import("./fixtures/classname-element.js");
       const el = await createElement("classname-element");
       expect(el.element).not.toBeNull();
