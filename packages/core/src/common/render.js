@@ -151,12 +151,7 @@ function mapTextNodes(element, escapedValues) {
 }
 
 /**
- * Render an HTML string into an element by parsing it into a
- * DocumentFragment via createContextualFragment and swapping
- * the element’s children in a single replaceChildren call.
- *
- * Uses element.ownerDocument.createRange() so that elements
- * in e.g. iframes parse HTML correctly.
+ * Render an HTML string into an element.
  *
  * @param {HTMLElement} element
  * @param {string} markup
@@ -166,5 +161,5 @@ export function renderHtml(element, markup) {
     console.warn("░█ [ELENA]: Cannot render to a null element.");
     return;
   }
-  element.replaceChildren(element.ownerDocument.createRange().createContextualFragment(markup));
+  element.innerHTML = markup;
 }
