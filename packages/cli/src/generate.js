@@ -35,28 +35,6 @@ function has(features, feature) {
 }
 
 /**
- * Builds the options object literal as a string.
- *
- * @param {string} tagName
- * @param {string[]} features
- * @param {boolean} isPrimitive
- * @returns {string}
- */
-function buildOptions(tagName, features, isPrimitive) {
-  const lines = [`  tagName: "${tagName}",`];
-
-  if (has(features, "props")) {
-    lines.push(isPrimitive ? `  props: ["variant"],` : `  props: ["direction"],`);
-  }
-
-  if (isPrimitive && has(features, "events")) {
-    lines.push(`  events: ["click", "focus", "blur"],`);
-  }
-
-  return `const options = {\n${lines.join("\n")}\n};`;
-}
-
-/**
  * Builds JSDoc block for a primitive component.
  *
  * @param {string} className
@@ -135,61 +113,58 @@ function compositeJSDoc(className, tagName, features) {
  */
 function primitiveJS(name, features) {
   const className = toPascal(name);
-  const tagName = `${name}`;
+  const tagName = name;
   const hasComments = has(features, "comments");
-  const opts = buildOptions(tagName, features, true);
 
   const bodyLines = [];
 
+  // Static fields
+  bodyLines.push(`  static tagName = "${tagName}";`);
   if (has(features, "props")) {
-    if (hasComments) {
-      bodyLines.push(
-        "  constructor() {",
-        "    super();",
-        "",
-        "    /**",
-        "     * The style variant of the component.",
-        "     * @attribute",
-        '     * @type {"default" | "primary" | "danger"}',
-        "     */",
-        '    this.variant = "default";',
-        "  }"
-      );
-    } else {
-      bodyLines.push("  constructor() {", "    super();", '    this.variant = "default";', "  }");
-    }
+    bodyLines.push(`  static props = ["variant"];`);
+  }
+  if (has(features, "events")) {
+    bodyLines.push(`  static events = ["click", "focus", "blur"];`);
   }
 
+  // Instance prop field
+  if (has(features, "props")) {
+    bodyLines.push(``);
+    if (hasComments) {
+      bodyLines.push(
+        `  /**`,
+        `   * The style variant of the component.`,
+        `   * @attribute`,
+        `   * @type {"default" | "primary" | "danger"}`,
+        `   */`
+      );
+    }
+    bodyLines.push(`  variant = "default";`);
+  }
+
+  // render()
+  bodyLines.push(``);
   if (hasComments) {
-    bodyLines.push(
-      "",
-      "  /**",
-      "   * Renders the html template.",
-      "   * @internal",
-      "   */",
-      "  render() {"
-    );
-  } else {
-    bodyLines.push("  render() {");
+    bodyLines.push(`  /**`, `   * Renders the html template.`, `   * @internal`, `   */`);
   }
   bodyLines.push(
-    "    return html`",
+    `  render() {`,
+    `    return html\``,
     `      <div class="${tagName}">\${this.text}</div>`,
-    "    `;",
-    "  }"
+    `    \`;`,
+    `  }`
   );
 
   if (has(features, "methods")) {
-    bodyLines.push("  myMethod() {", "    console.log(this.element);", "  }");
+    bodyLines.push(``, `  myMethod() {`, `    console.log(this.element);`, `  }`);
   }
 
   const header = hasComments ? "// ░ [ELENA]: Primitive Component\n" : "";
-  const jsdoc = hasComments ? `${primitiveJSDoc(className, tagName, features)}` : "";
+  const jsdoc = hasComments ? `${primitiveJSDoc(className, tagName, features)}\n` : "";
 
   return `${header}import { Elena, html } from "@elenajs/core";
-${opts}
-${jsdoc}
-export default class ${className} extends Elena(HTMLElement, options) {
+
+${jsdoc}export default class ${className} extends Elena(HTMLElement) {
 ${bodyLines.join("\n")}
 }
 ${className}.define();
@@ -205,57 +180,57 @@ ${className}.define();
  */
 function primitiveTS(name, features) {
   const className = toPascal(name);
-  const tagName = `${name}`;
+  const tagName = name;
   const hasComments = has(features, "comments");
-  const opts = buildOptions(tagName, features, true);
 
   const bodyLines = [];
 
+  // Static fields
+  bodyLines.push(`  static tagName = "${tagName}";`);
   if (has(features, "props")) {
-    if (hasComments) {
-      bodyLines.push(
-        "  /**",
-        "   * The style variant of the component.",
-        "   * @attribute",
-        "   */",
-        '  variant: "default" | "primary" | "danger" = "default";'
-      );
-    } else {
-      bodyLines.push('  variant: "default" | "primary" | "danger" = "default";');
-    }
+    bodyLines.push(`  static props = ["variant"];`);
+  }
+  if (has(features, "events")) {
+    bodyLines.push(`  static events = ["click", "focus", "blur"];`);
   }
 
+  // Instance prop field (TS inline type, no @type JSDoc needed)
+  if (has(features, "props")) {
+    bodyLines.push(``);
+    if (hasComments) {
+      bodyLines.push(
+        `  /**`,
+        `   * The style variant of the component.`,
+        `   * @attribute`,
+        `   */`
+      );
+    }
+    bodyLines.push(`  variant: "default" | "primary" | "danger" = "default";`);
+  }
+
+  // render()
+  bodyLines.push(``);
   if (hasComments) {
-    bodyLines.push(
-      "",
-      "  /**",
-      "   * Renders the html template.",
-      "   * @internal",
-      "   */",
-      "  render() {"
-    );
-  } else {
-    bodyLines.push("", "  render() {");
+    bodyLines.push(`  /**`, `   * Renders the html template.`, `   * @internal`, `   */`);
   }
   bodyLines.push(
-    "    return html`",
+    `  render() {`,
+    `    return html\``,
     `      <div class="${tagName}">\${this.text}</div>`,
-    "    `;",
-    "  }"
+    `    \`;`,
+    `  }`
   );
 
   if (has(features, "methods")) {
-    bodyLines.push("", "  myMethod() {", "    console.log(this.element);", "  }");
+    bodyLines.push(``, `  myMethod() {`, `    console.log(this.element);`, `  }`);
   }
 
   const header = hasComments ? "// ░ [ELENA]: Primitive Component\n" : "";
-  const jsdoc = hasComments ? `\n${primitiveJSDoc(className, tagName, features)}` : "";
+  const jsdoc = hasComments ? `${primitiveJSDoc(className, tagName, features)}\n` : "";
 
   return `${header}import { Elena, html } from "@elenajs/core";
 
-${opts}
-${jsdoc}
-export default class ${className} extends Elena(HTMLElement, options) {
+${jsdoc}export default class ${className} extends Elena(HTMLElement) {
 ${bodyLines.join("\n")}
 }
 ${className}.define();
@@ -283,7 +258,14 @@ function primitiveCSS(name, features) {
     if (hasComments) {
       lines.push(``, `  /* Unset makes sure styles don't leak in */`);
     }
-    lines.push(`  :scope, *, *::before, *::after {`, `    all: unset;`, `  }`);
+    lines.push(
+      `  :scope,`,
+      `  *:where(:not(img, svg):not(svg *)),`,
+      `  *::before,`,
+      `  *::after {`,
+      `    all: unset;`,
+      `  }`
+    );
   }
 
   if (hasComments) {
@@ -346,47 +328,44 @@ function primitiveCSS(name, features) {
  */
 function compositeJS(name, features) {
   const className = toPascal(name);
-  const tagName = `${name}`;
+  const tagName = name;
   const hasComments = has(features, "comments");
-  const opts = buildOptions(tagName, features, false);
 
   const bodyLines = [];
 
+  // Static fields
+  bodyLines.push(`  static tagName = "${tagName}";`);
   if (has(features, "props")) {
+    bodyLines.push(`  static props = ["direction"];`);
+  }
+
+  // Instance prop field
+  if (has(features, "props")) {
+    bodyLines.push(``);
     if (hasComments) {
       bodyLines.push(
-        "  constructor() {",
-        "    super();",
-        "",
-        "    /**",
-        "     * The direction of the content.",
-        "     *",
-        "     * @attribute",
-        '     * @type {"column" | "row"}',
-        "     */",
-        '    this.direction = "column";',
-        "  }"
+        `  /**`,
+        `   * The direction of the content.`,
+        `   *`,
+        `   * @attribute`,
+        `   * @type {"column" | "row"}`,
+        `   */`
       );
-    } else {
-      bodyLines.push("  constructor() {", "    super();", '    this.direction = "column";', "  }");
     }
+    bodyLines.push(`  direction = "column";`);
   }
 
   if (has(features, "methods")) {
-    if (bodyLines.length > 0) {
-      bodyLines.push("");
-    }
-    bodyLines.push("  myMethod() {", "    console.log(this);", "  }");
+    bodyLines.push(``, `  myMethod() {`, `    console.log(this);`, `  }`);
   }
 
-  const body = bodyLines.length > 0 ? `\n${bodyLines.join("\n")}\n` : "";
-  const jsdoc = hasComments ? `\n${compositeJSDoc(className, tagName, features)}` : "";
+  const jsdoc = hasComments ? `${compositeJSDoc(className, tagName, features)}\n` : "";
 
   return `import { Elena } from "@elenajs/core";
 
-${opts}
-${jsdoc}
-export default class ${className} extends Elena(HTMLElement, options) {${body}}
+${jsdoc}export default class ${className} extends Elena(HTMLElement) {
+${bodyLines.join("\n")}
+}
 ${className}.define();
 `;
 }
@@ -400,42 +379,43 @@ ${className}.define();
  */
 function compositeTS(name, features) {
   const className = toPascal(name);
-  const tagName = `${name}`;
+  const tagName = name;
   const hasComments = has(features, "comments");
-  const opts = buildOptions(tagName, features, false);
 
   const bodyLines = [];
 
+  // Static fields
+  bodyLines.push(`  static tagName = "${tagName}";`);
   if (has(features, "props")) {
+    bodyLines.push(`  static props = ["direction"];`);
+  }
+
+  // Instance prop field (TS inline type)
+  if (has(features, "props")) {
+    bodyLines.push(``);
     if (hasComments) {
       bodyLines.push(
-        "  /**",
-        "   * The direction of the content.",
-        "   *",
-        "   * @attribute",
-        "   */",
-        '  direction: "column" | "row" = "column";'
+        `  /**`,
+        `   * The direction of the content.`,
+        `   *`,
+        `   * @attribute`,
+        `   */`
       );
-    } else {
-      bodyLines.push('  direction: "column" | "row" = "column";');
     }
+    bodyLines.push(`  direction: "column" | "row" = "column";`);
   }
 
   if (has(features, "methods")) {
-    if (bodyLines.length > 0) {
-      bodyLines.push("");
-    }
-    bodyLines.push("  myMethod() {", "    console.log(this);", "  }");
+    bodyLines.push(``, `  myMethod() {`, `    console.log(this);`, `  }`);
   }
 
-  const body = bodyLines.length > 0 ? `\n${bodyLines.join("\n")}\n` : "";
-  const jsdoc = hasComments ? `\n${compositeJSDoc(className, tagName, features)}` : "";
+  const jsdoc = hasComments ? `${compositeJSDoc(className, tagName, features)}\n` : "";
 
   return `import { Elena } from "@elenajs/core";
 
-${opts}
-${jsdoc}
-export default class ${className} extends Elena(HTMLElement, options) {${body}}
+${jsdoc}export default class ${className} extends Elena(HTMLElement) {
+${bodyLines.join("\n")}
+}
 ${className}.define();
 `;
 }
@@ -460,7 +440,14 @@ function compositeCSS(name, features) {
     if (hasComments) {
       lines.push(``, `  /* Unset makes sure styles don't leak in */`);
     }
-    lines.push(`  :scope, *, *::before, *::after {`, `    all: unset;`, `  }`);
+    lines.push(
+      `  :scope,`,
+      `  *:where(:not(img, svg):not(svg *)),`,
+      `  *::before,`,
+      `  *::after {`,
+      `    all: unset;`,
+      `  }`
+    );
   }
 
   if (hasComments) {
