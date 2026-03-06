@@ -21,9 +21,10 @@ const _stringsCache = new WeakMap();
  */
 export function renderTemplate(element, strings, values) {
   if (patchTextNodes(element, strings, values)) {
-    return;
+    return false;
   }
   fullRender(element, strings, values);
+  return true;
 }
 
 /**
