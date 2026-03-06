@@ -29,7 +29,7 @@ describe("createTreeWalker node walk", () => {
 
   bench("createTreeWalker (walk 1 text node)", () => {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-    while (walker.nextNode()) {} // eslint-disable-line no-empty
+    while (walker.nextNode()) {}
   });
 
   bench("no walk (baseline)", () => {
