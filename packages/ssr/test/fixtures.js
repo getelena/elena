@@ -56,7 +56,7 @@ function createComponent(tagName, props, renderFn) {
 
   const propNames = props || [];
 
-  Component._tagName = tagName;
+  Component.tagName = tagName;
   Component.observedAttributes = [...propNames, "text"];
 
   // Simulate Elena's setProps: define getters/setters backed by _props Map
@@ -118,7 +118,7 @@ export const NoRenderComponent = createComponent("elena-empty", [], function () 
 function createComposite(tagName, props) {
   class Component {}
 
-  Component._tagName = tagName;
+  Component.tagName = tagName;
 
   for (const prop of props || []) {
     Object.defineProperty(Component.prototype, prop, {
@@ -160,7 +160,7 @@ export const NativePropComponent = (() => {
       return html`<button>${this.text}</button>`;
     }
   }
-  Component._tagName = "elena-native-test";
+  Component.tagName = "elena-native-test";
   Component.observedAttributes = ["variant", "text"];
   for (const prop of ["variant"]) {
     Object.defineProperty(Component.prototype, prop, {
