@@ -50,7 +50,7 @@ The fastest way to get started is to include the following directly into your we
 
 :::
 
-> [!TIP]
+> [!WARNING] TIP
 > Whilst this is the fastest way to get started, we don't recommend it for production since you would be relying entirely on unpkg CDN. Instead, we recommend installing the [@elenajs/core](https://github.com/getelena/elena/tree/main/packages/core) locally, and using [@elenajs/bundler](https://github.com/getelena/elena/tree/main/packages/bundler) for optimal performance.
 
 ## Installation
@@ -297,28 +297,42 @@ export default {
 };
 ```
 
-### Bundler options
+For more detailed documentation, see [Component Libraries](#).
 
-| Option             | Type              | Default          | Description                                                                                                              |
-| ------------------ | ----------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `input`            | `string`          | `"src"`          | Source directory to scan for `.js`, `.ts`, and `.css` files.                                                             |
-| `output.dir`       | `string`          | `"dist"`         | Output directory for compiled files.                                                                                     |
-| `output.format`    | `string`          | `"esm"`          | Rollup output format.                                                                                                    |
-| `output.sourcemap` | `boolean`         | `true`           | Whether to emit sourcemaps.                                                                                              |
-| `bundle`           | `string \| false` | `"src/index.js"` | Entry point for the single-file bundle. Auto-detects `src/index.ts` if no `.js` entry exists. Set to `false` to disable. |
-| `plugins`          | `Plugin[]`        | `[]`             | Additional Rollup plugins appended after the built-in set.                                                               |
-| `analyze.plugins`  | `Plugin[]`        | `[]`             | Additional CEM analyzer plugins.                                                                                         |
+## Command Line Interface
 
-### Bundler build output
+[@elenajs/cli](https://github.com/getelena/elena/tree/main/packages/cli) is an interactive command-line tool for scaffolding Elena components. It generates JavaScript, TypeScript, or single-file HTML source files and scoped CSS with all Elena Progressive Web Component patterns pre-configured.
 
-Running `elena build` produces:
 
-| File                        | Description                                                                                          |
-| --------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `dist/*.js`                 | Individual ES modules for each source file.                                                          |
-| `dist/*.css`                | Minified individual CSS files.                                                                       |
-| `dist/bundle.js`            | Single-file JavaScript bundle _(optional)_.                                                          |
-| `dist/bundle.css`           | Concatenated and minified CSS bundle.                                                                |
-| `dist/custom-elements.json` | [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/) describing all components. |
-| `dist/custom-elements.d.ts` | JSX integration types mapping tag names to prop types.                                               |
-| `dist/*.d.ts`               | Per-component TypeScript declarations with typed props and events.                                   |
+To install Elena CLI as a dependency in your project, run:
+
+::: code-group
+
+```sh [npm]
+npm install --save-dev @elenajs/cli
+```
+
+```sh [yarn]
+yarn add --dev @elenajs/cli
+```
+
+```sh [pnpm]
+pnpm add --save-dev @elenajs/cli
+```
+
+:::
+
+Run without arguments to be guided through all options:
+
+```bash
+npx elena-create
+```
+
+…Or pass a kebab-case name (must contain at least one hyphen) to skip the name prompt:
+
+```bash
+npx elena-create elena-button
+npx elena-create elena-date-picker
+```
+
+For more detailed documentation, see [Command Line Interface](#) section.
