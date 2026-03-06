@@ -5,7 +5,7 @@ dist
 *.tsbuildinfo
 .nx/cache
 .nx/workspace-data
-.vitepress
+docs/.vitepress/cache
 
 # Ignore auto-generated files in the packages
 packages/core/coverage

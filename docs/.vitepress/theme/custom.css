@@ -1,0 +1,107 @@
+:root {
+  --vp-c-brand-1: #f95b1f;
+  --vp-nav-height: 64px;
+}
+
+.VPNavBarTitle .logo {
+  inline-size: 28px;
+  block-size: 28px;
+  margin-right: 8px;
+}
+
+.VPNavBarTitle .title {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.VPNav {
+  background: var(--vp-c-bg);
+}
+
+.VPNavBarTitle.has-sidebar .title {
+  border: 0;
+  align-items: center;
+  padding-top: 1px;
+  transition: opacity 0.25s;
+  display: flex;
+}
+
+.VPNavBar.has-sidebar .title {
+  position: relative !important;
+  width: auto !important;
+  padding-right: 0 !important;
+}
+
+.VPSidebar {
+  background: var(--vp-c-bg) !important;
+  border-right: 1px solid var(--vp-c-gutter);
+}
+
+#local-search {
+  min-width: calc(100% - 2rem);
+}
+
+.VPNavBarMenuLink.active {
+  border-bottom: 1px solid var(--vp-c-brand-1);
+}
+
+.DocSearch-Button {
+  justify-content: space-between;
+}
+
+.VPNavBar.has-sidebar .divider {
+  padding-left: 0 !important;
+}
+
+.VPNavBar.has-sidebar .content {
+  padding-right: 0;
+  padding-left: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .content {
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .VPNavBarSearch {
+    flex-grow: 1;
+  }
+
+  .container {
+    max-width: var(--vp-screen-max-width);
+    justify-content: space-between;
+    margin: 0 auto;
+    display: flex;
+  }
+}
+
+@media (max-width: 767px) {
+  .VPNavBar.has-sidebar .title {
+    padding-right: 0.5rem !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPSidebar {
+    padding-top: calc(var(--vp-nav-height) + 1rem) !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .curtain {
+    background-color: var(--vp-c-bg) !important;
+  }
+}
+
+.VPSidebarItem.is-active {
+  background: hsl(16, 95%, 97%);
+  border-radius: 6px;
+  width: calc(100% + 1rem);
+  margin-left: -0.5rem;
+  padding-left: 0.5rem;
+}
+
+.VPSidebarItem.is-active a p {
+  /*color: #feede6 !important;*/
+}

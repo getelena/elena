@@ -1,0 +1,80 @@
+# TypeScript
+
+Elena is written in vanilla JavaScript with JSDoc annotations. The **`@elenajs/core`** library ships its own type declarations (`dist/elena.d.ts`) which are generated automatically by `tsc` from the JSDoc so that you get full IntelliSense and type checking.
+
+```ts
+import { Elena, html, nothing } from "@elenajs/core";
+// Elena, ElenaOptions, html, nothing are all typed
+```
+
+## Generating types for components
+
+When you build your own Elena components, **`@elenajs/bundler`** can generate TypeScript declarations for each one. Running `elena build` (or calling the bundler programmatically) produces:
+
+- **Per-component `.d.ts` files**: A declaration file for each component (e.g. `button.d.ts`) with typed props and event handlers, derived from your JSDoc annotations. This lets TypeScript resolve sub-path imports like `@my-lib/components/dist/button.js`.
+- **`custom-elements.json`**: The [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/), a machine-readable description of your components used by IDEs and documentation tools.
+- **`custom-elements.d.ts`**: JSX integration types that map your custom element tag names to their prop types. This enables autocomplete and type checking for `<elena-button variant="primary" />` in JSX/TSX files.
+
+## Using the generated types
+
+The generated `custom-elements.d.ts` exports a `CustomElements` type map and a `ScopedElements` helper. To get type checking in JSX (this works with Next.js, see further down for more examples):
+
+```ts
+// types.d.ts (in your consuming project)
+import type { CustomElements } from "@my-lib/components";
+
+type ElenaIntrinsicElements = {
+  [K in keyof CustomElements]: CustomElements[K] & {
+    onClick?: (e: MouseEvent) => void;
+    onFocus?: (e: FocusEvent) => void;
+    onBlur?: (e: FocusEvent) => void;
+    children?: React.ReactNode;
+  };
+};
+
+declare module "react" {
+  namespace JSX {
+    interface IntrinsicElements extends ElenaIntrinsicElements {}
+  }
+}
+```
+
+## TypeScript examples
+
+Elena provides TypeScript examples for the following JavaScript frameworks:
+
+- **[Next.js](https://github.com/getelena/next-example-project)**
+- **[React](https://github.com/getelena/react-example-project)**
+- **[Svelte](https://github.com/getelena/svelte-example-project)**
+- **[Vue](https://github.com/getelena/vue-example-project)**
+
+## Authoring components with TypeScript
+
+When using TypeScript (instead of JavaScript) to author the Elena components, you can simplify the code (like omitting the `constructor` part) and have your type definitions inline:
+
+```ts
+// ░ [ELENA]: Primitive Component
+import { Elena, html } from "@elenajs/core";
+
+export default class Button extends Elena(HTMLElement, {
+  tagName: "elena-button",
+  props: ["variant"],
+}) {
+  /**
+   * The style variant of the component.
+   * @attribute
+   */
+  variant: "default" | "primary" | "danger" = "default";
+
+  /**
+   * Renders the html template.
+   * @internal
+   */
+  render() {
+    return html`
+      <button>${this.text}</button>
+    `;
+  }
+}
+Button.define();
+```
