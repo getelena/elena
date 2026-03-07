@@ -51,8 +51,4 @@ class VanillaElement extends HTMLElement {
   }
 }
 
-if (typeof window !== "undefined" && "customElements" in window) {
-  if (!window.customElements.get("vanilla-element")) {
-    window.customElements.define("vanilla-element", VanillaElement);
-  }
-}
+customElements.define("vanilla-element", VanillaElement);

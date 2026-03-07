@@ -13,13 +13,24 @@ class LitBenchElement extends LitElement {
     this.variant = "";
   }
 
+  /**
+   * If you don't want to use shadow DOM, you can overwrite the
+   * `createRenderRoot` method. By default, LitElement sets the
+   * render root to the shadowDom.
+   * This is usually used for small leaf-components.
+   */
+
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`<span>${this.variant}</span>`;
   }
-}
 
-if (typeof window !== "undefined" && "customElements" in window) {
-  if (!window.customElements.get("lit-bench-element")) {
-    window.customElements.define("lit-bench-element", LitBenchElement);
+  firstUpdated() {
+    this.setAttribute("hydrated", "");
   }
 }
+
+customElements.define("lit-bench-element", LitBenchElement);
