@@ -27,7 +27,7 @@
 - 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
 - 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
 - 🌍 **Standards based:** Built entirely on native custom elements & web standards.
-- ⚡ **Reactive props:** Prop changes sync to attributes and trigger updates automatically.
+- ⚡ **Reactive updates:** Prop and state changes trigger efficient, batched re-renders.
 - 🎨 **Scoped styles:** Simple & clean CSS encapsulation without complex workarounds.
 - 🖥️ **SSR friendly:** Works out of the box, with optional server-side utilities if needed.
 - 🧩 **Zero dependencies:** No runtime dependencies, runs entirely on the web platform.
@@ -172,31 +172,62 @@ A _"Progressive Web Component"_ is a native Custom Element designed in two layer
 
 ## Why was Elena created
 
-I ([@arielle](https://arielsalminen.com)) have worked with [web components](https://arielsalminen.com/2019/why-we-use-web-components/) for about a decade and built various enterprise grade design systems using this technology. While I love what they offer on paper, they also have a lot of issues when it comes to accessibility, server side rendering, layout shifts, FOUC/FOIC, and compatibility with e.g. various analytics tools.
+Elena was created by [@arielle](https://arielsalminen.com) after nearly a decade of building enterprise-scale design systems with [web components](https://arielsalminen.com/2019/why-we-use-web-components/). The recurring pain points were always the same: accessibility barriers, server-side rendering friction, layout shifts, FOUC/FOIC, and compatibility challenges with analytics tools and the existing workflows.
 
-With Elena, I wanted to solve these problems, as much as possible, while still sticking to web standards and what the web platform has to offer. This is how _“Progressive Web Components”_ were born.
+Elena was built to solve these problems while staying grounded in web standards and what the platform natively provides. This is how _“Progressive Web Components”_ were born.
 
 ## Why should I use Elena
 
-First, a few questions to consider:
+**Elena is built for teams creating component libraries and design systems.** If you need web components that work across multiple frameworks (such as [React](https://react.dev), [Next.js](https://nextjs.org), [Vue](https://vuejs.org), [Angular](https://angular.dev)), render HTML and CSS before JavaScript loads, and avoid accessibility barriers, SSR friction, and layout shifts — Elena is designed for exactly that.
 
-- Have you ever struggled with the [challenges described](#why-was-elena-created) above?
-- Have you ever attempted to use plain custom elements to build something that would be consumed by various JavaScript frameworks such as [Next.js](#), [React](#), or [Vue](#)? 
-- Have you noticed how things can get pretty complicated when you start to mix in reactivity, property/attribute syncing, and other features that a developer using those frameworks would expect as a standard?
-- Do you want your web components to work with [React Server Components](#) and similar? 
-
-If you answered _“yes”_ to some or all of the above, Elena may just be the right tool for you. Mainly, Elena is aimed at building component libraries. Elena’s tooling shines specifically at this, and provides many useful features to complement those workflows.
+It handles the cross-framework complexity (prop/attribute syncing, event delegation, framework compatibility) so you can focus on building components rather than plumbing.
 
 ## Elena vs other libraries
 
-Before talking about libraries, we need to talk about how Elena compares against the standard web components and what are the key differences:
+### Elena vs standard web components
 
-- Elena does not use [Shadow DOM](#). Instead, everything lives in the Light DOM. This is an intentional design choice to improve accessibility and server side rendering.
-- For style encapsulation, Elena provides a [CSS Encapsulation Pattern](#) that prevents the component styles from leaking out and the global styles from leaking in.
-- Elena does not use `<template>`. Instead, all of your text content and most of the HTML markup is placed directly on the consuming webpage. 
-- The only exception to above being [Primitive Components](#) that are self-contained and own and render their own HTML markup. With the primitives, only the host element and its text content live directly on the consuming webpage.
+Elena builds on native custom elements, so the mental model is familiar. The key differences are:
 
-At this point, you may wonder, why are they called **Progressive Web Components** then? Wouldn’t **Progressive Custom Elements** make more sense? Yes and no. _Web Component_ is a much more widely recognized term today, hence we stick to what is familiar. Additionally, many of Elena’s concepts are based on what are now commonly referred to as [HTML Web Components](https://adactio.com/journal/20618).
+- **No Shadow DOM.** Elena lives entirely in the Light DOM. This is an intentional design choice to improve accessibility, SSR compatibility, and to make styling easier.
+- **No `<template>`.** Composite Components compose HTML children directly; Primitive Components own their inner HTML via `render()`, with only the host element and its text content on the consuming page.
+- **CSS encapsulation without Shadow DOM.** Elena uses `@scope` to prevent styles from leaking out, combined with a custom [CSS encapsulation pattern](/advanced/scoping) to prevent global styles from leaking in.
+
+> [!TIP] NOTE
+> You may wonder: why are they called **Progressive Web Components** and not **Progressive Custom Elements**? _Web Component_ is the more widely recognized term today, and many of Elena’s concepts align closely with what are now called [HTML Web Components](https://adactio.com/journal/20618).
+
+### Elena vs Lit
+
+[Lit](https://lit.dev) is the most widely used web component library and a natural comparison point. Both share a similar foundation, extending native custom elements with tagged template literals for rendering, but differ significantly in approach:
+
+| | Elena | Lit |
+|---|---|---|
+| **DOM model** | Light DOM | Shadow DOM |
+| **Size** | ~2kB | ~5kB |
+| **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires `@lit-labs/ssr` |
+| **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM (`:host`, CSS parts) |
+| **Accessibility** | Full Light DOM access | Shadow DOM accessibility limitations |
+| **API** | Static class fields + reactive properties | Decorators + reactive properties |
+
+The biggest philosophical difference is Shadow DOM. Lit embraces it for strong encapsulation; Elena rejects it in favor of Light DOM for accessibility, SSR, and CSS inheritance. Neither approach is wrong, it depends on what you’re optimizing for. If your use case specifically requires Shadow DOM, Lit is the right tool.
+
+### Elena vs Stencil
+
+[Stencil](https://stenciljs.com) is a compiler that generates native web components, developed by the Ionic team. Unlike runtime libraries like Elena or Lit, Stencil is primarily a build tool. Components are authored in TypeScript + JSX and compiled to standalone custom elements:
+
+| | Elena | Stencil |
+|---|---|---|
+| **Approach** | Runtime mixin | Compiler |
+| **Language** | Vanilla JavaScript or TypeScript | TypeScript + JSX |
+| **Build step** | Optional | Required |
+| **DOM model** | Light DOM | Shadow DOM (default; configurable) |
+| **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires Stencil's Hydrate app |
+| **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM or scoped CSS |
+| **API** | Static class fields + reactive properties | Decorators + JSX |
+| **Output targets** | Not necessary | Custom elements, React, Angular, Vue wrappers |
+
+Stencil’s standout feature is its output targets, it can generate framework-specific wrappers (React, Angular, Vue) automatically from the same component source. If you need generated bindings for multiple frameworks, Stencil has a clear advantage. Elena, by contrast, works directly with any framework without generated wrappers.
 
 ## Next steps
 
