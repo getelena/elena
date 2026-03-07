@@ -24,9 +24,9 @@ export default class Button extends Elena(HTMLElement) {
 
 ## Option reference
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `static tagName` | `string` | Custom element tag name to register (e.g. `"elena-button"`). When set, `ClassName.define()` will register the element using this name. |
-| `static props` | `string[]` | Array of prop names (or `{ name, reflect? }` objects) to observe and sync as attributes (e.g. `["variant", "disabled"]`). |
-| `static events` | `string[]` | Array of event names to delegate from the inner element (e.g. `["click", "focus", "blur"]`). |
-| `static element` | `string` | Selector for the inner element ref (`this.element`). When omitted, Elena uses `firstElementChild`; bare identifier → `getElementsByClassName`; any other string → `querySelector`. |
+| Field | Type | Description |
+|-------|------|-------------|
+| `tagName` | `string` | The HTML tag name for this component (e.g. `"elena-button"`). Required for `define()` to register the element. |
+| `props` | `(string \| { name: string, reflect?: boolean })[]` | The list of props this component accepts. Each prop stays in sync with its matching HTML attribute. Use `{ name, reflect: false }` to keep a prop JS-only without writing it back to the attribute. |
+| `events` | `string[]` | Events to forward from the inner element up to the host (e.g. `["click", "focus", "blur"]`). |
+| `element` | `string` | A CSS selector for the inner element that `this.element` points to (e.g. `".inner"`, `"button"`). Defaults to the first child element when omitted. |

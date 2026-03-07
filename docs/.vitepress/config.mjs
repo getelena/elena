@@ -4,13 +4,14 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 export default withMermaid(
   defineConfig({
     title: "Elena",
+    // base: "/elena/docs/",
     ignoreDeadLinks: true,
     description: "Simple, tiny library for building Progressive Web Components.",
     cleanUrls: true,
     head: [["link", { rel: "icon", href: "https://elenajs.com/img/elena.png" }]],
     markdown: {
       toc: {
-        level: [1, 2, 3, 4, 5],
+        level: [1, 2],
       },
     },
     vite: {
