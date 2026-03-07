@@ -19,11 +19,11 @@
 
 ## What is Elena?
 
-**Elena is a simple, tiny library (1.92kB) for building [Progressive Web Components](#progressive-web-components).** With Elena, you can immediately render the component's base HTML & CSS, then progressively enhance the experience with JavaScript rather than relying on it from the start. 
+**Elena is a simple, tiny library (2kB) for building [Progressive Web Components](#progressive-web-components).** With Elena, you can immediately render the component's base HTML & CSS, then progressively enhance the experience with JavaScript rather than relying on it from the start. 
 
 ### Elena’s features
 
-- 🔋 **Extremely lightweight:** 1.92kB minified & compressed with zero runtime overhead.
+- 🔋 **Extremely lightweight:** 2kB minified & compressed with zero runtime overhead.
 - 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
 - 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
 - 🌍 **Standards based:** Built entirely on native custom elements & web standards.
