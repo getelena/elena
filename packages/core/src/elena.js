@@ -41,7 +41,7 @@ function elementResolver(selector) {
  */
 
 /**
- * @typedef {{ text: string, element: HTMLElement | null, render(): void, updated(): void, connectedCallback(): void, disconnectedCallback(): void }} ElenaInstanceMembers
+ * @typedef {{ text: string, element: HTMLElement | null, render(): void, willUpdate(): void, firstUpdated(): void, updated(): void, connectedCallback(): void, disconnectedCallback(): void }} ElenaInstanceMembers
  */
 
 /**
@@ -129,10 +129,16 @@ export function Elena(superClass) {
       this._setupStaticProps();
       this._captureClassFieldDefaults();
       this._captureText();
+      this.willUpdate();
       this._applyRender();
       this._resolveInnerElement();
       this._syncProps();
       this._delegateEvents();
+      if (!this._hydrated) {
+        this._hydrated = true;
+        this.setAttribute("hydrated", "");
+        this.firstUpdated();
+      }
       this.updated();
     }
 
@@ -316,18 +322,14 @@ export function Elena(superClass) {
      */
     render() {}
 
-    /**
-     * Called once after the element's first render.
-     * Marks the element as hydrated.
-     *
-     * @internal
-     */
-    updated() {
-      if (!this._hydrated) {
-        this._hydrated = true;
-        this.setAttribute("hydrated", "");
-      }
-    }
+    /** Called before every render. Override to prepare state before the template runs. */
+    willUpdate() {}
+
+    /** Called once after the element's first render. Override to run setup that needs the DOM. */
+    firstUpdated() {}
+
+    /** Called after every render. Override to react to changes. */
+    updated() {}
 
     /**
      * Called by the browser each time the element is removed from the page.
@@ -394,9 +396,11 @@ export function Elena(superClass) {
      * @internal
      */
     _safeRender() {
+      this.willUpdate();
       this._isRendering = true;
       this._applyRender();
       this._isRendering = false;
+      this.updated();
     }
   }
 

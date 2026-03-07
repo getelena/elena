@@ -337,7 +337,7 @@ describe("lifecycle", () => {
   });
 
   describe("updated() behavioral contract", () => {
-    it("is NOT called on re-renders triggered by attributeChangedCallback", async () => {
+    it("is called on re-renders triggered by attributeChangedCallback", async () => {
       await import("./fixtures/extended-element.js");
       const el = await createElement("extended-element", { label: "initial" });
       const updateCountAfterConnect = el.getAttribute("data-update-count");
@@ -345,9 +345,167 @@ describe("lifecycle", () => {
       // Trigger a re-render by changing an observed attribute
       el.setAttribute("label", "changed");
 
-      // updated() should NOT have been called again; count stays the same
+      // updated() should have been called again; count increments
       const updateCountAfterChange = el.getAttribute("data-update-count");
-      expect(updateCountAfterChange).toBe(updateCountAfterConnect);
+      expect(Number(updateCountAfterChange)).toBe(Number(updateCountAfterConnect) + 1);
+    });
+  });
+
+  describe("willUpdate / firstUpdated / updated hooks", () => {
+    it("fires in order: willUpdate → render → firstUpdated → updated on first connect", () => {
+      const calls = [];
+      class HookOrderEl extends Elena(HTMLElement) {
+        static tagName = "test-hook-order";
+        willUpdate() {
+          calls.push("willUpdate");
+        }
+        render() {
+          calls.push("render");
+          return html`<span></span>`;
+        }
+        firstUpdated() {
+          calls.push("firstUpdated");
+        }
+        updated() {
+          calls.push("updated");
+        }
+      }
+      HookOrderEl.define();
+
+      const el = document.createElement("test-hook-order");
+      document.body.appendChild(el);
+      expect(calls).toEqual(["willUpdate", "render", "firstUpdated", "updated"]);
+      el.remove();
+    });
+
+    it("re-render fires willUpdate → render → updated (skips firstUpdated)", () => {
+      const calls = [];
+      class HookReRenderEl extends Elena(HTMLElement) {
+        static tagName = "test-hook-rerender";
+        static props = ["label"];
+        label = "";
+        willUpdate() {
+          calls.push("willUpdate");
+        }
+        render() {
+          calls.push("render");
+          return html`<span>${this.label}</span>`;
+        }
+        firstUpdated() {
+          calls.push("firstUpdated");
+        }
+        updated() {
+          calls.push("updated");
+        }
+      }
+      HookReRenderEl.define();
+
+      const el = document.createElement("test-hook-rerender");
+      document.body.appendChild(el);
+      calls.length = 0;
+
+      el.setAttribute("label", "changed");
+      expect(calls).toEqual(["willUpdate", "render", "updated"]);
+      el.remove();
+    });
+
+    it("firstUpdated fires exactly once across connect and reconnect", () => {
+      let count = 0;
+      class HookFirstEl extends Elena(HTMLElement) {
+        static tagName = "test-hook-first";
+        firstUpdated() {
+          count++;
+        }
+        render() {
+          return html`<span></span>`;
+        }
+      }
+      HookFirstEl.define();
+
+      const el = document.createElement("test-hook-first");
+      document.body.appendChild(el);
+      expect(count).toBe(1);
+
+      const container = document.createElement("div");
+      document.body.appendChild(container);
+      el.remove();
+      container.appendChild(el);
+      expect(count).toBe(1);
+
+      el.remove();
+      container.remove();
+    });
+
+    it("updated fires on every connect including reconnection", () => {
+      let count = 0;
+      class HookUpdReconnectEl extends Elena(HTMLElement) {
+        static tagName = "test-hook-upd-reconnect";
+        updated() {
+          count++;
+        }
+        render() {
+          return html`<span></span>`;
+        }
+      }
+      HookUpdReconnectEl.define();
+
+      const el = document.createElement("test-hook-upd-reconnect");
+      document.body.appendChild(el);
+      expect(count).toBe(1);
+
+      const container = document.createElement("div");
+      document.body.appendChild(container);
+      el.remove();
+      container.appendChild(el);
+      expect(count).toBe(2);
+
+      el.remove();
+      container.remove();
+    });
+
+    it("state set in willUpdate is available to render()", () => {
+      class HookWillUpdateStateEl extends Elena(HTMLElement) {
+        static tagName = "test-hook-willupdate-state";
+        static props = ["label"];
+        label = "";
+        willUpdate() {
+          this._upper = this.label.toUpperCase();
+        }
+        render() {
+          return html`<span>${this._upper}</span>`;
+        }
+      }
+      HookWillUpdateStateEl.define();
+
+      const el = document.createElement("test-hook-willupdate-state");
+      el.label = "hello";
+      document.body.appendChild(el);
+      expect(el.querySelector("span").textContent).toBe("HELLO");
+      el.remove();
+    });
+
+    it("this.element is available in firstUpdated and updated", () => {
+      let elementInFirstUpdated;
+      let elementInUpdated;
+      class HookElementAvailEl extends Elena(HTMLElement) {
+        static tagName = "test-hook-element-avail";
+        firstUpdated() {
+          elementInFirstUpdated = this.element;
+        }
+        updated() {
+          elementInUpdated = this.element;
+        }
+        render() {
+          return html`<span></span>`;
+        }
+      }
+      HookElementAvailEl.define();
+
+      const el = document.createElement("test-hook-element-avail");
+      document.body.appendChild(el);
+      expect(elementInFirstUpdated).not.toBeNull();
+      expect(elementInUpdated).not.toBeNull();
+      el.remove();
     });
   });
 
