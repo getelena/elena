@@ -214,23 +214,7 @@ export function Elena(superClass) {
      */
     _captureText() {
       if (!this._hydrated && !this._text) {
-        const text = this.textContent.trim();
-
-        if (text) {
-          this.text = text;
-        } else {
-          // Pre-initialize to empty so the microtask doesn’t trigger
-          // a re-render when textContent is still empty.
-          this._text = "";
-
-          // Angular sets textContent after the element connects,
-          // so we defer capture to the next microtask to pick it up.
-          queueMicrotask(() => {
-            if (!this._text) {
-              this.text = this.textContent.trim();
-            }
-          });
-        }
+        this.text = this.textContent.trim();
       }
     }
 
@@ -264,8 +248,6 @@ export function Elena(superClass) {
         this.element = this.constructor._resolver(this);
 
         if (!this.element) {
-          // Only warn when an explicit element selector was provided but didn't match.
-          // Composite Components (no element option) intentionally have no inner ref.
           if (this.constructor.element) {
             console.warn("░█ [ELENA]: Passed element not found.");
           }
@@ -275,7 +257,8 @@ export function Elena(superClass) {
     }
 
     /**
-     * Syncs any props that were set before the element connected to the page.
+     * Syncs any props that were set before the element
+     * connected to the page.
      *
      * @internal
      */
@@ -295,7 +278,8 @@ export function Elena(superClass) {
     }
 
     /**
-     * Forwards events from the inner element up to the host element.
+     * Forwards events from the inner element
+     * up to the host element.
      *
      * @internal
      */
@@ -317,22 +301,33 @@ export function Elena(superClass) {
     }
 
     /**
-     * Define the element's HTML here. Return an `html` tagged template.
-     * If not overridden, the element connects to the page without rendering anything.
+     * Define the element’s HTML here. Return an `html`
+     * tagged template. If not overridden, the element connects
+     * to the page without rendering anything.
      */
     render() {}
 
-    /** Called before every render. Override to prepare state before the template runs. */
+    /**
+     * Called before every render. Override to prepare state
+     * before the template runs.
+     */
     willUpdate() {}
 
-    /** Called once after the element's first render. Override to run setup that needs the DOM. */
+    /**
+     * Called once after the element’s first render.
+     * Override to run setup that needs the DOM.
+     */
     firstUpdated() {}
 
-    /** Called after every render. Override to react to changes. */
+    /**
+     * Called after every render.
+     * Override to react to changes.
+     */
     updated() {}
 
     /**
-     * Called by the browser each time the element is removed from the page.
+     * Called by the browser each time the element
+     * is removed from the page.
      */
     disconnectedCallback() {
       if (this._events) {
@@ -345,7 +340,8 @@ export function Elena(superClass) {
     }
 
     /**
-     * Receives events from the inner element and re-fires them on the host.
+     * Receives events from the inner element and
+     * re-fires them on the host.
      *
      * @internal
      */
@@ -359,8 +355,9 @@ export function Elena(superClass) {
     }
 
     /**
-     * The text content of the element. Elena reads this from the element's
-     * children before the first render. Updating it triggers a re-render.
+     * The text content of the element. Elena reads this
+     * from the element’s children before the first render.
+     * Updating it triggers a re-render.
      *
      * @type {string}
      */
@@ -391,16 +388,68 @@ export function Elena(superClass) {
     }
 
     /**
-     * Re-renders the component, guarding against re-entrant renders.
+     * Schedules a re-render via microtask. If called multiple times
+     * before the microtask fires, only one render runs.
      *
      * @internal
      */
     _safeRender() {
-      this.willUpdate();
-      this._isRendering = true;
-      this._applyRender();
-      this._isRendering = false;
-      this.updated();
+      if (this._isRendering) {
+        return;
+      }
+      if (!this._renderPending) {
+        this._renderPending = true;
+        this._updateComplete = new Promise(resolve => {
+          this._resolveUpdate = resolve;
+        });
+        queueMicrotask(() => this._performUpdate());
+      }
+    }
+
+    /**
+     * Runs the batched update cycle: willUpdate → render → updated.
+     * Called by the microtask scheduled in _safeRender().
+     *
+     * @internal
+     */
+    _performUpdate() {
+      this._renderPending = false;
+      const resolve = this._resolveUpdate;
+      this._resolveUpdate = null;
+      this._updateComplete = null;
+      try {
+        this.willUpdate();
+        this._isRendering = true;
+        this._applyRender();
+        this._isRendering = false;
+        this.updated();
+      } finally {
+        resolve();
+      }
+    }
+
+    /**
+     * A Promise that resolves after the next pending render completes.
+     * Resolves immediately if no render is scheduled.
+     *
+     * @type {Promise<void>}
+     */
+    get updateComplete() {
+      if (this._updateComplete) {
+        return this._updateComplete;
+      }
+      return Promise.resolve();
+    }
+
+    /**
+     * Schedules a re-render. Use this to manually trigger an
+     * update when Elena cannot detect the change automatically
+     * (e.g. deep object mutation).
+     */
+    requestUpdate() {
+      if (this._hydrated && !this._isRendering) {
+        this._safeRender();
+      }
     }
   }
 
