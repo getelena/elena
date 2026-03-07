@@ -1,21 +1,21 @@
 # Styles
 
-These guidelines cover the approaches that we recommend when styling Progressive Web Components to make them work reliably across the lifecycle of a component. You're obviously able to craft the CSS the best way you see fit for your purpose, but there are some things to take into account that we've tried to cover below.
+These guidelines cover the approaches we recommend when styling Progressive Web Components to make them work reliably across the custom element lifecycle. You can craft the CSS however works best for your project, but the patterns below help avoid some common pitfalls.
 
 ## Writing scoped styles
 
-Elena recommends using the [@scope](https://caniuse.com/css-cascade-scope) at-rule which prevents the component styles from leaking to the outer page. This makes it possible to have entirely isolated styles without sacrificing inheritance or cascading:
+Elena recommends the [@scope](https://caniuse.com/css-cascade-scope) at-rule to prevent component styles from leaking out to the rest of the page:
 
 ```css
 @scope (elena-button) {
   /**
-   * Scoped styles for the elena-button. These won't leak
+   * Scoped styles for the elena-button. These won’t leak
    * out or affect any other elements in your app.
    */
 }
 ```
 
-To style the host `elena-button` itself, you can use `:scope`:
+To style the host element itself, use `:scope`:
 
 ```css
 @scope (elena-button) {
@@ -28,13 +28,36 @@ To style the host `elena-button` itself, you can use `:scope`:
 }
 ```
 
-The full baseline pattern for authoring encapsulated component styles looks like this:
+### Preventing styles from leaking in
+
+`@scope` stops your styles from leaking out, but it does not prevent global styles from leaking in. To block both directions, add a universal reset as the first rule inside `@scope`:
 
 ```css
-/* Scope makes sure styles don't leak out */
+/* Scope makes sure styles don’t leak out */
 @scope (elena-button) {
 
-  /* Unset makes sure styles don't leak in */
+  /* Reset makes sure styles don’t leak in */
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
+    all: unset;
+    display: revert;
+  }
+
+  /* Rest of your component styles */
+}
+```
+
+## Primitive Component example
+
+Here’s an example [Primitive Component](/components/primitives) using these patterns:
+
+```css
+/* Scope makes sure styles don’t leak out */
+@scope (elena-button) {
+
+  /* Reset makes sure styles don’t leak in */
   :scope,
   *:where(:not(img, svg):not(svg *)),
   *::before,
@@ -62,47 +85,27 @@ The full baseline pattern for authoring encapsulated component styles looks like
     color: var(--elena-button-text);
     background: var(--elena-button-bg);
     display: inline-block;
-    appearance: none;
   }
 
   /* Rest of your component styles */
-  button {
-    display: inline-flex;
-  }
   :scope[variant="primary"] {
     --elena-button-bg: red;
   }
 }
 ```
 
-The above patterns work great for **Primitive Components** that are self-contained and own and render their own HTML markup.
+The `:scope:not([hydrated]), button` pattern ensures [Primitive Components](/components/primitives) look the same before and after hydration. Elena adds the `hydrated` attribute to the host element after its first render. By applying the same baseline styles to both the unhydrated host and the rendered inner element, the component avoids any layout shift.
 
-## Elena CSS Encapsulation Pattern
-
-While the [scoped styles](#writing-scoped-styles) defined earlier prevent the component styles from leaking out, they do not prevent global styles from leaking in. For this, you can use this pattern that does both:
+Use attribute selectors on `:scope` for variant and state styling:
 
 ```css
-/* Scope makes sure styles don't leak out */
-@scope (elena-button) {
-
-  /* Unset makes sure styles don't leak in */
-  :scope,
-  *:where(:not(img, svg):not(svg *)),
-  *::before,
-  *::after {
-    all: unset;
-    display: revert;
-  }
-
-  /* Rest of your component styles */
-}
+:scope[variant="primary"] { --elena-button-bg: red; }
+:scope[disabled] { opacity: 0.5; }
 ```
 
 ## Pre-hydration state and styles
 
-Since **Primitive Components** are self-contained and render their own HTML markup, you may sometimes need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts.
-
-This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
+Since [Primitive Components](/components/primitives) render their own internal markup, you may sometimes need to surface additional content before hydration. This can be done with CSS pseudo-elements and `attr()`:
 
 ```css
 :scope:not([hydrated])::before {
@@ -121,12 +124,12 @@ For more detailed guidelines, see the [Server Side Rendering](/advanced/ssr) sec
 > [!TIP]
 > You can skip this section entirely for Composite Components, when you plan to [hide components until loaded](/reference/misc#hide-until-loaded), or when the rest of your app renders client side only.
 
-## Styling Composite Components
+## Composite Components
 
-When styling **Composite Components** which wrap and enhance the HTML composed inside them, you would commonly style the host element and then provide customization with the props set on the component:
+[Composite Components](/components/primitives) style the host element and can pass styles down to their composed children. Since they never render their own internal markup, there are no pre-hydration concerns:
 
 ```css
-/* Scope makes sure styles don't leak out */
+/* Scope makes sure styles don’t leak out */
 @scope (elena-stack) {
 
   /* Targets the host element (elena-stack) */
@@ -146,11 +149,33 @@ When styling **Composite Components** which wrap and enhance the HTML composed i
 }
 ```
 
-Notice above that you don't have to worry about the pre-hydrated/hydrated states when styling **Composite Components** as all of their HTML lives in the Light DOM.
+## Theming API
 
-## Documenting public CSS properties
+Define public CSS custom properties on `:scope` to expose a theming API for consumers:
 
-The documentation for the component's public CSS properties lives in the component itself:
+```css
+/* Component definition */
+@scope (elena-button) {
+  :scope {
+    --elena-button-bg: blue;
+  }
+}
+```
+
+Consumers can override these from outside the component:
+
+```css
+/* Consumer override */
+elena-button {
+  --elena-button-bg: green;
+}
+```
+
+Custom properties cascade naturally: overrides set on a parent element are inherited by all matching components inside it.
+
+## Documenting CSS properties
+
+Document public CSS custom properties with `@cssprop` JSDoc on the component class:
 
 ```js
 /**
@@ -164,22 +189,31 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 ```
 
 > [!TIP]
-> **`@elenajs/bundler`** transforms the above JSDocs automatically to Custom Elements Manifest which allows you to generate documentation that surfaces the component's public CSS properties.
+> **`@elenajs/bundler`** transforms these annotations into the Custom Elements Manifest, which tools and documentation generators can use to surface the component’s public CSS API.
 
-## Styles without `@scope` (legacy)
+## Styles without `@scope`
 
-For older browsers that don't support `@scope`, use namespaced selectors and the `:is()` pattern instead:
+For older browsers that don’t support `@scope`, use namespaced selectors and the `:is()` pattern instead:
 
 ```css
-/* Unset makes sure styles don't leak in */
+/* Reset makes sure styles don’t leak in */
 elena-button,
-elena-button *,
+elena-button *:where(:not(img, svg):not(svg *)),
 elena-button *::before,
 elena-button *::after {
   all: unset;
+  display: revert;
 }
 
-elena-button { display: inline-block; }
-:is(elena-button:not([hydrated]), .elena-button) { /* shared styles */ }
-elena-button[variant="primary"] { /* variant */ }
+elena-button {
+  display: inline-block;
+}
+
+:is(elena-button:not([hydrated]), .elena-button) {
+  /* shared styles */
+}
+
+elena-button[variant="primary"] {
+  /* variant */
+}
 ```
