@@ -23,7 +23,7 @@
 
 ### Elena’s features
 
-- 🔋 **Extremely lightweight:** 2kB minified & compressed with zero runtime overhead.
+- 🔋 **Extremely lightweight:** 2kB minified & compressed, simple and tiny by design.
 - 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
 - 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
 - 🌍 **Standards based:** Built entirely on native custom elements & web standards.
@@ -151,7 +151,7 @@ export default App;
 :::
 
 > [!TIP] Prerequisites
-> Since Elena is a thin layer extending the functionality of standard custom elements, the rest of the documentation assumes familiarity with HTML, CSS and JavaScript. If you are totally new to custom elements, it might be a good idea to see the [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) that covers them in detail. Prior experience with custom elements helps, but is not required when using Elena.
+> Since Elena is a runtime mixin extending the functionality of standard custom elements, the rest of the documentation assumes familiarity with HTML, CSS and JavaScript. If you are totally new to custom elements, it might be a good idea to see the [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) that covers them in detail. Prior experience with custom elements helps, but is not required when using Elena.
 
 
 ## Progressive Web Components
