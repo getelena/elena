@@ -105,6 +105,7 @@ describe("DOM removal and re-insertion", () => {
       moveElement(el, container);
 
       el.setAttribute("label", "World");
+      await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("World");
     });
 

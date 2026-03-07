@@ -52,11 +52,12 @@ describe("rendering", () => {
       expect(el.querySelector(".inner").textContent).toBe("");
     });
 
-    it("re-renders with escaping on attribute change", () => {
+    it("re-renders with escaping on attribute change", async () => {
       const el = createElement("basic-element", { label: "safe" });
       expect(el.querySelector(".inner").textContent).toBe("safe");
 
       el.setAttribute("label", "<b>bold</b>");
+      await el.updateComplete;
       expect(el.querySelector("b")).toBeNull();
       expect(el.querySelector(".inner").textContent).toBe("<b>bold</b>");
     });
@@ -80,6 +81,7 @@ describe("rendering", () => {
 
       // Trigger re-render by changing attribute
       el.setAttribute("label", "Second");
+      await el.updateComplete;
       const spans = el.querySelectorAll(".inner");
       expect(spans.length).toBe(1);
       expect(spans[0].textContent).toBe("Second");
@@ -88,6 +90,7 @@ describe("rendering", () => {
     it("re-render on attribute change produces updated markup", async () => {
       const el = await createElement("basic-element", { label: "A" });
       el.setAttribute("label", "B");
+      await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("B");
     });
 
@@ -186,22 +189,24 @@ describe("rendering", () => {
       expect(el.querySelector(".inner").textContent).toBe("hello world");
     });
 
-    it("maintains clean whitespace after text-only re-render (fast path)", () => {
+    it("maintains clean whitespace after text-only re-render (fast path)", async () => {
       const el = createElement("multiline-element", { label: "First", type: "button" });
       expect(el.querySelector(".btn").textContent).toBe("First");
 
       // Fast path re-render: patches text node directly
       el.setAttribute("label", "Second");
+      await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("Second");
       expect(el.innerHTML).not.toMatch(/>\s+</);
     });
 
-    it("maintains clean whitespace after attribute-position re-render (cold path)", () => {
+    it("maintains clean whitespace after attribute-position re-render (cold path)", async () => {
       const el = createElement("multiline-element", { label: "Click", type: "button" });
       expect(el.querySelector(".btn").textContent).toBe("Click");
 
       // Cold path re-render: type is in attribute position, forces fullRender
       el.setAttribute("type", "submit");
+      await el.updateComplete;
       expect(el.querySelector(".btn").getAttribute("type")).toBe("submit");
       expect(el.querySelector(".btn").textContent).toBe("Click");
       expect(el.innerHTML).not.toMatch(/>\s+</);
@@ -232,22 +237,24 @@ describe("rendering", () => {
       expect(el.querySelector(".inner").firstChild).toBe(textNode);
     });
 
-    it("patches text node directly on value change", () => {
+    it("patches text node directly on value change", async () => {
       const el = createElement("basic-element", { label: "Before" });
       const textNode = el.querySelector(".inner").firstChild;
 
       el.setAttribute("label", "After");
+      await el.updateComplete;
       // Same text node object, but with updated content
       expect(el.querySelector(".inner").firstChild).toBe(textNode);
       expect(el.querySelector(".inner").textContent).toBe("After");
     });
 
-    it("should not fall back to innerHTML when attribute-position value changes", () => {
+    it("should not fall back to innerHTML when attribute-position value changes", async () => {
       const el = createElement("attr-element", { label: "Hello", variant: "default" });
       const textNode = el.querySelector(".inner").firstChild;
 
       // Change attribute-position value: forces cold-path fallback
       el.setAttribute("variant", "primary");
+      await el.updateComplete;
       expect(el.getAttribute("variant")).toBe("primary");
       // Text node was not recreated, but instead was updated directly
       expect(el.querySelector(".inner").firstChild).toBe(textNode);
@@ -279,9 +286,10 @@ describe("rendering", () => {
       delete el.innerHTML;
     });
 
-    it("patches text node with null value on fast path", () => {
+    it("patches text node with null value on fast path", async () => {
       const el = createElement("basic-element", { label: "Hello" });
       el.setAttribute("label", "");
+      await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("");
     });
 
@@ -312,7 +320,7 @@ describe("rendering", () => {
       expect(el.contains(newTextNode)).toBe(true);
     });
 
-    it("cache stays coherent after disconnect and reconnect", () => {
+    it("cache stays coherent after disconnect and reconnect", async () => {
       const el = createElement("basic-element", { label: "Hello" });
       const textNode = el._tplParts[0];
 
@@ -324,6 +332,7 @@ describe("rendering", () => {
 
       // After reconnect, fast-path should still work with cached parts
       el.setAttribute("label", "World");
+      await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("World");
       // Same text node was patched (not a full re-render)
       expect(el._tplParts[0]).toBe(textNode);
@@ -364,16 +373,17 @@ describe("rendering", () => {
       expect(el.querySelector(".elena-error")).toBeNull();
     });
 
-    it("renders conditional HTML block when condition becomes truthy", () => {
+    it("renders conditional HTML block when condition becomes truthy", async () => {
       const el = createElement("complex-element", { label: "Name" });
       expect(el.querySelector(".elena-desc")).toBeNull();
 
       el.setAttribute("description", "Please enter your name");
+      await el.updateComplete;
       expect(el.querySelector(".elena-desc")).not.toBeNull();
       expect(el.querySelector(".elena-desc").textContent).toBe("Please enter your name");
     });
 
-    it("removes conditional HTML block when condition becomes falsy", () => {
+    it("removes conditional HTML block when condition becomes falsy", async () => {
       const el = createElement("complex-element", {
         label: "Name",
         error: "Required",
@@ -381,6 +391,7 @@ describe("rendering", () => {
       expect(el.querySelector(".elena-error").textContent).toBe("Required");
 
       el.setAttribute("error", "");
+      await el.updateComplete;
       expect(el.querySelector(".elena-error")).toBeNull();
     });
 
@@ -403,13 +414,14 @@ describe("rendering", () => {
       expect(input.hasAttribute("disabled")).toBe(false);
     });
 
-    it("re-renders correctly when multiple values change", () => {
+    it("re-renders correctly when multiple values change", async () => {
       const el = createElement("complex-element", { label: "Name" });
       expect(el.querySelector(".elena-desc")).toBeNull();
       expect(el.querySelector(".elena-error")).toBeNull();
 
       el.setAttribute("description", "Help text");
       el.setAttribute("error", "Error text");
+      await el.updateComplete;
       expect(el.querySelector(".elena-desc").textContent).toBe("Help text");
       expect(el.querySelector(".elena-error").textContent).toBe("Error text");
     });

@@ -170,8 +170,9 @@ describe("re-render via attribute change", () => {
     vanillaEl.setAttribute("variant", `updated-${vanillaCounter++}`);
   });
 
-  bench("Re-render Elena Web Component", () => {
+  bench("Re-render Elena Web Component", async () => {
     basicEl.setAttribute("variant", `updated-${basicCounter++}`);
+    await basicEl.updateComplete;
   });
 
   bench("Re-render Lit Element", async () => {

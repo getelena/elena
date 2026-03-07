@@ -222,6 +222,7 @@ describe("reflect: false", () => {
   it("non-reflecting prop still triggers re-render", async () => {
     const el = await createElement("no-reflect-element");
     el.content = "updated";
+    await el.updateComplete;
     expect(el.textContent).toContain("updated");
   });
 

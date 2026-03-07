@@ -30,6 +30,7 @@ describe("Primitive Components", () => {
       expect(el.querySelector(".inner").textContent).toBe("First");
 
       el.setAttribute("label", "Second");
+      await el.updateComplete;
       const spans = el.querySelectorAll(".inner");
       expect(spans.length).toBe(1);
       expect(spans[0].textContent).toBe("Second");
@@ -40,6 +41,7 @@ describe("Primitive Components", () => {
       expect(el.querySelector(".inner").textContent).toBe("A");
 
       el.label = "B";
+      await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("B");
     });
 
@@ -148,6 +150,7 @@ describe("Primitive Components", () => {
     it("triggers re-render when set programmatically", async () => {
       const el = await createElement("content-element");
       el.text = "Dynamic";
+      await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("Dynamic");
     });
 
@@ -156,6 +159,7 @@ describe("Primitive Components", () => {
       // Setting text triggers _applyRender; the _isRendering guard prevents loops
       el.text = "A";
       el.text = "B";
+      await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("B");
     });
 
@@ -182,6 +186,7 @@ describe("Primitive Components", () => {
       container.appendChild(el);
 
       el.setAttribute("label", "World");
+      await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("World");
     });
 

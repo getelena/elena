@@ -166,7 +166,7 @@ describe("utils", () => {
       expect(String(result)).toBe("<span></span>");
     });
 
-    it("in render() conditionally renders content vs empty", () => {
+    it("in render() conditionally renders content vs empty", async () => {
       const el = document.createElement("nothing-element");
       document.body.appendChild(el);
 
@@ -174,29 +174,34 @@ describe("utils", () => {
 
       // Toggle active to false: should render nothing (empty string)
       el.active = false;
+      await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("");
 
       // Toggle back to true: should re-render the label
       el.active = true;
+      await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("Click");
 
       document.body.removeChild(el);
     });
 
-    it("on fast path: prior nothing render followed by value renders correctly", () => {
+    it("on fast path: prior nothing render followed by value renders correctly", async () => {
       const el = document.createElement("nothing-element");
       document.body.appendChild(el);
 
       // Start with active=false (nothing)
       el.active = false;
+      await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("");
 
       // Change label while active is false: should not affect output
       el.label = "New Label";
+      await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("");
 
       // Activate: fast path re-renders, should show new label
       el.active = true;
+      await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("New Label");
 
       document.body.removeChild(el);

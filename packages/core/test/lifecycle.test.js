@@ -52,6 +52,7 @@ describe("lifecycle", () => {
       expect(el.querySelector(".inner").textContent).toBe("Hello");
 
       el.setAttribute("label", "World");
+      await el.updateComplete;
       // render replaces children, so query the fresh DOM
       expect(el.querySelector(".inner").textContent).toBe("World");
     });
@@ -88,7 +89,7 @@ describe("lifecycle", () => {
       el._isRendering = false;
     });
 
-    it("allows re-render after _isRendering is cleared", () => {
+    it("allows re-render after _isRendering is cleared", async () => {
       const el = createElement("basic-element", { label: "hello" });
       // Simulate a completed render cycle
       el._isRendering = true;
@@ -98,6 +99,7 @@ describe("lifecycle", () => {
       // Guard is cleared, next change should render normally
       const spy = vi.spyOn(el, "render");
       el.setAttribute("label", "world");
+      await el.updateComplete;
       expect(spy).toHaveBeenCalledOnce();
       spy.mockRestore();
     });
@@ -109,6 +111,7 @@ describe("lifecycle", () => {
       // Changing the label triggers render() which calls setAttribute("label", "WORLD"),
       // which would re-enter attributeChangedCallback, the guard must stop the loop.
       expect(() => el.setAttribute("label", "world")).not.toThrow();
+      await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("WORLD");
     });
   });
@@ -278,7 +281,7 @@ describe("lifecycle", () => {
       spy.mockRestore();
     });
 
-    it("text-position: repeated attribute changes each cost exactly one render", async () => {
+    it("text-position: batched attribute changes produce exactly one render", async () => {
       const el = await createElement("basic-element", { label: "initial" });
       const spy = vi.spyOn(el, "render");
 
@@ -287,7 +290,7 @@ describe("lifecycle", () => {
       el.setAttribute("label", "c");
       await tick();
 
-      expect(spy).toHaveBeenCalledTimes(3);
+      expect(spy).toHaveBeenCalledTimes(1);
       spy.mockRestore();
     });
 
@@ -344,6 +347,7 @@ describe("lifecycle", () => {
 
       // Trigger a re-render by changing an observed attribute
       el.setAttribute("label", "changed");
+      await el.updateComplete;
 
       // updated() should have been called again; count increments
       const updateCountAfterChange = el.getAttribute("data-update-count");
@@ -378,7 +382,7 @@ describe("lifecycle", () => {
       el.remove();
     });
 
-    it("re-render fires willUpdate → render → updated (skips firstUpdated)", () => {
+    it("re-render fires willUpdate → render → updated (skips firstUpdated)", async () => {
       const calls = [];
       class HookReRenderEl extends Elena(HTMLElement) {
         static tagName = "test-hook-rerender";
@@ -405,6 +409,7 @@ describe("lifecycle", () => {
       calls.length = 0;
 
       el.setAttribute("label", "changed");
+      await el.updateComplete;
       expect(calls).toEqual(["willUpdate", "render", "updated"]);
       el.remove();
     });
@@ -559,19 +564,6 @@ describe("lifecycle", () => {
       expect(el.text).toBe("pre-set");
       document.body.removeChild(el);
     });
-
-    it("microtask skips capture when text is set after connect", async () => {
-      // Create element with no textContent so the microtask path is taken
-      const el = document.createElement("basic-element");
-      document.body.appendChild(el);
-      // Set text after connect but before microtask fires
-      el.text = "set-after-connect";
-      // Wait for microtask to run
-      await new Promise(r => queueMicrotask(r));
-      // microtask should have seen _text is truthy and skipped
-      expect(el.text).toBe("set-after-connect");
-      document.body.removeChild(el);
-    });
   });
 
   describe("attributeChangedCallback text attribute", () => {
@@ -612,6 +604,90 @@ describe("lifecycle", () => {
       const el = await createElement("wrapper-element");
       // wrapper-element is a Composite Component, no events
       expect(() => el.remove()).not.toThrow();
+    });
+  });
+
+  describe("microtask batching", () => {
+    it("multiple prop changes in one tick produce exactly one render", async () => {
+      const el = await createElement("basic-element", { label: "initial" });
+      const spy = vi.spyOn(el, "render");
+
+      el.setAttribute("label", "a");
+      el.setAttribute("label", "b");
+      el.setAttribute("label", "c");
+      await el.updateComplete;
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it("updateComplete resolves after DOM is updated", async () => {
+      const el = await createElement("basic-element", { label: "initial" });
+      el.setAttribute("label", "updated");
+      await el.updateComplete;
+      expect(el.querySelector(".inner").textContent).toBe("updated");
+    });
+
+    it("updateComplete resolves immediately when no render is pending", async () => {
+      const el = await createElement("basic-element", { label: "hello" });
+      await el.updateComplete;
+      // No render is pending now — updateComplete should resolve immediately via Promise.resolve()
+      await el.updateComplete;
+      expect(el.querySelector(".inner").textContent).toBe("hello");
+    });
+
+    it("requestUpdate() triggers a deferred render", async () => {
+      const el = await createElement("basic-element", { label: "hello" });
+      const spy = vi.spyOn(el, "render");
+      el.requestUpdate();
+      await el.updateComplete;
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it("requestUpdate() is a no-op before hydration", () => {
+      const el = document.createElement("basic-element");
+      const spy = vi.spyOn(el, "render");
+      el.requestUpdate();
+      expect(spy).not.toHaveBeenCalled();
+      spy.mockRestore();
+    });
+
+    it("_safeRender() is a no-op when _isRendering is true", () => {
+      const el = createElement("basic-element", { label: "hello" });
+      el._isRendering = true;
+      const spy = vi.spyOn(el, "_performUpdate");
+      el._safeRender();
+      expect(spy).not.toHaveBeenCalled();
+      el._isRendering = false;
+      spy.mockRestore();
+    });
+
+    it("multiple requestUpdate() calls coalesce into one render", async () => {
+      const el = await createElement("basic-element", { label: "hello" });
+      const spy = vi.spyOn(el, "render");
+      el.requestUpdate();
+      el.requestUpdate();
+      el.requestUpdate();
+      await el.updateComplete;
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it("willUpdate and updated each fire once per batched render", async () => {
+      const el = await createElement("basic-element", { label: "a" });
+      const willUpdateSpy = vi.spyOn(el, "willUpdate");
+      const updatedSpy = vi.spyOn(el, "updated");
+
+      el.setAttribute("label", "x");
+      el.setAttribute("label", "y");
+      el.setAttribute("label", "z");
+      await el.updateComplete;
+
+      expect(willUpdateSpy).toHaveBeenCalledTimes(1);
+      expect(updatedSpy).toHaveBeenCalledTimes(1);
+      willUpdateSpy.mockRestore();
+      updatedSpy.mockRestore();
     });
   });
 

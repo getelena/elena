@@ -49,6 +49,7 @@ describe("Composite Components", () => {
       const el = await createElement("wrapper-element");
       const spy = vi.spyOn(el, "render");
       el.setAttribute("direction", "row");
+      await el.updateComplete;
       expect(spy).toHaveBeenCalledOnce();
       spy.mockRestore();
     });
@@ -110,6 +111,7 @@ describe("Composite Components", () => {
       const child = document.createElement("child-element");
       wrapper.appendChild(child);
       child.variant = "primary";
+      await child.updateComplete;
       expect(child.querySelector(".child-inner").textContent).toBe("primary");
     });
 

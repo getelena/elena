@@ -26,9 +26,10 @@ describe("Button", () => {
       expect(el.element.hasAttribute("role")).toBe(false);
     });
 
-    it("syncs disabled to inner button for assistive technology", () => {
+    it("syncs disabled to inner button for assistive technology", async () => {
       const el = createElement("elena-button");
       el.disabled = true;
+      await el.updateComplete;
       expect(el.element.hasAttribute("disabled")).toBe(true);
     });
 
@@ -88,11 +89,13 @@ describe("Button", () => {
         expect(el.hasAttribute("disabled")).toBe(false);
       });
 
-      it("syncs disabled to inner button element", () => {
+      it("syncs disabled to inner button element", async () => {
         const el = createElement("elena-button");
         el.disabled = true;
+        await el.updateComplete;
         expect(el.element.hasAttribute("disabled")).toBe(true);
         el.disabled = false;
+        await el.updateComplete;
         expect(el.element.hasAttribute("disabled")).toBe(false);
       });
     });
@@ -108,10 +111,11 @@ describe("Button", () => {
         expect(el.element.getAttribute("name")).toBe("submit-btn");
       });
 
-      it("reflects name property to host attribute", () => {
+      it("reflects name property to host attribute", async () => {
         const el = createElement("elena-button");
         el.name = "my-button";
         expect(el.getAttribute("name")).toBe("my-button");
+        await el.updateComplete;
         expect(el.element.getAttribute("name")).toBe("my-button");
       });
     });
@@ -127,10 +131,11 @@ describe("Button", () => {
         expect(el.element.getAttribute("value")).toBe("submit");
       });
 
-      it("reflects value property to host attribute", () => {
+      it("reflects value property to host attribute", async () => {
         const el = createElement("elena-button");
         el.value = "ok";
         expect(el.getAttribute("value")).toBe("ok");
+        await el.updateComplete;
         expect(el.element.getAttribute("value")).toBe("ok");
       });
     });
@@ -146,10 +151,11 @@ describe("Button", () => {
         expect(el.element.type).toBe("submit");
       });
 
-      it("reflects type property to host attribute", () => {
+      it("reflects type property to host attribute", async () => {
         const el = createElement("elena-button");
         el.type = "reset";
         expect(el.getAttribute("type")).toBe("reset");
+        await el.updateComplete;
         expect(el.element.type).toBe("reset");
       });
     });
@@ -169,9 +175,10 @@ describe("Button", () => {
       expect(el.text).toBe("");
     });
 
-    it("triggers re-render when set programmatically", () => {
+    it("triggers re-render when set programmatically", async () => {
       const el = createElement("elena-button");
       el.text = "New label";
+      await el.updateComplete;
       expect(el.querySelector("button").textContent).toBe("New label");
     });
   });
