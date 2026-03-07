@@ -132,7 +132,7 @@ type: "submit" | "reset" | "button" = "button";
 
 ## Prop types
 
-Elena supports the following prop types:
+Elena supports the following prop types. These are also picked up by `@elenajs/bundler` and included in the Custom Elements Manifest:
 
 ::: code-group
 
