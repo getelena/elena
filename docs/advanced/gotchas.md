@@ -26,22 +26,29 @@ Rules that apply to **Primitive Components** when used with a framework:
   ```js
   // Bad: Elena writes back to a framework-controlled prop
   render() {
-    this.setAttribute("label", this.label.toUpperCase()); // ← don't do this
+    this.setAttribute("label", this.label.toUpperCase());
   }
   ```
 
-- You can't pass dynamic text content as children. Instead use the `text` property, since **Primitive Components** own their internal DOM and frameworks cannot update children after the initial Elena render:
+- You can’t pass dynamic text content as children. Instead use the `text` property when updating text after the initial render, since **Primitive Components** own their internal DOM and frameworks cannot reliably insert children after the initial render:
 
-  ```jsx
-  // React
+  ```html
+  <!-- React -->
   <elena-button text={buttonText} />
 
-  // Angular
+  <!-- Angular -->
   <elena-button [text]="buttonText"></elena-button>
 
-  // Vue
+  <!-- Vue -->
   <elena-button :text="buttonText"></elena-button>
   ```
+
+> [!WARNING]
+> Angular inserts text children _after_ `connectedCallback` fires, by which point Elena has already replaced the host’s inner DOM. The text ends up as a sibling to the element rather than inside it. Always use `text` as a property binding or attribute in Angular, never as a child node:
+>
+> ```html
+> <elena-button [text]="label"></elena-button>
+> ```
 
 > [!WARNING]
 > React 17 does not pass `Array` or `Object` type props or event handlers to custom elements correctly. Use React 18+ for proper Elena support, or pass all props as string attributes.
