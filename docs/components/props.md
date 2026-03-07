@@ -1,8 +1,10 @@
 # Props
 
-Elena allows you to define prop declarations using the `static props` field. This makes Elena aware of what external props passed to the element should be observed and synced as attributes between the web component host and the inner template element.
+Props are values you pass to an Elena component. Declare them in `static props` and Elena will keep them in sync with HTML attributes, and re-render the component whenever they change.
 
-Props are declared in `static props`, with default values set as instance fields:
+## Declaring props
+
+List prop names in `static props`, and give each one a default value as a class field:
 
 ```js
 export default class Button extends Elena(HTMLElement) {
@@ -15,26 +17,58 @@ export default class Button extends Elena(HTMLElement) {
 }
 ```
 
+The default value also tells Elena what type the prop is. A default of `false` means it’s a boolean, `0` means a number, `[]` means an array, and so on. Elena uses this to convert the incoming attribute string to the right type.
+
 > [!TIP]
-> When naming properties, keep them simple, easy to understand, and a maximum of 1 word (e.g. `variant`).
+> When naming props, try to keep them simple and a maximum of one word (e.g. `variant`).
 
-## Reflecting props to attributes
+## Built-in props
 
-By default, Elena reflects all properties to the host element as HTML attributes. If you want to disable this feature for a specific property, use `reflect: false`:
+Every Elena element has a built-in `text` prop. On first connect, Elena automatically captures this text content from the light DOM, so you can pass text naturally as children:
+
+```html
+<my-button>Click me</my-button>
+```
+
+Use `this.text` in `render()` to reference it:
+
+```js
+render() {
+  return html`<button>${this.text}</button>`;
+}
+```
+
+Setting `text` programmatically also triggers a re-render:
+
+```js
+document.querySelector("my-button").text = "Save changes";
+```
+
+## Non-reflected props
+
+By default, Elena writes all props back to the host element as HTML attributes. To turn this off for a specific prop, use the object form:
 
 ```js
 export default class Button extends Elena(HTMLElement) {
   static props = [
+    "variant",
     { name: "icon", reflect: false },
   ];
+
+  variant = "default";
+  icon = "";
 }
 ```
 
+`icon` still works as `this.icon` in JavaScript and updates the component when changed, but Elena won’t add it as an attribute on the element.
+
 ## Documenting props
 
-In addition to declaring props, you can (and should!) document them using a [JSDoc style syntax](https://jsdoc.app):
+Document each prop with JSDoc annotations. `@attribute` marks the field as a reflected HTML attribute, and `@type` describes the expected value.
 
-```js
+::: code-group
+
+```js [JavaScript]
 /**
  * The style variant of the button.
  * @attribute
@@ -64,23 +98,60 @@ value = "";
 type = "button";
 ```
 
+```ts [TypeScript]
+/**
+ * The style variant of the button.
+ * @attribute
+ */
+variant: "default" | "primary" | "danger" = "default";
+
+/**
+ * Makes the component disabled.
+ * @attribute
+ */
+disabled: boolean = false;
+
+/**
+ * The value used to identify the button in forms.
+ * @attribute
+ */
+value: string = "";
+
+/**
+ * The type of the button.
+ * @attribute
+ */
+type: "submit" | "reset" | "button" = "button";
+```
+
+:::
+
+
 > [!TIP]
-> **`@elenajs/bundler`** transforms the above JSDocs automatically to TypeScript types and Custom Elements Manifest which allows tooling and IDEs to give rich information about the Elena elements.
+> **`@elenajs/bundler`** transforms these annotations into TypeScript types and a Custom Elements Manifest, giving IDEs and documentation tools rich information about your components.
 
 ## Prop types
 
-The `@type` can be one of the following native constructors:
+Elena supports the following prop types:
 
-```js
+::: code-group
+
+```js [JavaScript]
 /** @type {string} */
 /** @type {Number} */
 /** @type {Array} */
 /** @type {Boolean} */
 /** @type {Object} */
-```
-
-Additionally, you can provide possible prop values using the following syntax:
-
-```js
 /** @type {"default" | "primary" | "danger"} */
 ```
+
+```ts [TypeScript]
+// Use inline type annotations instead of @type in TypeScript:
+variant: "default" | "primary" | "danger" = "default";
+disabled: boolean = false;
+value: string = "";
+count: number = 0;
+items: string[] = [];
+```
+
+:::
