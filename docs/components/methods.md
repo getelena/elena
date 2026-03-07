@@ -121,9 +121,7 @@ export default class Button extends Elena(HTMLElement) {
 Use `@internal` in JSDoc to mark methods that are implementation details and should not be part of the public API:
 
 ```js
-/**
- * @internal
- */
+/** @internal */
 _buildLabel() {
   return `${this.firstName} ${this.lastName}`;
 }
