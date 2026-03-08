@@ -65,41 +65,6 @@ Elena is a monorepo containing several packages published to npm under the `@ele
 
 ## Development
 
-### Commands
-
-All commands run from the monorepo root (`elena/`):
-
-```bash
-pnpm install                        # Install dependencies
-pnpm build                          # Build all packages
-pnpm test                           # Run all tests
-pnpm lint                           # Lint with ESLint
-pnpm format                         # Prettier on all files
-pnpm docs:dev                       # VitePress dev server
-pnpm docs:build                     # VitePress build
-pnpm docs:preview                   # VitePress preview
-```
-
-Core package commands (from `packages/core/`):
-
-```bash
-pnpm start                          # Rollup watch
-pnpm build                          # Rollup build
-pnpm test                           # Vitest with coverage
-pnpm test:visual                    # Playwright visual regression tests
-pnpm test:visual:update             # Update visual test baselines
-pnpm bench                          # Run performance benchmarks
-npx vitest run test/props.test.js   # Run a single test file
-```
-
-Components package commands (from `packages/components/`):
-
-```bash
-pnpm start                          # web-dev-server with live reload
-pnpm build                          # Build via the elena CLI
-pnpm test                           # Vitest tests
-```
-
 For more details about pull requests, commit conventions and code style, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
