@@ -17,7 +17,7 @@ import { defineElement, html, unsafeHTML, nothing } from "./common/utils.js";
 import { renderTemplate } from "./common/render.js";
 import { ElenaEvent } from "./common/events.js";
 
-export { html, unsafeHTML, nothing };
+export { html, unsafeHTML, nothing, ElenaEvent };
 
 /**
  * Returns a function that finds the inner element using the given selector.

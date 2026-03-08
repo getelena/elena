@@ -30,7 +30,7 @@ Every Elena element has a built-in `text` prop. On first connect, Elena automati
 <my-button>Click me</my-button>
 ```
 
-Use `this.text` in `render()` to reference it:
+Use `this.text` in `render()` to reference it. Elena trims leading and trailing whitespace when capturing text content, so `<my-button>  Click me  </my-button>` gives `this.text === "Click me"`.
 
 ```js
 render() {
