@@ -92,30 +92,87 @@ const VOID_ELEMENTS = new Set([
 ]);
 
 /**
- * Create a lightweight component instance and
- * call render().
+ * Convert an HTML attribute string to the right JavaScript value based on
+ * what type the prop’s default value is. This makes SSR output match what
+ * the component would produce in the browser.
+ *
+ * HTML attributes are always strings, but props can be booleans, numbers,
+ * arrays, or objects. Without this conversion, a number prop would receive
+ * the string "5" instead of the number 5.
+ *
+ * @param {string} type - The JavaScript type of the prop’s default value
+ *   (from `typeof defaultValue`).
+ * @param {string} value - The raw attribute string from the HTML parser.
+ *   Bare boolean attributes like `disabled` arrive as an empty string `""`.
+ * @returns {boolean | number | string | Array | object | null}
+ */
+function convertAttrValue(type, value) {
+  switch (type) {
+    case "boolean":
+      // A bare attribute with no value (e.g. `disabled`) means true.
+      return value === "" || value === true;
+    case "number":
+      return value === null ? null : +value;
+    case "object":
+    case "array":
+      if (!value) {
+        return value;
+      }
+      try {
+        return JSON.parse(value);
+      } catch {
+        return null;
+      }
+    default:
+      // String (and any other type): use the value as-is.
+      return value;
+  }
+}
+
+/**
+ * Create a component instance, apply props from HTML attributes,
+ * and call render() to get the inner HTML string.
  *
  * @param {Function} ComponentClass
  * @param {Record<string, string>} attrs - Attributes from the HTML tag.
- * @param {string} textContent - Text content from children.
+ * @param {string} textContent - Text content from the element’s children.
  * @returns {string} The inner HTML produced by render().
  */
 function renderComponent(ComponentClass, attrs, textContent) {
-  // Use `new` so the constructor runs and sets default prop values.
-  // The constructor only writes to `_props` and checks `isConnected`
-  // (which is falsy outside the DOM), so it is safe to call in Node.
   const instance = new ComponentClass();
   instance._text = textContent;
 
-  // Attrs from the HTML override constructor defaults.
+  // Read each declared prop’s default value type so we know how to convert
+  // the incoming attribute strings (e.g. "5" → 5 for a number prop).
+  const propDefaultTypes = {};
+  for (const p of ComponentClass.props || []) {
+    const name = typeof p === "string" ? p : p.name;
+    propDefaultTypes[name] = typeof instance[name];
+    if (Object.prototype.hasOwnProperty.call(instance, name)) {
+      delete instance[name];
+    }
+  }
+
+  // Write HTML attribute values into the internal props store, converting
+  // each value to the right type based on the prop’s default.
   if (!instance._props) {
     instance._props = new Map();
   }
   for (const [key, value] of Object.entries(attrs)) {
-    // htmlparser2 represents boolean attributes (e.g. `active`) as empty
-    // strings. Convert to `true` to match Elena's client-side prop handling.
-    instance._props.set(key, value === "" ? true : value);
+    const type = propDefaultTypes[key];
+    if (type !== undefined) {
+      // Declared prop: convert the attribute string to the right JS type.
+      instance._props.set(key, convertAttrValue(type, value));
+    } else {
+      // No type info available: treat bare attributes (empty string) as true,
+      // and pass everything else through as a string.
+      instance._props.set(key, value === "" ? true : value);
+    }
   }
+
+  // Call willUpdate() before render() so components can compute derived
+  // values from their props, same as Elena does in the browser.
+  instance.willUpdate?.();
 
   const result = instance.render();
   if (!result) {
@@ -206,7 +263,7 @@ function walk(nodes, preserveWhitespace = false) {
       const pre = preserveWhitespace || tag === "pre";
       if (isPrimitive) {
         const innerHTML = renderComponent(ComponentClass, attrs, getTextContent(children));
-        // Mark as hydrated so CSS targeting :scope:not([hydrated]) doesn't
+        // Mark as hydrated so CSS targeting :scope:not([hydrated]) doesn’t
         // double-style the host alongside the already-rendered inner element.
         attrs.hydrated = "";
         out += `<${tag}${serializeAttrs(attrs)}>${innerHTML}</${tag}>`;
