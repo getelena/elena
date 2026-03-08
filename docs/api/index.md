@@ -1,3 +1,7 @@
+---
+sidebar: false
+---
+
 # API Reference
 
 ## `@elenajs/core`
@@ -24,6 +28,14 @@
 | `events` | `string[]` | Events to forward from the inner element up to the host (e.g. `["click", "focus", "blur"]`). |
 | `element` | `string` | A CSS selector for the inner element that `this.element` points to (e.g. `".inner"`, `"button"`). Defaults to the first child element when omitted. |
 
+### Host Attributes
+
+Attributes that Elena adds to the host element automatically. These are not JS properties, they appear in the DOM and can be targeted in CSS.
+
+| Attribute | Description |
+|-----------|-------------|
+| `hydrated` | Added to the host element after the first render completes. Use `:not([hydrated])` in CSS to style the element before JavaScript runs, and remove those styles once it hydrates. |
+
 ### Instance Properties
 
 | Property | Type | Description |
@@ -40,7 +52,7 @@
 | `render()` | Returns the HTML for this component as an `html` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for [Composite Components](/components/terminology), they don’t render their own HTML. |
 | `firstUpdated()` | Runs once after the first render. `this.element` is available here. Override to run one-time setup that requires the DOM. |
 | `updated()` | Runs after every render, including the first. `this.element` is available here. Override to react to changes after the DOM is updated. On first connect, `firstUpdated()` runs before `updated()`. |
-| `requestUpdate()` | Manually schedules a re-render. Use when Elena can’t detect a change automatically, e.g. when mutating an object or array in place. |
+| `requestUpdate()` | Manually schedules a re-render. Use when Elena can’t detect a change automatically, e.g. when mutating an object or array in place. Returns nothing, use `updateComplete` to wait for the render to finish. |
 | `disconnectedCallback()` | Runs when the element is removed from the page. Cleans up event listeners. |
 | `attributeChangedCallback()` | Runs when an observed attribute changes. Updates the matching JS property and triggers a re-render. |
 
@@ -96,6 +108,18 @@ elena build
 ```bash
 npx elena-create
 ```
+
+Starts an interactive prompt that walks you through creating a new Elena component. No flags needed, it asks you everything it needs:
+
+| Prompt | Options |
+|--------|---------|
+| Component name | Any valid kebab-case custom element name (e.g. `my-button`) |
+| Component type | Primitive or Composite |
+| Language | JavaScript, TypeScript, or single-file HTML |
+| Output directory | Where to write the generated files |
+| Features | Props, events, methods, CSS custom properties, encapsulation reset, SSR, and code comments (each optional) |
+
+The generated files follow all Elena authoring patterns, including JSDoc annotations and `@scope` CSS.
 
 ## `@elenajs/ssr`
 
@@ -158,7 +182,7 @@ elena-mcp <project-root>
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
-| `elenaTagPlugin` | `elenaTagPlugin(tagName)` | CEM plugin that copies a custom JSDoc tag (e.g. `@status`, `@displayName`) from each component’s documentation comment into the Custom Elements Manifest. |
+| `elenaTagPlugin` | `elenaTagPlugin(jsdocTag)` | CEM plugin that copies a custom JSDoc tag from each component’s documentation comment into the Custom Elements Manifest. `jsdocTag` is the tag name without the `@` (e.g. `"status"` for `@status`, `"displayName"` for `@displayName`). Call it once per tag you want to extract. |
 
 ## `@elenajs/plugin-cem-typescript`
 

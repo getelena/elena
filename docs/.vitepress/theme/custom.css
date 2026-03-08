@@ -183,3 +183,24 @@ label:active {
 .dark .light-only {
   display: none;
 }
+
+@media (min-width: 960px) {
+  .VPDoc:not(.has-sidebar) .container {
+    max-width: calc(100% - 1.9rem) !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPDoc:not(.has-sidebar) .content {
+    max-width: 100% !important;
+  }
+}
+
+.VPDoc:not(.has-sidebar).has-aside .content-container {
+  max-width: 100%;
+}
+
+.vp-doc table {
+  display: table;
+  width: 100%;
+}
