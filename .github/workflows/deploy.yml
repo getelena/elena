@@ -42,7 +42,7 @@ jobs:
           pnpm docs:build
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@c15a2b0ec4f14477a295a7eda11b8f1dbdeceead
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
