@@ -17,15 +17,11 @@ const iconSettings = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg'
 
 const iconSort = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M8 9l4 -4l4 4' fill='none'/><path fill='none' d='M16 15l-4 4l-4 -4'/></svg>`;
 
-const iconCheckSm = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M5 12l5 5l10 -10'/></svg>`;
-
-const iconCheckMd = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M5 12l5 5l10 -10'/></svg>`;
-
-const iconCheckLg = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M5 12l5 5l10 -10'/></svg>`;
+const iconChecked = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M5 12l5 5l10 -10'/></svg>`;
 
 const iconExternal = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'/><path d='M11 13l9 -9'/><path d='M15 4h5v5'/></svg>`;
 
-const iconThumbsUp = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3' /></svg>`;
+const iconThumb = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3' /></svg>`;
 
 const iconHeart = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572' /></svg>`;
 
@@ -59,8 +55,8 @@ Mostly, you will get almost identical experience as a user compared to a full pr
 ```html
 <elena-stack>
   <elena-button type="submit">Button</elena-button>
-  <elena-button icon="<svg>">Download</elena-button>
-  <elena-button label="Settings" icon="<svg>"></elena-button>
+  <elena-button icon="svg">Download</elena-button>
+  <elena-button label="Settings" icon="settings"></elena-button>
 </elena-stack>
 ```
 
@@ -80,7 +76,7 @@ Mostly, you will get almost identical experience as a user compared to a full pr
 ```html
 <elena-stack>
   <elena-button variant="primary">Primary</elena-button>
-  <elena-button variant="primary" icon="<svg>">Primary</elena-button>
+  <elena-button variant="primary" icon="sort">Primary</elena-button>
   <elena-button>Default</elena-button>
   <elena-button variant="danger">Danger</elena-button>
   <elena-button variant="outline">Outline</elena-button>
@@ -92,17 +88,17 @@ Mostly, you will get almost identical experience as a user compared to a full pr
 
 <div class="elena-demo">
   <elena-stack direction="row">
-    <elena-button size="sm" :icon="iconCheckSm">Small</elena-button>
-    <elena-button size="md" :icon="iconCheckMd">Medium</elena-button>
-    <elena-button size="lg" :icon="iconCheckLg">Large</elena-button>
+    <elena-button size="sm" :icon="iconChecked">Small</elena-button>
+    <elena-button size="md" :icon="iconChecked">Medium</elena-button>
+    <elena-button size="lg" :icon="iconChecked">Large</elena-button>
   </elena-stack>
 </div>
 
 ```html
 <elena-stack>
-  <elena-button size="sm" icon="<svg>">Small</elena-button>
-  <elena-button size="md" icon="<svg>">Medium</elena-button>
-  <elena-button size="lg" icon="<svg>">Large</elena-button>
+  <elena-button size="sm" icon="checked">Small</elena-button>
+  <elena-button size="md" icon="checked">Medium</elena-button>
+  <elena-button size="lg" icon="checked">Large</elena-button>
 </elena-stack>
 ```
 
@@ -118,9 +114,9 @@ Mostly, you will get almost identical experience as a user compared to a full pr
 
 ```html
 <elena-stack>
-  <elena-button href="https://github.com/getelena/elena" variant="primary">Elena on GitHub</elena-button>
-  <elena-button href="https://elenajs.com" target="_blank" icon="<svg>">External</elena-button>
-  <elena-button href="#file" download icon="<svg>">Download</elena-button>
+  <elena-button href="#" variant="primary">Elena on GitHub</elena-button>
+  <elena-button href="#" target="_blank" icon="external">External</elena-button>
+  <elena-button href="#" download icon="download">Download</elena-button>
 </elena-stack>
 ```
 
@@ -153,7 +149,7 @@ Mostly, you will get almost identical experience as a user compared to a full pr
 
 ```html
 <elena-stack>
-  <elena-button variant="primary">Click to cycle</elena-button>
+  <elena-button variant="primary">Click to cycle (primary)</elena-button>
   <elena-button variant="primary">primary</elena-button>
 </elena-stack>
 ```
@@ -173,15 +169,15 @@ Mostly, you will get almost identical experience as a user compared to a full pr
 <div class="elena-demo">
   <elena-stack direction="row">
     <elena-button style="--elena-button-bg: #ffddd2; --elena-button-border: #ffddd2; --elena-button-text: #463634">Custom style</elena-button>
-    <elena-button style="--elena-button-bg: #ffddd2; --elena-button-border: #ffddd2; --elena-button-text: #463634" :icon="iconThumbsUp">Like</elena-button>
+    <elena-button style="--elena-button-bg: #ffddd2; --elena-button-border: #ffddd2; --elena-button-text: #463634" :icon="iconThumb">Like</elena-button>
     <elena-button style="--elena-button-bg: #ffddd2; --elena-button-border: #ffddd2; --elena-button-text: #463634" label="Love" :icon="iconHeart"></elena-button>
   </elena-stack>
 </div>
 
 ```html
 <elena-stack>
-  <elena-button style="--elena-button-bg: #ffddd2; ...">Custom style</elena-button>
-  <elena-button style="--elena-button-bg: #ffddd2; ..." icon="<svg>">Like</elena-button>
-  <elena-button style="--elena-button-bg: #ffddd2; ..." label="Love" icon="<svg>"></elena-button>
+  <elena-button style="--bg:x">Custom style</elena-button>
+  <elena-button style="--bg:x" icon="thumb">Like</elena-button>
+  <elena-button style="--bg:x" label="Love" icon="heart"></elena-button>
 </elena-stack>
 ```
