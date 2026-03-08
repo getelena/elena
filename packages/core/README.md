@@ -22,7 +22,7 @@
 
 <br/>
 
-<p align="center"><a href="https://elenajs.com">Elena</a> is a simple, tiny library (2kB) for building <a href="https://elenajs.com/components/terminology">Progressive Web Components</a>. Most web component libraries require JavaScript to render anything at all. With Elena, your component’s base HTML and CSS render immediately. JavaScript picks up from there and adds interactivity.</p>
+<p align="center"><a href="https://elenajs.com">Elena</a> is a simple, tiny library (2kB) for building <a href="https://elenajs.com/components/terminology">Progressive Web Components</a>. Most web component libraries today require JavaScript to render anything at all. With Elena, your component’s base HTML and CSS render immediately. JavaScript picks up from there to add interactivity.</p>
 
 ## Elena features
 

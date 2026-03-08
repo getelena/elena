@@ -24,7 +24,7 @@ title: Progressive Web Components
 
 ## What is Elena?
 
-**Elena is a simple, tiny library (2kB) for building [Progressive Web Components](/components/terminology).** Most Web&nbsp;Component libraries require JavaScript to render anything at all. With Elena, your component’s base HTML and CSS render immediately. JavaScript picks up from there and&nbsp;adds interactivity.
+**Elena is a simple, tiny library (2kB) for building [Progressive Web Components](/components/terminology).** Most web component libraries today require JavaScript to render anything at all. With Elena, your component’s base HTML and CSS render immediately. JavaScript picks up from there to add interactivity.
 
 ### Here is a minimal example
 
