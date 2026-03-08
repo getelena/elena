@@ -26,6 +26,9 @@ function copyComponentAssets() {
 export default defineConfig({
   title: "Elena",
   ignoreDeadLinks: false,
+  sitemap: {
+    hostname: "https://elenajs.com",
+  },
   description: "Simple, tiny library for building Progressive Web Components.",
   cleanUrls: true,
   head: [["link", { rel: "icon", href: "/" }]],
