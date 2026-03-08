@@ -25,6 +25,7 @@ function copyComponentAssets() {
 
 export default defineConfig({
   title: "Elena",
+  base: "/elena/",
   ignoreDeadLinks: false,
   sitemap: {
     hostname: "https://elenajs.com",
