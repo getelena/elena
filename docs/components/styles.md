@@ -30,7 +30,7 @@ To style the host element itself, use `:scope`:
 
 ### Preventing styles from leaking in
 
-`@scope` stops your styles from leaking out, but it does not prevent global styles from leaking in. To block both directions, add a universal reset as the first rule inside `@scope`:
+`@scope` stops your styles from leaking out, but it does not prevent global styles from leaking in. To prevent global styles from reaching in, add a universal reset as the first rule inside `@scope`:
 
 ```css
 /* Scope makes sure styles don’t leak out */
@@ -46,6 +46,27 @@ To style the host element itself, use `:scope`:
   }
 
   /* Rest of your component styles */
+}
+```
+
+For projects that use [CSS cascade layers](https://developer.mozilla.org/en-US/docs/Learn_web/CSS/Building_blocks/Cascade_layers), you can also control which styles win by declaring a layer order. Wrap your component styles in a named layer, then declare it after your base layer so it takes precedence:
+
+```css
+/* Global CSS layer order */
+@layer global, elena;
+
+/* Global CSS layer */
+@layer global {
+  button { color: red; }
+}
+```
+
+```css
+/* Component CSS layer */
+@layer elena {
+  @scope (elena-button) {
+    button { color: blue; }
+  }
 }
 ```
 
@@ -80,7 +101,7 @@ Here’s an example [Primitive Component](/components/terminology) using these p
 
   /* Elena SSR Pattern to avoid layout shift */
   :scope:not([hydrated]),
-  button {
+  .elena-button {
     font-family: var(--elena-button-font);
     color: var(--elena-button-text);
     background: var(--elena-button-bg);
@@ -94,7 +115,7 @@ Here’s an example [Primitive Component](/components/terminology) using these p
 }
 ```
 
-The `:scope:not([hydrated]), button` pattern ensures Primitive Components look the same before and after hydration. Elena adds the `hydrated` attribute to the host element after its first render. By applying the same baseline styles to both the unhydrated host and the rendered inner element, the component avoids any layout shift.
+The `:scope:not([hydrated]), .inner-element` pattern ensures Primitive Components look the same before and after hydration. Elena adds the `hydrated` attribute to the host element after its first render. By applying the same baseline styles to both the unhydrated host and the rendered inner element, the component avoids any layout shift.
 
 Use attribute selectors on `:scope` for variant and state styling:
 
@@ -190,6 +211,49 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 > [!TIP]
 > **`@elenajs/bundler`** transforms these annotations into the Custom Elements Manifest, which tools and documentation generators can use to surface the component’s public CSS API.
+
+## Shadow DOM
+
+When `@scope` with a reset isn’t enough, Elena supports an opt-in Shadow DOM mode for [Primitive Components](/components/terminology). Set `static shadow` to `"open"` or `"closed"` on the class, and pass your styles via `static styles`:
+
+```js
+import styles from "./button.css" with { type: "css" };
+
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static shadow = "open";
+  static styles = styles;
+}
+
+Button.define();
+```
+
+Elena attaches the shadow root on first connect and adopts the stylesheets automatically. Rendering happens inside the shadow root, so external styles cannot reach in.
+
+> [!WARNING]
+> Enabling Shadow DOM means that your component now relies entirely on client side JavaScript for rendering. Nothing will be visible to the user before the component has been fully initialized.
+
+### CSS in shadow mode
+
+Since external stylesheets cannot reach inside the shadow root, you no longer need `@scope`:
+
+```css
+/* No @scope needed */
+.my-button {
+  font-family: sans-serif;
+  color: white;
+  background: blue;
+}
+```
+
+CSS custom properties still pierce shadow boundaries, so your theming API continues working the same way:
+
+```css
+/* Still works: */
+elena-button {
+  --elena-button-bg: green;
+}
+```
 
 ## Styles without `@scope`
 

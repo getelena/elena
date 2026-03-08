@@ -74,13 +74,13 @@ Stack.define();
 
 ## Why was Elena created
 
-Elena was created by [@arielle](https://arielsalminen.com) after nearly a decade of building enterprise-scale design systems with [web components](https://arielsalminen.com/2019/why-we-use-web-components/). The recurring pain points were always the same: accessibility barriers, server-side rendering friction, layout shifts, FOUC/FOIC, and compatibility challenges with analytics tools and the existing workflows.
+Elena was created by [@arielle](https://arielsalminen.com) after nearly a decade of building enterprise-scale design systems with [web components](https://arielsalminen.com/2019/why-we-use-web-components/). The recurring pain points were often similar: accessibility problems, server-side rendering, layout shifts, flash of unstyled content, and compatibility with e.g. analytics tools.
 
 Elena was built to solve these problems while staying grounded in web standards and what the platform natively provides. This is how _“Progressive Web Components”_ were born.
 
 ## Why should I use Elena
 
-**Elena is built for teams creating component libraries and design systems.** If you need web components that work across multiple frameworks (such as [React](https://react.dev), [Next.js](https://nextjs.org), [Vue](https://vuejs.org), [Angular](https://angular.dev)), render HTML and CSS before JavaScript loads, and avoid accessibility barriers, SSR friction, and layout shifts: Elena is designed for exactly that.
+**Elena is built for teams creating component libraries and design systems.** If you need web components that work across multiple frameworks (such as [React](https://react.dev), [Next.js](https://nextjs.org), [Vue](https://vuejs.org), [Angular](https://angular.dev)), render HTML and CSS before JavaScript loads, and sidestep common issues like accessibility problems, SSR limitations, and layout shifts, Elena is built for exactly that.
 
 It handles the cross-framework complexity (prop/attribute syncing, event delegation, framework compatibility) so you can focus on building components rather than plumbing.
 
@@ -102,12 +102,9 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 
 Elena builds on native custom elements, so the mental model is familiar. The key differences are:
 
-- **No Shadow DOM.** Elena lives entirely in the Light DOM. This is an intentional design choice to improve accessibility, SSR compatibility, and to make styling easier.
+- **Light DOM by default.** Elena renders into the Light DOM by default, which improves accessibility, SSR compatibility, and styling ergonomics. Shadow DOM is available as an opt-in via `static shadow` for components that need stronger encapsulation.
 - **No `<template>`.** [Composite Components](/components/terminology) compose HTML children directly; [Primitive Components](/components/terminology) own their inner HTML via `render()`, with only the host element and its text content on the consuming page.
-- **CSS encapsulation without Shadow DOM.** Elena uses `@scope` to prevent styles from leaking out, combined with a custom [CSS reset](/advanced/scoping) to prevent global styles from leaking in.
-
-> [!TIP] NOTE
-> You may wonder: why are they called **Progressive Web Components** and not **Progressive Custom Elements**? _Web Component_ is the more widely recognized term today, and many of Elena’s concepts align closely with what are now called [HTML Web Components](https://adactio.com/journal/20618).
+- **Flexible CSS encapsulation.** In Light DOM mode, Elena uses `@scope` to prevent styles from leaking out, combined with a custom [CSS reset](/advanced/scoping) to prevent global styles from leaking in. In Shadow DOM mode, the browser’s native style isolation applies instead.
 
 ### Elena vs Lit
 
@@ -115,15 +112,15 @@ Elena builds on native custom elements, so the mental model is familiar. The key
 
 | | Elena | Lit |
 |---|---|---|
-| **DOM model** | Light DOM | Shadow DOM |
+| **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM |
 | **Size** | ~2kB | ~5kB |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
 | **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires `@lit-labs/ssr` |
-| **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM (`:host`, CSS parts) |
+| **Style encapsulation** | `@scope` + `all: unset` (Shadow DOM opt-in) | Shadow DOM (`:host`, CSS parts) |
 | **Accessibility** | Full Light DOM access | Shadow DOM accessibility limitations |
 | **API** | Static class fields + reactive properties | Decorators + reactive properties |
 
-The biggest philosophical difference is Shadow DOM. Lit embraces it for strong encapsulation; Elena rejects it in favor of Light DOM for accessibility, SSR, and CSS inheritance. Neither approach is wrong, it depends on what you’re optimizing for. If your use case specifically requires Shadow DOM, Lit is the right tool.
+The biggest philosophical difference is the DOM model. Lit uses Shadow DOM by default for strong encapsulation; Elena uses Light DOM by default for accessibility, SSR, and CSS inheritance, with Shadow DOM available as an opt-in for components that need full isolation.
 
 ### Elena vs Stencil
 
@@ -134,7 +131,7 @@ The biggest philosophical difference is Shadow DOM. Lit embraces it for strong e
 | **Approach** | Runtime mixin | Compiler |
 | **Language** | Vanilla JavaScript or TypeScript | TypeScript + JSX |
 | **Build step** | Optional | Required |
-| **DOM model** | Light DOM | Shadow DOM (default; configurable) |
+| **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM (default; configurable) |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
 | **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires Stencil's Hydrate app |
 | **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM or scoped CSS |
