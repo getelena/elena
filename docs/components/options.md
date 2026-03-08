@@ -15,7 +15,7 @@ export default class Button extends Elena(HTMLElement) {
 
   // CSS selector for the inner element ref (this.element).
   // Omit when the target is the firstElementChild (faster default).
-  static element = "button";
+  static element = ".my-button";
 
   // Enable Shadow DOM (opt-in for those who need it).
   static shadow = "open";
