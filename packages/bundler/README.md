@@ -84,6 +84,10 @@ export default {
   // analyze: {
   //   plugins: [],
   // },
+
+  // Browserslist targets for transpilation. Enables syntax transforms
+  // (e.g. class fields, optional chaining) to widen browser support.
+  // target: ["chrome 71", "firefox 69", "safari 12.1"],
 };
 ```
 
@@ -98,6 +102,7 @@ export default {
 | `bundle`           | `string \| false` | `"src/index.js"` | Entry point for the single-file bundle. Auto-detects `src/index.ts` if no `.js` entry exists. Set to `false` to disable. |
 | `plugins`          | `Plugin[]`        | `[]`             | Additional Rollup plugins appended after the built-in set.                                                               |
 | `analyze.plugins`  | `Plugin[]`        | `[]`             | Additional CEM analyzer plugins.                                                                                         |
+| `target`           | `string \| string[] \| false` | `false` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via `@babel/preset-env` to widen browser support. Example: `["chrome 71", "firefox 69", "safari 12.1"]`. |
 
 ## Build output
 
