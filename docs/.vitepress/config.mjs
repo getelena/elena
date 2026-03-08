@@ -17,7 +17,7 @@ function copyComponentAssets() {
         await copyFile(path.join(src, "bundle.js"), path.join(dest, "bundle.js"));
         await copyFile(path.join(src, "bundle.css"), path.join(dest, "bundle.css"));
       } catch (e) {
-        console.warn("[elena] Could not copy component assets:", e.message);
+        console.warn("░█ [ELENA]: Could not copy component assets:", e.message);
       }
     },
   };
