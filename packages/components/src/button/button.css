@@ -124,6 +124,10 @@
       0 0 0 3px var(--elena-button-focus);
   }
 
+  .elena-button:focus {
+    outline: none;
+  }
+
   :scope[disabled] {
     --elena-button-text: #a8b0bd;
     --elena-button-bg: #f3f4f6;
