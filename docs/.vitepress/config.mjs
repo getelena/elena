@@ -1,164 +1,189 @@
 import { defineConfig } from "vitepress";
-import { withMermaid } from "vitepress-plugin-mermaid";
+import { copyFile, mkdir } from "fs/promises";
+import { fileURLToPath } from "url";
+import path from "path";
 
-export default withMermaid(
-  defineConfig({
-    title: "Elena",
-    // base: "/elena/docs/",
-    ignoreDeadLinks: true,
-    description: "Simple, tiny library for building Progressive Web Components.",
-    cleanUrls: true,
-    head: [["link", { rel: "icon", href: "https://elenajs.com/img/elena.png" }]],
-    markdown: {
-      toc: {
-        level: [1, 2],
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+function copyComponentAssets() {
+  const src = path.resolve(__dirname, "../../packages/components/dist");
+  const dest = path.resolve(__dirname, "../public/components");
+
+  return {
+    name: "copy-component-assets",
+    async buildStart() {
+      try {
+        await mkdir(dest, { recursive: true });
+        await copyFile(path.join(src, "bundle.js"), path.join(dest, "bundle.js"));
+        await copyFile(path.join(src, "bundle.css"), path.join(dest, "bundle.css"));
+      } catch (e) {
+        console.warn("[elena] Could not copy component assets:", e.message);
+      }
+    },
+  };
+}
+
+export default defineConfig({
+  title: "Elena",
+  // base: "/elena/docs/",
+  ignoreDeadLinks: false,
+  description: "Simple, tiny library for building Progressive Web Components.",
+  cleanUrls: true,
+  head: [["link", { rel: "icon", href: "/" }]],
+  markdown: {
+    toc: {
+      level: [1, 2],
+    },
+  },
+  vite: {
+    plugins: [copyComponentAssets()],
+  },
+  vue: {
+    template: {
+      compilerOptions: {
+        isCustomElement: tag => tag.startsWith("elena-"),
       },
     },
-    vite: {
-      optimizeDeps: {
-        include: ["mermaid"],
+  },
+  themeConfig: {
+    logo: "/logo.png",
+    nav: [
+      { text: "Docs", link: "/", activeMatch: "^(?!/api/)" },
+      { text: "API Reference", link: "/api/" },
+      {
+        text: "Packages",
+        items: [
+          {
+            text: "@elenajs/core",
+            link: "https://github.com/getelena/elena/tree/main/packages/core",
+          },
+          {
+            text: "@elenajs/bundler",
+            link: "https://github.com/getelena/elena/tree/main/packages/bundler",
+          },
+          {
+            text: "@elenajs/cli",
+            link: "https://github.com/getelena/elena/tree/main/packages/cli",
+          },
+          {
+            text: "@elenajs/ssr",
+            link: "https://github.com/getelena/elena/tree/main/packages/ssr",
+          },
+          {
+            text: "@elenajs/components",
+            link: "https://github.com/getelena/elena/tree/main/packages/components",
+          },
+          {
+            text: "@elenajs/mcp",
+            link: "https://github.com/getelena/mcp",
+          },
+          {
+            text: "@elenajs/plugin-cem-define",
+            link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-define",
+          },
+          {
+            text: "@elenajs/plugin-cem-tag",
+            link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-tag",
+          },
+          {
+            text: "@elenajs/plugin-cem-typescript",
+            link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-typescript",
+          },
+          {
+            text: "@elenajs/plugin-rollup-css",
+            link: "https://github.com/getelena/elena/tree/main/packages/plugin-rollup-css",
+          },
+        ],
       },
-    },
-    themeConfig: {
-      logo: "/logo.png",
-      nav: [
-        { text: "Docs", link: "/", activeMatch: "^(?!/api/)" },
-        { text: "API Reference", link: "/api/" },
-        {
-          text: "Packages",
-          items: [
-            {
-              text: "@elenajs/core",
-              link: "https://github.com/getelena/elena/tree/main/packages/core",
-            },
-            {
-              text: "@elenajs/bundler",
-              link: "https://github.com/getelena/elena/tree/main/packages/bundler",
-            },
-            {
-              text: "@elenajs/cli",
-              link: "https://github.com/getelena/elena/tree/main/packages/cli",
-            },
-            {
-              text: "@elenajs/ssr",
-              link: "https://github.com/getelena/elena/tree/main/packages/ssr",
-            },
-            {
-              text: "@elenajs/components",
-              link: "https://github.com/getelena/elena/tree/main/packages/components",
-            },
-            {
-              text: "@elenajs/mcp",
-              link: "https://github.com/getelena/mcp",
-            },
-            {
-              text: "@elenajs/plugin-cem-define",
-              link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-define",
-            },
-            {
-              text: "@elenajs/plugin-cem-tag",
-              link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-tag",
-            },
-            {
-              text: "@elenajs/plugin-cem-typescript",
-              link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-typescript",
-            },
-            {
-              text: "@elenajs/plugin-rollup-css",
-              link: "https://github.com/getelena/elena/tree/main/packages/plugin-rollup-css",
-            },
-          ],
-        },
-        {
-          text: "About",
-          items: [
-            {
-              text: "Changelog",
-              link: "https://github.com/getelena/elena/tree/main/packages/core",
-            },
-            {
-              text: "Contributing",
-              link: "https://github.com/getelena/elena/tree/main/packages/bundler",
-            },
-            {
-              text: "Code of Conduct",
-              link: "https://github.com/getelena/elena/tree/main/packages/bundler",
-            },
-            {
-              text: "License (MIT)",
-              link: "https://github.com/getelena/elena/tree/main/packages/bundler",
-            },
-          ],
-        },
-        { text: "GitHub", link: "https://github.com/getelena/elena" },
-      ],
+      {
+        text: "About",
+        items: [
+          {
+            text: "Changelog",
+            link: "https://github.com/getelena/elena/tree/main/packages/core",
+          },
+          {
+            text: "Contributing",
+            link: "https://github.com/getelena/elena/tree/main/packages/bundler",
+          },
+          {
+            text: "Code of Conduct",
+            link: "https://github.com/getelena/elena/tree/main/packages/bundler",
+          },
+          {
+            text: "License (MIT)",
+            link: "https://github.com/getelena/elena/tree/main/packages/bundler",
+          },
+        ],
+      },
+      { text: "GitHub", link: "https://github.com/getelena/elena" },
+    ],
 
-      sidebar: [
-        {
-          text: "Getting Started",
-          collapsed: false,
-          items: [
-            { text: "Introduction", link: "/" },
-            { text: "Features", link: "/features/" },
-            { text: "Quick Start", link: "/start/" },
-            { text: "Live Demos (TODO)", link: "/demos/" },
-          ],
-        },
-        {
-          text: "Components",
-          collapsed: false,
-          items: [
-            { text: "Terminology", link: "/components/terminology" },
-            { text: "Lifecycle", link: "/components/lifecycle" },
-            { text: "Options", link: "/components/options" },
-            { text: "Props", link: "/components/props" },
-            { text: "Events", link: "/components/events" },
-            { text: "Methods", link: "/components/methods" },
-            { text: "Templates", link: "/components/templates" },
-            { text: "Styles", link: "/components/styles" },
-          ],
-        },
-        {
-          text: "Digging Deeper",
-          collapsed: false,
-          items: [
-            { text: "Creating Documentation", link: "/advanced/docs" },
-            { text: "Loading Components", link: "/advanced/loading" },
-            { text: "Component Libraries", link: "/advanced/libraries" },
-            { text: "Server-Side Rendering", link: "/advanced/ssr" },
-            { text: "Framework Integrations", link: "/advanced/frameworks" },
-            { text: "Command Line Interface", link: "/advanced/cli" },
-            { text: "Using TypeScript", link: "/advanced/typescript" },
-            { text: "Scoping Styles", link: "/advanced/scoping" },
-            { text: "Known Issues", link: "/advanced/gotchas" },
-          ],
-        },
-      ],
+    sidebar: [
+      {
+        text: "Getting started",
+        collapsed: false,
+        items: [
+          { text: "Introduction", link: "/" },
+          { text: "Features", link: "/features/" },
+          { text: "Quick start", link: "/start/" },
+          { text: "Live examples", link: "/examples/" },
+        ],
+      },
+      {
+        text: "Components",
+        collapsed: false,
+        items: [
+          { text: "Terminology", link: "/components/terminology" },
+          { text: "Lifecycle", link: "/components/lifecycle" },
+          { text: "Options", link: "/components/options" },
+          { text: "Props", link: "/components/props" },
+          { text: "Events", link: "/components/events" },
+          { text: "Methods", link: "/components/methods" },
+          { text: "Templates", link: "/components/templates" },
+          { text: "Styles", link: "/components/styles" },
+        ],
+      },
+      {
+        text: "Digging deeper",
+        collapsed: false,
+        items: [
+          { text: "Creating documentation", link: "/advanced/docs" },
+          { text: "Loading components", link: "/advanced/loading" },
+          { text: "Component libraries", link: "/advanced/libraries" },
+          { text: "Server-side rendering", link: "/advanced/ssr" },
+          { text: "Framework integrations", link: "/advanced/frameworks" },
+          { text: "Command line interface", link: "/advanced/cli" },
+          { text: "Using TypeScript", link: "/advanced/typescript" },
+          { text: "Scoping styles", link: "/advanced/scoping" },
+          { text: "Known issues", link: "/advanced/gotchas" },
+        ],
+      },
+    ],
 
-      socialLinks: [{ icon: "github", link: "https://github.com/getelena/elena" }],
+    socialLinks: [{ icon: "github", link: "https://github.com/getelena/elena" }],
 
-      search: {
-        provider: "local",
-        options: {
-          miniSearch: {
-            searchOptions: {
-              fuzzy: 0.2,
-              prefix: true,
-              boost: { title: 4, text: 2, titles: 1 },
-            },
+    search: {
+      provider: "local",
+      options: {
+        miniSearch: {
+          searchOptions: {
+            fuzzy: 0.2,
+            prefix: true,
+            boost: { title: 4, text: 2, titles: 1 },
           },
         },
       },
-
-      editLink: {
-        pattern: "https://github.com/getelena/elena/edit/main/docs/:path",
-        text: "Edit this page on GitHub",
-      },
-
-      footer: {
-        message: "Released under the MIT License.",
-        copyright: "Copyright © 2026 Ariel Salminen",
-      },
     },
-  })
-);
+
+    editLink: {
+      pattern: "https://github.com/getelena/elena/edit/main/docs/:path",
+      text: "Edit this page on GitHub",
+    },
+
+    footer: {
+      message: "Released under the MIT License.",
+      copyright: "Copyright © 2026 Ariel Salminen",
+    },
+  },
+});
