@@ -22,7 +22,7 @@
 
 <br/>
 
-<p align="center"><a href="https://elenajs.com">Elena</a> is a simple, tiny library (2kB) for building <a href="https://elenajs.com/components/terminology">Progressive Web Components</a>. With Elena, you can immediately render the component’s base HTML & CSS, then progressively enhance the experience with JavaScript rather than relying on it from the start. This approach provides great support for <a href="https://elenajs.com/advanced/ssr">Server Side Rendering</a>  <em>(and e.g. React Server&nbsp;Components)</em> without additional configuration or tooling.</p>
+<p align="center"><a href="https://elenajs.com">Elena</a> is a simple, tiny library (2kB) for building <a href="https://elenajs.com/components/terminology">Progressive Web Components</a>. With Elena, you can immediately render the component's base HTML & CSS, then progressively enhance the experience with JavaScript rather than relying on it from the start.</p>
 
 <br/>
 
