@@ -39,6 +39,7 @@ jobs:
       - name: Install and Build
         run: |
           pnpm install
+          pnpm build
           pnpm docs:build
 
       - name: Deploy 🚀
