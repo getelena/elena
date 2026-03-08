@@ -2,16 +2,17 @@
 
 <div align="center">
 <h1>
-  <img src="/elena.png" alt="Elena" width="127" height="156">
+<img src="/elena.png" class="light-only" alt="Elena" width="127" height="156">
+<img src="/elena-dark.png" class="dark-only" alt="Elena" width="127" height="156">
 </h1>
 
 <h3>Simple, tiny library for building Progressive Web Components.</h3>
 
 <div style="margin-top:2.25rem;display: flex; gap: 0.25rem;align-items: center; justify-content: center;">
-<a href="https://arielsalminen.com"><img src="https://img.shields.io/badge/creator-@arielle-F95B1F" alt="Creator @arielle"/></a>
+<a href="https://arielsalminen.com"><img src="/creator.svg" alt="Creator @arielle"/></a>
 <a href="https://www.npmjs.com/org/elenajs"><img src="https://img.shields.io/npm/v/@elenajs/core.svg" alt="Latest version on npm" /></a>
-<a href="https://github.com/getelena/elena/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="Elena is released under the MIT license." /></a>
-<a href="https://github.com/getelena/elena/actions/workflows/tests.yml"><img src="https://img.shields.io/badge/coverage-100%25-green" alt="Coverage 100%" /></a>
+<a href="https://github.com/getelena/elena/blob/main/LICENSE"><img src="/license.svg" alt="Elena is released under the MIT license." /></a>
+<a href="https://github.com/getelena/elena/actions/workflows/tests.yml"><img src="/coverage.svg" alt="Coverage 100%" /></a>
 <a href="https://www.npmjs.com/package/@elenajs/core"><img src="https://img.shields.io/npm/dt/@elenajs/core.svg" alt="Total Downloads"></a>
 </div>
 
@@ -140,6 +141,6 @@ Elena is tested in the latest two versions of the following browsers. We may add
 
 ## Next steps
 
-- Start with the [Quick Start](#) guide.
-- View the [Live Demos](#) for examples.
-- View the [Features](#) to understand what Elena provides.
+- Start with the [Quick Start](/start/) guide.
+- View the [Live examples](/examples/) for demos.
+- View the [Features](/features/) to understand what Elena provides.

@@ -6,25 +6,9 @@ Re-renders are batched. If multiple props change at once, Elena waits until the 
 
 <br/>
 
-<div class="mermaid-container">
-
-```mermaid
-flowchart TD
-    A([connectedCallback#40;#41;]) --> B[willUpdate#40;#41;]
-    B --> C[render#40;#41;]
-    C --> D{First connect?}
-    D -->|yes| E[firstUpdated#40;#41;]
-    E --> F[updated#40;#41;]
-    D -->|no| F
-    F --> G([updateComplete])
-
-    H([Property change]) --> S[/Scheduled update/]
-    R([requestUpdate#40;#41;]) --> S
-    S --> J[willUpdate#40;#41;]
-    J --> L[render#40;#41;]
-    L --> F
-```
-
+<div class="lifecycle">
+<img src="/lifecycle.png" class="light-only" alt="Elena" width="672" height="659">
+<img src="/lifecycle-dark.png" class="dark-only" alt="Elena" width="672" height="659">
 </div>
 
 ## `connectedCallback()`
