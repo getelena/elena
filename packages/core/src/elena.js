@@ -56,6 +56,8 @@ function elementResolver(selector) {
  *   props?: (string | ElenaPropObject)[],
  *   events?: string[],
  *   element?: string,
+ *   shadow?: "open" | "closed",
+ *   styles?: CSSStyleSheet | string | (CSSStyleSheet | string)[],
  * }} ElenaElementConstructor
  */
 
@@ -129,6 +131,7 @@ export function Elena(superClass) {
       this._setupStaticProps();
       this._captureClassFieldDefaults();
       this._captureText();
+      this._attachShadow();
       this.willUpdate();
       this._applyRender();
       this._resolveInnerElement();
@@ -219,6 +222,53 @@ export function Elena(superClass) {
     }
 
     /**
+     * The root node to render into. Returns the shadow root when shadow mode
+     * is enabled, otherwise the host element itself.
+     *
+     * @type {ShadowRoot | HTMLElement}
+     */
+    get _renderRoot() {
+      return this.shadowRoot ?? this;
+    }
+
+    /**
+     * Attaches a shadow root and adopts styles on first connect.
+     * Only runs when `static shadow` is set on the component class.
+     *
+     * @internal
+     */
+    _attachShadow() {
+      const component = this.constructor;
+
+      if (!component.shadow || this.shadowRoot) {
+        return;
+      }
+
+      this.attachShadow({ mode: component.shadow });
+
+      if (!component.styles) {
+        return;
+      }
+
+      // Normalize to array and cache converted CSSStyleSheet instances on the class.
+      // Avoids re-parsing CSS strings on every element instance.
+      if (!component._adoptedSheets) {
+        const stylesList = Array.isArray(component.styles) ? component.styles : [component.styles];
+
+        component._adoptedSheets = stylesList.map(s => {
+          if (typeof s === "string") {
+            const sheet = new CSSStyleSheet();
+            sheet.replaceSync(s);
+            return sheet;
+          }
+          return s;
+        });
+      }
+
+      this.shadowRoot.adoptedStyleSheets = component._adoptedSheets;
+    }
+
+    /**
      * Calls render() and updates the DOM with the result.
      *
      * @internal
@@ -227,13 +277,14 @@ export function Elena(superClass) {
       const result = this.render();
 
       if (result && result.strings) {
-        const rebuilt = renderTemplate(this, result.strings, result.values);
+        const root = this._renderRoot;
+        const rebuilt = renderTemplate(root, result.strings, result.values);
 
         // Re-resolve element ref only when the DOM was fully rebuilt.
         // Fast-path text node patching leaves the DOM structure intact,
         // so the existing ref is still valid.
         if (this._hydrated && rebuilt) {
-          this.element = this.constructor._resolver(this);
+          this.element = this.constructor._resolver(root);
         }
       }
     }
@@ -245,13 +296,14 @@ export function Elena(superClass) {
      */
     _resolveInnerElement() {
       if (!this.element) {
-        this.element = this.constructor._resolver(this);
+        const root = this._renderRoot;
+        this.element = this.constructor._resolver(root);
 
         if (!this.element) {
           if (this.constructor.element) {
             console.warn("░█ [ELENA]: Passed element not found.");
           }
-          this.element = this.firstElementChild;
+          this.element = root.firstElementChild;
         }
       }
     }
