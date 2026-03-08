@@ -30,7 +30,7 @@
   }
 
   :scope:not([hydrated]),
-  .elena-button {
+  .elena-button:is(button, a) {
     -webkit-user-select: none;
     user-select: none;
     font-family: inherit;
@@ -48,6 +48,8 @@
     background: var(--elena-button-bg);
     border: 2px solid var(--elena-button-border);
     border-radius: var(--elena-button-radius);
+    transition: none;
+    text-decoration: none;
     text-align: center;
     display: inline-flex;
     align-items: center;
@@ -102,6 +104,10 @@
 
   :scope:hover {
     filter: brightness(0.9);
+  }
+
+  .elena-button:is(button, a):hover {
+    color: var(--elena-button-text);
   }
 
   :scope:active {
