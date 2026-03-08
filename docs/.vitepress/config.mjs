@@ -129,7 +129,7 @@ export default withMermaid(
             { text: "Framework Integrations (TODO)", link: "/advanced/frameworks" },
             { text: "Command Line Interface (TODO)", link: "/advanced/cli" },
             { text: "Using TypeScript (TODO)", link: "/advanced/typescript" },
-            { text: "Scoping Styles (TODO)", link: "/advanced/scoping" },
+            { text: "Scoping Styles", link: "/advanced/scoping" },
             { text: "Known Issues", link: "/advanced/gotchas" },
           ],
         },
