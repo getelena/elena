@@ -60,7 +60,7 @@ describe("create-component prompt", () => {
     const text = result.messages[0].content.text;
     expect(text).toContain("@scope");
     expect(text).toContain(":scope:not([hydrated])");
-    expect(text).toContain("options.props");
+    expect(text).toContain("static props");
   });
 });
 
@@ -91,7 +91,7 @@ describe("review-component prompt", () => {
     const text = result.messages[0].content.text;
 
     it("checks props match constructor defaults", () => {
-      expect(text).toContain("Props listed in options.props match constructor defaults");
+      expect(text).toContain("Props listed in static props match class field defaults");
     });
 
     it("checks JSDoc annotations", () => {

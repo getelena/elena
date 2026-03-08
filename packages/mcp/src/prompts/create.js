@@ -40,10 +40,12 @@ export function registerCreatePrompt(server) {
               "",
               "Key Elena rules to follow:",
               "- Primitive components own their DOM via render(). Composite components wrap children with no render().",
-              "- Props must be listed in options.props AND given defaults in the constructor.",
+              "- Configure components with static class fields: static tagName, static props, static events, static element. No options object.",
+              "- Props must be listed in static props AND given default class field values.",
               "- Use JSDoc @attribute, @type, @cssprop, @event, @status, @displayName annotations.",
-              "- CSS must use @scope for style isolation. Primitive components must style both :scope:not([hydrated]) and the inner element with shared baseline styles.",
+              "- CSS must use @scope for style isolation. Primitive components need the encapsulation reset (:scope, *:where(:not(img, svg):not(svg *)), *::before, *::after { all: unset; display: revert; }) and must style both :scope:not([hydrated]) and the inner element. Composite components must NOT include the reset.",
               "- Tag name format: elena-<name> (e.g. elena-button).",
+              "- If the component needs computed/derived state before rendering, add a willUpdate() method (no super call needed).",
             ]
               .filter(Boolean)
               .join("\n"),

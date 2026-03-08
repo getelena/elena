@@ -20,11 +20,11 @@ describe("PATTERNS_CONTENT", () => {
   });
 
   describe("options object", () => {
-    it("documents all four option keys", () => {
-      expect(PATTERNS_CONTENT).toContain("`tagName`");
-      expect(PATTERNS_CONTENT).toContain("`props`");
-      expect(PATTERNS_CONTENT).toContain("`events`");
-      expect(PATTERNS_CONTENT).toContain("`element`");
+    it("documents all four static fields", () => {
+      expect(PATTERNS_CONTENT).toContain("`static tagName`");
+      expect(PATTERNS_CONTENT).toContain("`static props`");
+      expect(PATTERNS_CONTENT).toContain("`static events`");
+      expect(PATTERNS_CONTENT).toContain("`static element`");
     });
 
     it("documents firstElementChild fallback for element option", () => {
@@ -84,7 +84,7 @@ describe("PATTERNS_CONTENT", () => {
 
   describe("events", () => {
     it("documents event delegation", () => {
-      expect(PATTERNS_CONTENT).toContain("options.events");
+      expect(PATTERNS_CONTENT).toContain("static events");
     });
 
     it("documents ElenaEvent defaults", () => {
@@ -101,8 +101,10 @@ describe("PATTERNS_CONTENT", () => {
 
     it("documents Elena CSS Encapsulation Pattern", () => {
       expect(PATTERNS_CONTENT).toContain("Elena CSS Encapsulation Pattern");
-      expect(PATTERNS_CONTENT).toContain(":scope, *, *::before, *::after");
+      expect(PATTERNS_CONTENT).toContain(":scope,");
+      expect(PATTERNS_CONTENT).toContain("*:where(:not(img, svg):not(svg *)),");
       expect(PATTERNS_CONTENT).toContain("all: unset");
+      expect(PATTERNS_CONTENT).toContain("display: revert");
     });
 
     it("documents hydration styling pattern", () => {
@@ -132,9 +134,8 @@ describe("PATTERNS_CONTENT", () => {
     });
 
     it("correctly attributes hydrated to updated()", () => {
-      expect(PATTERNS_CONTENT).toContain(
-        "`updated()` — Performs a post-update and adds the `hydrated` attribute"
-      );
+      expect(PATTERNS_CONTENT).toContain("updated()");
+      expect(PATTERNS_CONTENT).toContain("`hydrated` attribute");
     });
 
     it("documents super extension pattern", () => {

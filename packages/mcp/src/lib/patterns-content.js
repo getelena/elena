@@ -23,26 +23,21 @@ Examples: stack, table, layout, card, banner, visually-hidden, fieldset.
 
 ## Component Structure
 
-### Options Object
+### Static Class Fields
 
-The \`Elena(superclass, options)\` factory accepts an options object with four optional keys:
+Elena components are configured using static class fields on the class body:
 
-- **\`tagName\`** — Custom element tag name (e.g. \`"elena-button"\`)
-- **\`props\`** — Array of prop names to observe and sync as attributes
-- **\`events\`** — Array of event names to delegate from the inner element
-- **\`element\`** — CSS selector for the inner element ref (\`this.element\`). When omitted, Elena uses \`firstElementChild\` instead, which is more performant when you have many components on a page
+- **\`static tagName\`** — Custom element tag name (e.g. \`"elena-button"\`)
+- **\`static props\`** — Array of prop names to observe and sync as attributes
+- **\`static events\`** — Array of event names to delegate from the inner element
+- **\`static element\`** — CSS selector for the inner element ref (\`this.element\`). When omitted, Elena uses \`firstElementChild\` instead, which is more performant when you have many components on a page
+
+All static fields are optional.
 
 ### Primitive Component Example
 
 \`\`\`js
 import { Elena, html } from "@elenajs/core";
-
-const options = {
-  tagName: "elena-button",
-  props: ["variant", "size", "disabled"],
-  events: ["click", "focus", "blur"],
-  element: ".elena-button",
-};
 
 /**
  * Button component is used for interface actions.
@@ -57,38 +52,35 @@ const options = {
  * @cssprop [--elena-button-color-text] - Controls the color of the text.
  * @cssprop [--elena-button-color-bg] - Controls the color of the background.
  */
-export default class Button extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant", "size", "disabled"];
+  static events = ["click", "focus", "blur"];
+  static element = ".elena-button";
 
-    /**
-     * The style variant of the button.
-     *
-     * @attribute
-     * @type {"default" | "primary" | "danger"}
-     */
-    this.variant = "default";
+  /**
+   * The style variant of the button.
+   * @attribute
+   * @type {"default" | "primary" | "danger"}
+   */
+  variant = "default";
 
-    /**
-     * The size of the button.
-     *
-     * @attribute
-     * @type {"sm" | "md" | "lg"}
-     */
-    this.size = "md";
+  /**
+   * The size of the button.
+   * @attribute
+   * @type {"sm" | "md" | "lg"}
+   */
+  size = "md";
 
-    /**
-     * Makes the component disabled.
-     *
-     * @attribute
-     * @type {Boolean}
-     */
-    this.disabled = false;
-  }
+  /**
+   * Makes the component disabled.
+   * @attribute
+   * @type {Boolean}
+   */
+  disabled = false;
 
   /**
    * Renders the template.
-   *
    * @internal
    */
   render() {
@@ -104,11 +96,6 @@ Button.define();
 \`\`\`js
 import { Elena } from "@elenajs/core";
 
-const options = {
-  tagName: "elena-stack",
-  props: ["direction"],
-};
-
 /**
  * Stack component manages layout of immediate children.
  *
@@ -116,18 +103,16 @@ const options = {
  * @slot - The stacked content
  * @status alpha
  */
-export default class Stack extends Elena(HTMLElement, options) {
-  constructor() {
-    super();
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
 
-    /**
-     * The direction of the stack.
-     *
-     * @attribute
-     * @type {"column" | "row"}
-     */
-    this.direction = "column";
-  }
+  /**
+   * The direction of the stack.
+   * @attribute
+   * @type {"column" | "row"}
+   */
+  direction = "column";
 }
 
 Stack.define();
@@ -158,24 +143,61 @@ render() {
 }
 \`\`\`
 
-Use \`nothing\` as a placeholder in conditional template expressions when there is nothing to render. It produces an empty string and signals to the template engine that no processing is needed. Always prefer \`nothing\` over empty strings (\`""\`) or \`false\` in template conditionals.
+Use \`nothing\` as a placeholder in conditional template expressions when there is nothing to render. Always prefer \`nothing\` over empty strings (\`""\`) or \`false\` in template conditionals.
+
+### Conditional Attributes
+
+Use interpolation with \`nothing\` to conditionally add or remove attributes:
+
+\`\`\`js
+render() {
+  return html\\\`
+    <button
+      \\\${this.disabled ? "disabled" : nothing}
+      \\\${this.label ? html\\\`aria-label="\\\${this.label}"\\\` : nothing}
+    >
+      \\\${this.text}
+    </button>
+  \\\`;
+}
+\`\`\`
+
+### Helper Render Methods
+
+For components with multiple render variations (e.g. button vs link), use private helper methods marked \`@internal\`:
+
+\`\`\`js
+/** @internal */
+renderAsButton() {
+  return html\\\`<button class="elena-button">\\\${this.text}</button>\\\`;
+}
+
+/** @internal */
+renderAsLink() {
+  return html\\\`<a class="elena-button" href="\\\${this.href}">\\\${this.text}</a>\\\`;
+}
+
+render() {
+  return this.href ? this.renderAsLink() : this.renderAsButton();
+}
+\`\`\`
 
 ### Element Ref
 
 Elena provides a direct reference to the inner DOM element via \`this.element\`:
 
 \`\`\`js
-export default class Button extends Elena(HTMLElement, {
-  element: ".my-button",
-})
-// this.element → the .my-button element inside the component
+export default class Button extends Elena(HTMLElement) {
+  static element = ".my-button";
+  // this.element → the .my-button element inside the component
+}
 \`\`\`
 
-When the \`element\` option is omitted, Elena falls back to \`firstElementChild\`, which is more performant for simple templates with many component instances on a page.
+When \`static element\` is omitted, Elena falls back to \`firstElementChild\`, which is more performant for simple templates with many component instances on a page.
 
 ### Reflecting Props
 
-Elena syncs props and attributes on the host element. Props declared in \`options.props\` are reflected as host attributes automatically. For inner element attributes, add them explicitly in your \`render()\` template.
+Elena syncs props and attributes on the host element. Props declared in \`static props\` are reflected as host attributes automatically. For inner element attributes, add them explicitly in your \`render()\` template.
 
 ---
 
@@ -185,29 +207,74 @@ When naming Custom Element attributes, follow these rules:
 
 - **Valid characters:** Lowercase ASCII letters (a-z) and hyphens (-) only.
 - **Short:** Maximum of 2 words. Prefer 1 word when possible.
-- **Reserved names:** Property names must not conflict with existing standardized HTMLElement prototype members.
+- **Reserved names:** Property names must not conflict with existing standardized HTMLElement prototype members (e.g. \`title\`, \`hidden\`, \`id\`, \`type\`, \`href\`, \`value\`, \`style\`, \`className\`, \`innerHTML\`, \`textContent\`). Note: \`text\` is also reserved — it is Elena's built-in reactive text property.
 
 ## Props
 
-- Must be listed in \`options.props\`
-- Must have default values set in the constructor
-- Document with JSDoc \`@attribute\` and \`@type\` annotations
-- Supported types: \`String\`, \`Number\`, \`Boolean\`, \`Array\`, \`Object\`
-- String enums use \`@type {"a" | "b"}\` syntax
+Props are declared in \`static props\` and given default class field values. The default value tells Elena what type the prop is:
+
+\`\`\`js
+export default class Button extends Elena(HTMLElement) {
+  static props = ["variant", "disabled", "count", "items"];
+
+  variant = "default"; // string
+  disabled = false;    // boolean
+  count = 0;           // number
+  items = [];          // array (expects JSON string attribute)
+}
+\`\`\`
+
+Supported types: \`String\`, \`Number\`, \`Boolean\`, \`Array\`, \`Object\`. String enums use \`@type {"a" | "b"}\` syntax in JSDoc.
+
+### Prop Type Coercion
+
+Elena determines how to convert attribute strings by looking at the class field default:
+
+- \`false\` → boolean (\`"true"\`/\`"false"\` strings convert correctly)
+- \`0\` → number (attribute string is parsed to number)
+- \`[]\` → array (attribute must be valid JSON)
+- \`{}\` → object (attribute must be valid JSON)
+- \`""\` → string (no conversion)
+
+Invalid JSON for Array or Object props sets the prop to \`null\` and logs an error.
+
+### Non-Reflected Props
+
+To suppress attribute reflection for a specific prop (keep it JS-only), use the object form in \`static props\`:
+
+\`\`\`js
+export default class Button extends Elena(HTMLElement) {
+  static props = [
+    "variant",
+    { name: "icon", reflect: false },
+  ];
+
+  variant = "default";
+  icon = "";
+}
+\`\`\`
+
+The prop still updates the component and triggers re-renders — it just does not sync back to an HTML attribute.
 
 ## Text Content
 
 Every Primitive Component has a built-in reactive \`text\` property:
-- On first connect, Elena captures the element's \`textContent\` from the light DOM
+- On first connect, Elena captures the element's \`textContent\` from the light DOM (trimmed)
 - Use \`this.text\` in \`render()\` to reference it
 - Setting \`text\` programmatically triggers a re-render
 - For dynamic text in frameworks, use the \`text\` property instead of children
 
 ## Events
 
-- List event names in \`options.events\` for delegation
+- List event names in \`static events\` for delegation
 - Document with class-level JSDoc: \`@event click - Description\`
 - \`ElenaEvent\` extends \`Event\` with \`bubbles: true, composed: true\`
+
+### Event Delegation Caveats
+
+Delegated events are re-fired from the host as new \`ElenaEvent\` instances. **Only the event \`type\` and \`cancelable\` flag carry over** — event-specific properties such as \`key\`, \`clientX\`, \`data\`, or \`inputType\` are NOT forwarded. If you need those properties, listen directly on the inner element in \`connectedCallback\` instead of using \`static events\`.
+
+Never define your own \`handleEvent\` method on a component that uses \`static events\` — Elena uses \`handleEvent\` internally and overriding it breaks event delegation.
 
 ## JSDoc Annotations
 
@@ -222,6 +289,9 @@ Property-level:
 - \`@attribute\` — Marks as an observed attribute
 - \`@type {Type}\` — Type annotation
 
+Method-level:
+- \`@internal\` — Marks implementation detail; hidden from public API docs
+
 ---
 
 ## CSS Styles
@@ -230,22 +300,28 @@ Elena recommends the \`@scope\` at-rule for component styles. It prevents styles
 
 ### Elena CSS Encapsulation Pattern
 
-While \`@scope\` prevents component styles from leaking out, it does not prevent global styles from leaking in. For this, Elena recommends combining \`@scope\` with a universal \`all: unset\` reset:
+\`@scope\` prevents component styles from leaking out, but does not prevent global styles from leaking in. For Primitive Components, combine \`@scope\` with a universal \`all: unset\` reset:
 
 \`\`\`css
 /* Scope makes sure styles don't leak out */
 @scope (elena-button) {
 
   /* Unset makes sure styles don't leak in */
-  :scope, *, *::before, *::after {
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
     all: unset;
+    display: revert;
   }
 
   /* Rest of your component styles */
 }
 \`\`\`
 
-This pattern provides full CSS encapsulation without Shadow DOM.
+The \`:where(:not(img, svg):not(svg *))\` selector excludes images and SVGs from the reset so they continue to render correctly. \`display: revert\` restores browser default display values after \`all: unset\` clears them.
+
+**Composite Components must NOT use this reset** — they have no inner DOM to protect, and the reset would break composed children.
 
 ### Scoped styles (recommended)
 
@@ -256,8 +332,12 @@ Full baseline pattern for a **Primitive Component**:
 @scope (elena-button) {
 
   /* Unset makes sure styles don't leak in */
-  :scope, *, *::before, *::after {
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
     all: unset;
+    display: revert;
   }
 
   /* Targets the host element (elena-button) */
@@ -300,10 +380,30 @@ Full baseline pattern for a **Primitive Component**:
 
 Key rules:
 - \`:scope\` targets the host element defined by \`@scope (elena-tag)\`.
-- The encapsulation reset (\`:scope, *, *::before, *::after { all: unset; }\`) prevents global styles from leaking in. Place it as the first rule inside \`@scope\`.
+- The encapsulation reset prevents global styles from leaking in. Place it as the first rule inside \`@scope\`.
 - Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles so the component looks the same before and after hydration.
 - Use attribute selectors on \`:scope\` for variant/state styling.
 - Define public CSS custom properties on \`:scope\` for theming.
+
+### Composite Component CSS
+
+Composite Components only style the host — no encapsulation reset, no inner element, no hydration concerns:
+
+\`\`\`css
+/* Scope makes sure styles don't leak out */
+@scope (elena-stack) {
+
+  :scope {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  :scope[direction="row"] {
+    flex-direction: row;
+  }
+}
+\`\`\`
 
 ### Styles without \`@scope\` (legacy)
 
@@ -312,10 +412,11 @@ For older browsers, use namespaced selectors and the \`:is()\` pattern:
 \`\`\`css
 /* Unset makes sure styles don't leak in */
 elena-button,
-elena-button *,
+elena-button *:where(:not(img, svg):not(svg *)),
 elena-button *::before,
 elena-button *::after {
   all: unset;
+  display: revert;
 }
 
 elena-button { display: inline-block; }
@@ -325,57 +426,68 @@ elena-button[variant="primary"] { /* variant overrides */ }
 
 ### Pre-hydration pseudo-elements
 
-For better SSR support in Primitive Components, use CSS pseudo-elements referencing host attributes to avoid layout shifts:
+For better SSR support in Primitive Components, use CSS pseudo-elements referencing host attributes to surface content before JavaScript loads:
 
 \`\`\`css
 :scope:not([hydrated])::before { content: attr(label); }
 :scope:not([hydrated])::after { content: attr(placeholder); }
 \`\`\`
 
-### Composite Component CSS
-
-Composite Components only style the host — no inner element or hydration concerns:
-
-\`\`\`css
-/* Scope makes sure styles don't leak out */
-@scope (elena-stack) {
-
-  /* Unset makes sure styles don't leak in */
-  :scope, *, *::before, *::after {
-    all: unset;
-  }
-
-  /* Targets the host element (elena-stack) */
-  :scope {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  :scope[direction="row"] { flex-direction: row; }
-}
-\`\`\`
-
 ### Documenting CSS custom properties
 
-Use \`@cssprop\` JSDoc on the component class (see JSDoc Annotations above). \`@elenajs/bundler\` transforms these into the Custom Elements Manifest automatically.
+Use \`@cssprop\` JSDoc on the component class. \`@elenajs/bundler\` transforms these into the Custom Elements Manifest automatically.
 
 ---
 
 ## Lifecycle
 
-- \`connectedCallback()\` — Captures textContent, calls render()
-- \`disconnectedCallback()\` — Cleanup
-- \`attributeChangedCallback()\` — Syncs attributes to properties, triggers re-render
-- \`render()\` — Must return an \`html\` tagged template literal (primitive only)
-- \`updated()\` — Performs a post-update and adds the \`hydrated\` attribute to the host element
+Methods in order of execution on first connect:
 
-All lifecycle methods can be extended via \`super\`:
+1. \`connectedCallback()\` — Captures textContent, batches re-render
+2. \`willUpdate()\` — Runs before every render; use for derived/computed state. Do not call \`super\`.
+3. \`render()\` — Must return an \`html\` tagged template literal (primitive only)
+4. \`firstUpdated()\` — Runs once after the first render, before \`updated()\`
+5. \`updated()\` — Runs after every render; adds the \`hydrated\` attribute to the host on first call
+
+On subsequent re-renders: \`willUpdate()\` → \`render()\` → \`updated()\`.
+
+On disconnect: \`disconnectedCallback()\` — cleanup.
+On attribute change: \`attributeChangedCallback()\` — syncs attributes to properties, batches re-render.
+
+All lifecycle methods can be extended via \`super\` (except \`willUpdate()\`):
 
 \`\`\`js
 connectedCallback() {
   super.connectedCallback();
   console.log("Element was added to the DOM.");
 }
+
+willUpdate() {
+  // No super call needed
+  this.label = \\\`\\\${this.firstName} \\\${this.lastName}\\\`;
+}
+\`\`\`
+
+### Batched Re-renders
+
+Multiple prop changes in a single task are batched. Elena schedules one render per microtask — the DOM is updated once before the browser paints, regardless of how many props changed.
+
+### Manual Re-render
+
+When Elena cannot detect a mutation automatically (e.g. pushing into an array in place), trigger a re-render manually:
+
+\`\`\`js
+this.items.push("new item");
+this.requestUpdate();
+\`\`\`
+
+### \`updateComplete\`
+
+A Promise that resolves after the current render microtask finishes. Resolves immediately if no render is pending. Use it to await DOM updates:
+
+\`\`\`js
+await element.updateComplete;
+// DOM is now updated
 \`\`\`
 
 ## Registration
@@ -386,7 +498,7 @@ Always call \`ClassName.define()\` after the class body to register the element.
 
 ## Server Side Rendering
 
-Elena's approach to SSR is straightforward:
+Elena's approach to SSR:
 
 - **Composite Components** provide full SSR support by default — their HTML lives entirely in the Light DOM.
 - **Primitive Components** provide partial SSR support — base HTML & CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
@@ -435,12 +547,39 @@ Rules for **Primitive Components** when used with a framework:
 // React
 <elena-button text={buttonText} />
 
-// Angular
+// Angular — text children are inserted AFTER connectedCallback.
+// Always use property binding, never pass text as children.
 <elena-button [text]="buttonText"></elena-button>
 
 // Vue
 <elena-button :text="buttonText"></elena-button>
 \`\`\`
 
+**React 17 note:** React 17 does not pass Array or Object props (or event handlers) to web components correctly. Use React 18+.
+
 **Composite Components** are safe to compose just like any HTML container element — the framework renders both the wrapper and its children.
+
+---
+
+## Common Errors
+
+| Error | Cause |
+|---|---|
+| \`"text" is a reserved prop.\` | Remove \`text\` from \`static props\` — it is built-in |
+| \`define() called without a tagName.\` | Add \`static tagName\` to the class |
+| \`Passed element not found.\` | The CSS selector in \`static element\` did not match any element |
+| \`Cannot add events, no element found.\` | No inner element exists for event delegation |
+| \`Prop "<name>" has no default value.\` | Add a class field with a default (e.g. \`variant = "default";\`) |
+| \`Invalid JSON for a prop: <value>\` | Array or Object prop received a non-JSON attribute value |
+| \`Cannot sync attrs to a null element.\` | Inner element ref was lost (element was removed from DOM) |
+
+---
+
+## Browser Support
+
+**Elena base support** (no \`@scope\`): Chrome 71+, Firefox 69+, Safari 12.1+, Edge 79+
+
+**With \`@scope\` CSS**: Chrome 118+, Firefox 128+, Safari 17.4+, Edge 118+
+
+**Known issue:** Firefox 148 had a bug with CSS \`@scope\` and \`attr[value]\` selectors. It is fixed in newer Firefox releases. Use the legacy (non-\`@scope\`) pattern as a fallback for older Firefox if needed.
 `;

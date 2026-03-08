@@ -57,23 +57,7 @@ export function generateJS(params) {
     ? 'import { Elena, html, nothing } from "@elenajs/core";'
     : 'import { Elena } from "@elenajs/core";';
 
-  // Options object
-  const optionEntries = [`  tagName: "${tagName}",`];
-  if (props.length > 0) {
-    const propNames = props.map(p => `"${p.name}"`).join(", ");
-    optionEntries.push(`  props: [${propNames}],`);
-  }
-  if (isPrimitive && events.length > 0) {
-    const eventNames = events.map(e => `"${e}"`).join(", ");
-    optionEntries.push(`  events: [${eventNames}],`);
-  }
-  if (isPrimitive) {
-    optionEntries.push(`  element: ".${innerClass}",`);
-  }
-
-  const optionsBlock = `const options = {\n${optionEntries.join("\n")}\n};`;
-
-  // Class-level JSDoc
+  // Class-level JSDoc (goes above the class declaration)
   const jsdocLines = ["/**"];
   jsdocLines.push(` * ${description || `${name} component.`}`);
   jsdocLines.push(" *");
@@ -97,55 +81,63 @@ export function generateJS(params) {
   jsdocLines.push(" */");
   const classJsdoc = jsdocLines.join("\n");
 
-  // Constructor body
-  const constructorLines = [];
+  // Static class fields
+  const staticLines = [`  static tagName = "${tagName}";`];
+  if (props.length > 0) {
+    const propNames = props.map(p => `"${p.name}"`).join(", ");
+    staticLines.push(`  static props = [${propNames}];`);
+  }
+  if (isPrimitive && events.length > 0) {
+    const eventNames = events.map(e => `"${e}"`).join(", ");
+    staticLines.push(`  static events = [${eventNames}];`);
+  }
+  if (isPrimitive) {
+    staticLines.push(`  static element = ".${innerClass}";`);
+  }
+
+  // Prop class fields with JSDoc
+  const propFieldLines = [];
   for (const prop of props) {
-    constructorLines.push("");
-    constructorLines.push("    /**");
+    propFieldLines.push("");
+    propFieldLines.push("  /**");
     if (prop.description) {
-      constructorLines.push(`     * ${prop.description}`);
+      propFieldLines.push(`   * ${prop.description}`);
     } else {
-      constructorLines.push(`     * The ${prop.name} of the component.`);
+      propFieldLines.push(`   * The ${prop.name} of the component.`);
     }
-    constructorLines.push("     *");
-    constructorLines.push("     * @attribute");
-    constructorLines.push(`     * @type {${prop.type || "string"}}`);
-    constructorLines.push("     */");
-    constructorLines.push(`    this.${prop.name} = ${formatDefault(prop.type, prop.default)};`);
+    propFieldLines.push("   *");
+    propFieldLines.push("   * @attribute");
+    propFieldLines.push(`   * @type {${prop.type || "string"}}`);
+    propFieldLines.push("   */");
+    propFieldLines.push(`  ${prop.name} = ${formatDefault(prop.type, prop.default)};`);
   }
 
   // Render method (primitive only)
-  const renderMethod = isPrimitive
-    ? `
-
-  /**
-   * Renders the template.
-   *
-   * @internal
-   */
-  render() {
-    return html\`<div class="${innerClass}">\${this.text}</div>\`;
-  }`
-    : "";
+  const renderLines = isPrimitive
+    ? [
+        "",
+        "  /**",
+        "   * Renders the template.",
+        "   *",
+        "   * @internal",
+        "   */",
+        "  render() {",
+        `    return html\`<div class="${innerClass}">\${this.text}</div>\`;`,
+        "  }",
+      ]
+    : [];
 
   // Assemble
   const lines = [
     imports,
     "",
-    optionsBlock,
-    "",
     classJsdoc,
-    `export default class ${name} extends Elena(HTMLElement, options) {`,
-    "  constructor() {",
-    "    super();",
-    ...constructorLines,
-    "  }",
-    renderMethod,
+    `export default class ${name} extends Elena(HTMLElement) {`,
+    ...staticLines,
+    ...propFieldLines,
+    ...renderLines,
     "}",
     "",
-    "/**",
-    " * Register the web component",
-    " */",
     `${name}.define();`,
     "",
   ];
@@ -174,13 +166,23 @@ export function generateCSS(params) {
     `/* Scope makes sure styles don't leak out */`,
     `@scope (${tagName}) {`,
     "",
-    "  /* Unset makes sure styles don't leak in */",
-    "  :scope, *, *::before, *::after {",
-    "    all: unset;",
-    "  }",
-    "",
-    "  :scope {",
   ];
+
+  // Primitive Components use an encapsulation reset to prevent global styles from leaking in.
+  // Composite Components do NOT use the reset.
+  if (isPrimitive) {
+    lines.push("  /* Unset makes sure styles don't leak in */");
+    lines.push("  :scope,");
+    lines.push("  *:where(:not(img, svg):not(svg *)),");
+    lines.push("  *::before,");
+    lines.push("  *::after {");
+    lines.push("    all: unset;");
+    lines.push("    display: revert;");
+    lines.push("  }");
+    lines.push("");
+  }
+
+  lines.push("  :scope {");
 
   // CSS custom properties
   if (cssProperties.length > 0) {

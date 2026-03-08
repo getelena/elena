@@ -17,6 +17,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerCatalogResource } from "./resources/catalog.js";
 import { registerComponentResource } from "./resources/component.js";
 import { registerPatternsResource } from "./resources/patterns.js";
+import { registerFrameworksResource } from "./resources/frameworks.js";
+import { registerSsrResource } from "./resources/ssr.js";
+import { registerApiResource } from "./resources/api.js";
 import { registerScaffoldTool } from "./tools/scaffold.js";
 import { registerLookupTool } from "./tools/lookup.js";
 import { registerCreatePrompt } from "./prompts/create.js";
@@ -47,18 +50,16 @@ Self-contained components that own and render their own HTML markup via \`render
 \`\`\`js
 import { Elena, html } from "@elenajs/core";
 
-export default class Button extends Elena(HTMLElement, {
-  tagName: "elena-button",
-  props: ["variant", "disabled"],
-  events: ["click", "focus", "blur"],
-}) {
-  constructor() {
-    super();
-    /** @attribute @type {"default" | "primary" | "danger"} */
-    this.variant = "default";
-    /** @attribute @type {Boolean} */
-    this.disabled = false;
-  }
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant", "disabled"];
+  static events = ["click", "focus", "blur"];
+
+  /** @attribute @type {"default" | "primary" | "danger"} */
+  variant = "default";
+  /** @attribute @type {Boolean} */
+  disabled = false;
+
   render() {
     return html\`<button>\${this.text}</button>\`;
   }
@@ -72,15 +73,12 @@ Components that wrap and enhance composed children. They have NO \`render()\` me
 \`\`\`js
 import { Elena } from "@elenajs/core";
 
-export default class Stack extends Elena(HTMLElement, {
-  tagName: "elena-stack",
-  props: ["direction"],
-}) {
-  constructor() {
-    super();
-    /** @attribute @type {"column" | "row"} */
-    this.direction = "column";
-  }
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
+
+  /** @attribute @type {"column" | "row"} */
+  direction = "column";
 }
 Stack.define();
 \`\`\`
@@ -88,15 +86,17 @@ Stack.define();
 ## Critical Rules
 
 1. **Always import from \`@elenajs/core\`** — use \`Elena\`, \`html\`, and \`nothing\` from this package.
-2. **Options object** accepts: \`tagName\`, \`props\`, \`events\`, \`element\` (all optional).
-3. **Props** must be listed in \`options.props\` AND given default values in the constructor with JSDoc \`@attribute\` and \`@type\` annotations.
+2. **Static class fields** — configure components with \`static tagName\`, \`static props\`, \`static events\`, \`static element\` (all optional). Do NOT use an options object.
+3. **Props** must be listed in \`static props\` AND given default class field values with JSDoc \`@attribute\` and \`@type\` annotations. Use \`{ name: "prop", reflect: false }\` in \`static props\` to suppress attribute reflection.
 4. **Text content** — Every primitive component has a built-in reactive \`this.text\` property. Use it in \`render()\` instead of \`this.textContent\`.
 5. **Templates** — \`render()\` must return an \`html\` tagged template literal. Use \`nothing\` (not empty strings) in conditional expressions.
 6. **Registration** — Always call \`ClassName.define()\` after the class body.
-7. **CSS** — Use \`@scope (tag-name)\` for style isolation. Always include the encapsulation reset: \`:scope, *, *::before, *::after { all: unset; }\`. For primitive components, style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles.
-8. **JSDoc** — Use class-level \`@displayName\`, \`@status\`, \`@event\`, \`@cssprop\`, \`@slot\` annotations.
-9. **Composite components** must NOT have \`render()\`, \`events\`, or \`element\` options.
-10. **Primitive components** must NOT have framework components rendered inside them — Elena calls \`replaceChildren()\` on render.
+7. **CSS (Primitive)** — Use \`@scope (tag-name)\` for style isolation. The encapsulation reset is: \`:scope, *:where(:not(img, svg):not(svg *)), *::before, *::after { all: unset; display: revert; }\`. Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles.
+8. **CSS (Composite)** — Use \`@scope (tag-name)\` but do NOT include the encapsulation reset. Composite components only style the host element.
+9. **JSDoc** — Use class-level \`@displayName\`, \`@status\`, \`@event\`, \`@cssprop\`, \`@slot\` annotations. Mark internal methods with \`@internal\`.
+10. **Composite components** must NOT have \`render()\`, \`static events\`, or \`static element\`.
+11. **Primitive components** must NOT have framework components rendered inside them — Elena calls \`replaceChildren()\` on render.
+12. **\`willUpdate()\`** — Optional lifecycle hook that runs before every render. Use it to compute derived state. Do not call \`super\` inside it.
 
 ## Attribute Naming Rules
 
@@ -110,7 +110,10 @@ Stack.define();
 - Use the \`lookup-component\` tool to query existing component APIs from the Custom Elements Manifest.
 - Read the \`elena://patterns\` resource for comprehensive authoring patterns and CSS guidelines.
 - Read the \`elena://components\` resource to see all existing components.
-- Read \`elena://components/{tagName}\` for detailed API of a specific component.`;
+- Read \`elena://components/{tagName}\` for detailed API of a specific component.
+- Read the \`elena://frameworks\` resource for framework integration guides (React, Vue, Angular, Svelte, Next.js, Eleventy, plain HTML).
+- Read the \`elena://ssr\` resource for server-side rendering patterns and the \`@elenajs/ssr\` API.
+- Read the \`elena://api\` resource for the full API reference for all Elena packages.`;
 
 /**
  * Creates and configures the Elena MCP server.
@@ -137,6 +140,9 @@ export function createServer({ projectRoot, cemPath }) {
   registerCatalogResource(server, loadCem);
   registerComponentResource(server, loadCem);
   registerPatternsResource(server);
+  registerFrameworksResource(server);
+  registerSsrResource(server);
+  registerApiResource(server);
 
   // Tools
   registerScaffoldTool(server);

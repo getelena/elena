@@ -70,12 +70,12 @@ describe("generateJS", () => {
       expect(js).toContain('import { Elena, html, nothing } from "@elenajs/core";');
     });
 
-    it("includes tagName, props, events, and element in options", () => {
+    it("includes tagName, props, events, and element as static fields", () => {
       const js = generateJS(primitiveParams);
-      expect(js).toContain('tagName: "elena-button"');
-      expect(js).toContain('props: ["variant", "disabled"]');
-      expect(js).toContain('events: ["click", "focus"]');
-      expect(js).toContain('element: ".elena-button"');
+      expect(js).toContain('static tagName = "elena-button";');
+      expect(js).toContain('static props = ["variant", "disabled"];');
+      expect(js).toContain('static events = ["click", "focus"];');
+      expect(js).toContain('static element = ".elena-button";');
     });
 
     it("includes render() method with this.text", () => {
@@ -101,10 +101,10 @@ describe("generateJS", () => {
       expect(js).toContain("@status alpha");
     });
 
-    it("generates constructor with prop defaults and JSDoc", () => {
+    it("generates prop class fields with defaults and JSDoc", () => {
       const js = generateJS(primitiveParams);
-      expect(js).toContain('this.variant = "default";');
-      expect(js).toContain("this.disabled = false;");
+      expect(js).toContain('variant = "default";');
+      expect(js).toContain("disabled = false;");
       expect(js).toContain("@attribute");
       expect(js).toContain('@type {"default" | "primary"}');
       expect(js).toContain("@type {Boolean}");
@@ -162,8 +162,10 @@ describe("generateCSS", () => {
         cssProperties: [{ name: "--elena-button-bg" }],
       });
       expect(css).toContain("@scope (elena-button)");
-      expect(css).toContain(":scope, *, *::before, *::after {");
+      expect(css).toContain(":scope,");
+      expect(css).toContain("*:where(:not(img, svg):not(svg *)),");
       expect(css).toContain("all: unset;");
+      expect(css).toContain("display: revert;");
       expect(css).toContain(":scope {");
       expect(css).toContain("display: inline-block;");
       expect(css).toContain(".elena-button {");
@@ -174,7 +176,7 @@ describe("generateCSS", () => {
   });
 
   describe("composite component", () => {
-    it("generates @scope block with encapsulation pattern and flex layout", () => {
+    it("generates @scope block with flex layout and no encapsulation reset", () => {
       const css = generateCSS({
         tagName: "elena-stack",
         name: "Stack",
@@ -182,8 +184,7 @@ describe("generateCSS", () => {
         cssProperties: [],
       });
       expect(css).toContain("@scope (elena-stack)");
-      expect(css).toContain(":scope, *, *::before, *::after {");
-      expect(css).toContain("all: unset;");
+      expect(css).not.toContain("all: unset;");
       expect(css).toContain("display: flex;");
       expect(css).toContain("flex-direction: column;");
       expect(css).toContain("gap: 0.5rem;");
