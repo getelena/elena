@@ -124,9 +124,9 @@ export default withMermaid(
           items: [
             { text: "Creating Documentation", link: "/advanced/docs" },
             { text: "Loading Components", link: "/advanced/loading" },
-            { text: "Component Libraries (TODO)", link: "/advanced/libraries" },
+            { text: "Component Libraries", link: "/advanced/libraries" },
             { text: "Server-Side Rendering", link: "/advanced/ssr" },
-            { text: "Framework Integrations (TODO)", link: "/advanced/frameworks" },
+            { text: "Framework Integrations", link: "/advanced/frameworks" },
             { text: "Command Line Interface", link: "/advanced/cli" },
             { text: "Using TypeScript", link: "/advanced/typescript" },
             { text: "Scoping Styles", link: "/advanced/scoping" },

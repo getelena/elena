@@ -42,7 +42,7 @@ Rules that apply to **[Primitive Components](/components/terminology)** when use
   }
   ```
 
-- You can’t pass dynamic text content as children. Instead use the `text` property when updating text after the initial render, since **[Primitive Components](/components/terminology)** own their internal DOM and frameworks cannot reliably insert children after the initial render:
+- You can't pass dynamic text content as children. Instead use the `text` property when updating text after the initial render, since **[Primitive Components](/components/terminology)** own their internal DOM and frameworks cannot reliably insert children after the initial render:
 
   ```html
   <!-- React -->
@@ -56,7 +56,7 @@ Rules that apply to **[Primitive Components](/components/terminology)** when use
   ```
 
 > [!WARNING]
-> Angular inserts text children _after_ `connectedCallback` fires, by which point Elena has already replaced the host’s inner DOM. The text ends up as a sibling to the element rather than inside it. Always use `text` as a property binding or attribute in Angular, never as a child node:
+> Angular inserts text children _after_ `connectedCallback` fires, by which point Elena has already replaced the host's inner DOM. The text ends up as a sibling to the element rather than inside it. Always use `text` as a property binding or attribute in Angular, never as a child node:
 >
 > ```html
 > <elena-button [text]="label"></elena-button>
