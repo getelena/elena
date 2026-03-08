@@ -177,7 +177,7 @@ Then in a template:
 
 ### `register(...components)`
 
-Register Elena Primitive Component classes for SSR. Each class must have a `tagName` defined in its Elena options. Call this once before using `ssr()`.
+Register Elena Primitive Component classes for SSR. Each class must have `static tagName` defined as a static field. Call this once before using `ssr()`.
 
 ```js
 import { register } from "@elenajs/ssr";
@@ -209,7 +209,7 @@ Parse an HTML string, expand registered Elena Primitive Components, and return t
 
 1. **Parse** the input HTML string into a tree (tags, attributes, children).
 2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
-3. **Expand** Primitive Components by creating a lightweight instance via `Object.create()`, setting props from attributes, and calling `render()`.
+3. **Expand** Primitive Components by constructing a lightweight instance with `new`, converting attribute strings to the correct prop types (boolean, number, array, object), calling `willUpdate()` if defined, and then calling `render()`.
 4. **Recurse** into Composite Component children and non-component tags.
 5. **Serialize** the tree back to an HTML string.
 
