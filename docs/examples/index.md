@@ -2,10 +2,10 @@
 head:
   - - link
     - rel: stylesheet
-      href: /components/bundle.css
+      href: /elena/components/bundle.css
   - - script
     - type: module
-      src: /components/bundle.js
+      src: /elena/components/bundle.js
 ---
 
 <script setup>
