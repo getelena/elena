@@ -12,6 +12,7 @@ export default defineConfig({
       "packages/plugin-rollup-css",
       "packages/bundler",
       "packages/components",
+      "packages/mcp",
     ],
   },
 });
