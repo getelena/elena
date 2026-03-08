@@ -25,7 +25,6 @@ function copyComponentAssets() {
 
 export default defineConfig({
   title: "Elena",
-  // base: "/elena/docs/",
   ignoreDeadLinks: false,
   description: "Simple, tiny library for building Progressive Web Components.",
   cleanUrls: true,

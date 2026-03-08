@@ -66,7 +66,7 @@ Elena has two component types:
 
 ### 1. Composite Component
 
-A [Composite Component](/components/terminology) wraps whatever HTML is composed inside it and applies styling and behavior around it. It has no `render()` method and never touches its children.
+A Composite Component wraps whatever HTML is composed inside it and applies styling and behavior around it. It has no `render()` method and never touches its children.
 
 ::: code-group
 
@@ -127,7 +127,7 @@ Stack.define();
 
 ### 2. Primitive Component
 
-A [Primitive Component](/components/terminology) owns and renders its own HTML markup via `render()` method. Two things to know to get started:
+A Primitive Component owns and renders its own HTML markup via `render()` method. Two things to know to get started:
 
 - **`html`** is Elena’s tagged template function. It auto-escapes interpolated values to prevent XSS, and nested `html` fragments pass through without double-escaping.
 - **`this.text`** is a built-in reactive property. Elena captures any text content placed inside the element before hydration, so you can pass text as a child node or set it as a property.
@@ -363,7 +363,7 @@ export default {
 };
 ```
 
-For more, see the [Component Libraries](/start/libraries) guide.
+For more, see the [Component Libraries](/advanced/libraries) guide.
 
 ## Command Line Interface
 
@@ -398,11 +398,11 @@ npx elena-create my-button
 npx elena-create my-date-picker
 ```
 
-For more, see the [CLI documentation](/start/cli).
+For more, see the [CLI documentation](/advanced/cli).
 
 ## Next steps
 
-- View the [Live Demos](/demos/) to see Elena in action.
-- Read the [Component API](/api/component) reference to learn about props, events, and lifecycle hooks.
-- Learn how to build a full [Component Library](/start/libraries).
+- View the [Live Examples](/examples/) to see Elena in action.
+- Read the [Component API](/api/) reference to learn about props, events, and lifecycle hooks.
+- Learn how to build a full [Component Library](/advanced/libraries).
 - Explore [Framework Integration](/advanced/frameworks) examples for React, Vue, Angular, Next.js and more.

@@ -1,8 +1,6 @@
 # Framework Integrations
 
-Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers.
-
-The key distinction is between [Primitive and Composite Components](/components/terminology):
+Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers. The key distinction is between [Primitive and Composite Components](/components/terminology):
 
 - **Primitive Components** own their inner DOM via `render()`. Frameworks must treat them as leaf nodes and never try to render inside them.
 - **Composite Components** wrap composed children and don’t touch the light DOM. They integrate with frameworks the same way any HTML container element does.

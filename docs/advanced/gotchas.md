@@ -20,8 +20,8 @@
 
 Rules that apply to **[Primitive Components](/components/terminology)** when used with a framework:
 
-- Never render a framework component _inside_ a [Primitive Component](/components/terminology) (e.g. via `ReactDOM.createRoot(elenaElement)`). Elena calls `replaceChildren()` on render, which would destroy the framework's fiber tree and cause DOM corruption.
-- Avoid a JavaScript framework and Elena both mutating the same attribute on a [Primitive Component](/components/terminology). A framework's reconciler would overwrite Elena's changes on next reconcile, triggering many re-renders. Treat framework-controlled props as read-only inputs inside your Elena element's `render()`:
+- Never render a framework component _inside_ a Primitive Component (e.g. via `ReactDOM.createRoot(elenaElement)`). Elena calls `replaceChildren()` on render, which would destroy the framework's fiber tree and cause DOM corruption.
+- Avoid a JavaScript framework and Elena both mutating the same attribute on a Primitive Component. A framework's reconciler would overwrite Elena's changes on next reconcile, triggering many re-renders. Treat framework-controlled props as read-only inputs inside your Elena element's `render()`:
 
   ```js
   // Good: framework passes text, Elena renders it
@@ -42,7 +42,7 @@ Rules that apply to **[Primitive Components](/components/terminology)** when use
   }
   ```
 
-- You can't pass dynamic text content as children. Instead use the `text` property when updating text after the initial render, since **[Primitive Components](/components/terminology)** own their internal DOM and frameworks cannot reliably insert children after the initial render:
+- You can't pass dynamic text content as children. Instead use the `text` property when updating text after the initial render, since Primitive Components own their internal DOM and frameworks cannot reliably insert children after the initial render:
 
   ```html
   <!-- React -->

@@ -88,7 +88,7 @@ Elena builds on native custom elements, so the mental model is familiar. The key
 
 - **No Shadow DOM.** Elena lives entirely in the Light DOM. This is an intentional design choice to improve accessibility, SSR compatibility, and to make styling easier.
 - **No `<template>`.** [Composite Components](/components/terminology) compose HTML children directly; [Primitive Components](/components/terminology) own their inner HTML via `render()`, with only the host element and its text content on the consuming page.
-- **CSS encapsulation without Shadow DOM.** Elena uses `@scope` to prevent styles from leaking out, combined with a custom [CSS encapsulation pattern](/advanced/scoping) to prevent global styles from leaking in.
+- **CSS encapsulation without Shadow DOM.** Elena uses `@scope` to prevent styles from leaking out, combined with a custom [CSS reset](/advanced/scoping) to prevent global styles from leaking in.
 
 > [!TIP] NOTE
 > You may wonder: why are they called **Progressive Web Components** and not **Progressive Custom Elements**? _Web Component_ is the more widely recognized term today, and many of Elena’s concepts align closely with what are now called [HTML Web Components](https://adactio.com/journal/20618).
@@ -102,7 +102,7 @@ Elena builds on native custom elements, so the mental model is familiar. The key
 | **DOM model** | Light DOM | Shadow DOM |
 | **Size** | ~2kB | ~5kB |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
-| **SSR** | Works out of the box; optional `@elenajs/ssr` for [Primitive Components](/components/terminology) | Requires `@lit-labs/ssr` |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires `@lit-labs/ssr` |
 | **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM (`:host`, CSS parts) |
 | **Accessibility** | Full Light DOM access | Shadow DOM accessibility limitations |
 | **API** | Static class fields + reactive properties | Decorators + reactive properties |
@@ -120,7 +120,7 @@ The biggest philosophical difference is Shadow DOM. Lit embraces it for strong e
 | **Build step** | Optional | Required |
 | **DOM model** | Light DOM | Shadow DOM (default; configurable) |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
-| **SSR** | Works out of the box; optional `@elenajs/ssr` for [Primitive Components](/components/terminology) | Requires Stencil's Hydrate app |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires Stencil's Hydrate app |
 | **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM or scoped CSS |
 | **API** | Static class fields + reactive properties | Decorators + JSX |
 | **Output targets** | Not necessary | Custom elements, React, Angular, Vue wrappers |

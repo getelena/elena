@@ -94,7 +94,7 @@ Here’s an example [Primitive Component](/components/terminology) using these p
 }
 ```
 
-The `:scope:not([hydrated]), button` pattern ensures [Primitive Components](/components/terminology) look the same before and after hydration. Elena adds the `hydrated` attribute to the host element after its first render. By applying the same baseline styles to both the unhydrated host and the rendered inner element, the component avoids any layout shift.
+The `:scope:not([hydrated]), button` pattern ensures Primitive Components look the same before and after hydration. Elena adds the `hydrated` attribute to the host element after its first render. By applying the same baseline styles to both the unhydrated host and the rendered inner element, the component avoids any layout shift.
 
 Use attribute selectors on `:scope` for variant and state styling:
 
@@ -105,7 +105,7 @@ Use attribute selectors on `:scope` for variant and state styling:
 
 ## Pre-hydration state and styles
 
-Since [Primitive Components](/components/terminology) render their own internal markup, you may sometimes need to surface additional content before hydration. This can be done with CSS pseudo-elements and `attr()`:
+Since Primitive Components render their own internal markup, you may sometimes need to surface additional content before hydration. This can be done with CSS pseudo-elements and `attr()`:
 
 ```css
 :scope:not([hydrated])::before {
@@ -122,7 +122,7 @@ Since [Primitive Components](/components/terminology) render their own internal 
 For more detailed guidelines, see the [Server Side Rendering](/advanced/ssr) section.
 
 > [!TIP]
-> You can skip this section entirely for [Composite Components](/components/terminology), when you plan to [hide components until loaded](/reference/misc#hide-until-loaded), or when the rest of your app renders client side only.
+> You can skip this section entirely for [Composite Components](/components/terminology), when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
 ## Composite Components
 
