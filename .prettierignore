@@ -1,9 +1,0 @@
-pnpm-lock.yaml
-*.md
-*.yml
-*.json
-.prettierrc
-node_modules/*
-**/node_modules/*
-**/dist/**/*
-dist/**/*
