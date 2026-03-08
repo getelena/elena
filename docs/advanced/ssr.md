@@ -1,10 +1,8 @@
 # Server-Side Rendering
 
-Elena's recommended approach to Server Side Rendering (SSR) is simple & straightforward. Since [Progressive Web Components](/components/terminology) are primarily HTML & CSS, you don't need any special logic on the server to render them. The **[Composite Components](/components/terminology)** provide full support for SSR by default, while the **[Primitive Components](/components/terminology)** provide partial support and do the rest of the hydration on the client side.
+Elena’s recommended approach to Server Side Rendering is simple and straightforward. Since [Progressive Web Components](/components/terminology) are primarily HTML and CSS, you don’t need any special logic on the server to render them. The **[Composite Components](/components/terminology)** provide full support for SSR by default, while the **[Primitive Components](/components/terminology)** provide partial support and do the rest of the hydration on the client side.
 
-Partial SSR support for the _Primitive Components_ means that the component’s base HTML & CSS lives in the Light DOM. The JavaScript lifecycle is then used to progressively enhance the functionality and markup once the element is registered.
-
-The benefit of Elena’s approach is that it doesn't need any extra logic on the server while still allowing you to ship all your layout components _(the Composite Components!)_ with full SSR support.
+Partial SSR support for the _Primitive Components_ means that the component’s base HTML and CSS lives in the Light DOM. The JavaScript lifecycle is then used to progressively enhance the functionality and markup once the element is registered.
 
 ## Avoiding layout shifts
 
@@ -18,7 +16,7 @@ For the **[Primitive Components](/components/terminology)** specifically, our re
 }
 ```
 
-Since **[Primitive Components](/components/terminology)** are self-contained and render their own HTML markup, you may sometimes need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
+Since Primitive Components are self-contained and render their own HTML markup, you may sometimes need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
 
 ```css
 :scope:not([hydrated])::before {
@@ -33,16 +31,171 @@ Since **[Primitive Components](/components/terminology)** are self-contained and
 ```
 
 > [!TIP]
-> You can skip this section entirely for [Composite Components](/components/terminology), when you plan to [hide components until loaded](/reference/misc#hide-until-loaded), or when the rest of your app renders client side only.
+> You can skip this section entirely for [Composite Components](/components/terminology), when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
-## Rendering Primitive Components to HTML strings
+## Rendering to HTML strings
 
-When you don't want to handle the pre-hydration state with CSS, you can expand the **[Primitive Component](/components/terminology)** templates inline by using the provided utility package called [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr) that renders the Elena [Primitive Components](/components/terminology) to HTML strings for full SSR support.
-
-Please see the [SSR package's readme](https://github.com/getelena/elena/tree/main/packages/ssr) for full usage guidelines.
+When you don’t want to handle the pre-hydration state with CSS, you can expand Primitive Component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
 
 > [!WARNING]
-> Please note that `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
+> `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
+
+### Install
+
+```bash
+npm install @elenajs/ssr
+```
+
+### Basic usage
+
+Register your components once, then pass any HTML string through `ssr()`:
+
+```js
+import { ssr, register } from "@elenajs/ssr";
+import Button from "./button.js";
+
+register(Button);
+
+const html = ssr(`<elena-button variant="primary">Save</elena-button>`);
+// Outputs: '<elena-button variant="primary"><button>Save</button></elena-button>'
+```
+
+### With composites and nesting
+
+Composite Components preserve their children. Primitive Components inside Composites are expanded automatically:
+
+```js
+import { ssr, register } from "@elenajs/ssr";
+import Button from "./button.js";
+import Input from "./input.js";
+import Stack from "./stack.js";
+
+register(Button, Input, Stack);
+
+const html = ssr(`
+  <elena-stack direction="row">
+    <elena-input label="Email" type="email" placeholder="you@example.com"></elena-input>
+    <elena-button>Send</elena-button>
+  </elena-stack>
+`);
+```
+
+Output:
+
+```html
+<elena-stack direction="row">
+  <elena-input type="email" placeholder="you@example.com">
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="you@example.com" />
+  </elena-input>
+  <elena-button><button>Send</button></elena-button>
+</elena-stack>
+```
+
+### With Eleventy
+
+Use `@elenajs/ssr` with [Eleventy](https://www.11ty.dev/) as either a transform or a shortcode.
+
+#### As a transform
+
+A transform processes every rendered page automatically, expanding any registered Primitive Components found in the output HTML. No shortcodes or special syntax needed: just write Elena components directly in your templates:
+
+```js
+// eleventy.config.js
+import { ssr, register } from "@elenajs/ssr";
+import Button from "@my-lib/components/button/button.js";
+import Input from "@my-lib/components/input/input.js";
+import Stack from "@my-lib/components/stack/stack.js";
+
+register(Button, Input, Stack);
+
+export default function (eleventyConfig) {
+  eleventyConfig.addTransform("elena-ssr", (content) => {
+    return ssr(content);
+  });
+}
+```
+
+Then use Elena components directly in any Nunjucks, Liquid, or Markdown template:
+
+```html
+<elena-stack direction="row">
+  <elena-input type="email" placeholder="you@example.com"></elena-input>
+  <elena-button variant="primary">Subscribe</elena-button>
+</elena-stack>
+```
+
+#### As a shortcode
+
+If you prefer more control over which parts of a page are processed, use a shortcode instead:
+
+```js
+// eleventy.config.js
+import { ssr, register } from "@elenajs/ssr";
+import Button from "@my-lib/components/button/button.js";
+
+register(Button);
+
+export default function (eleventyConfig) {
+  eleventyConfig.addShortcode("elena", (html) => ssr(html));
+}
+```
+
+Then in a template:
+
+```
+{% elena '<elena-button variant="primary">Save</elena-button>' %}
+```
+
+### API
+
+#### `register(...components)`
+
+Register Elena Primitive Component classes for SSR. Each class must have a `tagName` defined. Call this once before using `ssr()`.
+
+```js
+import { register } from "@elenajs/ssr";
+import Button from "./button.js";
+import Input from "./input.js";
+
+register(Button, Input);
+```
+
+Throws an error if a component does not have a `tagName`.
+
+#### `ssr(html)`
+
+Parse an HTML string, expand registered Primitive Components, and return the rendered HTML.
+
+| Parameter | Type     | Description                              |
+| --------- | -------- | ---------------------------------------- |
+| `html`    | `string` | HTML string containing Elena components. |
+
+**Returns:** `string`, the rendered HTML with Primitive Components expanded.
+
+**Behavior by component type:**
+
+- **Primitive Components** (with `render()`): The component’s `render()` method is called and its output replaces the tag’s inner HTML. Attributes from the input are preserved on the host element and passed as props.
+- **Composite Components** (no `render()`): The tag and its attributes are preserved. Children are processed recursively.
+- **Other HTML tags**: Passed through unchanged.
+
+### How it works
+
+1. **Parse** the input HTML string into a tree (tags, attributes, children).
+2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
+3. **Expand** Primitive Components by creating a lightweight instance, setting props from attributes, and calling `render()`.
+4. **Recurse** into Composite Component children and non-component tags.
+5. **Serialize** the tree back to an HTML string.
+
+The rendered output matches what Elena produces on the client, using the same `html` tagged template escaping and whitespace normalization.
+
+### Client-side hydration
+
+The HTML produced by `ssr()` is designed for progressive enhancement. When the component JavaScript loads on the client:
+
+1. Elena’s `connectedCallback` fires on the pre-rendered element.
+2. `render()` runs and hydrates the component with interactivity.
+3. Event listeners are attached, methods become available, and the `hydrated` attribute is added.
 
 ## Framework examples
 
@@ -50,20 +203,5 @@ Elena currently provides SSR examples for the following frameworks:
 
 - **[Eleventy](https://github.com/getelena/eleventy-example-project)**
 - **[Plain HTML](https://github.com/getelena/html-example-project)**
-- **[Next.js](https://github.com/getelena/next-example-project)** _(Elena can even be used inside React Server Components, see [src/app/page.tsx](https://github.com/getelena/next-example-project/blob/main/src/app/page.tsx))_
+- **[Next.js](https://github.com/getelena/next-example-project):** Elena can be used inside [React Server Components](https://github.com/getelena/next-example-project/blob/main/src/app/page.tsx)
 
-## React compatibility
-
-**[Primitive Components](/components/terminology)** (e.g. `button`, `input`) render their own internal DOM via `render()`. Frameworks must treat these as leaf nodes — the framework renders the custom element host, Elena owns everything inside it via `replaceChildren()`.
-
-**[Composite Components](/components/terminology)** (e.g. `stack`, `card`) wrap and enhance composed children. The framework renders both the wrapper and its children; Elena only manages props/attributes on the host without touching the light DOM children.
-
-### React-specific notes
-
-- React sets attributes → `attributeChangedCallback` → Elena re-renders internally ✓
-- React adds/removes Elena elements → `connected/disconnectedCallback` fires ✓
-- React StrictMode double-mount is handled correctly ✓
-- React 17 SSR hydration + Elena can conflict: Elena's `connectedCallback` fires `replaceChildren()` while React is reconciling its hydration tree, causing mismatch errors. Use React 18+ or ensure Elena elements render only client-side.
-
-> [!WARNING]
-> React 17 does not pass `Array` or `Object` type props or event handlers to custom elements correctly. Use React 18+ for proper Elena support, or pass all props as string attributes.
