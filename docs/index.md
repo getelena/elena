@@ -1,3 +1,7 @@
+---
+title: Progressive Web Components
+---
+
 <br/>
 
 <div align="center">
