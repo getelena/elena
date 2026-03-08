@@ -122,8 +122,8 @@ export default withMermaid(
           text: "Digging Deeper",
           collapsed: false,
           items: [
-            { text: "Creating Documentation (TODO)", link: "/advanced/docs" },
-            { text: "Loading Components (TODO)", link: "/advanced/loading" },
+            { text: "Creating Documentation", link: "/advanced/docs" },
+            { text: "Loading Components", link: "/advanced/loading" },
             { text: "Component Libraries (TODO)", link: "/advanced/libraries" },
             { text: "Server-Side Rendering (TODO)", link: "/advanced/ssr" },
             { text: "Framework Integrations (TODO)", link: "/advanced/frameworks" },
