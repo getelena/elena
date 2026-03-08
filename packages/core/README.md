@@ -24,8 +24,6 @@
 
 <p align="center"><a href="https://elenajs.com">Elena</a> is a simple, tiny library (2kB) for building <a href="https://elenajs.com/components/terminology">Progressive Web Components</a>. With Elena, you can immediately render the component's base HTML & CSS, then progressively enhance the experience with JavaScript rather than relying on it from the start.</p>
 
-<br/>
-
 ## Elena features
 
 - 🔋 **Extremely lightweight:** 2kB minified & compressed, simple and tiny by design.
@@ -37,8 +35,6 @@
 - 🖥️ **SSR friendly:** Works out of the box, with optional server-side utilities if needed.
 - 🧩 **Zero dependencies:** No runtime dependencies, runs entirely on the web platform.
 - 🔓 **Zero lock-in:** Works with every major framework, or no framework at all.
-
-<br/>
 
 ## Documentation
 
@@ -64,8 +60,6 @@ Elena is a monorepo containing several packages published to npm under the `@ele
 - **[`@elenajs/mcp`](https://github.com/getelena/elena/tree/main/packages/mcp)** [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#experimental)
 
 <!-- https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md -->
-
-<br/>
 
 ## Development
 
@@ -100,13 +94,9 @@ pnpm start                 # web-dev-server with live reload
 
 For more details about pull requests, commit conventions and code style, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-<br/>
-
 ## License
 
 MIT
-
-<br/>
 
 ## Copyright
 
