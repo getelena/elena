@@ -1,6 +1,7 @@
 :root {
   --vp-c-brand-1: #f95b1f;
   --vp-c-brand-2: #f95b1f;
+  --vp-button-brand-bg: #f95b1f;
   --vp-nav-height: 64px;
 }
 
@@ -58,11 +59,21 @@ label:active {
 }
 
 .VPNavBarMenuLink.active {
-  border-bottom: 1px solid var(--vp-c-brand-1);
+  border-bottom: 2px solid var(--vp-c-brand-1);
+}
+
+.VPNavBarMenuLink.active {
+  transform: translateY(1px);
 }
 
 .DocSearch-Button {
   justify-content: space-between;
+}
+
+@media (max-width: 767px) {
+  .DocSearch-Button {
+    justify-content: flex-end;
+  }
 }
 
 .VPNavBar.has-sidebar .divider {
