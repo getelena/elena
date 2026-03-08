@@ -22,6 +22,10 @@ import { existsSync } from "fs";
  * @property {string|false}       [bundle]  Entry for the single-file bundle; `false` to disable.
  * @property {import("rollup").Plugin[]} [plugins] Additional Rollup plugins appended after built-ins.
  * @property {ElenaAnalyzeConfig} [analyze] CEM analysis options.
+ * @property {string | string[] | false} [target] Browserslist target(s) for transpilation via
+ *   `@babel/preset-env`. When set, enables syntax transforms (e.g. class fields, optional
+ *   chaining) to widen browser support. Set to `false` (default) to skip transpilation.
+ *   Example: `["chrome 71", "firefox 69", "safari 12.1"]`
  */
 
 /** @type {Required<ElenaConfig>} */
@@ -31,6 +35,7 @@ const DEFAULTS = {
   bundle: "src/index.js",
   plugins: [],
   analyze: { plugins: [] },
+  target: false,
 };
 
 /**

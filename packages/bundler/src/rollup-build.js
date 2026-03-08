@@ -21,6 +21,7 @@ import minifyHtmlLiterals from "rollup-plugin-minify-html-literals-v3";
 import summary from "rollup-plugin-summary";
 import { cssPlugin, cssBundlePlugin } from "@elenajs/plugin-rollup-css";
 import { color } from "./common/color.js";
+import babel from "@rollup/plugin-babel";
 
 const TREESHAKE = {
   moduleSideEffects: false,
@@ -43,7 +44,7 @@ function onwarn(warning, warn) {
 /**
  * Builds the plugin list for a single Rollup build target.
  *
- * @param {{ src: string; outdir: string; hasSummary: boolean; includeCssBundle: boolean; extraPlugins?: import("rollup").Plugin[]; hasTs?: boolean }} opts
+ * @param {{ src: string; outdir: string; hasSummary: boolean; includeCssBundle: boolean; extraPlugins?: import("rollup").Plugin[]; hasTs?: boolean; target?: string | string[] | false }} opts
  * @returns {import("rollup").Plugin[]}
  */
 function buildPlugins({
@@ -53,6 +54,7 @@ function buildPlugins({
   includeCssBundle,
   extraPlugins = [],
   hasTs = false,
+  target = false,
 }) {
   const plugins = [resolve({ extensions: [".js", ".ts", ".css"] })];
 
@@ -65,6 +67,16 @@ function buildPlugins({
           declarationMap: false,
         },
         include: ["**/*.ts"],
+      })
+    );
+  }
+
+  if (target) {
+    plugins.push(
+      babel({
+        babelHelpers: "bundled",
+        presets: [["@babel/preset-env", { targets: target, bugfixes: true, modules: false }]],
+        extensions: [".js", ".ts"],
       })
     );
   }
@@ -111,6 +123,7 @@ export function createRollupConfig(options = {}) {
   const sourcemap = options.output?.sourcemap ?? true;
   let bundle = options.bundle !== undefined ? options.bundle : "src/index.js";
   const extraPlugins = options.plugins ?? [];
+  const target = options.target ?? false;
 
   const entries = readdirSync(src, { recursive: true })
     .filter(
@@ -137,6 +150,7 @@ export function createRollupConfig(options = {}) {
         includeCssBundle: true,
         extraPlugins,
         hasTs,
+        target,
       }),
       output: {
         format,
@@ -160,6 +174,7 @@ export function createRollupConfig(options = {}) {
         includeCssBundle: false,
         extraPlugins,
         hasTs,
+        target,
       }),
       output: { format, sourcemap, file: `${outdir}/bundle.js` },
       preserveEntrySignatures: "strict",
