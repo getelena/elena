@@ -45,6 +45,10 @@
 - **[Tools](#tools)**
   - **[scaffold-component](#scaffold-component)**
   - **[lookup-component](#lookup-component)**
+  - **[get-patterns](#get-patterns)**
+  - **[get-api-reference](#get-api-reference)**
+  - **[get-frameworks-guide](#get-frameworks-guide)**
+  - **[get-ssr-guide](#get-ssr-guide)**
 - **[Prompts](#prompts)**
   - **[create-component](#create-component)**
   - **[review-component](#review-component)**
@@ -158,6 +162,22 @@ Queries API details for an existing component by tag name or class name. Returns
 | Parameter | Type     | Required | Description                                                                 |
 | --------- | -------- | -------- | --------------------------------------------------------------------------- |
 | `name`    | `string` | Yes      | Component tag name (e.g. `"elena-button"`) or class name (e.g. `"Button"`). |
+
+### `get-patterns`
+
+Returns the Elena component authoring guide (same content as `elena://patterns`). Covers component types, static class fields, props, events, templates, CSS encapsulation, lifecycle, and best practices.
+
+### `get-api-reference`
+
+Returns the full API reference for all Elena packages (same content as `elena://api`).
+
+### `get-frameworks-guide`
+
+Returns the framework integration guide (same content as `elena://frameworks`). Covers Plain HTML, Eleventy, Next.js, React, Svelte, Vue, Angular, and TypeScript setup for each.
+
+### `get-ssr-guide`
+
+Returns the server-side rendering guide (same content as `elena://ssr`). Covers layout shift avoidance, the `@elenajs/ssr` API, and Eleventy patterns.
 
 ## Prompts
 

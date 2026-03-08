@@ -22,6 +22,7 @@ import { registerSsrResource } from "./resources/ssr.js";
 import { registerApiResource } from "./resources/api.js";
 import { registerScaffoldTool } from "./tools/scaffold.js";
 import { registerLookupTool } from "./tools/lookup.js";
+import { registerDocTools } from "./tools/docs.js";
 import { registerCreatePrompt } from "./prompts/create.js";
 import { registerReviewPrompt } from "./prompts/review.js";
 import { createCemLoader } from "./lib/cem-loader.js";
@@ -108,12 +109,12 @@ Stack.define();
 
 - Use the \`scaffold-component\` tool to generate correct Elena component boilerplate (JS + CSS).
 - Use the \`lookup-component\` tool to query existing component APIs from the Custom Elements Manifest.
-- Read the \`elena://patterns\` resource for comprehensive authoring patterns and CSS guidelines.
+- Use the \`get-patterns\` tool for comprehensive authoring patterns and CSS guidelines.
+- Use the \`get-api-reference\` tool for the full API reference for all Elena packages.
+- Use the \`get-frameworks-guide\` tool for framework integration guides (React, Vue, Angular, Svelte, Next.js, Eleventy, plain HTML).
+- Use the \`get-ssr-guide\` tool for server-side rendering patterns and the \`@elenajs/ssr\` API.
 - Read the \`elena://components\` resource to see all existing components.
-- Read \`elena://components/{tagName}\` for detailed API of a specific component.
-- Read the \`elena://frameworks\` resource for framework integration guides (React, Vue, Angular, Svelte, Next.js, Eleventy, plain HTML).
-- Read the \`elena://ssr\` resource for server-side rendering patterns and the \`@elenajs/ssr\` API.
-- Read the \`elena://api\` resource for the full API reference for all Elena packages.`;
+- Read \`elena://components/{tagName}\` for detailed API of a specific component.`;
 
 /**
  * Creates and configures the Elena MCP server.
@@ -147,6 +148,7 @@ export function createServer({ projectRoot, cemPath }) {
   // Tools
   registerScaffoldTool(server);
   registerLookupTool(server, loadCem);
+  registerDocTools(server);
 
   // Prompts
   registerCreatePrompt(server);
