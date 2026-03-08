@@ -82,6 +82,9 @@ render() {
 }
 ```
 
+> [!WARNING]
+> Only use `unsafeHTML` with content you control. Never pass user-supplied strings to it.
+
 ## Element ref
 
 When `static element` is set, Elena resolves `this.element` after the first render, giving you direct access to the inner DOM element. Use it in `firstUpdated()`, `updated()`, or any custom method:

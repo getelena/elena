@@ -128,7 +128,7 @@ export default withMermaid(
             { text: "Server-Side Rendering", link: "/advanced/ssr" },
             { text: "Framework Integrations (TODO)", link: "/advanced/frameworks" },
             { text: "Command Line Interface", link: "/advanced/cli" },
-            { text: "Using TypeScript (TODO)", link: "/advanced/typescript" },
+            { text: "Using TypeScript", link: "/advanced/typescript" },
             { text: "Scoping Styles", link: "/advanced/scoping" },
             { text: "Known Issues", link: "/advanced/gotchas" },
           ],

@@ -4,20 +4,29 @@ Elena is written in vanilla JavaScript with JSDoc annotations. The **`@elenajs/c
 
 ```ts
 import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
-// Elena, ElenaPropObject, ElenaElementConstructor, html, unsafeHTML, nothing are all typed
 ```
 
-## Generating types for components
+For advanced typing, you can also import the utility types directly:
 
-When you build your own Elena components, **`@elenajs/bundler`** can generate TypeScript declarations for each one. Running `elena build` (or calling the bundler programmatically) produces:
+```ts
+import type {
+  ElenaPropObject,
+  ElenaElementConstructor,
+  ElenaConstructor 
+} from "@elenajs/core";
+```
+
+## Generating types
+
+When you build your own Elena components, **`@elenajs/bundler`** can generate TypeScript declarations for each one. Running `elena build` produces:
 
 - **Per-component `.d.ts` files**: A declaration file for each component (e.g. `button.d.ts`) with typed props and event handlers, derived from your JSDoc annotations. This lets TypeScript resolve sub-path imports like `@my-lib/components/dist/button.js`.
 - **`custom-elements.json`**: The [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/), a machine-readable description of your components used by IDEs and documentation tools.
-- **`custom-elements.d.ts`**: JSX integration types that map your custom element tag names to their prop types. This enables autocomplete and type checking for `<elena-button variant="primary" />` in JSX/TSX files.
+- **`custom-elements.d.ts`**: JSX integration types that map your custom element tag names to their prop types. This enables autocomplete and type checking for `<my-button variant="primary" />` in JSX/TSX files.
 
 ## Using the generated types
 
-The generated `custom-elements.d.ts` exports a `CustomElements` type map and a `ScopedElements` helper. To get type checking in JSX (this works with Next.js, see further down for more examples):
+The generated `custom-elements.d.ts` exports a `CustomElements` type map. To get type checking in JSX (this works with Next.js, see further down for more examples):
 
 ```ts
 // types.d.ts (in your consuming project)
@@ -48,33 +57,30 @@ Elena provides TypeScript examples for the following JavaScript frameworks:
 - **[Svelte](https://github.com/getelena/svelte-example-project)**
 - **[Vue](https://github.com/getelena/vue-example-project)**
 
-## Authoring components with TypeScript
+## Authoring with TypeScript
+
+`elena build` auto-detects `.ts` files in your source directory and transpiles them via `@rollup/plugin-typescript`. No extra configuration is needed: write `.ts` files and the bundler handles the rest.
 
 When using TypeScript to author Elena components, you can add inline type annotations directly to your instance field declarations:
 
 ```ts
-// ░ [ELENA]: Primitive Component
-import { Elena, html } from "@elenajs/core";
+/**
+ * The style variant of the component.
+ * @attribute
+ */
+variant: "default" | "primary" | "danger" = "default";
+```
+
+### Typing `static props` with `ElenaPropObject`
+
+When using `{ name, reflect }` objects in `static props`, import `ElenaPropObject` to type the array:
+
+```ts
+import type { ElenaPropObject } from "@elenajs/core";
 
 export default class Button extends Elena(HTMLElement) {
-  static tagName = "elena-button";
-  static props = ["variant"];
-
-  /**
-   * The style variant of the component.
-   * @attribute
-   */
-  variant: "default" | "primary" | "danger" = "default";
-
-  /**
-   * Renders the html template.
-   * @internal
-   */
-  render() {
-    return html`
-      <button>${this.text}</button>
-    `;
-  }
+  static props: (string | ElenaPropObject)[] = [
+    { name: "icon", reflect: false },
+  ];
 }
-Button.define();
 ```
