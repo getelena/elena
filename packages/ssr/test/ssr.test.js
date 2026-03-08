@@ -284,6 +284,36 @@ describe("pre block whitespace", () => {
   });
 });
 
+describe("willUpdate lifecycle", () => {
+  it("calls willUpdate() before render() so derived state is available in the template", () => {
+    const html = ssr(`<elena-will-update base="hello"></elena-will-update>`);
+    expect(html).toBe(
+      '<elena-will-update base="hello" hydrated><span>computed:hello</span></elena-will-update>'
+    );
+  });
+});
+
+describe("prop type coercion", () => {
+  it("coerces number props from attribute strings", () => {
+    // count defaults to 0 (number). Receives "5" as string from HTML.
+    // render() computes count + 1; correct coercion gives 6, wrong gives "51".
+    const html = ssr(`<elena-typed count="5" items="[]"></elena-typed>`);
+    expect(html).toContain('data-count="6"');
+  });
+
+  it("coerces array props from JSON attribute strings", () => {
+    const html = ssr(`<elena-typed count="0" items='["a","b","c"]'></elena-typed>`);
+    expect(html).toContain("a,b,c");
+  });
+
+  it("handles { name, reflect: false } object form in static props", () => {
+    const html = ssr(`<elena-reflect-false label="Save" icon="★"></elena-reflect-false>`);
+    expect(html).toBe(
+      '<elena-reflect-false label="Save" icon="★" hydrated><button>Save<span>★</span></button></elena-reflect-false>'
+    );
+  });
+});
+
 describe("register", () => {
   it("throws for components without tagName", () => {
     class NoTag {

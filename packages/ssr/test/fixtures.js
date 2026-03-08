@@ -184,6 +184,94 @@ export const NativePropComponent = (() => {
   return Component;
 })();
 
+/**
+ * Component that uses willUpdate() to derive state before render().
+ * SSR must call willUpdate() so the derived value is available in render().
+ */
+export const WillUpdateComponent = createComponent("elena-will-update", ["base"], function () {
+  return html`<span>${this.derived}</span>`;
+});
+WillUpdateComponent.prototype.willUpdate = function () {
+  this.derived = `computed:${this.base}`;
+};
+
+/**
+ * Component with typed props (number and array) to verify SSR coerces
+ * HTML attribute strings to the correct JS type before passing to render().
+ */
+export const TypedPropsComponent = (() => {
+  class Component {
+    count = 0;
+    items = [];
+    get text() {
+      return this._text ?? "";
+    }
+    set text(value) {
+      this._text = value;
+    }
+    render() {
+      return html`<div data-count="${this.count + 1}">${this.items.join(",")}</div>`;
+    }
+  }
+  Component.tagName = "elena-typed";
+  Component.props = ["count", "items"];
+  for (const prop of ["count", "items"]) {
+    Object.defineProperty(Component.prototype, prop, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        return this._props ? this._props.get(prop) : undefined;
+      },
+      set(value) {
+        if (!this._props) {
+          this._props = new Map();
+        }
+        this._props.set(prop, value);
+      },
+    });
+  }
+  return Component;
+})();
+
+/**
+ * Component using the { name, reflect: false } object form of static props.
+ * SSR must extract the name from the object to do correct type coercion.
+ */
+export const ReflectFalseComponent = (() => {
+  class Component {
+    label = "";
+    icon = "";
+    get text() {
+      return this._text ?? "";
+    }
+    set text(value) {
+      this._text = value;
+    }
+    render() {
+      return html`<button>${this.label}${this.icon ? html`<span>${this.icon}</span>` : nothing}</button>`;
+    }
+  }
+  Component.tagName = "elena-reflect-false";
+  // icon uses { name, reflect: false } object form
+  Component.props = ["label", { name: "icon", reflect: false }];
+  for (const prop of ["label", "icon"]) {
+    Object.defineProperty(Component.prototype, prop, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        return this._props ? this._props.get(prop) : undefined;
+      },
+      set(value) {
+        if (!this._props) {
+          this._props = new Map();
+        }
+        this._props.set(prop, value);
+      },
+    });
+  }
+  return Component;
+})();
+
 export const BadgeComponent = createComponent("elena-badge", ["variant"], function () {
   return html`<span class="badge badge-${this.variant}">${this.text}</span>`;
 });

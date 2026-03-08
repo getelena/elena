@@ -13,6 +13,9 @@ import {
   LinkComponent,
   ComplexInputComponent,
   NativePropComponent,
+  WillUpdateComponent,
+  TypedPropsComponent,
+  ReflectFalseComponent,
 } from "./fixtures.js";
 
 register(
@@ -28,5 +31,8 @@ register(
   BadgeComponent,
   LinkComponent,
   ComplexInputComponent,
-  NativePropComponent
+  NativePropComponent,
+  WillUpdateComponent,
+  TypedPropsComponent,
+  ReflectFalseComponent
 );
