@@ -631,7 +631,7 @@ describe("lifecycle", () => {
     it("updateComplete resolves immediately when no render is pending", async () => {
       const el = await createElement("basic-element", { label: "hello" });
       await el.updateComplete;
-      // No render is pending now — updateComplete should resolve immediately via Promise.resolve()
+      // No render is pending now
       await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("hello");
     });

@@ -73,7 +73,7 @@ function App() {
 Elena sets up the listeners automatically and removes them when the element is disconnected from the DOM.
 
 > [!NOTE]
-> Delegated events are re-fired as new `ElenaEvent` instances. Only the event `type` and `cancelable` flag carry over — event-specific properties like `key`, `clientX`, or `data` are not copied. If you need access to those, listen directly on the inner element in `connectedCallback` instead.
+> Delegated events are re-fired as new `ElenaEvent` instances. Only the event `type` and `cancelable` flag carry over. Event-specific properties like `key`, `clientX`, or `data` are not copied. If you need access to those, listen directly on the inner element in `connectedCallback` instead.
 
 If you need more control, you can manage event listeners manually instead. Add them in `connectedCallback` and remove them in `disconnectedCallback`:
 
