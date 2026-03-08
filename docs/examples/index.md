@@ -145,8 +145,8 @@ Mostly, you will get almost identical experience as a user compared to a full pr
 
 <div class="elena-demo">
   <elena-stack direction="row">
-    <elena-button :variant="currentVariant" :text="cycleButtonText" @click="cycleVariant"></elena-button>
-    <elena-button :variant="currentVariant" :text="currentVariant" @click="cycleVariant"></elena-button>
+    <elena-button :variant="currentVariant" :text="cycleButtonText" @click="cycleVariant">Click to cycle (primary)</elena-button>
+    <elena-button :variant="currentVariant" :text="currentVariant" @click="cycleVariant">primary</elena-button>
   </elena-stack>
   <p><strong>Current:</strong> "{{ currentVariant }}"</p>
 </div>
