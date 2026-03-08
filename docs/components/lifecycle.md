@@ -37,7 +37,7 @@ Runs before every render, including the first. Override to compute derived state
 
 ## `render()`
 
-Returns the HTML for this component as an `html` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for [Composite Components](#) — they don’t render their own HTML.
+Returns the HTML for this component as an `html` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for [Composite Components](/components/terminology) — they don’t render their own HTML.
 
 ## `firstUpdated()`
 

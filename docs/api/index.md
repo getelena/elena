@@ -36,7 +36,7 @@
 |--------|-------------|
 | `connectedCallback()` | Runs when the element is added to the page. Sets up props, captures text content, renders, and wires up events. |
 | `willUpdate()` | Runs before every render, including the first. Override to compute derived state before the template evaluates. |
-| `render()` | Returns the HTML for this component as an `html` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for [Composite Components](#), they don’t render their own HTML. |
+| `render()` | Returns the HTML for this component as an `html` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for [Composite Components](/components/terminology), they don’t render their own HTML. |
 | `firstUpdated()` | Runs once after the first render. `this.element` is available here. Override to run one-time setup that requires the DOM. |
 | `updated()` | Runs after every render, including the first. `this.element` is available here. Override to react to changes after the DOM is updated. On first connect, `firstUpdated()` runs before `updated()`. |
 | `requestUpdate()` | Manually schedules a re-render. Use when Elena can’t detect a change automatically, e.g. when mutating an object or array in place. |
@@ -88,6 +88,7 @@ elena build
 | `bundle` | `string \| false` | `"src/index.js"` | Entry point for a single combined output file. Elena will look for `src/index.ts` automatically if no `.js` file is found. Set to `false` to skip the bundle entirely. |
 | `plugins` | `Plugin[]` | `[]` | Extra Rollup plugins to include in the build, added after Elena’s built-in ones. |
 | `analyze.plugins` | `Plugin[]` | `[]` | Extra plugins for the Custom Elements Manifest generation step. |
+| `target` | `string \| string[] \| false` | `false` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via `@babel/preset-env` to widen browser support. Example: `["chrome 71", "firefox 69", "safari 12.1"]`. |
 
 ## `@elenajs/cli`
 
@@ -100,7 +101,7 @@ npx elena-create
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `register` | `register(...components)` | Tell the SSR renderer which component classes to expand. Each class must have `tagName` option set. Call this before `ssr()`. |
-| `ssr` | `ssr(html)` | Takes an HTML string, renders any registered Primitive Components into full HTML, and returns the result. Composite Components and regular HTML tags are left as-is. |
+| `ssr` | `ssr(html)` | Takes an HTML string, renders any registered [Primitive Components](/components/terminology) into full HTML, and returns the result. [Composite Components](/components/terminology) and regular HTML tags are left as-is. |
 
 ## `@elenajs/mcp`
 

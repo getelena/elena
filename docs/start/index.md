@@ -61,12 +61,12 @@ import { Elena } from "@elenajs/core";
 
 Elena has two component types:
 
-- **Composite Components:** wrap and enhance the HTML composed inside them, including other components. No `render()` method. Full SSR support out of the box.
-- **Primitive Components:** self-contained components that own and render their own HTML markup. Require a `render()` method returning an `html` tagged template. Partial SSR support out of the box without `@elenajs/ssr`.
+- **[Composite Components](/components/terminology):** wrap and enhance the HTML composed inside them, including other components. No `render()` method. Full SSR support out of the box.
+- **[Primitive Components](/components/terminology):** self-contained components that own and render their own HTML markup. Require a `render()` method returning an `html` tagged template. Partial SSR support out of the box without `@elenajs/ssr`.
 
 ### 1. Composite Component
 
-A Composite Component wraps whatever HTML is composed inside it and applies styling and behavior around it. It has no `render()` method and never touches its children.
+A [Composite Component](/components/terminology) wraps whatever HTML is composed inside it and applies styling and behavior around it. It has no `render()` method and never touches its children.
 
 ::: code-group
 
@@ -127,7 +127,7 @@ Stack.define();
 
 ### 2. Primitive Component
 
-A Primitive Component owns and renders its own HTML markup via `render()` method. Two things to know to get started:
+A [Primitive Component](/components/terminology) owns and renders its own HTML markup via `render()` method. Two things to know to get started:
 
 - **`html`** is Elena’s tagged template function. It auto-escapes interpolated values to prevent XSS, and nested `html` fragments pass through without double-escaping.
 - **`this.text`** is a built-in reactive property. Elena captures any text content placed inside the element before hydration, so you can pass text as a child node or set it as a property.
@@ -356,6 +356,10 @@ export default {
   // analyze: {
   //   plugins: [],
   // },
+
+  // Browserslist targets for transpilation. Enables syntax transforms
+  // (e.g. class fields, optional chaining) to widen browser support.
+  // target: ["chrome 71", "firefox 69", "safari 12.1"],
 };
 ```
 

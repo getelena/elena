@@ -19,36 +19,11 @@
 
 ## What is Elena?
 
-**Elena is a simple, tiny library (2kB) for building [Progressive Web Components](#progressive-web-components).** With Elena, you can immediately render the component's base HTML & CSS, then progressively enhance the experience with JavaScript rather than relying on it from the start. 
-
-### Elena’s features
-
-- 🔋 **Extremely lightweight:** 2kB minified & compressed, simple and tiny by design.
-- 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
-- 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
-- 🌍 **Standards based:** Built entirely on native custom elements & web standards.
-- ⚡ **Reactive updates:** Prop and state changes trigger efficient, batched re-renders.
-- 🎨 **Scoped styles:** Simple & clean CSS encapsulation without complex workarounds.
-- 🖥️ **SSR friendly:** Works out of the box, with optional server-side utilities if needed.
-- 🧩 **Zero dependencies:** No runtime dependencies, runs entirely on the web platform.
-- 🔓 **Zero lock-in:** Works with every major framework, or no framework at all.
+**Elena is a simple, tiny library (2kB) for building [Progressive Web Components](/components/terminology).** With Elena, you can immediately render the component's base HTML & CSS, then progressively enhance the experience with JavaScript rather than relying on it from the start. 
 
 ### Here is a minimal example
 
 ::: code-group
-
-```ts [TypeScript]
-import { Elena } from "@elenajs/core";
-
-export default class Stack extends Elena(HTMLElement) {
-  static tagName = "my-stack";
-  static props = ["direction"];
-
-  direction: "column" | "row" = "column";
-}
-
-Stack.define();
-```
 
 ```js [JavaScript]
 import { Elena } from "@elenajs/core";
@@ -81,11 +56,7 @@ Stack.define();
 
 :::
 
-### Usage
-
-::: code-group
-
-```html [HTML]
+```html
 <my-stack direction="row">
   <div>First</div>
   <div>Second</div>
@@ -93,82 +64,8 @@ Stack.define();
 </my-stack>
 ```
 
-```html [Angular]
-<div class="app">
-  <my-stack direction="row">
-    <div>First</div>
-    <div>Second</div>
-    <div>Third</div>
-  </my-stack>
-</div>
-```
-
-```tsx [Next.js]
-export default function App() {
-  return (
-    <my-stack direction="row">
-      <div>First</div>
-      <div>Second</div>
-      <div>Third</div>
-    </my-stack>
-  );
-}
-```
-
-```tsx [React]
-function App() {
-  return (
-    <my-stack direction="row">
-      <div>First</div>
-      <div>Second</div>
-      <div>Third</div>
-    </my-stack>
-  );
-}
-export default App;
-```
-
-```svelte [Svelte]
-<div class="app">
-  <my-stack direction="row">
-    <div>First</div>
-    <div>Second</div>
-    <div>Third</div>
-  </my-stack>
-</div>
-```
-
-```vue [Vue]
-<template>
-  <my-stack direction="row">
-    <div>First</div>
-    <div>Second</div>
-    <div>Third</div>
-  </my-stack>
-</template>
-```
-
-:::
-
 > [!TIP] Prerequisites
-> Since Elena is a runtime mixin extending the functionality of standard custom elements, the rest of the documentation assumes familiarity with HTML, CSS and JavaScript. If you are totally new to custom elements, it might be a good idea to see the [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) that covers them in detail. Prior experience with custom elements helps, but is not required when using Elena.
-
-
-## Progressive Web Components
-
-A _"Progressive Web Component"_ is a native Custom Element designed in two layers: a base layer of HTML and CSS that renders immediately, without JavaScript, and an enhancement layer of JavaScript that adds reactivity, event handling, and more advanced templating. There are two types of Progressive Web Components:
-
-### 1. Primitive Components
-
-- Self-contained components that own and render their own HTML markup.
-- All content is controlled through `props`, nothing is composed into them except text content.
-- Examples: `button`, `input`, `checkbox`, `radio`, `textarea`, `icon`, `spinner`, `switch`.
-
-### 2. Composite Components
-
-- Components that wrap and enhance the HTML composed inside them, including other components.
-- Provide styling, layout, and behavior around the composed content.
-- Examples: `stack`, `table`, `layout`, `card`, `banner`, `visually-hidden`, `fieldset`.
+> This documentation assumes familiarity with HTML, CSS, and JavaScript. If you're new to custom elements, the [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) is a good starting point, though prior experience is not required.
 
 ## Why was Elena created
 
@@ -178,7 +75,7 @@ Elena was built to solve these problems while staying grounded in web standards 
 
 ## Why should I use Elena
 
-**Elena is built for teams creating component libraries and design systems.** If you need web components that work across multiple frameworks (such as [React](https://react.dev), [Next.js](https://nextjs.org), [Vue](https://vuejs.org), [Angular](https://angular.dev)), render HTML and CSS before JavaScript loads, and avoid accessibility barriers, SSR friction, and layout shifts — Elena is designed for exactly that.
+**Elena is built for teams creating component libraries and design systems.** If you need web components that work across multiple frameworks (such as [React](https://react.dev), [Next.js](https://nextjs.org), [Vue](https://vuejs.org), [Angular](https://angular.dev)), render HTML and CSS before JavaScript loads, and avoid accessibility barriers, SSR friction, and layout shifts: Elena is designed for exactly that.
 
 It handles the cross-framework complexity (prop/attribute syncing, event delegation, framework compatibility) so you can focus on building components rather than plumbing.
 
@@ -189,7 +86,7 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 Elena builds on native custom elements, so the mental model is familiar. The key differences are:
 
 - **No Shadow DOM.** Elena lives entirely in the Light DOM. This is an intentional design choice to improve accessibility, SSR compatibility, and to make styling easier.
-- **No `<template>`.** Composite Components compose HTML children directly; Primitive Components own their inner HTML via `render()`, with only the host element and its text content on the consuming page.
+- **No `<template>`.** [Composite Components](/components/terminology) compose HTML children directly; [Primitive Components](/components/terminology) own their inner HTML via `render()`, with only the host element and its text content on the consuming page.
 - **CSS encapsulation without Shadow DOM.** Elena uses `@scope` to prevent styles from leaking out, combined with a custom [CSS encapsulation pattern](/advanced/scoping) to prevent global styles from leaking in.
 
 > [!TIP] NOTE
@@ -204,7 +101,7 @@ Elena builds on native custom elements, so the mental model is familiar. The key
 | **DOM model** | Light DOM | Shadow DOM |
 | **Size** | ~2kB | ~5kB |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
-| **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires `@lit-labs/ssr` |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for [Primitive Components](/components/terminology) | Requires `@lit-labs/ssr` |
 | **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM (`:host`, CSS parts) |
 | **Accessibility** | Full Light DOM access | Shadow DOM accessibility limitations |
 | **API** | Static class fields + reactive properties | Decorators + reactive properties |
@@ -222,7 +119,7 @@ The biggest philosophical difference is Shadow DOM. Lit embraces it for strong e
 | **Build step** | Optional | Required |
 | **DOM model** | Light DOM | Shadow DOM (default; configurable) |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
-| **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires Stencil's Hydrate app |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for [Primitive Components](/components/terminology) | Requires Stencil's Hydrate app |
 | **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM or scoped CSS |
 | **API** | Static class fields + reactive properties | Decorators + JSX |
 | **Output targets** | Not necessary | Custom elements, React, Angular, Vue wrappers |
@@ -233,3 +130,4 @@ Stencil’s standout feature is its output targets, it can generate framework-sp
 
 - Start with the [Quick Start](#) guide.
 - View the [Live Demos](#) for examples.
+- View the [Features](#) to understand what Elena provides.

@@ -36,7 +36,7 @@ Button.define();
 
 ## Registering a component
 
-After defining a class, call `define()` to register it as a custom element. Elena reads the tag name from `static tagName` and includes SSR guards to prevent double-registration:
+After defining a class, call `define()` to register it as a custom element. Elena reads the tag name from `static tagName` and includes SSR guards and prevents double-registration:
 
 ```js
 Button.define();

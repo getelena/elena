@@ -1,14 +1,14 @@
 # Server-Side Rendering
 
-Elena's recommended approach to Server Side Rendering (SSR) is simple & straightforward. Since [Progressive Web Components](/guide/what-is-elena) are primarily HTML & CSS, you don't need any special logic on the server to render them. The **[Composite Components](/guide/what-is-elena#composite-components)** provide full support for SSR by default, while the **[Primitive Components](/guide/what-is-elena#primitive-components)** provide partial support and do the rest of the hydration on the client side.
+Elena's recommended approach to Server Side Rendering (SSR) is simple & straightforward. Since [Progressive Web Components](/components/terminology) are primarily HTML & CSS, you don't need any special logic on the server to render them. The **[Composite Components](/components/terminology)** provide full support for SSR by default, while the **[Primitive Components](/components/terminology)** provide partial support and do the rest of the hydration on the client side.
 
-Partial SSR support for the **Primitive Components** means that the component's base HTML & CSS lives in the Light DOM. The JavaScript lifecycle is then used to progressively enhance the functionality and markup once the element is registered.
+Partial SSR support for the _Primitive Components_ means that the component’s base HTML & CSS lives in the Light DOM. The JavaScript lifecycle is then used to progressively enhance the functionality and markup once the element is registered.
 
-The benefit of Elena's approach is that it doesn't need any extra logic on the server while still allowing you to ship all your layout components _(the Composite Components!)_ with full SSR support.
+The benefit of Elena’s approach is that it doesn't need any extra logic on the server while still allowing you to ship all your layout components _(the Composite Components!)_ with full SSR support.
 
 ## Avoiding layout shifts
 
-For the **Primitive Components** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
+For the **[Primitive Components](/components/terminology)** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
 
 ```css
 /* Elena SSR Pattern to avoid layout shift */
@@ -18,7 +18,7 @@ For the **Primitive Components** specifically, our recommendation is to ship the
 }
 ```
 
-Since **Primitive Components** are self-contained and render their own HTML markup, you may sometimes need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
+Since **[Primitive Components](/components/terminology)** are self-contained and render their own HTML markup, you may sometimes need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
 
 ```css
 :scope:not([hydrated])::before {
@@ -33,11 +33,11 @@ Since **Primitive Components** are self-contained and render their own HTML mark
 ```
 
 > [!TIP]
-> You can skip this section entirely for Composite Components, when you plan to [hide components until loaded](/reference/misc#hide-until-loaded), or when the rest of your app renders client side only.
+> You can skip this section entirely for [Composite Components](/components/terminology), when you plan to [hide components until loaded](/reference/misc#hide-until-loaded), or when the rest of your app renders client side only.
 
 ## Rendering Primitive Components to HTML strings
 
-When you don't want to handle the pre-hydration state with CSS, you can expand the **Primitive Component** templates inline by using the provided utility package called [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr) that renders the Elena Primitive Components to HTML strings for full SSR support.
+When you don't want to handle the pre-hydration state with CSS, you can expand the **[Primitive Component](/components/terminology)** templates inline by using the provided utility package called [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr) that renders the Elena [Primitive Components](/components/terminology) to HTML strings for full SSR support.
 
 Please see the [SSR package's readme](https://github.com/getelena/elena/tree/main/packages/ssr) for full usage guidelines.
 
@@ -54,9 +54,9 @@ Elena currently provides SSR examples for the following frameworks:
 
 ## React compatibility
 
-**Primitive Components** (e.g. `button`, `input`) render their own internal DOM via `render()`. Frameworks must treat these as leaf nodes — the framework renders the custom element host, Elena owns everything inside it via `replaceChildren()`.
+**[Primitive Components](/components/terminology)** (e.g. `button`, `input`) render their own internal DOM via `render()`. Frameworks must treat these as leaf nodes — the framework renders the custom element host, Elena owns everything inside it via `replaceChildren()`.
 
-**Composite Components** (e.g. `stack`, `card`) wrap and enhance composed children. The framework renders both the wrapper and its children; Elena only manages props/attributes on the host without touching the light DOM children.
+**[Composite Components](/components/terminology)** (e.g. `stack`, `card`) wrap and enhance composed children. The framework renders both the wrapper and its children; Elena only manages props/attributes on the host without touching the light DOM children.
 
 ### React-specific notes
 
