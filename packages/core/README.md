@@ -48,6 +48,8 @@ npm install @elenajs/core
 
 Elena is a monorepo containing several packages published to npm under the `@elenajs` scope:
 
+- **[`@elenajs/prettier-config`](https://github.com/getelena/elena/tree/main/packages/prettier-config)** [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature)
+- **[`@elenajs/eslint-config`](https://github.com/getelena/elena/tree/main/packages/eslint-config)** [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature)
 - **[`@elenajs/core`](https://github.com/getelena/elena/tree/main/packages/core)** [![stability-release-candidate](https://img.shields.io/badge/stability-pre--release-48c9b0.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#release-candidate)
 - **[`@elenajs/bundler`](https://github.com/getelena/elena/tree/main/packages/bundler)** [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
 - **[`@elenajs/plugin-cem-define`](https://github.com/getelena/elena/tree/main/packages/plugin-cem-define)** [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
