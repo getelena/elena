@@ -21,7 +21,8 @@
     "@elenajs/plugin-cem-typescript": "workspace:*",
     "@elenajs/plugin-rollup-css": "workspace:*",
     "@elenajs/prettier-config": "workspace:*",
-    "@elenajs/ssr": "workspace:*"
+    "@elenajs/ssr": "workspace:*",
+    "@elenajs/mcp": "workspace:*"
   },
   "devDependencies": {
     "@braintree/sanitize-url": "^7.1.2",

@@ -1,0 +1,35 @@
+{
+  "name": "@elenajs/mcp",
+  "version": "0.9.0",
+  "description": "MCP server that exposes Elena component metadata, scaffolding, and authoring guidance to AI assistants.",
+  "author": "Elena <hi@elenajs.com>",
+  "homepage": "https://elenajs.com/",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "bin": {
+    "elena-mcp": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/server.js"
+  },
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">= 20",
+    "yarn": "please-use-npm"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.27.0",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "vitest": "4.0.18"
+  }
+}
