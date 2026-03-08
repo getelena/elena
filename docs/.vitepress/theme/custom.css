@@ -130,3 +130,12 @@ label:active {
 .mermaid {
   width: 70%;
 }
+
+.elena-stack {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-flow: column wrap;
+  flex-direction: row;
+  gap: 0.5rem;
+}

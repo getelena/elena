@@ -2,7 +2,7 @@
 
 ## Browser compatibility
 
-- Elena supports the following browsers:
+- Elena supports the following browser versions:
   - Chrome 71+ (Dec 2018)
   - Firefox 69+ (Sep 2019)
   - Safari 12.1+ (Mar 2019)

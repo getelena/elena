@@ -126,6 +126,18 @@ The biggest philosophical difference is Shadow DOM. Lit embraces it for strong e
 
 Stencil’s standout feature is its output targets, it can generate framework-specific wrappers (React, Angular, Vue) automatically from the same component source. If you need generated bindings for multiple frameworks, Stencil has a clear advantage. Elena, by contrast, works directly with any framework without generated wrappers.
 
+## Browser support
+
+Elena is tested in the latest two versions of the following browsers. We may address critical bugs in earlier versions based on their severity and impact. If you need to support IE11 or pre-Chromium Edge, this library isn’t for you.
+
+<div class="elena-stack">
+  <img src="/chrome.png" width="64" height="64" alt="Chrome" />
+  <img src="/safari.png" width="64" height="64" alt="Safari" />
+  <img src="/edge.png" width="64" height="64" alt="Chrome" />
+  <img src="/firefox.png" width="64" height="64" alt="Chrome" />
+  <img src="/opera.png" width="64" height="64" alt="Chrome" />
+</div>
+
 ## Next steps
 
 - Start with the [Quick Start](#) guide.
