@@ -128,7 +128,6 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: "Introduction", link: "/" },
-          { text: "Features", link: "/features/" },
           { text: "Quick start", link: "/start/" },
           { text: "Live examples", link: "/examples/" },
         ],

@@ -80,6 +80,18 @@ Elena was built to solve these problems while staying grounded in web standards 
 
 It handles the cross-framework complexity (prop/attribute syncing, event delegation, framework compatibility) so you can focus on building components rather than plumbing.
 
+## Elena’s features
+
+- 🔋 **Extremely lightweight:** 2kB minified & compressed, simple and tiny by design.
+- 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
+- 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
+- 🌍 **Standards based:** Built entirely on native custom elements & web standards.
+- ⚡ **Reactive updates:** Prop and state changes trigger efficient, batched re-renders.
+- 🎨 **Scoped styles:** Simple & clean CSS encapsulation without complex workarounds.
+- 🖥️ **SSR friendly:** Works out of the box, with optional server-side utilities if needed.
+- 🧩 **Zero dependencies:** No runtime dependencies, runs entirely on the web platform.
+- 🔓 **Zero lock-in:** Works with every major framework, or no framework at all.
+
 ## Elena vs other libraries
 
 ### Elena vs standard web components
