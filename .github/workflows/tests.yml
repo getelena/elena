@@ -8,7 +8,7 @@
 #    ██████████ █████░░██████  ████ █████░░████████
 #   ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
 #
-#   ░█ [ELENA]: Elena Custom Element Tests
+#   ░█ [ELENA]: Progressive Web Component Tests
 
 name: tests
 on:

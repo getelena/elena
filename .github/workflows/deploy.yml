@@ -8,14 +8,14 @@
 #    ██████████ █████░░██████  ████ █████░░████████
 #   ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
 #
-#   ░█ [ELENA]: Elena Custom Element Deploy
+#   ░█ [ELENA]: Progressive Web Component Deploy
 
 name: deploy
 on:
   workflow_dispatch:
-  #push:
-  #  branches:
-  #    - main
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
@@ -39,12 +39,12 @@ jobs:
       - name: Install and Build
         run: |
           pnpm install
-          pnpm build
+          pnpm docs:build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
-          folder: packages/components
+          folder: docs/.vitepress/dist
           clean: true
