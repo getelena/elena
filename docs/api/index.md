@@ -119,6 +119,9 @@ elena-mcp <project-root>
 | `elena://components` | A list of all components with their name, description, and status. |
 | `elena://components/{tagName}` | Full details for one component: props, events, CSS custom properties, and slots. |
 | `elena://patterns` | The Elena component authoring guide. |
+| `elena://frameworks` | Framework integration guide (React, Vue, Angular, Svelte, Next.js, Eleventy, plain HTML). |
+| `elena://ssr` | Server-side rendering guide and `@elenajs/ssr` API reference. |
+| `elena://api` | Full API reference for all Elena packages. |
 
 ### Tools
 
@@ -126,6 +129,10 @@ elena-mcp <project-root>
 |------|-------------|
 | `scaffold-component` | Generates a starter JS class and CSS file for a new component. |
 | `lookup-component` | Looks up a component’s API from the Custom Elements Manifest. |
+| `get-patterns` | Returns the Elena component authoring guide. |
+| `get-api-reference` | Returns the full API reference for all Elena packages. |
+| `get-frameworks-guide` | Returns the framework integration guide. |
+| `get-ssr-guide` | Returns the SSR guide and `@elenajs/ssr` API reference. |
 
 ### Prompts
 
