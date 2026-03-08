@@ -2,14 +2,26 @@
 
 ## Browser compatibility
 
-- Firefox 148 has an open issue regarding CSS `@scope` and `attr[value]` selector that we've [documented here](https://codepen.io/arielsalminen/full/raMazZV). This is already fixed in the pre-release build though and that should be out soon.
+- Elena supports the following browsers:
+  - Chrome 71+ (Dec 2018)
+  - Firefox 69+ (Sep 2019)
+  - Safari 12.1+ (Mar 2019)
+  - Edge 79+ (Jan 2020)
+  - Opera 58+ (Jan 2019)
+- If your component uses `@scope` styles, the baseline support is:
+  - Chrome 118+ (Oct 2023)
+  - Firefox 128+ (Jul 2024)
+  - Safari 17.4+ (Mar 2024)
+  - Edge 118+ (Oct 2023)
+  - Opera 104+ (Oct 2023)
+- When using CSS `@scope` and `attr[value]` selectors, be aware that Firefox 148 had an open issue regarding this that we’ve [documented here](https://codepen.io/arielsalminen/full/raMazZV). This is already fixed in the newer releases though. When necessary, you can improve the support for older Firefox version by [omitting `@scope`](/components/styles#styles-without-scope).
 
 ## JavaScript frameworks
 
-Rules that apply to **Primitive Components** when used with a framework:
+Rules that apply to **[Primitive Components](/components/terminology)** when used with a framework:
 
-- Never render a framework component _inside_ a Primitive Component (e.g. via `ReactDOM.createRoot(elenaElement)`). Elena calls `replaceChildren()` on render, which would destroy the framework's fiber tree and cause DOM corruption.
-- Avoid a JavaScript framework and Elena both mutating the same attribute on a Primitive Component. A framework's reconciler would overwrite Elena's changes on next reconcile, triggering many re-renders. Treat framework-controlled props as read-only inputs inside your Elena element's `render()`:
+- Never render a framework component _inside_ a [Primitive Component](/components/terminology) (e.g. via `ReactDOM.createRoot(elenaElement)`). Elena calls `replaceChildren()` on render, which would destroy the framework's fiber tree and cause DOM corruption.
+- Avoid a JavaScript framework and Elena both mutating the same attribute on a [Primitive Component](/components/terminology). A framework's reconciler would overwrite Elena's changes on next reconcile, triggering many re-renders. Treat framework-controlled props as read-only inputs inside your Elena element's `render()`:
 
   ```js
   // Good: framework passes text, Elena renders it
@@ -30,7 +42,7 @@ Rules that apply to **Primitive Components** when used with a framework:
   }
   ```
 
-- You can’t pass dynamic text content as children. Instead use the `text` property when updating text after the initial render, since **Primitive Components** own their internal DOM and frameworks cannot reliably insert children after the initial render:
+- You can’t pass dynamic text content as children. Instead use the `text` property when updating text after the initial render, since **[Primitive Components](/components/terminology)** own their internal DOM and frameworks cannot reliably insert children after the initial render:
 
   ```html
   <!-- React -->
