@@ -57,8 +57,8 @@ npx elena-create
 Pass a kebab-case name (must contain at least one hyphen) to skip the name prompt:
 
 ```bash
-npx elena-create elena-button
-npx elena-create elena-date-picker
+npx elena-create my-button
+npx elena-create my-stack
 ```
 
 ## Prompts
@@ -67,10 +67,10 @@ The CLI walks you through the following steps:
 
 | Prompt                 | Description                                                                                                         | Default          |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **Component name**     | Kebab-case name with at least one hyphen (e.g. `elena-button`, `elena-date-picker`). Skipped if passed as argument. | —                |
-| **Component type**     | `Primitive` (owns its own render) or `Composite` (wraps children).                                                  | —                |
+| **Component name**     | Kebab-case name with at least one hyphen (e.g. `my-button`, `my-stack`). Skipped if passed as argument.             |                  |
+| **Component type**     | `Primitive` (owns its own render) or `Composite` (wraps children).                                                  |                  |
 | **Component features** | Feature toggles for the generated code. See [Component features](#component-features) below.                        | None selected    |
-| **Language**           | `JavaScript`, `TypeScript`, or `HTML`.                                                                              | —                |
+| **Language**           | `JavaScript`, `TypeScript`, or `HTML`.                                                                              |                  |
 | **Output directory**   | Where to generate the component folder.                                                                             | `src/components` |
 
 ### Component features
@@ -89,19 +89,19 @@ After choosing a component type, you can toggle features to include in the gener
 
 ## Generated files
 
-For a component named `elena-date-picker`, the CLI creates:
+For a component named `my-button`, the CLI creates:
 
 ```
-src/components/date-picker/
-├── elena-date-picker.js (or .ts)
-└── elena-date-picker.css
+src/components/my-button/
+├── my-button.js (or .ts)
+└── my-button.css
 ```
 
 When using the HTML language, a single file is generated instead:
 
 ```
-src/components/date-picker/
-└── elena-date-picker.html
+src/components/my-button/
+└── my-button.html
 ```
 
 ### Primitive components
