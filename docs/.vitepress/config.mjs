@@ -91,7 +91,7 @@ export default defineConfig({
       { text: "Docs", link: "/", activeMatch: "^(?!/api/)" },
       { text: "API Reference", link: "/api/" },
       {
-        text: "Packages",
+        text: "Tools",
         items: [
           {
             text: "@elenajs/core",
