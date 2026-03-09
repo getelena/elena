@@ -113,7 +113,7 @@ export const NoRenderComponent = createComponent("elena-empty", [], function () 
 });
 
 /**
- * Create a minimal composite Elena-like class (no render method).
+ * Create a minimal HTML Web Component like class (no render method).
  */
 function createComposite(tagName, props) {
   class Component {}

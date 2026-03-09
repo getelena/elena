@@ -86,11 +86,11 @@ describe("complex HTML structures", () => {
       '<elena-link href="/contact" target="_blank" hydrated><a href="/contact" target="_blank">Contact</a></elena-link>'
     );
 
-    // Composites preserved with children
+    // HTML Web Components preserved with children
     expect(html).toContain("<elena-section>");
     expect(html).toContain('<elena-card variant="primary">');
 
-    // Inline HTML inside composites preserved
+    // Inline HTML inside preserved
     expect(html).toContain("<strong>bold</strong>");
     expect(html).toContain("<em>italic</em>");
 
@@ -102,7 +102,7 @@ describe("complex HTML structures", () => {
       '<elena-badge variant="warning" hydrated><span class="badge badge-warning">Beta</span></elena-badge>'
     );
 
-    // Table structure preserved inside composite
+    // Table structure preserved inside
     expect(html).toContain("<thead><tr><th>Name</th><th>Value</th></tr></thead>");
     expect(html).toContain("<td>Alpha</td><td>100</td>");
 

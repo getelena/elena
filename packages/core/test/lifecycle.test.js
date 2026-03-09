@@ -599,10 +599,9 @@ describe("lifecycle", () => {
       expect(() => el.remove()).not.toThrow();
     });
 
-    it("safely handles disconnect of a Composite Component with no events", async () => {
+    it("safely handles disconnect of a HTML Web Component with no events", async () => {
       await import("./fixtures/wrapper-element.js");
       const el = await createElement("wrapper-element");
-      // wrapper-element is a Composite Component, no events
       expect(() => el.remove()).not.toThrow();
     });
   });

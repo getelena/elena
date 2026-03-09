@@ -2,7 +2,7 @@ import { Elena, html } from "../../src/elena.js";
 
 /**
  * Primitive Component fixture: renders its own inner template.
- * Used to test Primitive Components nested inside Composite Components.
+ * Used to test Primitive Components nested inside HTML Web Components.
  */
 export default class ChildElement extends Elena(HTMLElement) {
   static tagName = "child-element";

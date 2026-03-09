@@ -1,8 +1,8 @@
 import { Elena } from "../../src/elena.js";
 
 /**
- * Composite Component fixture: accepts slotted children, no render method.
- * Models the same pattern as a Stack/layout Composite Component.
+ * HTML Web Component fixture: accepts slotted children, no render method.
+ * Models a Stack layout pattern.
  */
 export default class WrapperElement extends Elena(HTMLElement) {
   static tagName = "wrapper-element";

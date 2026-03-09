@@ -3,7 +3,7 @@ import { createElement } from "./setup.js";
 import "./fixtures/wrapper-element.js";
 import "./fixtures/child-element.js";
 
-describe("Composite Components", () => {
+describe("HTML Web Components", () => {
   describe("hydration", () => {
     it("gets hydrated attribute after connecting", async () => {
       const el = await createElement("wrapper-element");
@@ -12,7 +12,7 @@ describe("Composite Components", () => {
 
     it("does not render any inner template", async () => {
       const el = await createElement("wrapper-element");
-      // Composite Components have no render(), they must not replace their light DOM
+      // HTML Web Components have no render(), they must not replace their light DOM
       expect(el.innerHTML.trim()).toBe("");
     });
   });
