@@ -221,3 +221,38 @@ render() {
   `;
 }
 ```
+
+## Declarative Shadow DOM <Badge type="warning" text="experimental" />
+
+Declarative Shadow DOM lets you define a shadow root directly in HTML using a `<template shadowrootmode="open">` element. The browser attaches the shadow root during parsing, so the shadow content is visible before JavaScript loads.
+
+When a component with `static shadow` connects and finds a shadow root already attached, Elena skips `attachShadow()` and works with the existing one instead. Content stays in the light DOM and is projected into the shadow root via `<slot>`:
+
+::: code-group
+
+```html [HTML]
+<elena-button>
+  <template shadowrootmode="open">
+    <button><slot></slot></button>
+  </template>
+  Click me
+</elena-button>
+```
+
+```js [JavaScript]
+import styles from "./button.css" with { type: "css" };
+
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static shadow = "open";
+  static styles = styles;
+}
+
+Button.define();
+```
+
+:::
+
+In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly. `@elenajs/ssr` may later get Declarative Shadow DOM support which would eliminate that, but currently it’s not on our roadmap. 
+
+For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
