@@ -4,11 +4,20 @@
   "description": "Render Elena components to HTML strings for server-side rendering.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getelena/elena.git",
+    "directory": "packages/ssr"
+  },
+  "bugs": {
+    "url": "https://github.com/getelena/elena/issues"
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "main": "./src/index.js",
+  "types": "./src/index.d.ts",
   "type": "module",
   "files": [
     "src"
