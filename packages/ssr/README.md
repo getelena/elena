@@ -20,7 +20,7 @@
 
 <br/>
 
-<p align="center"><strong>@elenajs/ssr</strong> renders <a href="https://elenajs.com">Elena</a> components to fully expanded HTML strings for Server Side Rendering (SSR). Pass an HTML string containing Elena components, and get back rendered HTML with component templates expanded inline. Works with Node.js without requiring any browser DOM APIs.</p>
+<p align="center"><strong>@elenajs/ssr</strong> renders <a href="https://elenajs.com">Elena</a> components to fully expanded HTML strings for server-side rendering (SSR). Pass an HTML string containing Elena components, and get back rendered HTML with component templates expanded inline. Works with Node.js without requiring any browser DOM APIs.</p>
 
 <br/>
 
