@@ -4,6 +4,14 @@
   "description": "ESLint config for Elena projects.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getelena/elena.git",
+    "directory": "packages/eslint-config"
+  },
+  "bugs": {
+    "url": "https://github.com/getelena/elena/issues"
+  },
   "license": "MIT",
   "exports": "./index.js",
   "files": [

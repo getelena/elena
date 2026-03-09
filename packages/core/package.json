@@ -4,6 +4,14 @@
   "description": "Elena is a simple, tiny library for building Progressive Web Components.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getelena/elena.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/getelena/elena/issues"
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"

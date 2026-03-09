@@ -4,6 +4,14 @@
   "description": "CEM analyzer plugin that copies custom Elena JSDoc tags into the manifest.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getelena/elena.git",
+    "directory": "packages/plugin-cem-tag"
+  },
+  "bugs": {
+    "url": "https://github.com/getelena/elena/issues"
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"

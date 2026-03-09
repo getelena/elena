@@ -4,6 +4,14 @@
   "description": "Rollup plugin that minifies individual CSS files and optionally concatenates them into a single bundle.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getelena/elena.git",
+    "directory": "packages/plugin-rollup-css"
+  },
+  "bugs": {
+    "url": "https://github.com/getelena/elena/issues"
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"

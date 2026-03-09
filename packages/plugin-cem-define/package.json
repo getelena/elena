@@ -4,6 +4,14 @@
   "description": "CEM analyzer plugin that registers the Elena components in the manifest.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getelena/elena.git",
+    "directory": "packages/plugin-cem-define"
+  },
+  "bugs": {
+    "url": "https://github.com/getelena/elena/issues"
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"
