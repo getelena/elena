@@ -5,6 +5,7 @@ import ShadowStylesElement from "./fixtures/shadow-styles-element.js";
 import { adoptedSheet } from "./fixtures/shadow-sheet-element.js";
 import "./fixtures/shadow-text-element.js";
 import "./fixtures/shadow-selector-element.js";
+import "./fixtures/dsd-element.js";
 
 describe("shadow DOM", () => {
   describe("shadow root", () => {
@@ -177,6 +178,48 @@ describe("shadow DOM", () => {
       el.setAttribute("label", "Async");
       await el.updateComplete;
       expect(el.shadowRoot.querySelector("button").textContent).toBe("Async");
+    });
+  });
+
+  describe("declarative shadow DOM", () => {
+    it("does not re-attach shadow root when one already exists", async () => {
+      const el = document.createElement("shadow-element");
+      el.attachShadow({ mode: "open" });
+      const preExistingRoot = el.shadowRoot;
+      document.body.appendChild(el);
+      expect(el.shadowRoot).toBe(preExistingRoot);
+    });
+
+    it("renders into a pre-existing shadow root", async () => {
+      const el = document.createElement("shadow-element");
+      el.attachShadow({ mode: "open" });
+      el.setAttribute("label", "DSD");
+      document.body.appendChild(el);
+      expect(el.shadowRoot.querySelector("button")).not.toBeNull();
+      expect(el.shadowRoot.querySelector("button").textContent).toBe("DSD");
+    });
+
+    it("adopts stylesheets onto a pre-existing shadow root", async () => {
+      const el = document.createElement("shadow-styles-element");
+      el.attachShadow({ mode: "open" });
+      document.body.appendChild(el);
+      expect(el.shadowRoot.adoptedStyleSheets.length).toBe(2);
+    });
+
+    it("leaves a pre-existing shadow root untouched when render() is not defined", async () => {
+      const el = document.createElement("dsd-element");
+      el.attachShadow({ mode: "open" });
+      el.shadowRoot.innerHTML = "<button><slot></slot></button>";
+      document.body.appendChild(el);
+      expect(el.shadowRoot.querySelector("button")).not.toBeNull();
+      expect(el.shadowRoot.querySelector("slot")).not.toBeNull();
+    });
+
+    it("adopts stylesheets when render() is not defined", async () => {
+      const el = document.createElement("dsd-element");
+      el.attachShadow({ mode: "open" });
+      document.body.appendChild(el);
+      expect(el.shadowRoot.adoptedStyleSheets.length).toBe(1);
     });
   });
 
