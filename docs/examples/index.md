@@ -2,15 +2,8 @@
 head:
   - - link
     - rel: preload
-      href: /elena/components/bundle.css
-      as: style
-  - - link
-    - rel: preload
       href: /elena/components/bundle.js
       as: script
-  - - link
-    - rel: stylesheet
-      href: /elena/components/bundle.css
   - - script
     - type: module
       src: /elena/components/bundle.js
