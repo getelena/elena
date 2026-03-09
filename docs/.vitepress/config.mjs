@@ -140,19 +140,19 @@ export default defineConfig({
         items: [
           {
             text: "Changelog",
-            link: "https://github.com/getelena/elena/tree/main/packages/core",
+            link: "https://github.com/getelena/elena/blob/main/CHANGELOG.md",
           },
           {
             text: "Contributing",
-            link: "https://github.com/getelena/elena/tree/main/packages/bundler",
+            link: "https://github.com/getelena/elena/blob/main/CONTRIBUTING.md",
           },
           {
             text: "Code of Conduct",
-            link: "https://github.com/getelena/elena/tree/main/packages/bundler",
+            link: "https://github.com/getelena/elena/blob/main/CODE_OF_CONDUCT.md",
           },
           {
             text: "License (MIT)",
-            link: "https://github.com/getelena/elena/tree/main/packages/bundler",
+            link: "https://github.com/getelena/elena/blob/main/LICENSE",
           },
         ],
       },
