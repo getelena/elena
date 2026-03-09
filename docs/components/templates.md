@@ -222,7 +222,7 @@ render() {
 }
 ```
 
-## Declarative Shadow DOM <Badge type="warning" text="experimental" />
+### Declarative Shadow DOM <Badge type="warning" text="experimental" />
 
 Declarative Shadow DOM lets you define a shadow root directly in HTML using a `<template shadowrootmode="open">` element. The browser attaches the shadow root during parsing, so the shadow content is visible before JavaScript loads.
 
