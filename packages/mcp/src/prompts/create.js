@@ -15,7 +15,7 @@ export function registerCreatePrompt(server) {
       argsSchema: {
         name: z.string().describe("Component name in PascalCase"),
         type: z
-          .enum(["component", "html-web-component"])
+          .enum(["with-render", "html-web-component"])
           .optional()
           .describe("Component type (will ask if not provided)"),
         description: z.string().optional().describe("Brief component description"),

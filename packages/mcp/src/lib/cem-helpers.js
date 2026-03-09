@@ -30,11 +30,11 @@ export function findComponent(cem, nameOrTag) {
  * Determine component type based on whether it has a render() method.
  *
  * @param {object} decl - CEM class declaration
- * @returns {"component" | "html-web-component"}
+ * @returns {"with-render" | "html-web-component"}
  */
 export function getComponentType(decl) {
   const hasRender = (decl.members || []).some(m => m.kind === "method" && m.name === "render");
-  return hasRender ? "component" : "html-web-component";
+  return hasRender ? "with-render" : "html-web-component";
 }
 
 /**
