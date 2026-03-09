@@ -81,7 +81,7 @@ describe("cem-helpers", () => {
   });
 
   describe("getComponentType", () => {
-    it("returns 'component' for components with render()", () => {
+    it("returns 'with-render' for components with render()", () => {
       if (!cem) {
         return;
       }
@@ -89,7 +89,7 @@ describe("cem-helpers", () => {
       // Button has render in its source but CEM may not list it as a member
       // depending on the analyzer config. Check the actual data.
       const type = getComponentType(button);
-      expect(["component", "html-web-component"]).toContain(type);
+      expect(["with-render", "html-web-component"]).toContain(type);
     });
 
     it("returns 'html-web-component' for components without render()", () => {
