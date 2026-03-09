@@ -6,7 +6,7 @@ export const FRAMEWORKS_CONTENT = `# Framework Integrations
 
 Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers.
 
-Components that use \`render()\` own their inner DOM and frameworks must treat these as leaf nodes and never try to render inside them. HTML Web Components on the other hand work like any HTML container element and integrate naturally.
+Components that use \`render()\` own their inner DOM via \`replaceChildren()\` and frameworks must treat these as leaf nodes and never try to render inside them. HTML Web Components on the other hand work like any HTML container element and integrate naturally.
 
 ## Plain HTML
 
@@ -245,6 +245,28 @@ export class AppComponent {
 | Event binding     | \`(click)="handler()"\`           |
 | Dynamic attribute | \`[attr.variant]="value"\`        |
 | Reactive state    | \`signal()\` from \`@angular/core\` |
+
+### Dynamic text in Angular
+
+For dynamic text content, always use the \`text\` property binding instead of passing text as children:
+
+\`\`\`html
+<!-- Use this: -->
+<elena-button [text]="label"></elena-button>
+
+<!-- Not this: -->
+<elena-button>{{ label }}</elena-button>
+\`\`\`
+
+Angular inserts child nodes after \`connectedCallback\` fires, so text passed as children will not be captured by Elena. The \`text\` property binding sets the value directly on the element before the first render.
+
+---
+
+## React 17
+
+React 17 does not pass non-primitive props (arrays, objects) or event handlers to web components correctly. Use React 18+ for proper web component support, or pass all props as string attributes.
+
+React 17 SSR hydration can also conflict with Elena: Elena's \`connectedCallback\` fires \`replaceChildren()\` while React is reconciling its hydration tree, causing mismatch errors. Use React 18+ or ensure Elena elements render only client-side.
 
 > The provided examples import the existing \`@elenajs/components\` for demo purposes. Replace it with your own component library for production usage.
 `;
