@@ -40,7 +40,7 @@ Button.define();
 | `props` | `(string \| { name: string, reflect?: boolean })[]` | The list of props this component accepts. Each prop stays in sync with its matching HTML attribute. Use `{ name, reflect: false }` to keep a prop JS-only without writing it back to the attribute. |
 | `events` | `string[]` | Events to forward from the inner element up to the host (e.g. `["click", "focus", "blur"]`). Elena sets up listeners automatically and removes them when the element is disconnected. |
 | `element` | `string` | A CSS selector for the inner element that `this.element` points to (e.g. `".inner"`, `"button"`). Defaults to the first child element when omitted. `this.element` is available in `render()`, lifecycle methods, and custom methods. |
-| `shadow` | `"open" \| "closed"` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host, fully isolating styles and DOM from the rest of the page. Only for [Primitive Components](/components/terminology). See [Shadow DOM](/components/styles#shadow-dom). |
+| `shadow` | `"open" \| "closed"` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host, fully isolating styles and DOM from the rest of the page. Only applies to components with a `render()` method. See [Shadow DOM](/components/styles#shadow-dom). |
 | `styles` | `CSSStyleSheet \| string \| (CSSStyleSheet \| string)[]` | One or more stylesheets to adopt into the shadow root. Only applies when `shadow` is also set. Pass a `CSSStyleSheet` via [CSS Module Scripts](https://web.dev/articles/css-module-scripts), or a raw CSS string. |
 
 ## Registering a component

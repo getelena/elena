@@ -1,13 +1,8 @@
 # Events
 
-Elena has two ways to work with events:
-
-1. **[Delegated events](#delegated-events):** Forward native DOM events from the inner HTML element up to the Elena host component using `static events`.
-2. **[Custom events](#custom-events):** Fire your own events from anywhere in a component or its inner HTML elements using `ElenaEvent`.
-
 ## Delegated events
 
-When a [Primitive Component](/components/terminology) renders its own inner DOM, native events like `click` fire on the inner element (e.g. the `<button>`), not on the host (`<elena-button>`). `static events` tells Elena to listen for those events on the inner element and re-fire them on the host, so consumers can attach listeners to the custom element directly:
+When a web component renders its own inner DOM via `render()`, native events like `click` fire on the inner element (e.g. the `<button>`), not on the host (`<elena-button>`). `static events` tells Elena to listen for those events on the inner element and re-fire them on the host, so consumers can attach listeners to the custom element directly:
 
 ```js
 export default class Button extends Elena(HTMLElement) {
@@ -72,10 +67,10 @@ function App() {
 
 Elena sets up the listeners automatically and removes them when the element is disconnected from the DOM.
 
-> [!NOTE]
+> [!TIP]
 > Delegated events are re-fired as new `ElenaEvent` instances. Only the event `type` and `cancelable` flag carry over. Event-specific properties like `key`, `clientX`, or `data` are not copied. If you need access to those, listen directly on the inner element in `connectedCallback` instead.
 
-If you need more control, you can manage event listeners manually instead. Add them in `connectedCallback` and remove them in `disconnectedCallback`:
+If you need more control, you can also manage event listeners manually. Add them in `connectedCallback` and remove them in `disconnectedCallback`:
 
 ```js
 export default class Button extends Elena(HTMLElement) {
@@ -100,7 +95,7 @@ export default class Button extends Elena(HTMLElement) {
 
 ## Custom events
 
-Use `ElenaEvent` to fire your own events from inside a component. It extends the native `Event` with `bubbles: true` and `composed: true` already set:
+You can use `ElenaEvent` to fire your own events from inside a component. It extends the native `Event` with `bubbles: true` and `composed: true` already set:
 
 ```js
 import { ElenaEvent } from "@elenajs/core";

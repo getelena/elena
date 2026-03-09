@@ -1,6 +1,6 @@
-# Command Line Interface
+# Command line interface
 
-`@elenajs/cli` is an interactive command-line tool for scaffolding Elena components. It generates JavaScript, TypeScript, or single-file HTML source files and scoped CSS with all Elena Progressive Web Component patterns pre-configured: `Elena()` factory, `html` tagged templates, `@scope` CSS, JSDoc annotations, and `ClassName.define()`.
+`@elenajs/cli` is an interactive command line tool for scaffolding Elena components. It generates JavaScript, TypeScript, or single-file HTML source files and scoped CSS with all Elena Progressive Web Component patterns pre-configured: `Elena()` factory, `html` tagged templates, `@scope` CSS, JSDoc annotations, and `ClassName.define()`.
 
 ## Install
 
@@ -31,27 +31,26 @@ npx elena-create my-stack
 
 The CLI walks you through the following steps:
 
-| Prompt                 | Description                                                                                                         | Default          |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| **Component name**     | Kebab-case name with at least one hyphen (e.g. `my-button`, `my-stack`). Skipped if passed as argument. |                  |
-| **Component type**     | `Primitive` (owns its own render) or `Composite` (wraps children).                                                 |                  |
-| **Component features** | Feature toggles for the generated code. See [Component features](#component-features) below.                        | None selected    |
-| **Language**           | `JavaScript`, `TypeScript`, or `HTML`.                                                                              |                  |
-| **Output directory**   | Where to generate the component folder.                                                                             | `src/components` |
+| Prompt                 | Description                                                                                          | Default          |
+| ---------------------- | ---------------------------------------------------------------------------------------------------- | ---------------- |
+| **Component name**     | Kebab-case name with at least one hyphen (e.g. `my-button`, `my-stack`). Skipped if passed as argument. |             |
+| **Component features** | Feature toggles for the generated code. See [Component features](#component-features) below.         | None selected    |
+| **Language**           | `JavaScript`, `TypeScript`, or `HTML`.                                                               |                  |
+| **Output directory**   | Where to generate the component folder.                                                              | `src/components` |
 
 ### Component features
 
-After choosing a component type, you can toggle features to include in the generated code:
+You can toggle features to include in the generated code:
 
-| Option                | Primitive | Composite | Description                                                             |
-| --------------------- | --------- | --------- | ----------------------------------------------------------------------- |
-| **Props**             | ✓         | ✓         | Adds example props with `@attribute` / `@type` JSDoc annotations.       |
-| **Events**            | ✓         |           | Adds `events` option and `@event` JSDoc annotations.                    |
-| **Methods**           | ✓         | ✓         | Adds an example method stub.                                            |
-| **CSS Variables**     | ✓         | ✓         | Adds `@cssprop` JSDoc annotations and CSS custom property declarations. |
-| **CSS Encapsulation** | ✓         | ✓         | Adds the `all: unset` reset to prevent global styles from leaking in.   |
-| **CSS SSR Pattern**   | ✓         |           | Adds `:scope:not([hydrated])` styles for pre-hydration rendering.       |
-| **Code Comments**     | ✓         | ✓         | Includes JSDoc annotations and CSS comments in the generated code.      |
+| Option                | Description                                                             |
+| --------------------- | ----------------------------------------------------------------------- |
+| **Props**             | Adds example props with `@attribute` / `@type` JSDoc annotations.       |
+| **Events**            | Adds `events` option and `@event` JSDoc annotations.                    |
+| **Methods**           | Adds an example method stub.                                            |
+| **CSS Variables**     | Adds `@cssprop` JSDoc annotations and CSS custom property declarations. |
+| **CSS Encapsulation** | Adds the `all: unset` reset to prevent global styles from leaking in.   |
+| **CSS SSR Pattern**   | Adds `:scope:not([hydrated])` styles for pre-hydration rendering.       |
+| **Code Comments**     | Includes JSDoc annotations and CSS comments in the generated code.      |
 
 ## Generated files
 

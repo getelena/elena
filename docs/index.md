@@ -24,7 +24,7 @@ title: Progressive Web Components
 
 ## What is Elena?
 
-**Elena is a simple, tiny library (2kB) for building [Progressive Web Components](/components/terminology).** Most web component libraries today require JavaScript to render anything at all. With Elena, your component’s base HTML and CSS render immediately. JavaScript picks up from there to add interactivity.
+**Elena is a simple, tiny library (2kB) for building [Progressive Web Components](/components/terminology).** Most web component libraries today require JavaScript to render anything at all. With Elena, you can render your component’s base HTML and CSS immediately. JavaScript picks up from there to add interactivity.
 
 ### Here is a minimal example
 
@@ -74,7 +74,7 @@ Stack.define();
 
 ## Why was Elena created
 
-Elena was created by [@arielle](https://arielsalminen.com) after nearly a decade of building enterprise-scale design systems with [web components](https://arielsalminen.com/2019/why-we-use-web-components/). The recurring pain points were often similar: accessibility problems, server-side rendering, layout shifts, flash of unstyled content, and compatibility with e.g. analytics tools.
+Elena was created by [@arielle](https://arielsalminen.com) after nearly a decade of building enterprise-scale design systems with [web components](https://arielsalminen.com/2019/why-we-use-web-components/). The recurring pain points were often similar: accessibility problems, server-side rendering, layout shifts, flash of invisible content, and compatibility with e.g. analytics tools.
 
 Elena was built to solve these problems while staying grounded in web standards and what the platform natively provides. This is how _“Progressive Web Components”_ were born.
 
@@ -103,7 +103,7 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 Elena builds on native custom elements, so the mental model is familiar. The key differences are:
 
 - **Light DOM by default.** Elena renders into the Light DOM by default, which improves accessibility, SSR compatibility, and styling ergonomics. Shadow DOM is available as an opt-in via `static shadow` for components that need stronger encapsulation.
-- **No `<template>`.** [Composite Components](/components/terminology) compose HTML children directly; [Primitive Components](/components/terminology) own their inner HTML via `render()`, with only the host element and its text content on the consuming page.
+- **No `<template>`.** Wrapper components compose HTML children directly; components with `render()` own their inner HTML, with only the host element and its text content on the consuming page.
 - **Flexible CSS encapsulation.** In Light DOM mode, Elena uses `@scope` to prevent styles from leaking out, combined with a custom [CSS reset](/advanced/scoping) to prevent global styles from leaking in. In Shadow DOM mode, the browser’s native style isolation applies instead.
 
 ### Elena vs Lit
@@ -115,8 +115,9 @@ Elena builds on native custom elements, so the mental model is familiar. The key
 | **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM |
 | **Size** | ~2kB | ~5kB |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
-| **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires `@lit-labs/ssr` |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires `@lit-labs/ssr` |
 | **Style encapsulation** | `@scope` + `all: unset` (Shadow DOM opt-in) | Shadow DOM (`:host`, CSS parts) |
+| **Prop reflection** | Reflects all; disable per-prop | Reflects none; enable per-prop |
 | **Accessibility** | Full Light DOM access | Shadow DOM accessibility limitations |
 | **API** | Static class fields + reactive properties | Decorators + reactive properties |
 
@@ -133,7 +134,8 @@ The biggest philosophical difference is the DOM model. Lit uses Shadow DOM by de
 | **Build step** | Optional | Required |
 | **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM (default; configurable) |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
-| **SSR** | Works out of the box; optional `@elenajs/ssr` for Primitive Components | Requires Stencil's Hydrate app |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires Stencil's Hydrate app |
+| **Prop reflection** | Reflects all; disable per-prop | Reflects none; enable per-prop |
 | **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM or scoped CSS |
 | **API** | Static class fields + reactive properties | Decorators + JSX |
 | **Output targets** | Not necessary | Custom elements, React, Angular, Vue wrappers |

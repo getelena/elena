@@ -173,7 +173,6 @@ export default defineConfig({
         text: "Components",
         collapsed: false,
         items: [
-          { text: "Terminology", link: "/components/terminology" },
           { text: "Lifecycle", link: "/components/lifecycle" },
           { text: "Options", link: "/components/options" },
           { text: "Props", link: "/components/props" },

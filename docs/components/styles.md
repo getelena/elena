@@ -70,9 +70,9 @@ For projects that use [CSS cascade layers](https://developer.mozilla.org/en-US/d
 }
 ```
 
-## Primitive Component example
+## Full example
 
-Here’s an example [Primitive Component](/components/terminology) using these patterns:
+Here’s a full example using these patterns:
 
 ```css
 /* Scope makes sure styles don’t leak out */
@@ -101,7 +101,7 @@ Here’s an example [Primitive Component](/components/terminology) using these p
 
   /* Elena SSR Pattern to avoid layout shift */
   :scope:not([hydrated]),
-  .elena-button {
+  .elena-button:is(button) {
     font-family: var(--elena-button-font);
     color: var(--elena-button-text);
     background: var(--elena-button-bg);
@@ -115,7 +115,7 @@ Here’s an example [Primitive Component](/components/terminology) using these p
 }
 ```
 
-The `:scope:not([hydrated]), .inner-element` pattern ensures Primitive Components look the same before and after hydration. Elena adds the `hydrated` attribute to the host element after its first render. By applying the same baseline styles to both the unhydrated host and the rendered inner element, the component avoids any layout shift.
+The `:scope:not([hydrated]), .inner-element` pattern ensures components look the same before and after hydration. Elena adds the `hydrated` attribute to the host element after its first render. By applying the same baseline styles to both the unhydrated host and the rendered inner element, the component avoids any layout shift.
 
 Use attribute selectors on `:scope` for variant and state styling:
 
@@ -126,7 +126,7 @@ Use attribute selectors on `:scope` for variant and state styling:
 
 ## Pre-hydration state and styles
 
-Since Primitive Components render their own internal markup, you may sometimes need to surface additional content before hydration. This can be done with CSS pseudo-elements and `attr()`:
+Since components with `render()` control their own internal markup, you may sometimes need to surface additional content before hydration. This can be done with CSS pseudo-elements and `attr()`:
 
 ```css
 :scope:not([hydrated])::before {
@@ -143,11 +143,11 @@ Since Primitive Components render their own internal markup, you may sometimes n
 For more detailed guidelines, see the [Server Side Rendering](/advanced/ssr) section.
 
 > [!TIP]
-> You can skip this section entirely for [Composite Components](/components/terminology), when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
+> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
-## Composite Components
+## HTML Web Components
 
-[Composite Components](/components/terminology) style the host element and can pass styles down to their composed children. Since they never render their own internal markup, there are no pre-hydration concerns:
+HTML Web Components style the host element and can pass styles down to their composed children. Since they never render their own internal markup, there are no pre-hydration concerns:
 
 ```css
 /* Scope makes sure styles don’t leak out */
@@ -214,7 +214,7 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 ## Shadow DOM
 
-When `@scope` with a reset isn’t enough, Elena supports an opt-in Shadow DOM mode for [Primitive Components](/components/terminology). Set `static shadow` to `"open"` or `"closed"` on the class, and pass your styles via `static styles`:
+When `@scope` with a reset isn’t enough, Elena supports an opt-in Shadow DOM mode for components. Set `static shadow` to `"open"` or `"closed"` on the class, and pass your styles via `static styles`:
 
 ```js
 import styles from "./button.css" with { type: "css" };

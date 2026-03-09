@@ -1,4 +1,4 @@
-# Component Libraries
+# Component libraries
 
 **`@elenajs/bundler`** is the build tool for publishing Elena component libraries. It bundles JavaScript and TypeScript source files, minifies CSS, generates a [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/), and produces TypeScript declarations for each component.
 
