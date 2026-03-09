@@ -103,7 +103,6 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 Elena builds on native custom elements, so the mental model is familiar. The key differences are:
 
 - **Light DOM by default.** Elena renders into the Light DOM by default, which improves accessibility, SSR compatibility, and styling ergonomics. Shadow DOM is available as an opt-in via `static shadow` for components that need stronger encapsulation.
-- **No `<template>`.** Wrapper components compose HTML children directly; components with `render()` own their inner HTML, with only the host element and its text content on the consuming page.
 - **Flexible CSS encapsulation.** In Light DOM mode, Elena uses `@scope` to prevent styles from leaking out, combined with a custom [CSS reset](/advanced/scoping) to prevent global styles from leaking in. In Shadow DOM mode, the browser’s native style isolation applies instead.
 
 ### Elena vs Lit
