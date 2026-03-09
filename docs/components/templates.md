@@ -241,10 +241,13 @@ When a component with `static shadow` connects and finds a shadow root already a
 ```
 
 ```js [JavaScript]
+import { Elena } from "@elenajs/core";
+
 export default class Button extends Elena(HTMLElement) {
   static tagName = "elena-button";
   static shadow = "open";
 }
+
 Button.define();
 ```
 
