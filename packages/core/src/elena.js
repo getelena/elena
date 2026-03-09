@@ -240,11 +240,15 @@ export function Elena(superClass) {
     _attachShadow() {
       const component = this.constructor;
 
-      if (!component.shadow || this.shadowRoot) {
+      if (!component.shadow) {
         return;
       }
 
-      this.attachShadow({ mode: component.shadow });
+      // A shadow root may already exist if Declarative Shadow DOM was used.
+      // In that case skip attachShadow() but still adopt styles below.
+      if (!this.shadowRoot) {
+        this.attachShadow({ mode: component.shadow });
+      }
 
       if (!component.styles) {
         return;
