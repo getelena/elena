@@ -53,3 +53,4 @@ jobs:
           pnpm lint
           pnpm build
           pnpm test
+          pnpm docs:build
