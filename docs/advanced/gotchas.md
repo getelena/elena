@@ -18,9 +18,6 @@
 
 ## JavaScript frameworks
 
-Rules that apply to **components with a `render()` method** when used with a framework:
-
-- Never render a framework component _inside_ a component with `render()` (e.g. via `ReactDOM.createRoot(elenaElement)`). Elena calls `replaceChildren()` on render, which would destroy the framework’s fiber tree and cause DOM corruption.
 - Avoid a JavaScript framework and Elena both mutating the same attribute on the same component. A framework’s reconciler would overwrite Elena’s changes on next reconcile, triggering many re-renders. Treat framework-controlled props as read-only inputs inside your Elena element's `render()`:
 
   ```js
@@ -42,7 +39,7 @@ Rules that apply to **components with a `render()` method** when used with a fra
   }
   ```
 
-- You can’t pass dynamic text content as children to components with `render()`. Use the `text` property instead, since these components own their internal DOM and frameworks cannot reliably insert children after the initial render:
+- You can’t pass dynamic text content as children. Use the `text` property instead if you need to update the text content later:
 
   ```html
   <!-- React -->
