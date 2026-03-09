@@ -280,7 +280,7 @@ Class-level:
 - \`@status\` — alpha, beta, or stable
 - \`@event <name> - description\` — Event documentation
 - \`@cssprop [--prop-name] - description\` — CSS custom property
-- \`@slot [name] - description\` — Slot documentation (for HTML Web Components)
+- \`@slot [name] - description\` — Slot documentation
 
 Property-level:
 - \`@attribute\` — Marks as an observed attribute
