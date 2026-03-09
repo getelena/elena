@@ -6,7 +6,7 @@ The fastest way to get started is to include the following directly into your we
 <script type="module">
   import { Elena, html } from "https://unpkg.com/@elenajs/core";
 
-  class MyGreeting extends Elena(HTMLElement) {
+  export default class MyGreeting extends Elena(HTMLElement) {
     static tagName = "my-greeting";
     static props = ["name"];
 
@@ -66,7 +66,7 @@ There are two recommended ways to build Elena components:
 
 ### 1. HTML Web Components
 
-A HTML Web Component enhances whatever HTML is composed inside it, applying styling and behavior around it. It has no `render()` method and never touches its children.
+An HTML Web Component enhances whatever HTML is composed inside it, applying styling and behavior around it. It has no `render()` method and never touches its children.
 
 ::: code-group
 
