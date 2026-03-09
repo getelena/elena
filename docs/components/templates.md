@@ -233,6 +233,7 @@ When a component with `static shadow` connects and finds a shadow root already a
 ```html [HTML]
 <elena-button>
   <template shadowrootmode="open">
+    <link rel="stylesheet" href="button.css" />
     <button><slot></slot></button>
   </template>
   Click me
@@ -240,14 +241,10 @@ When a component with `static shadow` connects and finds a shadow root already a
 ```
 
 ```js [JavaScript]
-import styles from "./button.css" with { type: "css" };
-
 export default class Button extends Elena(HTMLElement) {
   static tagName = "elena-button";
   static shadow = "open";
-  static styles = styles;
 }
-
 Button.define();
 ```
 
