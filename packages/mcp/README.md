@@ -142,16 +142,17 @@ Generates JavaScript and CSS boilerplate for a new Elena component. Returns file
 
 **Parameters:**
 
-| Parameter       | Type                                             | Required | Description                                               |
-| --------------- | ------------------------------------------------ | -------- | --------------------------------------------------------- |
-| `name`          | `string`                                         | Yes      | Component class name in PascalCase (e.g. `"DatePicker"`). |
-| `tagName`       | `string`                                         | Yes      | Custom element tag name (e.g. `"elena-date-picker"`).     |
-| `type`          | `"primitive" \| "composite"`                     | Yes      | Component type.                                           |
-| `props`         | `Array<{ name, type?, default?, description? }>` | No       | Props to define.                                          |
-| `events`        | `string[]`                                       | No       | Event names to delegate.                                  |
-| `cssProperties` | `Array<{ name, description? }>`                  | No       | CSS custom properties.                                    |
-| `description`   | `string`                                         | No       | Component description for JSDoc.                          |
-| `status`        | `"alpha" \| "beta" \| "stable"`                  | No       | Component status (default: `"alpha"`).                    |
+| Parameter          | Type                                             | Required | Description                                                                       |
+| ------------------ | ------------------------------------------------ | -------- | --------------------------------------------------------------------------------- |
+| `name`             | `string`                                         | Yes      | Component class name in PascalCase (e.g. `"DatePicker"`).                         |
+| `tagName`          | `string`                                         | Yes      | Custom element tag name (e.g. `"elena-date-picker"`).                             |
+| `props`            | `Array<{ name, type?, default?, description? }>` | No       | Props to define.                                                                  |
+| `events`           | `string[]`                                       | No       | Event names to delegate.                                                          |
+| `cssProperties`    | `Array<{ name, description? }>`                  | No       | CSS custom properties.                                                            |
+| `description`      | `string`                                         | No       | Component description for JSDoc.                                                  |
+| `status`           | `"alpha" \| "beta" \| "stable"`                  | No       | Component status (default: `"alpha"`).                                            |
+| `cssEncapsulation` | `boolean`                                        | No       | Include the `all:unset` encapsulation reset in CSS (default: `true`).             |
+| `ssr`              | `boolean`                                        | No       | Include `:scope:not([hydrated])` SSR pattern to avoid layout shift (default: `false`). |
 
 ### `lookup-component`
 

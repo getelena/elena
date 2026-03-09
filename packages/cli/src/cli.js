@@ -48,12 +48,12 @@ async function main() {
   console.log("");
 
   const nameArg = process.argv[2];
-  const { name, type, language, features, outputDir } = await runPrompts(nameArg);
+  const { name, language, features, outputDir } = await runPrompts(nameArg);
 
   const componentDir = resolve(process.cwd(), outputDir, name);
   await mkdir(componentDir, { recursive: true });
 
-  const sourceContent = generateSource(name, type, language, features);
+  const sourceContent = generateSource(name, language, features);
   const files = [];
 
   if (language === "html") {
@@ -64,7 +64,7 @@ async function main() {
     const ext = language === "typescript" ? "ts" : "js";
     const sourceFile = join(componentDir, `${name}.${ext}`);
     const cssFile = join(componentDir, `${name}.css`);
-    const cssContent = generateCSS(name, type, features);
+    const cssContent = generateCSS(name, features);
     await writeFile(sourceFile, sourceContent);
     await writeFile(cssFile, cssContent);
     files.push(sourceFile, cssFile);

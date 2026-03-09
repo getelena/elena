@@ -1,4 +1,4 @@
-# Known Issues
+# Known issues
 
 ## Browser compatibility
 
@@ -18,10 +18,7 @@
 
 ## JavaScript frameworks
 
-Rules that apply to **[Primitive Components](/components/terminology)** when used with a framework:
-
-- Never render a framework component _inside_ a Primitive Component (e.g. via `ReactDOM.createRoot(elenaElement)`). Elena calls `replaceChildren()` on render, which would destroy the framework's fiber tree and cause DOM corruption.
-- Avoid a JavaScript framework and Elena both mutating the same attribute on a Primitive Component. A framework's reconciler would overwrite Elena's changes on next reconcile, triggering many re-renders. Treat framework-controlled props as read-only inputs inside your Elena element's `render()`:
+- Avoid a JavaScript framework and Elena both mutating the same attribute on the same component. A framework’s reconciler would overwrite Elena’s changes on next reconcile, triggering many re-renders. Treat framework-controlled props as read-only inputs inside your Elena element's `render()`:
 
   ```js
   // Good: framework passes text, Elena renders it
@@ -42,7 +39,7 @@ Rules that apply to **[Primitive Components](/components/terminology)** when use
   }
   ```
 
-- You can't pass dynamic text content as children. Instead use the `text` property when updating text after the initial render, since Primitive Components own their internal DOM and frameworks cannot reliably insert children after the initial render:
+- You can’t pass dynamic text content as children. Use the `text` property instead if you need to update the text content later:
 
   ```html
   <!-- React -->
@@ -56,7 +53,7 @@ Rules that apply to **[Primitive Components](/components/terminology)** when use
   ```
 
 > [!WARNING]
-> Angular inserts text children _after_ `connectedCallback` fires, by which point Elena has already replaced the host's inner DOM. The text ends up as a sibling to the element rather than inside it. Always use `text` as a property binding or attribute in Angular, never as a child node:
+> Angular inserts text children _after_ `connectedCallback` fires, by which point Elena has already replaced the host’s inner DOM. The text ends up as a sibling to the element rather than inside it. Always use `text` as a property binding or attribute in Angular, never as a child node:
 >
 > ```html
 > <elena-button [text]="label"></elena-button>

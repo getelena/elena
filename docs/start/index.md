@@ -6,7 +6,7 @@ The fastest way to get started is to include the following directly into your we
 <script type="module">
   import { Elena, html } from "https://unpkg.com/@elenajs/core";
 
-  class MyGreeting extends Elena(HTMLElement) {
+  export default class MyGreeting extends Elena(HTMLElement) {
     static tagName = "my-greeting";
     static props = ["name"];
 
@@ -59,14 +59,14 @@ import { Elena } from "@elenajs/core";
 
 ## Building your first component
 
-Elena has two component types:
+There are two recommended ways to build Elena components:
 
-- **[Composite Components](/components/terminology):** wrap and enhance the HTML composed inside them, including other components. No `render()` method. Full SSR support out of the box.
-- **[Primitive Components](/components/terminology):** self-contained components that own and render their own HTML markup. Require a `render()` method returning an `html` tagged template. Partial SSR support out of the box without `@elenajs/ssr`.
+- **HTML Web Components:** HTML Web Components have no `render()` method. Instead, the component enhances whatever HTML is composed inside it. Provides full SSR support out of the box.
+- **Web Components with `render()`:** Regular Web Components that use a `render()` method. The component owns and controls its inner markup entirely. Provides partial SSR support out of the box without `@elenajs/ssr`.
 
-### 1. Composite Component
+### 1. HTML Web Components
 
-A Composite Component wraps whatever HTML is composed inside it and applies styling and behavior around it. It has no `render()` method and never touches its children.
+An HTML Web Component enhances whatever HTML is composed inside it, applying styling and behavior around it. It has no `render()` method and never touches its children.
 
 ::: code-group
 
@@ -125,12 +125,12 @@ Stack.define();
 </my-stack>
 ```
 
-### 2. Primitive Component
+### 2. Web Components with `render()`
 
-A Primitive Component owns and renders its own HTML markup via `render()` method. Two things to know to get started:
+A component with `render()` owns and controls its inner HTML markup. Two things to know to get started:
 
 - **`html`** is Elena’s tagged template function. It auto-escapes interpolated values to prevent XSS, and nested `html` fragments pass through without double-escaping.
-- **`this.text`** is a built-in reactive property. Elena captures any text content placed inside the element before hydration, so you can pass text as a child node or set it as a property.
+- **`this.text`** is a built-in reactive property. Elena captures any text content placed inside the element before hydration, so you can pass text as a child node or set it as a property. Utilizing this helps to avoid layout shifts.
 
 ::: code-group
 
@@ -192,7 +192,7 @@ Button.define();
   }
 
   :scope:not([hydrated]),
-  .my-button {
+  .my-button:is(button) {
     background: var(--my-button-bg);
     display: inline-flex;
   }

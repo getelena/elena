@@ -1,12 +1,12 @@
-# Server-Side Rendering
+# Server-side rendering
 
-Elena’s recommended approach to Server Side Rendering is simple and straightforward. Since [Progressive Web Components](/components/terminology) are primarily HTML and CSS, you don’t need any special logic on the server to render them. The **[Composite Components](/components/terminology)** provide full support for SSR by default, while the **[Primitive Components](/components/terminology)** provide partial support and do the rest of the hydration on the client side.
+Elena’s recommended approach to server-side rendering is simple and straightforward. Since Progressive Web Components are primarily HTML and CSS, you don’t need any special logic on the server to render them. Components without a `render()` method are fully SSR-compatible by default, while components with `render()` provide partial support and complete hydration on the client side.
 
-Partial SSR support for the _Primitive Components_ means that the component’s base HTML and CSS lives in the Light DOM. The JavaScript lifecycle is then used to progressively enhance the functionality and markup once the element is registered.
+Partial SSR support for components with `render()` means that the component’s base HTML and CSS lives in the Light DOM. The JavaScript lifecycle then progressively enhances the functionality and markup once the element is registered.
 
 ## Avoiding layout shifts
 
-For the **[Primitive Components](/components/terminology)** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
+For **components with `render()`** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
 
 ```css
 /* Elena SSR Pattern to avoid layout shift */
@@ -16,7 +16,7 @@ For the **[Primitive Components](/components/terminology)** specifically, our re
 }
 ```
 
-Since Primitive Components are self-contained and render their own HTML markup, you may sometimes need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
+Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
 
 ```css
 :scope:not([hydrated])::before {
@@ -31,11 +31,11 @@ Since Primitive Components are self-contained and render their own HTML markup, 
 ```
 
 > [!TIP]
-> You can skip this section entirely for [Composite Components](/components/terminology), when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
+> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
 ## Rendering to HTML strings
 
-When you don’t want to handle the pre-hydration state with CSS, you can expand Primitive Component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
+When you don’t want to handle the pre-hydration state with CSS, you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
 
 > [!WARNING]
 > `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
@@ -60,9 +60,9 @@ const html = ssr(`<elena-button variant="primary">Save</elena-button>`);
 // Outputs: '<elena-button variant="primary"><button>Save</button></elena-button>'
 ```
 
-### With composites and nesting
+### With nesting
 
-Composite Components preserve their children. Primitive Components inside Composites are expanded automatically:
+Nested Elena components are expanded automatically:
 
 ```js
 import { ssr, register } from "@elenajs/ssr";
@@ -98,7 +98,7 @@ Use `@elenajs/ssr` with [Eleventy](https://www.11ty.dev/) as either a transform 
 
 #### As a transform
 
-A transform processes every rendered page automatically, expanding any registered Primitive Components found in the output HTML. No shortcodes or special syntax needed: just write Elena components directly in your templates:
+A transform processes every rendered page automatically, expanding any registered components with `render()` found in the output HTML. No shortcodes or special syntax needed: just write Elena components directly in your templates:
 
 ```js
 // eleventy.config.js
@@ -151,7 +151,7 @@ Then in a template:
 
 #### `register(...components)`
 
-Register Elena Primitive Component classes for SSR. Each class must have a `tagName` defined. Call this once before using `ssr()`.
+Register Elena component classes for SSR expansion. Each class must have a `tagName` defined. Call this once before using `ssr()`.
 
 ```js
 import { register } from "@elenajs/ssr";
@@ -165,26 +165,20 @@ Throws an error if a component does not have a `tagName`.
 
 #### `ssr(html)`
 
-Parse an HTML string, expand registered Primitive Components, and return the rendered HTML.
+Parse an HTML string, expand registered components with `render()`, and return the rendered HTML.
 
 | Parameter | Type     | Description                              |
 | --------- | -------- | ---------------------------------------- |
 | `html`    | `string` | HTML string containing Elena components. |
 
-**Returns:** `string`, the rendered HTML with Primitive Components expanded.
-
-**Behavior by component type:**
-
-- **Primitive Components** (with `render()`): The component’s `render()` method is called and its output replaces the tag’s inner HTML. Attributes from the input are preserved on the host element and passed as props.
-- **Composite Components** (no `render()`): The tag and its attributes are preserved. Children are processed recursively.
-- **Other HTML tags**: Passed through unchanged.
+**Returns:** `string`, the rendered HTML with components expanded.
 
 ### How it works
 
 1. **Parse** the input HTML string into a tree (tags, attributes, children).
 2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
-3. **Expand** Primitive Components by constructing a lightweight instance, converting attribute strings to the correct prop types (boolean, number, array, object), calling `willUpdate()` if defined, and then calling `render()`.
-4. **Recurse** into Composite Component children and non-component tags.
+3. **Expand** components with `render()` by constructing a lightweight instance, converting attribute strings to the correct prop types (boolean, number, array, object), calling `willUpdate()` if defined, and then calling `render()`.
+4. **Recurse** into wrapper component children and non-component tags.
 5. **Serialize** the tree back to an HTML string.
 
 The rendered output matches what Elena produces on the client, using the same `html` tagged template escaping and whitespace normalization.

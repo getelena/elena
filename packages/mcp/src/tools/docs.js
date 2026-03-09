@@ -18,7 +18,7 @@ export function registerDocTools(server) {
       title: "Get Elena Authoring Patterns",
       description:
         "Returns the Elena component authoring guide. " +
-        "Covers component types (primitive vs composite), static class fields, props, events, " +
+        "Covers component patterns, static class fields, props, events, " +
         "templates, CSS encapsulation patterns, lifecycle methods, framework tips, and best practices. " +
         "Read this before creating or reviewing any Elena component.",
       inputSchema: {},

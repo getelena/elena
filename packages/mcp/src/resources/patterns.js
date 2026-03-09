@@ -13,7 +13,7 @@ export function registerPatternsResource(server) {
     {
       title: "Elena Component Authoring Patterns",
       description:
-        "Guide to Elena component patterns: primitive vs composite, options, props, events, CSS conventions, JSDoc, lifecycle",
+        "Guide to Elena component patterns: component types, options, props, events, CSS conventions, JSDoc, lifecycle",
       mimeType: "text/markdown",
     },
     async uri => ({

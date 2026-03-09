@@ -1,12 +1,12 @@
 import { describe, test, expect } from "vitest";
 import { generateSource } from "../src/generate.js";
 
-describe("generateSource, primitive JS", () => {
+describe("generateSource, JS", () => {
   const ALL = ["props", "events", "cssprops", "methods", "comments"];
   const NONE = [];
 
   test("all features", () => {
-    const out = generateSource("my-button", "primitive", "javascript", ALL);
+    const out = generateSource("my-button", "javascript", ALL);
 
     // Imports
     expect(out).toContain('import { Elena, html } from "@elenajs/core"');
@@ -42,7 +42,7 @@ describe("generateSource, primitive JS", () => {
   });
 
   test("no features", () => {
-    const out = generateSource("my-button", "primitive", "javascript", NONE);
+    const out = generateSource("my-button", "javascript", NONE);
 
     // Static tagName always present
     expect(out).toContain('static tagName = "my-button"');
@@ -65,7 +65,7 @@ describe("generateSource, primitive JS", () => {
   });
 
   test("only props", () => {
-    const out = generateSource("my-button", "primitive", "javascript", ["props"]);
+    const out = generateSource("my-button", "javascript", ["props"]);
 
     expect(out).toContain('static props = ["variant"]');
     expect(out).toContain('variant = "default"');
@@ -79,7 +79,7 @@ describe("generateSource, primitive JS", () => {
   });
 
   test("only events", () => {
-    const out = generateSource("my-button", "primitive", "javascript", ["events", "comments"]);
+    const out = generateSource("my-button", "javascript", ["events", "comments"]);
 
     expect(out).toContain('static events = ["click", "focus", "blur"]');
     expect(out).toContain("@event click");
@@ -91,7 +91,7 @@ describe("generateSource, primitive JS", () => {
   });
 
   test("only cssprops", () => {
-    const out = generateSource("my-button", "primitive", "javascript", ["cssprops", "comments"]);
+    const out = generateSource("my-button", "javascript", ["cssprops", "comments"]);
 
     expect(out).toContain("@cssprop [--my-button-text]");
 
@@ -103,7 +103,7 @@ describe("generateSource, primitive JS", () => {
   });
 
   test("only methods", () => {
-    const out = generateSource("my-button", "primitive", "javascript", ["methods"]);
+    const out = generateSource("my-button", "javascript", ["methods"]);
 
     expect(out).toContain("myMethod()");
     expect(out).toContain("console.log(this.element)");

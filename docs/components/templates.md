@@ -124,7 +124,7 @@ const button = document.querySelector("elena-button");
 button.text = "Save changes";
 ```
 
-When used with frameworks, static text as children works fine. For dynamic text that changes over time, use the `text` property instead, since [Primitive Components](/components/terminology) own their internal DOM and frameworks can’t update children after Elena has rendered:
+When used with frameworks, static text as children works fine. For dynamic text that changes over time, use the `text` property instead, since components with `render()` own their internal DOM and frameworks can’t update children after Elena has rendered:
 
 ```html
 // React
@@ -136,9 +136,6 @@ When used with frameworks, static text as children works fine. For dynamic text 
 // Vue
 <elena-button :text="buttonText"></elena-button>
 ```
-
-> [!TIP]
-> [Composite Components](/components/terminology) don’t need this. They preserve children naturally since they have no `render()` method. This only applies to [Primitive Components](/components/terminology), which own their internal DOM.
 
 ## Advanced  examples
 
@@ -207,7 +204,7 @@ render() {
 
 ### Multi-root template
 
-Templates can return multiple root elements. Useful for e.g. [Primitive Components](/components/terminology) that pair a label with an input:
+Templates can return multiple root elements. Useful for components that pair a label with an input:
 
 ```js
 render() {

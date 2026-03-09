@@ -8,13 +8,13 @@ describe("PATTERNS_CONTENT", () => {
   });
 
   describe("component types", () => {
-    it("documents primitive components", () => {
-      expect(PATTERNS_CONTENT).toContain("Primitive Components");
+    it("documents components with render()", () => {
+      expect(PATTERNS_CONTENT).toContain("Component with");
       expect(PATTERNS_CONTENT).toContain("render()");
     });
 
-    it("documents composite components", () => {
-      expect(PATTERNS_CONTENT).toContain("Composite Components");
+    it("documents html web components", () => {
+      expect(PATTERNS_CONTENT).toContain("HTML Web Components");
       expect(PATTERNS_CONTENT).toContain("no `render()` method");
     });
   });
@@ -144,8 +144,8 @@ describe("PATTERNS_CONTENT", () => {
   });
 
   describe("SSR", () => {
-    it("documents composite full SSR support", () => {
-      expect(PATTERNS_CONTENT).toContain("Composite Components");
+    it("documents html web component full SSR support", () => {
+      expect(PATTERNS_CONTENT).toContain("HTML Web Components");
       expect(PATTERNS_CONTENT).toContain("full SSR support");
     });
 
@@ -179,7 +179,7 @@ describe("PATTERNS_CONTENT", () => {
       expect(PATTERNS_CONTENT).toContain(':text="buttonText"');
     });
 
-    it("notes composite components are safe to compose", () => {
+    it("notes HTML Web Components are safe to compose", () => {
       expect(PATTERNS_CONTENT).toContain("safe to compose");
     });
   });

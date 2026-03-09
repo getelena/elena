@@ -1,9 +1,9 @@
 import { describe, test, expect } from "vitest";
 import { generateSource } from "../src/generate.js";
 
-describe("generateSource, primitive TS", () => {
+describe("generateSource, TS", () => {
   test("all features", () => {
-    const out = generateSource("my-button", "primitive", "typescript", [
+    const out = generateSource("my-button", "typescript", [
       "props",
       "events",
       "cssprops",
@@ -29,7 +29,7 @@ describe("generateSource, primitive TS", () => {
   });
 
   test("no features", () => {
-    const out = generateSource("my-button", "primitive", "typescript", []);
+    const out = generateSource("my-button", "typescript", []);
 
     expect(out).not.toContain("static props");
     expect(out).not.toContain("static events");

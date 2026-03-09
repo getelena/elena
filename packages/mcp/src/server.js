@@ -43,10 +43,10 @@ Components are built by extending the \`Elena()\` factory function from \`@elena
 import { Elena, html, nothing } from "@elenajs/core";
 \`\`\`
 
-Elena has two component types:
+There are two recommended patterns for building Elena components:
 
-### Primitive Components
-Self-contained components that own and render their own HTML markup via \`render()\`. All content is controlled through props. Examples: button, input, checkbox, switch.
+### Component with \`render()\`
+Owns and renders its own HTML markup. All content is controlled through props. Examples: button, input, checkbox, switch.
 
 \`\`\`js
 import { Elena, html } from "@elenajs/core";
@@ -68,8 +68,8 @@ export default class Button extends Elena(HTMLElement) {
 Button.define();
 \`\`\`
 
-### Composite Components
-Components that wrap and enhance composed children. They have NO \`render()\` method and never touch the light DOM children. Examples: stack, card, layout, fieldset.
+### HTML Web Component
+Wraps and enhances composed children. No \`render()\` method — never touches the light DOM children. Examples: stack, card, layout, fieldset.
 
 \`\`\`js
 import { Elena } from "@elenajs/core";
@@ -89,14 +89,14 @@ Stack.define();
 1. **Always import from \`@elenajs/core\`** — use \`Elena\`, \`html\`, and \`nothing\` from this package.
 2. **Static class fields** — configure components with \`static tagName\`, \`static props\`, \`static events\`, \`static element\` (all optional). Do NOT use an options object.
 3. **Props** must be listed in \`static props\` AND given default class field values with JSDoc \`@attribute\` and \`@type\` annotations. Use \`{ name: "prop", reflect: false }\` in \`static props\` to suppress attribute reflection.
-4. **Text content** — Every primitive component has a built-in reactive \`this.text\` property. Use it in \`render()\` instead of \`this.textContent\`.
+4. **Text content** — Every Elena component has a built-in reactive \`this.text\` property. Use it in \`render()\` instead of \`this.textContent\`.
 5. **Templates** — \`render()\` must return an \`html\` tagged template literal. Use \`nothing\` (not empty strings) in conditional expressions.
 6. **Registration** — Always call \`ClassName.define()\` after the class body.
-7. **CSS (Primitive)** — Use \`@scope (tag-name)\` for style isolation. The encapsulation reset is: \`:scope, *:where(:not(img, svg):not(svg *)), *::before, *::after { all: unset; display: revert; }\`. Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles.
-8. **CSS (Composite)** — Use \`@scope (tag-name)\` but do NOT include the encapsulation reset. Composite components only style the host element.
+7. **CSS (components with \`render()\`)** — Use \`@scope (tag-name)\` for style isolation. The encapsulation reset is: \`:scope, *:where(:not(img, svg):not(svg *)), *::before, *::after { all: unset; display: revert; }\`. Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles.
+8. **CSS (HTML Web Components)** — Use \`@scope (tag-name)\` but do NOT include the encapsulation reset. Only style the host element.
 9. **JSDoc** — Use class-level \`@displayName\`, \`@status\`, \`@event\`, \`@cssprop\`, \`@slot\` annotations. Mark internal methods with \`@internal\`.
-10. **Composite components** must NOT have \`render()\`, \`static events\`, or \`static element\`.
-11. **Primitive components** must NOT have framework components rendered inside them — Elena calls \`replaceChildren()\` on render.
+10. **HTML Web Components** must NOT have \`render()\`, \`static events\`, or \`static element\`.
+11. **Components with \`render()\`** must NOT have framework components rendered inside them — Elena calls \`replaceChildren()\` on render.
 12. **\`willUpdate()\`** — Optional lifecycle hook that runs before every render. Use it to compute derived state. Do not call \`super\` inside it.
 
 ## Attribute Naming Rules

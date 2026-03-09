@@ -7,7 +7,7 @@
   <img src="https://elenajs.com/img/elena.png" alt="Elena" width="201" height="230">
 </picture>
 
-### Render Elena Primitive Components to HTML strings for SSR.
+### Render Elena components to HTML strings for server-side rendering.
 
 <br/>
 
@@ -20,7 +20,7 @@
 
 <br/>
 
-<p align="center"><strong>@elenajs/ssr</strong> renders <a href="https://elenajs.com">Elena</a> Primitive Components to fully expanded HTML strings for Server Side Rendering (SSR). Pass an HTML string containing Elena components, and get back rendered HTML with Primitive Component templates expanded inline. Works with Node.js without requiring any browser DOM APIs.</p>
+<p align="center"><strong>@elenajs/ssr</strong> renders <a href="https://elenajs.com">Elena</a> components to fully expanded HTML strings for Server Side Rendering (SSR). Pass an HTML string containing Elena components, and get back rendered HTML with component templates expanded inline. Works with Node.js without requiring any browser DOM APIs.</p>
 
 <br/>
 
@@ -34,7 +34,7 @@
 - **[Install](#install)**
 - **[Usage](#usage)**
   - **[Basic example](#basic-example)**
-  - **[With composites and nesting](#with-composites-and-nesting)**
+  - **[With nesting](#with-nesting)**
   - **[With a full page](#with-a-full-page)**
   - **[With Eleventy](#with-eleventy)**
 - **[API](#api)**
@@ -42,7 +42,6 @@
   - **[`ssr(html)`](#ssrhtml)**
 - **[How it works](#how-it-works)**
 - **[Client-side hydration](#client-side-hydration)**
-- **[Component types](#component-types)**
 
 ## Install
 
@@ -64,9 +63,9 @@ const html = ssr(`<elena-button variant="primary">Save</elena-button>`);
 // Outputs: '<elena-button variant="primary"><button>Save</button></elena-button>'
 ```
 
-### With composites and nesting
+### With nesting
 
-Composite Components preserve their children. Primitive Components inside Composites are expanded automatically:
+Nested Elena components are expanded automatically:
 
 ```js
 import { ssr, register } from "@elenajs/ssr";
@@ -124,7 +123,7 @@ You can use `@elenajs/ssr` with [Eleventy](https://www.11ty.dev/) as either a tr
 
 #### As a transform
 
-A transform processes every rendered page automatically, expanding any registered Elena Primitive Components found in the output HTML. No shortcodes or special syntax needed, just write Elena components directly in your templates:
+A transform processes every rendered page automatically, expanding any registered components found in the output HTML. No shortcodes or special syntax needed, just write Elena components directly in your templates:
 
 ```js
 // eleventy.config.js
@@ -177,7 +176,7 @@ Then in a template:
 
 ### `register(...components)`
 
-Register Elena Primitive Component classes for SSR. Each class must have `static tagName` defined as a static field. Call this once before using `ssr()`.
+Register Elena component classes for SSR expansion. Each class must have `static tagName` defined. Call this once before using `ssr()`.
 
 ```js
 import { register } from "@elenajs/ssr";
@@ -191,26 +190,20 @@ Throws an error if a component does not have a `tagName`.
 
 ### `ssr(html)`
 
-Parse an HTML string, expand registered Elena Primitive Components, and return the rendered HTML.
+Parse an HTML string, expand registered components with `render()`, and return the rendered HTML.
 
 | Parameter | Type     | Description                              |
 | --------- | -------- | ---------------------------------------- |
 | `html`    | `string` | HTML string containing Elena components. |
 
-**Returns:** `string`, The rendered HTML with Primitive Components expanded.
-
-**Behavior by component type:**
-
-- **Primitive Components** (with `render()`): The component’s `render()` method is called and its output replaces the tag’s inner HTML. Attributes from the input are preserved on the host element and passed as props.
-- **Composite Components** (no `render()`): The tag and its attributes are preserved. Children are processed recursively.
-- **Other HTML tags**: Passed through unchanged.
+**Returns:** `string`, the rendered HTML with components expanded.
 
 ## How it works
 
 1. **Parse** the input HTML string into a tree (tags, attributes, children).
 2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
-3. **Expand** Primitive Components by constructing a lightweight instance with `new`, converting attribute strings to the correct prop types (boolean, number, array, object), calling `willUpdate()` if defined, and then calling `render()`.
-4. **Recurse** into Composite Component children and non-component tags.
+3. **Expand** components with `render()` by constructing a lightweight instance, converting attribute strings to the correct prop types (boolean, number, array, object), calling `willUpdate()` if defined, and then calling `render()`.
+4. **Recurse** into HTML Web Component children and non-component tags.
 5. **Serialize** the tree back to an HTML string.
 
 The rendered output matches what Elena produces on the client, using the same `html` tagged template escaping and whitespace normalization.
@@ -219,16 +212,9 @@ The rendered output matches what Elena produces on the client, using the same `h
 
 The HTML produced by `ssr()` is designed for progressive enhancement. When the component JavaScript loads on the client:
 
-1. Elena’s `connectedCallback` fires on the pre-rendered element.
+1. Elena's `connectedCallback` fires on the pre-rendered element.
 2. `render()` runs and hydrates the component with interactivity.
 3. Event listeners are attached, methods become available, and the `hydrated` attribute is added.
-
-## Component types
-
-| Component type | SSR behavior                                      |
-| -------------- | ------------------------------------------------- |
-| **Primitive**  | `render()` is called; output replaces inner HTML. |
-| **Composite**  | Tag preserved; children processed recursively.    |
 
 ## License
 

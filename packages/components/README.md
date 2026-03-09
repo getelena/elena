@@ -84,7 +84,7 @@ Each component ships with a matching CSS file. Import the full bundle or individ
 
 ### Button
 
-A **Primitive Component** that renders its own `<button>` element with built-in event delegation and variant styling.
+Renders a `<button>` element with built-in event delegation and variant styling.
 
 ```html
 <elena-button>Click me</elena-button>
@@ -122,7 +122,7 @@ A **Primitive Component** that renders its own `<button>` element with built-in 
 
 ### Stack
 
-A **Composite Component** that manages flexbox layout of its children with optional spacing.
+Manages flexbox layout of its children with optional spacing.
 
 ```html
 <elena-stack>

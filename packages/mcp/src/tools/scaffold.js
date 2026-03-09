@@ -47,26 +47,18 @@ export function formatDefault(type, defaultVal) {
  * @returns {string}
  */
 export function generateJS(params) {
-  const { name, tagName, type, props, events, cssProperties, description, status } = params;
-  const isPrimitive = type === "primitive";
-  const kebab = toKebab(name);
-  const innerClass = `elena-${kebab}`;
+  const { name, tagName, props, events, cssProperties, description, status } = params;
 
   // Imports
-  const imports = isPrimitive
-    ? 'import { Elena, html, nothing } from "@elenajs/core";'
-    : 'import { Elena } from "@elenajs/core";';
+  const imports = 'import { Elena, html } from "@elenajs/core";';
 
   // Class-level JSDoc (goes above the class declaration)
   const jsdocLines = ["/**"];
   jsdocLines.push(` * ${description || `${name} component.`}`);
   jsdocLines.push(" *");
   jsdocLines.push(` * @displayName ${name}`);
-  if (!isPrimitive) {
-    jsdocLines.push(" * @slot - The component content");
-  }
   jsdocLines.push(` * @status ${status}`);
-  if (isPrimitive && events.length > 0) {
+  if (events.length > 0) {
     jsdocLines.push(" *");
     for (const event of events) {
       jsdocLines.push(` * @event ${event} - Fires the ${event} event.`);
@@ -87,12 +79,9 @@ export function generateJS(params) {
     const propNames = props.map(p => `"${p.name}"`).join(", ");
     staticLines.push(`  static props = [${propNames}];`);
   }
-  if (isPrimitive && events.length > 0) {
+  if (events.length > 0) {
     const eventNames = events.map(e => `"${e}"`).join(", ");
     staticLines.push(`  static events = [${eventNames}];`);
-  }
-  if (isPrimitive) {
-    staticLines.push(`  static element = ".${innerClass}";`);
   }
 
   // Prop class fields with JSDoc
@@ -112,20 +101,18 @@ export function generateJS(params) {
     propFieldLines.push(`  ${prop.name} = ${formatDefault(prop.type, prop.default)};`);
   }
 
-  // Render method (primitive only)
-  const renderLines = isPrimitive
-    ? [
-        "",
-        "  /**",
-        "   * Renders the template.",
-        "   *",
-        "   * @internal",
-        "   */",
-        "  render() {",
-        `    return html\`<div class="${innerClass}">\${this.text}</div>\`;`,
-        "  }",
-      ]
-    : [];
+  // render() method
+  const renderLines = [
+    "",
+    "  /**",
+    "   * Renders the template.",
+    "   *",
+    "   * @internal",
+    "   */",
+    "  render() {",
+    `    return html\`<div class="${tagName}">\${this.text}</div>\`;`,
+    "  }",
+  ];
 
   // Assemble
   const lines = [
@@ -152,10 +139,7 @@ export function generateJS(params) {
  * @returns {string}
  */
 export function generateCSS(params) {
-  const { tagName, name, type, cssProperties } = params;
-  const isPrimitive = type === "primitive";
-  const kebab = toKebab(name);
-  const innerClass = `elena-${kebab}`;
+  const { tagName, name, cssProperties, cssEncapsulation, ssr } = params;
   const upperName = name.toUpperCase();
 
   const lines = [
@@ -168,9 +152,7 @@ export function generateCSS(params) {
     "",
   ];
 
-  // Primitive Components use an encapsulation reset to prevent global styles from leaking in.
-  // Composite Components do NOT use the reset.
-  if (isPrimitive) {
+  if (cssEncapsulation) {
     lines.push("  /* Unset makes sure styles don't leak in */");
     lines.push("  :scope,");
     lines.push("  *:where(:not(img, svg):not(svg *)),");
@@ -184,7 +166,6 @@ export function generateCSS(params) {
 
   lines.push("  :scope {");
 
-  // CSS custom properties
   if (cssProperties.length > 0) {
     lines.push("    /* Public CSS Custom Properties */");
     for (const cp of cssProperties) {
@@ -193,25 +174,17 @@ export function generateCSS(params) {
     lines.push("");
   }
 
-  if (isPrimitive) {
-    lines.push("    display: inline-block;");
-    lines.push("  }");
-    lines.push("");
+  lines.push("    display: inline-block;");
+  lines.push("  }");
+  lines.push("");
+
+  if (ssr) {
     lines.push("  :scope:not([hydrated]),");
-    lines.push(`  .${innerClass} {`);
-    lines.push("    /* Add shared styles here */");
-    lines.push("  }");
-    lines.push("");
-    lines.push(`  .${innerClass} {`);
-    lines.push("    display: inline-flex;");
-    lines.push("  }");
-  } else {
-    lines.push("    display: flex;");
-    lines.push("    flex-direction: column;");
-    lines.push("    gap: 0.5rem;");
-    lines.push("  }");
   }
 
+  lines.push(`  .${tagName} {`);
+  lines.push("    /* Add shared styles here */");
+  lines.push("  }");
   lines.push("}");
   lines.push("");
 
@@ -236,11 +209,6 @@ export function registerScaffoldTool(server) {
       inputSchema: {
         name: z.string().describe("Component class name in PascalCase (e.g. 'DatePicker')"),
         tagName: z.string().describe("Custom element tag name (e.g. 'elena-date-picker')"),
-        type: z
-          .enum(["primitive", "composite"])
-          .describe(
-            "Component type: 'primitive' (owns its own render) or 'composite' (wraps children)"
-          ),
         props: z
           .array(
             z.object({
@@ -267,6 +235,16 @@ export function registerScaffoldTool(server) {
           .describe("CSS custom properties to document"),
         description: z.string().default("").describe("Component description for JSDoc"),
         status: z.enum(["alpha", "beta", "stable"]).default("alpha"),
+        cssEncapsulation: z
+          .boolean()
+          .default(true)
+          .describe("Include the all:unset encapsulation reset in CSS (default: true)"),
+        ssr: z
+          .boolean()
+          .default(false)
+          .describe(
+            "Include :scope:not([hydrated]) SSR pattern in CSS to avoid layout shift (default: false)"
+          ),
       },
     },
     async params => {

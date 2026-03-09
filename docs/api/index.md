@@ -27,7 +27,7 @@ sidebar: false
 | `props` | `(string \| { name: string, reflect?: boolean })[]` | The list of props this component accepts. Each prop stays in sync with its matching HTML attribute. Use `{ name, reflect: false }` to keep a prop JS-only without writing it back to the attribute. |
 | `events` | `string[]` | Events to forward from the inner element up to the host (e.g. `["click", "focus", "blur"]`). |
 | `element` | `string` | A CSS selector for the inner element that `this.element` points to (e.g. `".inner"`, `"button"`). Defaults to the first child element when omitted. |
-| `shadow` | `"open" \| "closed"` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host. Only for Primitive Components. |
+| `shadow` | `"open" \| "closed"` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host. |
 | `styles` | `CSSStyleSheet \| string \| (CSSStyleSheet \| string)[]` | One or more stylesheets to adopt into the shadow root. Only applies when `shadow` is also set. |
 
 ### Host Attributes
@@ -51,7 +51,7 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 |--------|-------------|
 | `connectedCallback()` | Runs when the element is added to the page. Sets up props, captures text content, renders, and wires up events. |
 | `willUpdate()` | Runs before every render, including the first. Override to compute derived state before the template evaluates. |
-| `render()` | Returns the HTML for this component as an `html` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for [Composite Components](/components/terminology), they don’t render their own HTML. |
+| `render()` | Returns the HTML for this component as an `html` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for wrapper components that don’t render their own HTML. |
 | `firstUpdated()` | Runs once after the first render. `this.element` is available here. Override to run one-time setup that requires the DOM. |
 | `updated()` | Runs after every render, including the first. `this.element` is available here. Override to react to changes after the DOM is updated. On first connect, `firstUpdated()` runs before `updated()`. |
 | `requestUpdate()` | Manually schedules a re-render. Use when Elena can’t detect a change automatically, e.g. when mutating an object or array in place. Returns nothing, use `updateComplete` to wait for the render to finish. |
@@ -116,7 +116,7 @@ Starts an interactive prompt that walks you through creating a new Elena compone
 | Prompt | Options |
 |--------|---------|
 | Component name | Any valid kebab-case custom element name (e.g. `my-button`) |
-| Component type | Primitive or Composite |
+| Component name | Any valid kebab-case custom element name |
 | Language | JavaScript, TypeScript, or single-file HTML |
 | Output directory | Where to write the generated files |
 | Features | Props, events, methods, CSS custom properties, encapsulation reset, SSR, and code comments (each optional) |
@@ -128,7 +128,7 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `register` | `register(...components)` | Tell the SSR renderer which component classes to expand. Each class must have `tagName` option set. Call this before `ssr()`. |
-| `ssr` | `ssr(html)` | Takes an HTML string, renders any registered [Primitive Components](/components/terminology) into full HTML, and returns the result. [Composite Components](/components/terminology) and regular HTML tags are left as-is. |
+| `ssr` | `ssr(html)` | Takes an HTML string, expands any registered components into full HTML, and returns the result. The rest of the HTML tags are left as-is. |
 
 ## `@elenajs/mcp`
 

@@ -16,12 +16,12 @@ import { parseDocument, ElementType } from "htmlparser2";
 import { normalizeWhitespace, escapeHtml } from "./common/utils.js";
 
 /**
- * Render Elena Primitive Components to HTML strings.
+ * Render Elena Progressive Web Components to HTML strings.
  *
- * Parses an HTML string, expands registered Elena primitive
- * components by calling their render() methods, and returns
- * the fully rendered HTML. Works in Node.js with no browser
- * DOM APIs required.
+ * Parses an HTML string, expands registered Elena components
+ * by calling their render() methods, and returns the fully
+ * rendered HTML. Works in Node.js with no browser DOM APIs
+ * required.
  *
  * @param {string} html - HTML string containing Elena components.
  * @returns {string} The rendered HTML with components expanded.
@@ -259,9 +259,9 @@ function walk(nodes, preserveWhitespace = false) {
       out += `<${tag}${serializeAttrs(attrs)}>`;
     } else {
       const ComponentClass = tag.includes("-") ? registry.get(tag) : null;
-      const isPrimitive = ComponentClass && Object.hasOwn(ComponentClass.prototype, "render");
+      const hasRender = ComponentClass && Object.hasOwn(ComponentClass.prototype, "render");
       const pre = preserveWhitespace || tag === "pre";
-      if (isPrimitive) {
+      if (hasRender) {
         const innerHTML = renderComponent(ComponentClass, attrs, getTextContent(children));
         // Mark as hydrated so CSS targeting :scope:not([hydrated]) doesn’t
         // double-style the host alongside the already-rendered inner element.

@@ -6,18 +6,15 @@ export const PATTERNS_CONTENT = `# Elena Component Authoring Patterns
 
 ## Component Types
 
-Elena has two component categories:
+Elena components are standard custom elements — they work everywhere HTML works.
 
-### Primitive Components
-Self-contained components that own and render their own HTML markup via \`render()\`.
-All content is controlled through \`props\`, nothing is composed into them.
-Examples: button, input, checkbox, radio, textarea, icon, spinner, switch.
+There are two recommended patterns for building Elena components:
 
-### Composite Components
-Components that wrap and enhance the HTML composed inside them, including other components.
-They have no \`render()\` method and never touch the light DOM children.
-Provide styling, layout, and behavior around the composed content.
-Examples: stack, table, layout, card, banner, visually-hidden, fieldset.
+### Component with \`render()\`
+Self-contained components that own and render their own HTML markup. All content is controlled through \`props\`. Examples: button, input, checkbox, radio, textarea, icon, spinner, switch.
+
+### HTML Web Components
+Components that wrap and enhance the HTML composed inside them. They have no \`render()\` method and never touch the light DOM children. Provide styling, layout, and behavior around composed content. Examples: stack, table, layout, card, banner, visually-hidden, fieldset.
 
 ---
 
@@ -34,7 +31,7 @@ Elena components are configured using static class fields on the class body:
 
 All static fields are optional.
 
-### Primitive Component Example
+### Component with \`render()\`
 
 \`\`\`js
 import { Elena, html } from "@elenajs/core";
@@ -91,7 +88,7 @@ export default class Button extends Elena(HTMLElement) {
 Button.define();
 \`\`\`
 
-### Composite Component Example
+### HTML Web Component
 
 \`\`\`js
 import { Elena } from "@elenajs/core";
@@ -258,7 +255,7 @@ The prop still updates the component and triggers re-renders — it just does no
 
 ## Text Content
 
-Every Primitive Component has a built-in reactive \`text\` property:
+Every Elena component has a built-in reactive \`text\` property:
 - On first connect, Elena captures the element's \`textContent\` from the light DOM (trimmed)
 - Use \`this.text\` in \`render()\` to reference it
 - Setting \`text\` programmatically triggers a re-render
@@ -283,7 +280,7 @@ Class-level:
 - \`@status\` — alpha, beta, or stable
 - \`@event <name> - description\` — Event documentation
 - \`@cssprop [--prop-name] - description\` — CSS custom property
-- \`@slot [name] - description\` — Slot documentation (composite only)
+- \`@slot [name] - description\` — Slot documentation
 
 Property-level:
 - \`@attribute\` — Marks as an observed attribute
@@ -300,7 +297,7 @@ Elena recommends the \`@scope\` at-rule for component styles. It prevents styles
 
 ### Elena CSS Encapsulation Pattern
 
-\`@scope\` prevents component styles from leaking out, but does not prevent global styles from leaking in. For Primitive Components, combine \`@scope\` with a universal \`all: unset\` reset:
+\`@scope\` prevents component styles from leaking out, but does not prevent global styles from leaking in. For components with \`render()\`, combine \`@scope\` with a universal \`all: unset\` reset:
 
 \`\`\`css
 /* Scope makes sure styles don't leak out */
@@ -321,11 +318,11 @@ Elena recommends the \`@scope\` at-rule for component styles. It prevents styles
 
 The \`:where(:not(img, svg):not(svg *))\` selector excludes images and SVGs from the reset so they continue to render correctly. \`display: revert\` restores browser default display values after \`all: unset\` clears them.
 
-**Composite Components must NOT use this reset** — they have no inner DOM to protect, and the reset would break composed children.
+**HTML Web Components must NOT use this reset** — they have no inner DOM to protect, and the reset would break composed children.
 
 ### Scoped styles (recommended)
 
-Full baseline pattern for a **Primitive Component**:
+Full baseline pattern for a **component with \`render()\`**:
 
 \`\`\`css
 /* Scope makes sure styles don't leak out */
@@ -385,9 +382,9 @@ Key rules:
 - Use attribute selectors on \`:scope\` for variant/state styling.
 - Define public CSS custom properties on \`:scope\` for theming.
 
-### Composite Component CSS
+### HTML Web Component CSS
 
-Composite Components only style the host — no encapsulation reset, no inner element, no hydration concerns:
+HTML Web Components only style the host — no encapsulation reset, no inner element, no hydration concerns:
 
 \`\`\`css
 /* Scope makes sure styles don't leak out */
@@ -426,7 +423,7 @@ elena-button[variant="primary"] { /* variant overrides */ }
 
 ### Pre-hydration pseudo-elements
 
-For better SSR support in Primitive Components, use CSS pseudo-elements referencing host attributes to surface content before JavaScript loads:
+For better SSR support in components with \`render()\`, use CSS pseudo-elements referencing host attributes to surface content before JavaScript loads:
 
 \`\`\`css
 :scope:not([hydrated])::before { content: attr(label); }
@@ -445,7 +442,7 @@ Methods in order of execution on first connect:
 
 1. \`connectedCallback()\` — Captures textContent, batches re-render
 2. \`willUpdate()\` — Runs before every render; use for derived/computed state. Do not call \`super\`.
-3. \`render()\` — Must return an \`html\` tagged template literal (primitive only)
+3. \`render()\` — Must return an \`html\` tagged template literal (only for components that own their markup)
 4. \`firstUpdated()\` — Runs once after the first render, before \`updated()\`
 5. \`updated()\` — Runs after every render; adds the \`hydrated\` attribute to the host on first call
 
@@ -500,10 +497,10 @@ Always call \`ClassName.define()\` after the class body to register the element.
 
 Elena's approach to SSR:
 
-- **Composite Components** provide full SSR support by default — their HTML lives entirely in the Light DOM.
-- **Primitive Components** provide partial SSR support — base HTML & CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
+- **HTML Web Components** provide full SSR support by default — their HTML lives entirely in the Light DOM.
+- **Components with \`render()\`** provide partial SSR support — base HTML & CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
 
-For Primitive Components, ship CSS styles that visually match both loading and hydrated states to avoid FOUC/FOIC. Use the \`hydrated\` attribute:
+For components with \`render()\`, ship CSS styles that visually match both loading and hydrated states to avoid FOUC/FOIC. Use the \`hydrated\` attribute:
 
 \`\`\`css
 :scope:not([hydrated]),
@@ -512,7 +509,7 @@ For Primitive Components, ship CSS styles that visually match both loading and h
 }
 \`\`\`
 
-For better SSR in Primitive Components, use CSS pseudo-elements referencing host attributes:
+For better SSR in components with \`render()\`, use CSS pseudo-elements referencing host attributes:
 
 \`\`\`css
 :scope:not([hydrated])::before { content: attr(label); }
@@ -536,12 +533,12 @@ button.click(); // Safe after defined
 
 ## Framework Compatibility
 
-Rules for **Primitive Components** when used with a framework:
+Rules for **components with \`render()\`** when used with a framework:
 
-- Never render a framework component _inside_ a Primitive Component. Elena calls \`replaceChildren()\` on render, which destroys the framework's component tree.
-- Avoid the framework and Elena both mutating the same attribute on a Primitive Component — the framework's reconciler would overwrite Elena's changes, triggering many re-renders.
+- Never render a framework component _inside_ a component with \`render()\`. Elena calls \`replaceChildren()\` on render, which destroys the framework's component tree.
+- Avoid the framework and Elena both mutating the same attribute — the framework's reconciler would overwrite Elena's changes, triggering many re-renders.
 - Treat framework-controlled props as read-only inputs inside \`render()\`. Elena communicates back via events, the framework updates state.
-- For dynamic text, use the \`text\` property instead of children, since Primitive Components own their internal DOM and frameworks cannot update children after hydration:
+- For dynamic text, use the \`text\` property instead of children, since components with \`render()\` own their internal DOM and frameworks cannot update children after hydration:
 
 \`\`\`jsx
 // React
@@ -557,7 +554,7 @@ Rules for **Primitive Components** when used with a framework:
 
 **React 17 note:** React 17 does not pass Array or Object props (or event handlers) to web components correctly. Use React 18+.
 
-**Composite Components** are safe to compose just like any HTML container element — the framework renders both the wrapper and its children.
+**HTML Web Components** are safe to compose just like any HTML container element — the framework renders both the wrapper and its children.
 
 ---
 

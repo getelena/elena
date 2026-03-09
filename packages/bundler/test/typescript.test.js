@@ -91,7 +91,6 @@ Button.define();
 `
   );
 
-  // Write a TypeScript composite component.
   writeFileSync(
     join(srcDir, "stack.ts"),
     `import { Elena } from "@elenajs/core";

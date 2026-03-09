@@ -1,4 +1,4 @@
-# Creating Documentation
+# Creating documentation
 
 Elena components are documented using [JSDoc](https://jsdoc.app) annotations written directly in the source file. When you run `elena build`, the `@elenajs/bundler` reads these annotations and generates a Custom Elements Manifest, per-component TypeScript declarations, and JSX integration types.
 
@@ -40,7 +40,7 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 ### `@slot`
 
-Documents the default bare slot a [Composite Component](/components/terminology) accepts.  This is picked up by `@elenajs/bundler` and included in the Custom Elements Manifest:
+Documents the default slot of an HTML Web Component or the slots that a web component with Shadow DOM accepts. This is picked up by `@elenajs/bundler` and included in the Custom Elements Manifest:
 
 ```js
 /**

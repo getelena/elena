@@ -32,9 +32,9 @@ describe("create-component prompt", () => {
   });
 
   it("includes component type when provided", () => {
-    const result = prompt.handler({ name: "DatePicker", type: "primitive" });
+    const result = prompt.handler({ name: "DatePicker", type: "html-web-component" });
     const text = result.messages[0].content.text;
-    expect(text).toContain("primitive");
+    expect(text).toContain("html-web-component");
   });
 
   it("includes description when provided", () => {

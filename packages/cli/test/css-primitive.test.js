@@ -1,9 +1,9 @@
 import { describe, test, expect } from "vitest";
 import { generateCSS } from "../src/generate.js";
 
-describe("generateCSS, primitive", () => {
+describe("generateCSS", () => {
   test("all CSS features", () => {
-    const out = generateCSS("my-button", "primitive", ["cssprops", "props", "cssencap", "ssr"]);
+    const out = generateCSS("my-button", ["cssprops", "props", "cssencap", "ssr"]);
 
     // Scope and reset
     expect(out).toContain("@scope (my-button)");
@@ -24,21 +24,21 @@ describe("generateCSS, primitive", () => {
   });
 
   test("with ssr feature", () => {
-    const out = generateCSS("my-button", "primitive", ["ssr"]);
+    const out = generateCSS("my-button", ["ssr"]);
 
     expect(out).toContain(":scope:not([hydrated])");
     expect(out).toContain(".my-button");
   });
 
   test("without ssr feature", () => {
-    const out = generateCSS("my-button", "primitive", ["cssprops"]);
+    const out = generateCSS("my-button", ["cssprops"]);
 
     expect(out).not.toContain(":scope:not([hydrated])");
     expect(out).toContain(".my-button");
   });
 
   test("with only cssprops (no props)", () => {
-    const out = generateCSS("my-button", "primitive", ["cssprops"]);
+    const out = generateCSS("my-button", ["cssprops"]);
 
     expect(out).toContain("--my-button-font: sans-serif");
     expect(out).toContain("var(--my-button-font)");
@@ -48,7 +48,7 @@ describe("generateCSS, primitive", () => {
   });
 
   test("with only props (no cssprops)", () => {
-    const out = generateCSS("my-button", "primitive", ["props"]);
+    const out = generateCSS("my-button", ["props"]);
 
     // No CSS custom properties
     expect(out).not.toContain("--my-button-font");
@@ -58,21 +58,21 @@ describe("generateCSS, primitive", () => {
   });
 
   test("with cssencap", () => {
-    const out = generateCSS("my-button", "primitive", ["cssencap"]);
+    const out = generateCSS("my-button", ["cssencap"]);
 
     expect(out).toContain("all: unset");
     expect(out).toContain("*:where(:not(img, svg):not(svg *))");
   });
 
   test("without cssencap", () => {
-    const out = generateCSS("my-button", "primitive", []);
+    const out = generateCSS("my-button", []);
 
     expect(out).not.toContain("all: unset");
     expect(out).not.toContain("*::before");
   });
 
   test("no features", () => {
-    const out = generateCSS("my-button", "primitive", []);
+    const out = generateCSS("my-button", []);
 
     // Always present: scope, display
     expect(out).toContain("@scope (my-button)");
