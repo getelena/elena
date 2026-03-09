@@ -38,7 +38,7 @@ function validateName(value) {
  * Runs the interactive prompts to gather component options.
  *
  * @param {string | undefined} nameArg - Optional name from CLI argument
- * @returns {Promise<{ name: string, type: "primitive" | "composite", language: "javascript" | "typescript", outputDir: string }>}
+ * @returns {Promise<{ name: string, language: "javascript" | "typescript", outputDir: string }>}
  */
 export async function runPrompts(nameArg) {
   const theme = {
@@ -74,45 +74,17 @@ export async function runPrompts(nameArg) {
     }
   }
 
-  const type = await select({
-    message: "Component type:",
-    choices: [
-      {
-        name: "Primitive",
-        value: "primitive",
-        description: "Owns and renders its own HTML markup",
-      },
-      {
-        name: "Composite",
-        value: "composite",
-        description: "Wraps and enhances composed HTML markup",
-      },
-    ],
-    theme,
-  });
-
-  const featureChoices =
-    type === "primitive"
-      ? [
-          { name: "Props", value: "props" },
-          { name: "Events", value: "events" },
-          { name: "Methods", value: "methods" },
-          { name: "CSS Variables", value: "cssprops" },
-          { name: "CSS Encapsulation", value: "cssencap" },
-          { name: "CSS SSR Pattern", value: "ssr" },
-          { name: "Code Comments", value: "comments" },
-        ]
-      : [
-          { name: "Props", value: "props" },
-          { name: "Methods", value: "methods" },
-          { name: "CSS Variables", value: "cssprops" },
-          { name: "CSS Encapsulation", value: "cssencap" },
-          { name: "Code Comments", value: "comments" },
-        ];
-
   const features = await checkbox({
     message: "Component features:",
-    choices: featureChoices,
+    choices: [
+      { name: "Props", value: "props" },
+      { name: "Events", value: "events" },
+      { name: "Methods", value: "methods" },
+      { name: "CSS Variables", value: "cssprops" },
+      { name: "CSS Encapsulation", value: "cssencap" },
+      { name: "CSS SSR Pattern", value: "ssr" },
+      { name: "Code Comments", value: "comments" },
+    ],
     theme,
   });
 
@@ -132,5 +104,5 @@ export async function runPrompts(nameArg) {
     theme,
   });
 
-  return { name, type, language, features, outputDir };
+  return { name, language, features, outputDir };
 }
