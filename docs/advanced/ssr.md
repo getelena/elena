@@ -1,6 +1,8 @@
 # Server-side rendering
 
-Elena’s recommended approach to server-side rendering is simple and straightforward. Since Progressive Web Components are primarily HTML and CSS, you don’t need any special logic on the server to render them. Components without a `render()` method are fully SSR-compatible by default, while components with `render()` provide partial support and complete hydration on the client side.
+Elena’s recommended approach to server-side rendering is simple and straightforward. Since [Progressive Web Components](/#why-is-it-progressive) are primarily HTML and CSS, you don’t need any special logic on the server to render them. 
+
+Components without a `render()` method are fully SSR-compatible by default _(HTML Web Components),_ while components with `render()` provide partial support and complete hydration on the client side.
 
 Partial SSR support for components with `render()` means that the component’s base HTML and CSS lives in the Light DOM. The JavaScript lifecycle then progressively enhances the functionality and markup once the element is registered.
 

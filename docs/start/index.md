@@ -29,10 +29,6 @@ The fastest way to get started is to include the following directly into your we
 
 ## Installation
 
-Before moving further, please make sure you have Node.js installed. You can install the latest version through [their website](https://nodejs.org/en) or by following the [guidelines here](https://nodejs.org/en/download).
-
-If you’re planning on using Elena in a project that doesn’t yet use Node Package Manager, you will have to first create a `package.json` file. To do this, run `npm init` and follow the steps provided. Once finished, you can continue by following the instructions below.
-
 To install Elena as a dependency in your project, run:
 
 ::: code-group

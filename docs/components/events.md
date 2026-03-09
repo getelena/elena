@@ -2,7 +2,9 @@
 
 ## Delegated events
 
-When a web component renders its own inner DOM via `render()`, native events like `click` fire on the inner element (e.g. the `<button>`), not on the host (`<elena-button>`). `static events` tells Elena to listen for those events on the inner element and re-fire them on the host, so consumers can attach listeners to the custom element directly:
+When a web component renders its own inner DOM via `render()`, native events like `click` fire on the inner element (e.g. the `<button>`), not on the host (`<elena-button>`). 
+
+`static events` tells Elena to listen for those events on the inner element and re-fire them on the host, so consumers can attach listeners to the custom element directly:
 
 ```js
 export default class Button extends Elena(HTMLElement) {
