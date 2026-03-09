@@ -98,13 +98,6 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 
 ## Elena vs other libraries
 
-### Elena vs standard web components
-
-Elena builds on native custom elements, so the mental model is familiar. The key differences are:
-
-- **Light DOM by default.** Elena renders into the Light DOM by default, which improves accessibility, SSR compatibility, and styling ergonomics. Shadow DOM is available as an opt-in via `static shadow` for components that need stronger encapsulation.
-- **Flexible CSS encapsulation.** In Light DOM mode, Elena uses `@scope` to prevent styles from leaking out, combined with a custom [CSS reset](/advanced/scoping) to prevent global styles from leaking in. In Shadow DOM mode, the browser’s native style isolation applies instead.
-
 ### Elena vs Lit
 
 [Lit](https://lit.dev) is the most widely used web component library and a natural comparison point. Both share a similar foundation, extending native custom elements with tagged template literals for rendering, but differ significantly in approach:
