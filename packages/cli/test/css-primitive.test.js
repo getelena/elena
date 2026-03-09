@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { generateCSS } from "../src/generate.js";
 
-describe("generateCSS, primitive", () => {
+describe("generateCSS", () => {
   test("all CSS features", () => {
     const out = generateCSS("my-button", ["cssprops", "props", "cssencap", "ssr"]);
 

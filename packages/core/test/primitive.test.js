@@ -47,7 +47,6 @@ describe("Primitive Components", () => {
 
     it("does not compose external children into the template", async () => {
       const el = await createElement("basic-element", { label: "Hello" });
-      // Primitive components control their own DOM; external children are not part of the contract
       expect(el.children.length).toBe(1);
       expect(el.firstElementChild.classList.contains("inner")).toBe(true);
     });

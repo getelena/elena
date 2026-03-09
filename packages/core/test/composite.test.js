@@ -90,7 +90,7 @@ describe("HTML Web Components", () => {
     });
   });
 
-  describe("nested Primitive Components", () => {
+  describe("nested components", () => {
     it("nested child component gets hydrated attribute", async () => {
       const wrapper = await createElement("wrapper-element", { direction: "row" });
       const child = document.createElement("child-element");
