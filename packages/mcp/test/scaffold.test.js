@@ -39,10 +39,9 @@ describe("formatDefault", () => {
 });
 
 describe("generateJS", () => {
-  const primitiveParams = {
+  const params = {
     name: "Button",
     tagName: "elena-button",
-    type: "primitive",
     props: [
       { name: "variant", type: '"default" | "primary"', default: '"default"' },
       { name: "disabled", type: "Boolean" },
@@ -53,153 +52,113 @@ describe("generateJS", () => {
     status: "alpha",
   };
 
-  const compositeParams = {
-    name: "Stack",
-    tagName: "elena-stack",
-    type: "composite",
-    props: [{ name: "direction", type: '"column" | "row"', default: '"column"' }],
-    events: [],
-    cssProperties: [],
-    description: "Stack layout component.",
-    status: "alpha",
-  };
-
-  describe("primitive component", () => {
-    it("imports html and nothing from @elenajs/core", () => {
-      const js = generateJS(primitiveParams);
-      expect(js).toContain('import { Elena, html, nothing } from "@elenajs/core";');
-    });
-
-    it("includes tagName, props, events, and element as static fields", () => {
-      const js = generateJS(primitiveParams);
-      expect(js).toContain('static tagName = "elena-button";');
-      expect(js).toContain('static props = ["variant", "disabled"];');
-      expect(js).toContain('static events = ["click", "focus"];');
-      expect(js).toContain('static element = ".elena-button";');
-    });
-
-    it("includes render() method with this.text", () => {
-      const js = generateJS(primitiveParams);
-      expect(js).toContain("render()");
-      expect(js).toContain("this.text");
-    });
-
-    it("includes @event JSDoc for each event", () => {
-      const js = generateJS(primitiveParams);
-      expect(js).toContain("@event click");
-      expect(js).toContain("@event focus");
-    });
-
-    it("includes @cssprop JSDoc", () => {
-      const js = generateJS(primitiveParams);
-      expect(js).toContain("@cssprop [--elena-button-bg] - Background color.");
-    });
-
-    it("includes @displayName and @status", () => {
-      const js = generateJS(primitiveParams);
-      expect(js).toContain("@displayName Button");
-      expect(js).toContain("@status alpha");
-    });
-
-    it("generates prop class fields with defaults and JSDoc", () => {
-      const js = generateJS(primitiveParams);
-      expect(js).toContain('variant = "default";');
-      expect(js).toContain("disabled = false;");
-      expect(js).toContain("@attribute");
-      expect(js).toContain('@type {"default" | "primary"}');
-      expect(js).toContain("@type {Boolean}");
-    });
-
-    it("calls define() after the class body", () => {
-      const js = generateJS(primitiveParams);
-      expect(js).toContain("Button.define();");
-    });
-
-    it("does not include @slot", () => {
-      const js = generateJS(primitiveParams);
-      expect(js).not.toContain("@slot");
-    });
+  it("imports Elena and html from @elenajs/core", () => {
+    const js = generateJS(params);
+    expect(js).toContain('import { Elena, html } from "@elenajs/core";');
   });
 
-  describe("composite component", () => {
-    it("imports only Elena from @elenajs/core", () => {
-      const js = generateJS(compositeParams);
-      expect(js).toContain('import { Elena } from "@elenajs/core";');
-      expect(js).not.toContain("html");
-      expect(js).not.toContain("nothing");
-    });
+  it("does not import nothing", () => {
+    const js = generateJS(params);
+    expect(js).not.toContain("nothing");
+  });
 
-    it("does not include events or element in options", () => {
-      const js = generateJS(compositeParams);
-      expect(js).not.toContain("events:");
-      expect(js).not.toContain("element:");
-    });
+  it("includes tagName, props, and events as static fields", () => {
+    const js = generateJS(params);
+    expect(js).toContain('static tagName = "elena-button";');
+    expect(js).toContain('static props = ["variant", "disabled"];');
+    expect(js).toContain('static events = ["click", "focus"];');
+  });
 
-    it("does not include render()", () => {
-      const js = generateJS(compositeParams);
-      expect(js).not.toContain("render()");
-    });
+  it("does not include static element", () => {
+    const js = generateJS(params);
+    expect(js).not.toContain("static element");
+  });
 
-    it("includes @slot JSDoc", () => {
-      const js = generateJS(compositeParams);
-      expect(js).toContain("@slot");
-    });
+  it("includes render() method with this.text", () => {
+    const js = generateJS(params);
+    expect(js).toContain("render()");
+    expect(js).toContain("this.text");
+  });
 
-    it("calls define() after the class body", () => {
-      const js = generateJS(compositeParams);
-      expect(js).toContain("Stack.define();");
-    });
+  it("includes @event JSDoc for each event", () => {
+    const js = generateJS(params);
+    expect(js).toContain("@event click");
+    expect(js).toContain("@event focus");
+  });
+
+  it("includes @cssprop JSDoc", () => {
+    const js = generateJS(params);
+    expect(js).toContain("@cssprop [--elena-button-bg] - Background color.");
+  });
+
+  it("includes @displayName and @status", () => {
+    const js = generateJS(params);
+    expect(js).toContain("@displayName Button");
+    expect(js).toContain("@status alpha");
+  });
+
+  it("does not include @slot", () => {
+    const js = generateJS(params);
+    expect(js).not.toContain("@slot");
+  });
+
+  it("generates prop class fields with defaults and JSDoc", () => {
+    const js = generateJS(params);
+    expect(js).toContain('variant = "default";');
+    expect(js).toContain("disabled = false;");
+    expect(js).toContain("@attribute");
+    expect(js).toContain('@type {"default" | "primary"}');
+    expect(js).toContain("@type {Boolean}");
+  });
+
+  it("calls define() after the class body", () => {
+    const js = generateJS(params);
+    expect(js).toContain("Button.define();");
   });
 });
 
 describe("generateCSS", () => {
-  describe("primitive component", () => {
-    it("generates @scope block with encapsulation pattern and inner element", () => {
-      const css = generateCSS({
-        tagName: "elena-button",
-        name: "Button",
-        type: "primitive",
-        cssProperties: [{ name: "--elena-button-bg" }],
-      });
-      expect(css).toContain("@scope (elena-button)");
-      expect(css).toContain(":scope,");
-      expect(css).toContain("*:where(:not(img, svg):not(svg *)),");
-      expect(css).toContain("all: unset;");
-      expect(css).toContain("display: revert;");
-      expect(css).toContain(":scope {");
-      expect(css).toContain("display: inline-block;");
-      expect(css).toContain(".elena-button {");
-      expect(css).toContain("display: inline-flex;");
-      expect(css).toContain(":scope:not([hydrated]),");
-      expect(css).toContain("--elena-button-bg: initial;");
-    });
+  const baseParams = {
+    tagName: "elena-button",
+    name: "Button",
+    cssProperties: [{ name: "--elena-button-bg" }],
+  };
+
+  it("generates @scope block with :scope and inner element", () => {
+    const css = generateCSS({ ...baseParams, cssEncapsulation: true, ssr: false });
+    expect(css).toContain("@scope (elena-button)");
+    expect(css).toContain(":scope {");
+    expect(css).toContain("display: inline-block;");
+    expect(css).toContain(".elena-button {");
   });
 
-  describe("composite component", () => {
-    it("generates @scope block with flex layout and no encapsulation reset", () => {
-      const css = generateCSS({
-        tagName: "elena-stack",
-        name: "Stack",
-        type: "composite",
-        cssProperties: [],
-      });
-      expect(css).toContain("@scope (elena-stack)");
-      expect(css).not.toContain("all: unset;");
-      expect(css).toContain("display: flex;");
-      expect(css).toContain("flex-direction: column;");
-      expect(css).toContain("gap: 0.5rem;");
-    });
+  it("includes encapsulation reset when cssEncapsulation is true", () => {
+    const css = generateCSS({ ...baseParams, cssEncapsulation: true, ssr: false });
+    expect(css).toContain(":scope,");
+    expect(css).toContain("*:where(:not(img, svg):not(svg *)),");
+    expect(css).toContain("all: unset;");
+    expect(css).toContain("display: revert;");
+  });
 
-    it("does not include inner element or hydration selectors", () => {
-      const css = generateCSS({
-        tagName: "elena-stack",
-        name: "Stack",
-        type: "composite",
-        cssProperties: [],
-      });
-      expect(css).not.toContain(".elena-stack {");
-      expect(css).not.toContain(":scope:not([hydrated])");
-    });
+  it("omits encapsulation reset when cssEncapsulation is false", () => {
+    const css = generateCSS({ ...baseParams, cssEncapsulation: false, ssr: false });
+    expect(css).not.toContain("all: unset;");
+    expect(css).not.toContain("*:where(");
+  });
+
+  it("includes :scope:not([hydrated]) selector when ssr is true", () => {
+    const css = generateCSS({ ...baseParams, cssEncapsulation: true, ssr: true });
+    expect(css).toContain(":scope:not([hydrated]),");
+  });
+
+  it("omits :scope:not([hydrated]) selector when ssr is false", () => {
+    const css = generateCSS({ ...baseParams, cssEncapsulation: true, ssr: false });
+    expect(css).not.toContain(":scope:not([hydrated])");
+  });
+
+  it("outputs CSS custom properties", () => {
+    const css = generateCSS({ ...baseParams, cssEncapsulation: true, ssr: false });
+    expect(css).toContain("--elena-button-bg: initial;");
   });
 });
 

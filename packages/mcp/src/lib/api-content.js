@@ -42,6 +42,16 @@ export default class Button extends Elena(HTMLElement) {
 | \`static props\` | \`(string \\| { name: string, reflect?: boolean })[]\` | The list of props this component accepts. Each prop stays in sync with its matching HTML attribute. Use \`{ name, reflect: false }\` to keep a prop JS-only without writing it back to the attribute. |
 | \`static events\` | \`string[]\` | Events to forward from the inner element up to the host (e.g. \`["click", "focus", "blur"]\`). |
 | \`static element\` | \`string\` | A CSS selector for the inner element that \`this.element\` points to (e.g. \`".inner"\`, \`"button"\`). Defaults to the first child element when omitted. |
+| \`static shadow\` | \`"open" \\| "closed"\` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host. Only applies to components with a \`render()\` method. |
+| \`static styles\` | \`CSSStyleSheet \\| string \\| (CSSStyleSheet \\| string)[]\` | One or more stylesheets to adopt into the shadow root. Only applies when \`static shadow\` is also set. |
+
+### Host Attributes
+
+Attributes that Elena adds to the host element automatically. These are not JS properties — they appear in the DOM and can be targeted in CSS.
+
+| Attribute | Description |
+|-----------|-------------|
+| \`hydrated\` | Added to the host element after the first render completes. Use \`:not([hydrated])\` in CSS to style the element before JavaScript runs, and remove those styles once it hydrates. |
 
 ### Instance Properties
 
@@ -56,7 +66,7 @@ export default class Button extends Elena(HTMLElement) {
 |--------|-------------|
 | \`connectedCallback()\` | Runs when the element is added to the page. Sets up props, captures text content, renders, and wires up events. |
 | \`willUpdate()\` | Runs before every render, including the first. Override to compute derived state before the template evaluates. Do not call \`super\`. |
-| \`render()\` | Returns the HTML for this component as an \`html\` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for Composite Components. |
+| \`render()\` | Returns the HTML for this component as an \`html\` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for HTML Web Components. |
 | \`firstUpdated()\` | Runs once after the first render. \`this.element\` is available here. Override to run one-time setup that requires the DOM. |
 | \`updated()\` | Runs after every render, including the first. \`this.element\` is available here. Override to react to changes after the DOM is updated. On first connect, \`firstUpdated()\` runs before \`updated()\`. |
 | \`requestUpdate()\` | Manually schedules a re-render. Use when Elena cannot detect a change automatically, e.g. when mutating an object or array in place. |
@@ -120,7 +130,7 @@ elena build
 npx elena-create
 \`\`\`
 
-Interactive scaffolding tool for creating new Elena components. Prompts for component name, type (primitive/composite), language (JS/TS/HTML), output directory, and optional features.
+Interactive scaffolding tool for creating new Elena components. Prompts for component name, language (JS/TS/HTML), output directory, and optional features.
 
 ---
 
@@ -135,7 +145,7 @@ import { ssr, register } from "@elenajs/ssr";
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | \`register\` | \`register(...components)\` | Tell the SSR renderer which component classes to expand. Each class must have \`static tagName\` set. Call this before \`ssr()\`. |
-| \`ssr\` | \`ssr(html)\` | Takes an HTML string, renders any registered Primitive Components into full HTML, and returns the result. Composite Components and regular HTML tags are left as-is. |
+| \`ssr\` | \`ssr(html)\` | Takes an HTML string, renders any registered components with \`render()\` into full HTML, and returns the result. HTML Web Components and regular HTML tags are left as-is. |
 
 ---
 
@@ -153,7 +163,7 @@ elena-mcp <project-root>
 |--------------|-------------|
 | \`elena://components\` | A list of all components with their name, description, and status. |
 | \`elena://components/{tagName}\` | Full details for one component: props, events, CSS custom properties, and slots. |
-| \`elena://patterns\` | The Elena component authoring guide: primitives vs composites, lifecycle, CSS patterns, JSDoc, framework tips. |
+| \`elena://patterns\` | The Elena component authoring guide: component patterns, lifecycle, CSS patterns, JSDoc, framework tips. |
 | \`elena://frameworks\` | Framework integration guide: Plain HTML, Eleventy, Next.js, React, Svelte, Vue, Angular, and TypeScript setup for each. |
 | \`elena://ssr\` | Server-side rendering guide: layout shift avoidance, \`@elenajs/ssr\` API, Eleventy transform and shortcode patterns. |
 | \`elena://api\` | Full API reference for all Elena packages. |
@@ -164,6 +174,10 @@ elena-mcp <project-root>
 |------|-------------|
 | \`scaffold-component\` | Generates a starter JS class and CSS file for a new component. |
 | \`lookup-component\` | Looks up a component's API from the Custom Elements Manifest. |
+| \`get-patterns\` | Returns the Elena component authoring guide. |
+| \`get-api-reference\` | Returns the full API reference for all Elena packages. |
+| \`get-frameworks-guide\` | Returns the framework integration guide. |
+| \`get-ssr-guide\` | Returns the SSR guide and \`@elenajs/ssr\` API reference. |
 
 ### Prompts
 

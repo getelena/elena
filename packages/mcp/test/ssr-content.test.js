@@ -23,9 +23,9 @@ describe("SSR_CONTENT", () => {
     expect(SSR_CONTENT).toContain("addTransform");
   });
 
-  it("covers both Primitive and Composite component behavior", () => {
-    expect(SSR_CONTENT).toContain("Primitive");
-    expect(SSR_CONTENT).toContain("Composite");
+  it("covers both component types", () => {
+    expect(SSR_CONTENT).toContain("without a `render()` method");
+    expect(SSR_CONTENT).toContain("components with `render()`");
   });
 
   it("documents client-side hydration", () => {

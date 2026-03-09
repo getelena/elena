@@ -6,35 +6,7 @@ export const FRAMEWORKS_CONTENT = `# Framework Integrations
 
 Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers.
 
-The key distinction is between Primitive and Composite Components:
-
-- **Primitive Components** own their inner DOM via \`render()\`. Frameworks must treat them as leaf nodes and never try to render inside them.
-- **Composite Components** wrap composed children and don't touch the light DOM. They integrate with frameworks the same way any HTML container element does.
-
-## Key Rules for All Frameworks
-
-When using **Primitive Components** with a framework:
-
-- Never render a framework component _inside_ a Primitive Component (e.g. via \`ReactDOM.createRoot(elenaElement)\`). Elena calls \`replaceChildren()\` on render, which would destroy the framework's fiber tree.
-- Avoid the framework and Elena both mutating the same attribute. A framework's reconciler would overwrite Elena's changes on next reconcile. Treat framework-controlled props as read-only inputs inside \`render()\`.
-- Use the \`text\` property instead of children for dynamic text, since Primitive Components own their internal DOM:
-
-\`\`\`html
-<!-- React -->
-<elena-button text={buttonText} />
-
-<!-- Angular -->
-<elena-button [text]="buttonText"></elena-button>
-
-<!-- Vue -->
-<elena-button :text="buttonText"></elena-button>
-\`\`\`
-
-**Angular note:** Angular inserts text children _after_ \`connectedCallback\` fires. Always use \`text\` as a property binding, never as a child node.
-
-**React 17 note:** React 17 does not pass \`Array\` or \`Object\` type props or event handlers to custom elements correctly. Use React 18+.
-
----
+Components that use \`render()\` own their inner DOM and frameworks must treat these as leaf nodes and never try to render inside them. HTML Web Components on the other hand work like any HTML container element and integrate naturally.
 
 ## Plain HTML
 
@@ -261,11 +233,10 @@ export class AppComponent {
 
 \`\`\`html
 <!-- app.component.html -->
-<!-- Use text as a property binding, never as a child node -->
-<elena-button variant="primary" (click)="onClick()" [text]="label"></elena-button>
+<elena-button variant="primary" (click)="onClick()" text="Click me"></elena-button>
 \`\`\`
 
-\`CUSTOM_ELEMENTS_SCHEMA\` tells Angular's template compiler to accept unknown element names without errors.
+\`CUSTOM_ELEMENTS_SCHEMA\` tells Angular's template compiler to accept unknown element names without errors. It also bypasses Angular's template type-checker for these elements, so no additional type declarations are needed.
 
 ### Angular-specific syntax
 
@@ -273,6 +244,7 @@ export class AppComponent {
 | ----------------- | ------------------------------- |
 | Event binding     | \`(click)="handler()"\`           |
 | Dynamic attribute | \`[attr.variant]="value"\`        |
-| Text property     | \`[text]="label"\`                |
 | Reactive state    | \`signal()\` from \`@angular/core\` |
+
+> The provided examples import the existing \`@elenajs/components\` for demo purposes. Replace it with your own component library for production usage.
 `;
