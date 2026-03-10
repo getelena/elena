@@ -17,6 +17,23 @@
   - Opera 104+ (Oct 2023)
 - When using CSS `@scope` and `attr[value]` selectors, be aware that Firefox 148 had an open issue regarding this that we’ve [documented here](https://codepen.io/arielsalminen/full/raMazZV). This is already fixed in the newer releases though. When necessary, you can improve the support for older Firefox version by [omitting `@scope`](/components/styles#styles-without-scope).
 
+## URIs in templates
+
+Elena’s `html` tagged template auto-escapes interpolated values to prevent XSS, but it does not block JavaScript URIs. If you interpolate user input into an `href` or other URL attribute, a value like `javascript:alert(1)` will pass through escaping unchanged:
+
+```js
+// Dangerous: user-controlled URL
+render() {
+  return html`<a href="${this.url}">Click</a>`;
+}
+```
+
+Always validate or sanitize URLs before interpolating them into templates. A simple safeguard is to check the protocol:
+
+```js
+const safeUrl = /^https?:\/\//.test(this.url) ? this.url : "#";
+```
+
 ## JavaScript frameworks
 
 - Avoid a JavaScript framework and Elena both mutating the same attribute on the same component. A framework’s reconciler would overwrite Elena’s changes on next reconcile, triggering many re-renders. Treat framework-controlled props as read-only inputs inside your Elena element's `render()`:
