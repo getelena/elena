@@ -19,9 +19,9 @@ title: Progressive Web Components
 
 ## What is Elena?
 
-**Elena is a simple, tiny library (2kB) for building [Progressive Web Components](/).** Unlike most web component libraries, Elena doesn’t require JavaScript for rendering. Your HTML and CSS load first, then JavaScript progressively adds interactivity. [^1]
+**Elena is a simple, tiny library (2kB) for building [Progressive Web Components](/).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity. [^1]
 
-[^1]: **Elena supports multiple component models:** HTML Web Components, which enhance composed children with styling and behavior; Progressive Web Components with `render()`, which render their base HTML and CSS into the Light DOM before JavaScript loads; And full Shadow DOM components, including Declarative Shadow DOM.
+[^1]: **Elena supports multiple component models:** HTML Web Components which enhance composed children with styling and behavior; Progressive Web Components which render their base HTML and CSS into the Light DOM before JavaScript loads; And full Shadow DOM enabled components including [Declarative Shadow DOM](/components/templates#declarative-shadow-dom).
 
 ### Here is a minimal example
 
