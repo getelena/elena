@@ -477,7 +477,10 @@ export function Elena(superClass) {
         this.willUpdate();
         this._isRendering = true;
         this._applyRender();
+      } finally {
         this._isRendering = false;
+      }
+      try {
         this.updated();
       } finally {
         resolve();
