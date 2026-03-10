@@ -1,10 +1,10 @@
 /**
  *  ██████████ ████
  * ░░███░░░░░█░░███
- *  ░███  █ ░  ███   ██████  ████████    ██████
- *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
- *  ░███░░█    ███ ░███████  ░███ ░███   ███████
- *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ░███  █ ░  ░███   ██████  ████████    ██████
+ *  ░██████    ░███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ░███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ░███ ░███░░░   ░███ ░███  ███░░███
  *  ██████████ █████░░██████  ████ █████░░████████
  * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
  *
@@ -19,7 +19,12 @@ import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import minifyHtmlLiterals from "rollup-plugin-minify-html-literals-v3";
 import summary from "rollup-plugin-summary";
-import { cssPlugin, cssBundlePlugin } from "@elenajs/plugin-rollup-css";
+import {
+  cssPlugin,
+  cssBundlePlugin,
+  cssModuleScriptPlugin,
+  cssStaticStylesPlugin,
+} from "@elenajs/plugin-rollup-css";
 import { color } from "./common/color.js";
 import babel from "@rollup/plugin-babel";
 
@@ -56,7 +61,7 @@ function buildPlugins({
   hasTs = false,
   target = false,
 }) {
-  const plugins = [resolve({ extensions: [".js", ".ts", ".css"] })];
+  const plugins = [cssModuleScriptPlugin(), resolve({ extensions: [".js", ".ts", ".css"] })];
 
   if (hasTs) {
     plugins.push(
@@ -82,6 +87,7 @@ function buildPlugins({
   }
 
   plugins.push(
+    cssStaticStylesPlugin(),
     minifyHtmlLiterals({
       options: {
         // Minify any template literal containing HTML, regardless of tag name
