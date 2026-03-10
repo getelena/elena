@@ -33,6 +33,7 @@
     "eslint-plugin-prettier": "5.5.5",
     "happy-dom": "20.7.0",
     "lerna": "9.0.4",
+    "markdown-it-footnote": "^4.0.0",
     "prettier": "3.8.1",
     "vitepress": "1.6.3",
     "vitest": "4.0.18"
