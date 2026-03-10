@@ -103,6 +103,7 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 |---|---|---|
 | **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM |
 | **Size** | ~2kB | ~5kB |
+| **Templating** | Native tagged template literals with auto-escaping | Custom reactive template engine with directives and binding syntax |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
 | **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires `@lit-labs/ssr` |
 | **Style encapsulation** | `@scope` + `all: unset` (Shadow DOM opt-in) | Shadow DOM (`:host`, CSS parts) |
@@ -110,7 +111,9 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 | **Accessibility** | Full Light DOM access | Shadow DOM accessibility limitations |
 | **API** | Static class fields + reactive properties | Decorators + reactive properties |
 
-The biggest philosophical difference is the DOM model. Lit uses Shadow DOM by default for strong encapsulation; Elena uses Light DOM by default for accessibility, SSR, and CSS inheritance, with Shadow DOM available as an opt-in for components that need full isolation.
+The biggest philosophical difference is the DOM model. Lit uses Shadow DOM by default for strong encapsulation; Elena uses Light DOM by default for accessibility, SSR, and CSS inheritance, with Shadow DOM available as an opt-in. 
+
+On the templating side, both use `html` tagged template literals, but Lit has a custom reactive template engine. Elena, on the other hand, provides just a thin wrapper around the native template literals.
 
 ### Elena vs Stencil
 
@@ -121,15 +124,16 @@ The biggest philosophical difference is the DOM model. Lit uses Shadow DOM by de
 | **Approach** | Runtime mixin | Compiler |
 | **Language** | Vanilla JavaScript or TypeScript | TypeScript + JSX |
 | **Build step** | Optional | Required |
+| **Templating** | Native tagged template literals with auto-escaping | JSX (compiled via TypeScript) |
 | **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM (default; configurable) |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
-| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires Stencil's Hydrate app |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires Stencil’s Hydrate app |
 | **Prop reflection** | Reflects all; disable per-prop | Reflects none; enable per-prop |
 | **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM or scoped CSS |
 | **API** | Static class fields + reactive properties | Decorators + JSX |
 | **Output targets** | Not necessary | Custom elements, React, Angular, Vue wrappers |
 
-Stencil’s standout feature is its output targets, it can generate framework-specific wrappers (React, Angular, Vue) automatically from the same component source. If you need generated bindings for multiple frameworks, Stencil has a clear advantage. Elena, by contrast, works directly with any framework without generated wrappers.
+Stencil’s standout feature is its output targets: it can generate framework-specific wrappers (React, Angular, Vue) automatically from the same component source. If you need generated bindings for multiple frameworks, Stencil has a clear advantage. Elena, by contrast, works directly with any framework without generated wrappers.
 
 ## Browser support
 
