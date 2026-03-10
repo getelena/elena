@@ -21,23 +21,18 @@ title: Progressive Web Components
 
 **Elena is a simple, tiny library (2kB) for building [Progressive Web Components](/).** Unlike most web component libraries, Elena doesn’t require JavaScript for rendering. Your HTML and CSS load first, then JavaScript progressively adds interactivity. [^1]
 
-[^1]: **Elena supports multiple component models:** HTML Web Components, which enhance composed children with styling and behavior; Progressive Web Components with `render()`, which render their base HTML and CSS into the Light DOM before JavaScript loads; And full Shadow DOM components, including Declarative Shadow DOM.
+[^1]: **Elena supports multiple component models:** HTML Web Components, which enhance composed children with styling and behavior; Progressive Web Components with `render()`, which render their base HTML and S into the Light DOM before JavaScript loads; And full Shadow DOM components, including Declarative Shadow DOM.
 
 ### Here is a minimal example
 
 ::: code-group
 
-```js [JavaScript]
-import { Elena } from "@elenajs/core";
-
-export default class Stack extends Elena(HTMLElement) {
-  static tagName = "my-stack";
-  static props = ["direction"];
-
-  direction = "column";
-}
-
-Stack.define();
+```js [HTML]
+<elena-stack direction="row">
+  <div>First</div>
+  <div>Second</div>
+  <div>Third</div>
+</elena-stack>
 ```
 
 ```css [Styles]
@@ -56,15 +51,20 @@ Stack.define();
 }
 ```
 
-:::
+```js [JavaScript]
+import { Elena } from "@elenajs/core";
 
-```html
-<my-stack direction="row">
-  <div>First</div>
-  <div>Second</div>
-  <div>Third</div>
-</my-stack>
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
+
+  direction = "column";
+}
+
+Stack.define();
 ```
+
+:::
 
 > [!TIP] Prerequisites
 > This documentation assumes familiarity with HTML, CSS, and JavaScript. If you're new to custom elements, the [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) is a good starting point, though prior experience is not required.
