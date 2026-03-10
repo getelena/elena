@@ -17,6 +17,7 @@ function copyComponentAssets() {
         await mkdir(dest, { recursive: true });
         await copyFile(path.join(src, "bundle.js"), path.join(dest, "bundle.js"));
         await copyFile(path.join(src, "bundle.css"), path.join(dest, "bundle.css"));
+        await copyFile(path.join(src, "bundle.js.map"), path.join(dest, "bundle.js.map"));
       } catch (e) {
         console.warn("░█ [ELENA]: Could not copy component assets:", e.message);
       }
