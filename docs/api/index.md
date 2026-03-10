@@ -172,7 +172,10 @@ elena-mcp <project-root>
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `cssPlugin` | `cssPlugin(srcDir)` | Copies and minifies each `.css` file from `srcDir` into the output folder as individual files. |
-| `cssBundlePlugin` | `cssBundlePlugin(srcDir, fileName)` | Combines all `.css` files from `srcDir` into a single minified file named `fileName`. |
+| `cssBundlePlugin` | `cssBundlePlugin(srcDir, fileName)` | Combines all `.css` files from `srcDir` into a single minified file named `fileName`. CSS files resolved by `cssModuleScriptPlugin` are automatically excluded. |
+| `cssModuleScriptPlugin` | `cssModuleScriptPlugin()` | Handles CSS Module Script imports (`with { type: "css" }`). Reads and minifies the CSS file, then returns a JS module that constructs and exports a `CSSStyleSheet` for Shadow DOM adoption. |
+| `cssStaticStylesPlugin` | `cssStaticStylesPlugin()` | Finds `static styles` class fields with template literal values and minifies the CSS inside them. |
+| `minifyCss` | `minifyCss(css, filename?)` | Minifies a CSS string using Lightning CSS. |
 
 ## `@elenajs/plugin-cem-define`
 
