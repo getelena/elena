@@ -231,7 +231,7 @@ Button.define();
 Elena attaches the shadow root on first connect and adopts the stylesheets automatically. Rendering happens inside the shadow root, so external styles cannot reach in.
 
 > [!WARNING]
-> Enabling Shadow DOM means that your component now relies entirely on client side JavaScript for rendering. Nothing will be visible to the user before the component has been fully initialized.
+> Enabling Shadow DOM means that your component now relies entirely on client side JavaScript for rendering. Nothing will be visible to the user before the component has been fully initialized. See [Declarative Shadow DOM](/components/templates.md#declarative-shadow-dom) for a standards-based approach that can mitigate this.
 
 ### CSS in shadow mode
 
