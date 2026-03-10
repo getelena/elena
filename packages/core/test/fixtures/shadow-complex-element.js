@@ -1,0 +1,34 @@
+import { Elena, html } from "../../src/elena.js";
+
+export default class ShadowComplexElement extends Elena(HTMLElement) {
+  static tagName = "shadow-complex-element";
+  static shadow = "open";
+  static props = ["label", "description", "error", "type", "name", "disabled", "value"];
+  static element = ".elena-input";
+
+  label = "";
+  description = "";
+  error = "";
+  type = "text";
+  name = "";
+  disabled = false;
+  value = "";
+
+  render() {
+    return html`
+      <label for="input">${this.label}</label>
+      ${this.description ? html`<div class="elena-desc">${this.description}</div>` : ""}
+      <div class="elena-input-container">
+        <input
+          id="input"
+          class="elena-input"
+          type=${this.type}
+          ${this.name ? `name=${this.name}` : ""}
+          ${this.disabled ? "disabled" : ""}
+        />
+      </div>
+      ${this.error ? html`<div class="elena-error" role="alert">${this.error}</div>` : ""}
+    `;
+  }
+}
+ShadowComplexElement.define();
