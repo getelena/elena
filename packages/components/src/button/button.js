@@ -23,6 +23,7 @@ export default class Button extends Elena(HTMLElement) {
     "size",
     "expand",
     "disabled",
+    "loading",
     "label",
     "href",
     "target",
@@ -98,6 +99,14 @@ export default class Button extends Elena(HTMLElement) {
   download = false;
 
   /**
+   * Show loading state
+   *
+   * @attribute
+   * @type {boolean}
+   */
+  loading = false;
+
+  /**
    * The name used to identify the button in forms.
    *
    * @attribute
@@ -142,6 +151,7 @@ export default class Button extends Elena(HTMLElement) {
         ${this.name ? html`name="${this.name}"` : nothing}
         ${this.value ? html`value="${this.value}"` : nothing}
         ${this.disabled ? "disabled" : nothing}
+        ${this.loading ? html`aria-disabled="true"` : nothing}
         ${this.label ? html`aria-label="${this.label}"` : nothing}
       >
         ${template}
@@ -176,6 +186,7 @@ export default class Button extends Elena(HTMLElement) {
   render() {
     const icon = this.icon ? unsafeHTML(`<span class="elena-icon">${this.icon}</span>`) : nothing;
     const markup = html`
+      ${this.loading ? html`<elena-spinner></elena-spinner>` : nothing}
       ${this.text ? html`<span>${this.text}</span>` : nothing}
       ${icon}
     `;

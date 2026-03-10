@@ -9,6 +9,7 @@
   *::after {
     all: unset;
     display: revert;
+    box-sizing: border-box;
   }
 
   :scope {
@@ -51,6 +52,7 @@
     transition: none;
     text-decoration: none;
     text-align: center;
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -189,5 +191,30 @@
   :scope[expand],
   :scope[expand] .elena-button {
     inline-size: 100%;
+  }
+
+  /* ---------------------------------------------
+  / LOADING STATE
+  / --------------------------------------------- */
+
+  :scope elena-spinner {
+    position: absolute;
+    translate: -50% -50%;
+    margin: 0;
+    padding: 0;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+  }
+
+  :scope[loading] {
+    pointer-events: none;
+  }
+
+  :scope:not([hydrated])[loading] {
+    color: transparent;
+  }
+
+  :scope[loading] :is(span, .elena-icon) {
+    opacity: 0;
   }
 }
