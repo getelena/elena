@@ -56,7 +56,7 @@ Mostly, you will get almost identical experience as a user compared to a full pr
 ```html
 <elena-stack>
   <elena-button type="submit">Button</elena-button>
-  <elena-button icon="svg">Download</elena-button>
+  <elena-button icon="download">Download</elena-button>
   <elena-button label="Settings" icon="settings"></elena-button>
 </elena-stack>
 ```
