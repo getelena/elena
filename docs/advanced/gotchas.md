@@ -2,7 +2,8 @@
 
 ## Browser compatibility
 
-- Elena supports the following browser versions:
+- As a baseline, Elena’s progressive approach supports any web browser that’s capable of rendering Custom Elements. After that, it’s up to you to determine what is appropriate for your project when authoring CSS styles and JavaScript interactivity.
+- Elena, the JavaScript library, supports the following browser versions:
   - Chrome 71+ (Dec 2018)
   - Firefox 69+ (Sep 2019)
   - Safari 12.1+ (Mar 2019)
