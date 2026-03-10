@@ -294,3 +294,8 @@ label:active {
   font-size: var(--vp-code-font-size);
   color: var(--vp-c-text-1);
 }
+
+sup {
+  position: absolute;
+  transform: translateX(3px) translateY(-4px);
+}
