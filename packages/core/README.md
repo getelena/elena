@@ -36,18 +36,20 @@ npm install @elenajs/core
 
 Elena is a monorepo containing several packages published to npm under the `@elenajs` scope:
 
-- **[`@elenajs/prettier-config`](https://github.com/getelena/elena/tree/main/packages/prettier-config)** [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature)
-- **[`@elenajs/eslint-config`](https://github.com/getelena/elena/tree/main/packages/eslint-config)** [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature)
-- **[`@elenajs/core`](https://github.com/getelena/elena/tree/main/packages/core)** [![stability-release-candidate](https://img.shields.io/badge/stability-pre--release-48c9b0.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#release-candidate)
-- **[`@elenajs/bundler`](https://github.com/getelena/elena/tree/main/packages/bundler)** [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
-- **[`@elenajs/plugin-cem-define`](https://github.com/getelena/elena/tree/main/packages/plugin-cem-define)** [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
-- **[`@elenajs/plugin-cem-tag`](https://github.com/getelena/elena/tree/main/packages/plugin-cem-tag)** [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
-- **[`@elenajs/plugin-cem-typescript`](https://github.com/getelena/elena/tree/main/packages/plugin-cem-typescript)** [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
-- **[`@elenajs/plugin-rollup-css`](https://github.com/getelena/elena/tree/main/packages/plugin-rollup-css)** [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
-- **[`@elenajs/cli`](https://github.com/getelena/elena/tree/main/packages/cli)** [![stability-alpha](https://img.shields.io/badge/stability-alpha-f4d03f.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#alpha)
-- **[`@elenajs/components`](https://github.com/getelena/elena/tree/main/packages/components)** [![stability-alpha](https://img.shields.io/badge/stability-alpha-f4d03f.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#alpha)
-- **[`@elenajs/ssr`](https://github.com/getelena/elena/tree/main/packages/ssr)** [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#experimental)
-- **[`@elenajs/mcp`](https://github.com/getelena/elena/tree/main/packages/mcp)** [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#experimental)
+| Package | Stability |
+| --- | --- |
+| [`@elenajs/prettier-config`](https://github.com/getelena/elena/tree/main/packages/prettier-config) | [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature) |
+| [`@elenajs/eslint-config`](https://github.com/getelena/elena/tree/main/packages/eslint-config) | [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature) |
+| [`@elenajs/core`](https://github.com/getelena/elena/tree/main/packages/core) | [![stability-release-candidate](https://img.shields.io/badge/stability-pre--release-48c9b0.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#release-candidate) |
+| [`@elenajs/bundler`](https://github.com/getelena/elena/tree/main/packages/bundler) | [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta) |
+| [`@elenajs/plugin-cem-define`](https://github.com/getelena/elena/tree/main/packages/plugin-cem-define) | [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta) |
+| [`@elenajs/plugin-cem-tag`](https://github.com/getelena/elena/tree/main/packages/plugin-cem-tag) | [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta) |
+| [`@elenajs/plugin-cem-typescript`](https://github.com/getelena/elena/tree/main/packages/plugin-cem-typescript) | [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta) |
+| [`@elenajs/plugin-rollup-css`](https://github.com/getelena/elena/tree/main/packages/plugin-rollup-css) | [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta) |
+| [`@elenajs/cli`](https://github.com/getelena/elena/tree/main/packages/cli) | [![stability-alpha](https://img.shields.io/badge/stability-alpha-f4d03f.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#alpha) |
+| [`@elenajs/components`](https://github.com/getelena/elena/tree/main/packages/components) | [![stability-alpha](https://img.shields.io/badge/stability-alpha-f4d03f.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#alpha) |
+| [`@elenajs/ssr`](https://github.com/getelena/elena/tree/main/packages/ssr) | [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#experimental) |
+| [`@elenajs/mcp`](https://github.com/getelena/elena/tree/main/packages/mcp) | [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#experimental) |
 
 <!-- https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md -->
 
