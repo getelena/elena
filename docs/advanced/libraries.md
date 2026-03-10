@@ -167,3 +167,54 @@ Returns the Custom Elements Manifest analyzer configuration object.
 ### `runCemAnalyze(config, cwd?)`
 
 Runs the CEM analysis and writes `custom-elements.json`, `custom-elements.d.ts`, and per-component `.d.ts` files.
+
+## Example library
+
+**`@elenajs/components`** is a reference component library built with Elena. It demonstrates real-world component patterns and is available as a starting point for your own library.
+
+```bash
+npm install @elenajs/components
+```
+
+It includes the following components:
+
+| Component              | Tag                      | Description                                                     |
+| ---------------------- | ------------------------ | --------------------------------------------------------------- |
+| Button                 | `<elena-button>`         | Renders a `<button>` or `<a>` with variants, states, and icons. |
+| Spinner                | `<elena-spinner>`        | Animated loading indicator that inherits the current color.     |
+| Stack                  | `<elena-stack>`          | Flexbox layout wrapper with configurable direction and gap.     |
+| Visually Hidden        | `<elena-visually-hidden>`| Hides content visually while keeping it accessible.             |
+
+### Usage
+
+Import the full bundle to register all components:
+
+```js
+import "@elenajs/components";
+```
+
+Or import individual components for better tree-shaking:
+
+```js
+import "@elenajs/components/dist/button.js";
+import "@elenajs/components/dist/stack.js";
+```
+
+Each component has a matching CSS file:
+
+```css
+@import "@elenajs/components/dist/button.css";
+@import "@elenajs/components/dist/stack.css";
+```
+
+Or import the full CSS bundle:
+
+```css
+@import "@elenajs/components/dist/bundle.css";
+```
+
+The source code is in `packages/components/` of the [Elena monorepo](https://github.com/getelena/elena) and serves as an example of how to structure, build, and publish a library with `@elenajs/bundler`.
+
+## Next steps
+
+- Explore [Framework Integration](/advanced/frameworks) examples for React, Vue, Angular, Next.js and more.
