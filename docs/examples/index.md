@@ -39,7 +39,7 @@ function cycleVariant() {
 
 # Live examples
 
-This page demonstrates Elena’s [Progressive Web Components](/#why-is-it-progressive) on a regular page without any server side configuration. This is the recommended way to consume Elena components with or without a framework. 
+This page demonstrates Elena’s [Progressive Web Components](/) on a regular page without any server side configuration. This is the recommended way to consume Elena components with or without a framework. 
 
 Mostly, you will get almost identical experience as a user compared to a full pre-rendering done by the `@elenajs/ssr` tool.
 
