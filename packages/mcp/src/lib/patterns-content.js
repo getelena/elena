@@ -28,6 +28,8 @@ Elena components are configured using static class fields on the class body:
 - **\`static props\`** — Array of prop names to observe and sync as attributes
 - **\`static events\`** — Array of event names to delegate from the inner element
 - **\`static element\`** — CSS selector for the inner element ref (\`this.element\`). When omitted, Elena uses \`firstElementChild\` instead, which is more performant when you have many components on a page
+- **\`static shadow\`** — Set to \`"open"\` or \`"closed"\` to opt into Shadow DOM. Elena renders into the shadow root instead of the host. Only applies to components with \`render()\`.
+- **\`static styles\`** — One or more stylesheets to adopt into the shadow root. Only applies when \`shadow\` is also set. Pass a \`CSSStyleSheet\` (via CSS Module Scripts) or a raw CSS string.
 
 All static fields are optional.
 
@@ -348,18 +350,13 @@ Full baseline pattern for a **component with \`render()\`**:
     display: inline-block;
   }
 
-  /* Style both the non-hydrated host and inner element identically */
+  /* Elena SSR Pattern to avoid layout shift */
   :scope:not([hydrated]),
-  button {
+  .elena-button:is(button) {
     font-family: var(--elena-button-font);
     color: var(--elena-button-text);
     background: var(--elena-button-bg);
-    appearance: none;
-  }
-
-  /* Rest of your component styles */
-  button {
-    display: inline-flex;
+    display: inline-block;
   }
 
   /* Attribute selectors for variants */
@@ -433,6 +430,21 @@ For better SSR support in components with \`render()\`, use CSS pseudo-elements 
 ### Documenting CSS custom properties
 
 Use \`@cssprop\` JSDoc on the component class. \`@elenajs/bundler\` transforms these into the Custom Elements Manifest automatically.
+
+### Shadow DOM
+
+For full style isolation, Elena supports opt-in Shadow DOM via \`static shadow = "open" | "closed"\` and \`static styles\`. Elena renders into the shadow root, external styles cannot reach in, and \`@scope\` is not needed. However, Shadow DOM eliminates progressive enhancement: nothing is visible until JavaScript runs. CSS custom properties still pierce shadow boundaries for theming.
+
+\`\`\`js
+import styles from "./button.css" with { type: "css" };
+
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static shadow = "open";
+  static styles = styles;
+}
+Button.define();
+\`\`\`
 
 ---
 

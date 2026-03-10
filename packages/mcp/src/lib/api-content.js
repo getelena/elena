@@ -117,7 +117,7 @@ elena build
 | \`output.dir\` | \`string\` | \`"dist"\` | Where to write the compiled output. |
 | \`output.format\` | \`string\` | \`"esm"\` | JavaScript module format for the output files. |
 | \`output.sourcemap\` | \`boolean\` | \`true\` | Whether to generate source maps alongside the output. |
-| \`bundle\` | \`string \\| false\` | \`"src/index.js"\` | Entry point for a single combined output file. Set to \`false\` to skip the bundle entirely. |
+| \`bundle\` | \`string \\| false\` | \`"src/index.js"\` | Entry point for a single combined output file. Elena will look for \`src/index.ts\` automatically if no \`.js\` file is found. Set to \`false\` to skip the bundle entirely. |
 | \`plugins\` | \`Plugin[]\` | \`[]\` | Extra Rollup plugins to include in the build, added after Elena's built-in ones. |
 | \`analyze.plugins\` | \`Plugin[]\` | \`[]\` | Extra plugins for the Custom Elements Manifest generation step. |
 | \`target\` | \`string \\| string[] \\| false\` | \`false\` | Browserslist target(s) for transpilation. When set, enables syntax transforms via \`@babel/preset-env\` to widen browser support. Example: \`["chrome 71", "firefox 69", "safari 12.1"]\`. |
@@ -193,7 +193,10 @@ elena-mcp <project-root>
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | \`cssPlugin\` | \`cssPlugin(srcDir)\` | Copies and minifies each \`.css\` file from \`srcDir\` into the output folder as individual files. |
-| \`cssBundlePlugin\` | \`cssBundlePlugin(srcDir, fileName)\` | Combines all \`.css\` files from \`srcDir\` into a single minified file named \`fileName\`. |
+| \`cssBundlePlugin\` | \`cssBundlePlugin(srcDir, fileName)\` | Combines all \`.css\` files from \`srcDir\` into a single minified file named \`fileName\`. CSS files resolved by \`cssModuleScriptPlugin\` are automatically excluded. |
+| \`cssModuleScriptPlugin\` | \`cssModuleScriptPlugin()\` | Handles CSS Module Script imports (\`with { type: "css" }\`). Reads and minifies the CSS file, then returns a JS module that constructs and exports a \`CSSStyleSheet\` for Shadow DOM adoption. |
+| \`cssStaticStylesPlugin\` | \`cssStaticStylesPlugin()\` | Finds \`static styles\` class fields with template literal values and minifies the CSS inside them. |
+| \`minifyCss\` | \`minifyCss(css, filename?)\` | Minifies a CSS string using Lightning CSS. |
 
 ---
 
