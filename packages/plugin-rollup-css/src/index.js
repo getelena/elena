@@ -1,10 +1,10 @@
 /**
  *  ██████████ ████
  * ░░███░░░░░█░░███
- *  ░███  █ ░  ███   ██████  ████████    ██████
- *  ░██████    ███  ███░░███░░███░░███  ░░░░░███
- *  ░███░░█    ███ ░███████  ░███ ░███   ███████
- *  ░███ ░   █ ███ ░███░░░   ░███ ░███  ███░░███
+ *  ░███  █ ░  ░███   ██████  ████████    ██████
+ *  ░██████    ░███  ███░░███░░███░░███  ░░░░░███
+ *  ░███░░█    ░███ ░███████  ░███ ░███   ███████
+ *  ░███ ░   █ ░███ ░███░░░   ░███ ░███  ███░░███
  *  ██████████ █████░░██████  ████ █████░░████████
  * ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
  *
@@ -12,7 +12,7 @@
  * https://elenajs.com
  */
 
-import { basename } from "path";
+import { basename, resolve, dirname } from "path";
 import { readFileSync, readdirSync } from "fs";
 import { transform } from "lightningcss";
 
@@ -23,13 +23,66 @@ import { transform } from "lightningcss";
  * @param {string} [filename]
  * @returns {string}
  */
-function minifyCss(css, filename = "style.css") {
+export function minifyCss(css, filename = "style.css") {
   const { code } = transform({
     filename,
     code: Buffer.from(css),
     minify: true,
   });
   return code.toString();
+}
+
+/**
+ * Rollup plugin that handles CSS Module Script imports (`with { type: "css" }`).
+ * Loads the CSS file content, minifies it, and returns a JS module that
+ * constructs and exports a CSSStyleSheet for Shadow DOM adoption. This prevents
+ * Rollup from attempting to parse CSS files as JavaScript.
+ *
+ * @returns {import("rollup").Plugin}
+ */
+export function cssModuleScriptPlugin() {
+  const PREFIX = "\0css-module:";
+
+  return {
+    name: "css-module-script",
+    resolveId(source, importer, options) {
+      if (!source.endsWith(".css") || options?.attributes?.type !== "css") {
+        return null;
+      }
+      return { id: PREFIX + resolve(dirname(importer), source) };
+    },
+    load(id) {
+      if (!id.startsWith(PREFIX)) {
+        return null;
+      }
+      const filePath = id.slice(PREFIX.length);
+      const css = minifyCss(readFileSync(filePath, "utf8"), basename(filePath));
+      return `const sheet = new CSSStyleSheet();\nsheet.replaceSync(${JSON.stringify(css)});\nexport default sheet;`;
+    },
+  };
+}
+
+/**
+ * Rollup plugin that minifies CSS strings assigned to `static styles` class fields.
+ *
+ * @returns {import("rollup").Plugin}
+ */
+export function cssStaticStylesPlugin() {
+  return {
+    name: "css-static-styles",
+    transform(code, id) {
+      if (!id.endsWith(".js") && !id.endsWith(".ts")) {
+        return null;
+      }
+      if (!code.includes("static styles")) {
+        return null;
+      }
+      const newCode = code.replace(/static\s+styles\s*=\s*`([\s\S]*?)`/g, (_match, css) => {
+        return `static styles = \`${minifyCss(css)}\``;
+      });
+      return newCode !== code ? { code: newCode } : null;
+    },
+  };
 }
 
 /**
@@ -67,9 +120,17 @@ export function cssBundlePlugin(srcDir, fileName) {
   return {
     name: "css-bundle",
     generateBundle() {
+      const shadowDomCssFiles = new Set();
+      for (const id of this.getModuleIds()) {
+        if (id.startsWith("\0css-module:")) {
+          shadowDomCssFiles.add(id.slice("\0css-module:".length));
+        }
+      }
+
       const cssFiles = readdirSync(srcDir, { recursive: true })
         .filter(f => f.endsWith(".css"))
-        .map(f => `${srcDir}/${f}`);
+        .map(f => resolve(`${srcDir}/${f}`))
+        .filter(f => !shadowDomCssFiles.has(f));
 
       const source = minifyCss(cssFiles.map(f => readFileSync(f, "utf8")).join("\n"), fileName);
 
