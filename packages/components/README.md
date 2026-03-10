@@ -38,7 +38,9 @@
   - **[Import styles](#import-styles)**
 - **[Available components](#available-components)**
   - **[Button](#button)**
+  - **[Spinner](#spinner)**
   - **[Stack](#stack)**
+  - **[Visually Hidden](#visually-hidden)**
 - **[TypeScript](#typescript)**
 - **[Development](#development)**
 
@@ -64,7 +66,9 @@ Import only the components you need for better tree-shaking:
 
 ```js
 import "@elenajs/components/dist/button.js";
+import "@elenajs/components/dist/spinner.js";
 import "@elenajs/components/dist/stack.js";
+import "@elenajs/components/dist/visually-hidden.js";
 ```
 
 ### Import styles
@@ -77,7 +81,9 @@ Each component ships with a matching CSS file. Import the full bundle or individ
 
 /* Or individual styles */
 @import "@elenajs/components/dist/button.css";
+@import "@elenajs/components/dist/spinner.css";
 @import "@elenajs/components/dist/stack.css";
+@import "@elenajs/components/dist/visually-hidden.css";
 ```
 
 ## Available components
@@ -120,6 +126,21 @@ Renders a `<button>` element with built-in event delegation and variant styling.
 | `--elena-button-font`   | Overrides the default font family.      |
 | `--elena-button-radius` | Overrides the default border radius.    |
 
+### Spinner
+
+Displays an animated loading indicator that inherits the current text color.
+
+```html
+<elena-spinner></elena-spinner>
+```
+
+#### CSS custom properties
+
+| Property                | Description                          |
+| ----------------------- | ------------------------------------ |
+| `--elena-spinner-size`  | Overrides the default size (20px).   |
+| `--elena-spinner-border`| Overrides the default border width (2px). |
+
 ### Stack
 
 Manages flexbox layout of its children with optional spacing.
@@ -141,6 +162,16 @@ Manages flexbox layout of its children with optional spacing.
 | Prop        | Type                | Default    | Description                        |
 | ----------- | ------------------- | ---------- | ---------------------------------- |
 | `direction` | `"column" \| "row"` | `"column"` | The direction of the stack layout. |
+
+### Visually Hidden
+
+Hides content visually while keeping it accessible to assistive technologies such as screen readers.
+
+```html
+<elena-visually-hidden>Skip to main content</elena-visually-hidden>
+```
+
+No props. Content is passed as children.
 
 ## TypeScript
 
