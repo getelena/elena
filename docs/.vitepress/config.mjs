@@ -1,4 +1,5 @@
 import { defineConfig } from "vitepress";
+import footnote from "markdown-it-footnote";
 import { copyFile, mkdir } from "fs/promises";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -25,6 +26,7 @@ function copyComponentAssets() {
 
 export default defineConfig({
   title: "Elena",
+  lang: "en-GB",
   base: "/elena/",
   ignoreDeadLinks: false,
   sitemap: {
@@ -74,6 +76,7 @@ export default defineConfig({
     toc: {
       level: [1, 2],
     },
+    config: md => md.use(footnote),
   },
   vite: {
     plugins: [copyComponentAssets()],
@@ -87,6 +90,14 @@ export default defineConfig({
   },
   themeConfig: {
     logo: "/logo.png",
+    lastUpdated: {
+      text: "Updated at",
+      formatOptions: {
+        forceLocale: true,
+        dateStyle: "full",
+        timeStyle: "medium",
+      },
+    },
     nav: [
       { text: "Docs", link: "/", activeMatch: "^(?!/api/)" },
       { text: "API Reference", link: "/api/" },
