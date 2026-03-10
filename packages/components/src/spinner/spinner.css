@@ -1,0 +1,55 @@
+/* ---------------------------------------------
+/ ELENA SPINNER
+/ --------------------------------------------- */
+
+@scope (elena-spinner) {
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
+    all: unset;
+    display: revert;
+    box-sizing: border-box;
+  }
+
+  :scope {
+    --elena-spinner-size: 20px;
+    --elena-spinner-border: 2px;
+
+    inline-size: var(--elena-spinner-size);
+    block-size: var(--elena-spinner-size);
+    display: inline-flex;
+    position: relative;
+    color: inherit;
+    inset: 0;
+    animation: elenaRotate 0.5s linear infinite;
+  }
+
+  :scope,
+  :scope::after {
+    border-radius: 50%;
+    border: var(--elena-spinner-border) solid transparent;
+  }
+
+  :scope {
+    border-block-end-color: currentColor;
+  }
+
+  :scope::after {
+    content: "";
+    position: absolute;
+    inset: calc(var(--elena-spinner-border) * -1);
+    opacity: 0.2;
+    border-color: currentColor;
+    border-block-end-color: transparent;
+  }
+
+  @keyframes elenaRotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
