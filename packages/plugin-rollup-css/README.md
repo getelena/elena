@@ -30,10 +30,14 @@
 - **[Usage](#usage)**
   - **[Individual CSS files](#individual-css-files)**
   - **[CSS bundle](#css-bundle)**
-  - **[Both together](#both-together)**
+  - **[CSS Module Scripts](#css-module-scripts)**
+  - **[Static styles](#static-styles)**
+  - **[All together](#all-together)**
 - **[API](#api)**
   - **[`cssPlugin(srcDir)`](#csspluginsrcdir)**
   - **[`cssBundlePlugin(srcDir, fileName)`](#cssbundlepluginsrcdir-filename)**
+  - **[`cssModuleScriptPlugin()`](#cssmodulescriptplugin)**
+  - **[`cssStaticStylesPlugin()`](#cssstaticstylesplugin)**
   - **[`minifyCss(css, filename?)`](#minifycsscss-filename)**
 
 ## Install
@@ -78,18 +82,55 @@ export default {
 };
 ```
 
-### Both together
+### CSS Module Scripts
 
-Use both plugins to emit individual files and a concatenated bundle:
+Handle `import styles from "./component.css" with { type: "css" }` imports. The plugin intercepts these imports, minifies the CSS, and returns a JS module that constructs a `CSSStyleSheet` for Shadow DOM adoption. CSS files handled this way are automatically excluded from `cssBundlePlugin`:
 
 ```js
 // rollup.config.js
-import { cssPlugin, cssBundlePlugin } from "@elenajs/plugin-rollup-css";
+import { cssModuleScriptPlugin } from "@elenajs/plugin-rollup-css";
+
+export default {
+  input: "src/index.js",
+  output: { dir: "dist", format: "esm" },
+  plugins: [cssModuleScriptPlugin()],
+};
+```
+
+### Static styles
+
+Minify CSS strings assigned to `static styles` template literal class fields:
+
+```js
+// rollup.config.js
+import { cssStaticStylesPlugin } from "@elenajs/plugin-rollup-css";
+
+export default {
+  input: "src/index.js",
+  output: { dir: "dist", format: "esm" },
+  plugins: [cssStaticStylesPlugin()],
+};
+```
+
+### All together
+
+Use all plugins together for a complete CSS build pipeline:
+
+```js
+// rollup.config.js
+import {
+  cssPlugin,
+  cssBundlePlugin,
+  cssModuleScriptPlugin,
+  cssStaticStylesPlugin,
+} from "@elenajs/plugin-rollup-css";
 
 export default {
   input: "src/index.js",
   output: { dir: "dist", format: "esm" },
   plugins: [
+    cssModuleScriptPlugin(),
+    cssStaticStylesPlugin(),
     cssPlugin("src"),
     cssBundlePlugin("src", "bundle.css"),
   ],
@@ -108,12 +149,20 @@ Returns a Rollup plugin that finds all `.css` files in `srcDir` and emits each o
 
 ### `cssBundlePlugin(srcDir, fileName)`
 
-Returns a Rollup plugin that concatenates all `.css` files in `srcDir`, minifies the result, and emits it as a single asset.
+Returns a Rollup plugin that concatenates all `.css` files in `srcDir`, minifies the result, and emits it as a single asset. CSS files resolved by `cssModuleScriptPlugin` are automatically excluded from the bundle.
 
 | Parameter  | Type     | Description                                           |
 | ---------- | -------- | ----------------------------------------------------- |
 | `srcDir`   | `string` | Source directory to scan for `.css` files.            |
 | `fileName` | `string` | Output filename for the bundle (e.g. `"bundle.css"`). |
+
+### `cssModuleScriptPlugin()`
+
+Returns a Rollup plugin that handles CSS Module Script imports (`with { type: "css" }`). Reads the CSS file, minifies it, and returns a JS module that constructs and exports a `CSSStyleSheet` for Shadow DOM adoption. Must be listed before `@rollup/plugin-node-resolve` in the plugins array.
+
+### `cssStaticStylesPlugin()`
+
+Returns a Rollup plugin that finds `static styles` class fields with template literal values and minifies the CSS inside them.
 
 ### `minifyCss(css, filename?)`
 
