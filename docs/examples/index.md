@@ -10,7 +10,7 @@ head:
 ---
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 const iconDownload = `<svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M20 16a1 1 0 0 1 1 1v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-2a1 1 0 0 1 2 0v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1 -1v-2a1 1 0 0 1 1 -1m-8 -13a1 1 0 0 1 1 1v9.585l3.293 -3.292a1 1 0 0 1 1.414 1.414l-5 5a1 1 0 0 1 -.09 .08l.09 -.08a1 1 0 0 1 -.674 .292l-.033 .001h-.032l-.054 -.004l.086 .004a1 1 0 0 1 -.617 -.213a1 1 0 0 1 -.09 -.08l-5 -5a1 1 0 0 1 1.414 -1.414l3.293 3.292v-9.585a1 1 0 0 1 1 -1' /></svg>`;
 
@@ -35,6 +35,22 @@ const cycleButtonText = computed(() => `Click to cycle (${currentVariant.value})
 function cycleVariant() {
   variantIndex.value = (variantIndex.value + 1) % variants.length;
 }
+
+// Firefox workaround: force attribute style recalculation for @scope + attr[value] bug
+onMounted(() => {
+  if (navigator.userAgent.includes("Firefox")) {
+    customElements.whenDefined("elena-button").then(() => {
+      for (const el of document.querySelectorAll("elena-button[variant]")) {
+        const v = el.getAttribute("variant");
+        const s = el.getAttribute("size");
+        el.removeAttribute("variant");
+        el.removeAttribute("size");
+        requestAnimationFrame(() => el.setAttribute("variant", v));
+        requestAnimationFrame(() => el.setAttribute("size", s));
+      }
+    });
+  }
+});
 </script>
 
 # Live examples
