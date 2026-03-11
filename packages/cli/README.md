@@ -1,10 +1,10 @@
 <div align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://elenajs.com/img/elena-dark.png" alt="Elena" width="201" height="230">
+  <source media="(prefers-color-scheme: dark)" srcset="https://elenajs.com/img/elena-dark.png" alt="Elena" width="558" height="220">
   </source>
-  <source media="(prefers-color-scheme: light)" srcset="https://elenajs.com/img/elena.png" alt="Elena" width="201" height="230">
+  <source media="(prefers-color-scheme: light)" srcset="https://elenajs.com/img/elena-light.png" alt="Elena" width="558" height="220">
   </source>
-  <img src="https://elenajs.com/img/elena.png" alt="Elena" width="201" height="230">
+  <img src="https://elenajs.com/img/elena-light.png" alt="Elena" width="558" height="220">
 </picture>
 
 ### Elena CLI for scaffolding Progressive Web Components.
