@@ -36,7 +36,7 @@ npm install @elenajs/core
 
 Elena is a monorepo containing several packages published to npm under the `@elenajs` scope:
 
-| Package | Description | Version | Stability |
+| Package | Package description | Package version | package stability |
 | --- | --- | --- | --- |
 | [`@elenajs/prettier-config`](https://github.com/getelena/elena/tree/main/packages/prettier-config) | Prettier config for Elena projects. | [![npm](https://img.shields.io/npm/v/@elenajs/prettier-config.svg)](https://www.npmjs.com/package/@elenajs/prettier-config) | [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature) |
 | [`@elenajs/eslint-config`](https://github.com/getelena/elena/tree/main/packages/eslint-config) | ESLint config for Elena projects. | [![npm](https://img.shields.io/npm/v/@elenajs/eslint-config.svg)](https://www.npmjs.com/package/@elenajs/eslint-config) | [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature) |
