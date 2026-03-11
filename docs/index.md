@@ -71,7 +71,7 @@ Stack.define();
 
 ## Why was Elena created
 
-Elena was created by [@arielle](https://arielsalminen.com) after nearly a decade of building enterprise-scale design systems with [web components](https://arielsalminen.com/2019/why-we-use-web-components/). The recurring pain points were often similar: accessibility problems, server-side rendering, layout shifts, flash of invisible content, and compatibility with e.g. analytics tools.
+Elena was created by [@arielle](https://arielsalminen.com) after nearly a decade of building enterprise-scale design systems with [web components](https://arielsalminen.com/2019/why-we-use-web-components/). The recurring pain points were often similar: accessibility problems, server-side rendering, layout shifts, flash of invisible content, challenges with React Server Components/Next.js, and compatibility with e.g. analytics tools.
 
 Elena was built to solve these problems while staying grounded in web standards and what the platform natively provides. This is how _“Progressive Web Components”_ were born.
 
