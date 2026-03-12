@@ -1,4 +1,5 @@
 import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
+import "../spinner/spinner.js";
 
 /**
  * Button component is used for interface actions.
