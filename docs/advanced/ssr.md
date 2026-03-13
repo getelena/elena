@@ -1,6 +1,6 @@
 # Server-side rendering
 
-Elena’s approach to server-side rendering is simple and straightforward. Since [Progressive Web Components](/) are primarily HTML and CSS, you don’t need any special logic on the server to render them.
+Elena’s approach to server-side rendering is simple and straightforward. Since [Progressive Web Components](https://arielsalminen.com/2026/progressive-web-components/) are primarily HTML and CSS, you don’t need any special logic on the server to render them.
 
 Components without a `render()` method are fully SSR-compatible by default, while components with `render()` provide a partial support and complete hydration on the client&nbsp;side. 
 
