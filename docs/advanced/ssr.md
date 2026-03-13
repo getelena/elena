@@ -1,10 +1,12 @@
 # Server-side rendering
 
-Elena’s recommended approach to server-side rendering is simple and straightforward. Since [Progressive Web Components](/) are primarily HTML and CSS, you don’t need any special logic on the server to render them. 
+Elena’s approach to server-side rendering is simple and straightforward. Since [Progressive Web Components](/) are primarily HTML and CSS, you don’t need any special logic on the server to render them.
 
-Components without a `render()` method are fully SSR-compatible by default _(HTML Web Components),_ while components with `render()` provide partial support and complete hydration on the client side.
+Components without a `render()` method are fully SSR-compatible by default, while components with `render()` provide a partial support and complete hydration on the client&nbsp;side. 
 
-Partial SSR support for components with `render()` means that the component’s base HTML and CSS lives in the Light DOM. The JavaScript lifecycle then progressively enhances the functionality and markup once the element is registered.
+The “partial support” bit for the latter means that you can visually render them without JavaScript, but JS is needed for the full interative _(unless you also use the provided [@elenajs/ssr](#rendering-to-html-strings) tool)._
+
+Elena also supports [Declarative Shadow DOM](#declarative-shadow-dom) for cases where you may need stronger isolation, but still want the component to render server-side.
 
 ## Avoiding layout shifts
 
@@ -93,6 +95,41 @@ Output:
   <elena-button><button>Send</button></elena-button>
 </elena-stack>
 ```
+
+## Declarative Shadow DOM <Badge type="warning" text="experimental" />
+
+Declarative Shadow DOM lets you define a shadow root directly in HTML using a `<template shadowrootmode="open">` element. The browser attaches the shadow root during parsing, so the shadow content is visible before JavaScript loads.
+
+When a component with `static shadow` connects and finds a shadow root already attached, Elena skips `attachShadow()` and works with the existing one instead. Content stays in the light DOM and is projected into the shadow root via `<slot>`:
+
+::: code-group
+
+```html [HTML]
+<elena-button>
+  <template shadowrootmode="open">
+    <link rel="stylesheet" href="button.css" />
+    <button><slot></slot></button>
+  </template>
+  Click me
+</elena-button>
+```
+
+```js [JavaScript]
+import { Elena } from "@elenajs/core";
+
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static shadow = "open";
+}
+
+Button.define();
+```
+
+:::
+
+In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application. `@elenajs/ssr` may later get Declarative Shadow DOM support which would eliminate that entirely, but this isn’t currently on our roadmap. 
+
+For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
 
 ### With Eleventy
 

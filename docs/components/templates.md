@@ -253,6 +253,6 @@ Button.define();
 
 :::
 
-In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly. `@elenajs/ssr` may later get Declarative Shadow DOM support which would eliminate that, but currently it’s not on our roadmap. 
+In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application. `@elenajs/ssr` may later get Declarative Shadow DOM support which would eliminate that entirely, but this isn’t currently on our roadmap. 
 
 For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
