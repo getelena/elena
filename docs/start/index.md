@@ -57,7 +57,7 @@ import { Elena } from "@elenajs/core";
 
 There are three types of Progressive Web Components:
 
-1. **Composite Components** that wrap and enhance the HTML composed inside them, including other components. All of their HTML and CSS lives in the Light DOM. You could also call these [HTML Web Components](https://adactio.com/journal/20618).
+1. **Composite Components** that wrap and enhance the HTML composed inside them. All of their HTML and CSS lives in the Light DOM. You could also call these [HTML Web Components](https://adactio.com/journal/20618).
 2. **Primitive Components** that are self-contained and render their own HTML. All of their CSS lives in the Light DOM together with the base HTML required for rendering the initial&nbsp;state.
 3. **Declarative Components** that are a hybrid of these and utilize [Declarative Shadow DOM](#3-declarative-components).
 
