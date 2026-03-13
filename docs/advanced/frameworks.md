@@ -39,7 +39,7 @@ How you can reference the bundle in your template:
 
 This registers all Elena components globally, making them available as standard HTML tags in any Nunjucks, Liquid, or Markdown template.
 
-For server-side rendering with Eleventy, see [Rendering to HTML strings](/advanced/ssr#rendering-to-html-strings).
+For server-side rendering with Eleventy, see [Pre-rendering with Eleventy](/advanced/ssr#pre-rendering-with-eleventy).
 
 **[View Eleventy example project →](https://github.com/getelena/eleventy-example-project)**
 
