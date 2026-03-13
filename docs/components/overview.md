@@ -22,4 +22,4 @@ Declarative Components are a hybrid of these and utilize [Declarative Shadow DOM
 <img src="/visualization.svg" alt="This image visualizes the three types of Progressive Web Components.">
 
 > [!TIP]
-> Elena doesn’t force you to think about this taxonomy. They’re all just components, and you choose how to build yours. But since [Progressive Web Components](https://arielsalminen.com/2026/progressive-web-components/) is a design philosophy rather than a library feature, understanding the distinction between these approaches helps when deciding what fits your use case.
+> Elena doesn’t force this taxonomy. They’re all just components, and you choose how to build yours. But since [Progressive Web Components](https://arielsalminen.com/2026/progressive-web-components/) is a design philosophy rather than a library feature, understanding the distinction between these approaches helps when deciding what fits your use case.
