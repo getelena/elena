@@ -116,10 +116,9 @@ Starts an interactive prompt that walks you through creating a new Elena compone
 | Prompt | Options |
 |--------|---------|
 | Component name | Any valid kebab-case custom element name (e.g. `my-button`) |
-| Component name | Any valid kebab-case custom element name |
+| Component features | Props, events, methods, CSS custom properties, encapsulation reset, SSR, and code comments (each optional) |
 | Language | JavaScript, TypeScript, or single-file HTML |
 | Output directory | Where to write the generated files |
-| Features | Props, events, methods, CSS custom properties, encapsulation reset, SSR, and code comments (each optional) |
 
 The generated files follow all Elena authoring patterns, including JSDoc annotations and `@scope` CSS.
 
