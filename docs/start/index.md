@@ -55,14 +55,18 @@ import { Elena } from "@elenajs/core";
 
 ## Building your first component
 
-There are two recommended ways to build Elena components:
+There are three types of Progressive Web Components:
 
-- **HTML Web Components:** HTML Web Components have no `render()` method. Instead, the component enhances whatever HTML is composed inside it. Provides full SSR support out of the box.
-- **Web Components with `render()`:** Regular Web Components that use a `render()` method. The component owns and controls its inner markup entirely. Provides partial SSR support out of the box without `@elenajs/ssr`.
+1. **Composite Components** that wrap and enhance the HTML composed inside them, including other components. All of their HTML and CSS lives in the Light DOM. You could also call these [HTML Web Components](#).
+2. **Primitive Components** that are self-contained and render their own HTML. All of their CSS lives in the Light DOM together with the base HTML required for rendering the initial&nbsp;state.
+3. **Declarative Components** that are a hybrid of these and utilize [Declarative Shadow DOM](#).
 
-### 1. HTML Web Components
+> [!TIP]
+> Don’t worry, they’re all just “compontents” still, you choose however you build yours with Elena. But as [Progressive Web Components](https://arielsalminen.com/2026/progressive-web-components/) itself is more of a design philosophy, rather than a library, it’s good to understand on a high level the distiction between these approaches.
 
-An HTML Web Component enhances whatever HTML is composed inside it, applying styling and behavior around it. It has no `render()` method and never touches its children.
+### 1. Composite Components
+
+A Composite Component enhances whatever HTML is composed inside it, applying styling and behavior around it. It has no `render()` method and never touches its children.
 
 ::: code-group
 
@@ -121,9 +125,9 @@ Stack.define();
 </my-stack>
 ```
 
-### 2. Web Components with `render()`
+### 2. Primitive Components
 
-A component with `render()` owns and controls its inner HTML markup. Two things to know to get started:
+A Primitive Component owns and controls its inner HTML markup. Two things to know to get started:
 
 - **`html`** is Elena’s tagged template function. It auto-escapes interpolated values to prevent XSS, and nested `html` fragments pass through without double-escaping.
 - **`this.text`** is a built-in reactive property. Elena captures any text content placed inside the element before hydration, so you can pass text as a child node or set it as a property. Utilizing this helps to avoid layout shifts.
@@ -211,6 +215,49 @@ Button.define();
 <my-button variant="primary">Save</my-button>
 <my-button>Cancel</my-button>
 ```
+
+### 3. Declarative Components <Badge type="warning" text="experimental" />
+
+A Declarative Component utilizes Declarative Shadow DOM which lets you define a shadow root directly in HTML using a `<template shadowrootmode="open">` element. The browser attaches the shadow root during parsing, so the content is visible before JavaScript loads.
+
+::: code-group
+
+```html [HTML]
+<elena-button>
+  <template shadowrootmode="open">
+    <link rel="stylesheet" href="button.css" />
+    <button><slot></slot></button>
+  </template>
+  Click me
+</elena-button>
+```
+
+```js [JavaScript]
+import { Elena } from "@elenajs/core";
+
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static shadow = "open";
+}
+
+Button.define();
+```
+
+:::
+
+#### Usage
+
+```html [HTML]
+<elena-button>
+  <template shadowrootmode="open">
+    <link rel="stylesheet" href="button.css" />
+    <button><slot></slot></button>
+  </template>
+  Click me
+</elena-button>
+```
+
+In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application.
 
 ## Usage with frameworks
 

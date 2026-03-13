@@ -145,9 +145,9 @@ For more detailed guidelines, see the [Server Side Rendering](/advanced/ssr) sec
 > [!TIP]
 > You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
-## HTML Web Components
+## Composite Components
 
-HTML Web Components style the host element and can pass styles down to their composed children. Since they never render their own internal markup, there are no pre-hydration concerns:
+Composite Components style the host element and can pass styles down to their composed children. Since they never render their own internal markup, there are no pre-hydration concerns:
 
 ```css
 /* Scope makes sure styles don’t leak out */
