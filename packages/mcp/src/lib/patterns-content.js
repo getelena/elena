@@ -379,9 +379,9 @@ Key rules:
 - Use attribute selectors on \`:scope\` for variant/state styling.
 - Define public CSS custom properties on \`:scope\` for theming.
 
-### HTML Web Component CSS
+### Composite Components
 
-HTML Web Components only style the host — no encapsulation reset, no inner element, no hydration concerns:
+Composite Components style the host element and can pass styles down to their composed children. Since they never render their own internal markup, there are no pre-hydration concerns:
 
 \`\`\`css
 /* Scope makes sure styles don't leak out */
@@ -509,8 +509,9 @@ Always call \`ClassName.define()\` after the class body to register the element.
 
 Elena's approach to SSR:
 
-- **HTML Web Components** provide full SSR support by default — their HTML lives entirely in the Light DOM.
-- **Components with \`render()\`** provide partial SSR support — base HTML & CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
+- **Composite Components** (HTML Web Components) provide full SSR support by default: their HTML lives entirely in the Light DOM.
+- **Primitive Components** (components with \`render()\`) provide partial SSR support: base HTML & CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
+- **Declarative Components** use Declarative Shadow DOM for cases where you need stronger isolation but still want the component visible before JavaScript loads.
 
 For components with \`render()\`, ship CSS styles that visually match both loading and hydrated states to avoid FOUC/FOIC. Use the \`hydrated\` attribute:
 

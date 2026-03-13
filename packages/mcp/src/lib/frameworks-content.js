@@ -6,11 +6,11 @@ export const FRAMEWORKS_CONTENT = `# Framework Integrations
 
 Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers.
 
-Components that use \`render()\` own their inner DOM via \`replaceChildren()\` and frameworks must treat these as leaf nodes and never try to render inside them. HTML Web Components on the other hand work like any HTML container element and integrate naturally.
+Components that use \`render()\` own their inner DOM and frameworks must treat these as leaf nodes and never try to render inside them. HTML Web Components on the other hand work like any HTML container element and integrate naturally.
 
 ## Plain HTML
 
-Since Elena ships as ES modules, load components directly on a webpage:
+Since Elena ships as ES modules, you can load your components directly on a webpage:
 
 \`\`\`html
 <script src="https://unpkg.com/@elenajs/components/dist/bundle.js" type="module"></script>
@@ -23,7 +23,7 @@ This registers all Elena components globally as standard HTML tags.
 
 ## Eleventy
 
-Install your component library as a dependency, then copy the bundle to the output directory via \`addPassthroughCopy\` in \`eleventy.config.js\`:
+Install your own Elena component library as a dependency, then copy the bundle to the output directory via \`addPassthroughCopy\` in \`eleventy.config.js\`. This example uses the existing \`@elenajs/components\` for demo purposes:
 
 \`\`\`js
 eleventyConfig.addPassthroughCopy({
@@ -32,20 +32,22 @@ eleventyConfig.addPassthroughCopy({
 });
 \`\`\`
 
-Reference the bundle in your template:
+How you can reference the bundle in your template:
 
 \`\`\`html
 <script src="/assets/bundle.js" type="module"></script>
 <link rel="stylesheet" href="/assets/bundle.css" />
 \`\`\`
 
-This registers all Elena components globally, making them available in any Nunjucks, Liquid, or Markdown template.
+This registers all Elena components globally, making them available as standard HTML tags in any Nunjucks, Liquid, or Markdown template.
+
+For server-side rendering with Eleventy, see the SSR guide's "Pre-rendering with Eleventy" section.
 
 ---
 
 ## Next.js
 
-Because Elena components access the DOM on registration, create a \`"use client"\` component with \`useEffect\` to defer Elena hydration to the browser:
+Because Elena components access the DOM on registration, Next.js needs to be configured in a way that supports this. To achieve this, create a \`"use client"\` component with \`useEffect\` to defer Elena hydration to the browser:
 
 \`\`\`tsx
 // src/elements-registry.tsx
@@ -64,7 +66,7 @@ export default function ElementsRegistry() {
 
 Mount it once in the root layout so components are available everywhere. Elena components can then be used directly in Server Components for markup and styles, with interactivity handled by client components.
 
-### TypeScript (Next.js)
+### TypeScript
 
 Create a type declaration file to wire Elena's types into React's JSX namespace:
 
@@ -92,7 +94,7 @@ declare module "react" {
 
 ## React
 
-Import the component library and styles, then use components as regular JSX tags:
+Import the component library and its styles, then use the components as regular JSX tags:
 
 \`\`\`tsx
 import "@elenajs/components/dist/bundle.js";
@@ -107,7 +109,7 @@ function App() {
 }
 \`\`\`
 
-### TypeScript (React with Vite)
+### TypeScript
 
 When using Vite's \`"jsx": "react-jsx"\` transform, augment both the production and development JSX runtimes:
 
@@ -137,13 +139,13 @@ declare module "react/jsx-dev-runtime" {
 }
 \`\`\`
 
-Make sure \`tsconfig.json\` includes the \`src\` directory, then restart the TypeScript server after adding the file.
+Make sure \`tsconfig.json\` includes the \`src\` directory, then restart the TypeScript server in your editor after adding the file.
 
 ---
 
 ## Svelte
 
-Import the component library and styles, then use components as regular template tags:
+Import the component library and its styles, then use the components as regular template tags:
 
 \`\`\`svelte
 <script lang="ts">
@@ -154,7 +156,7 @@ Import the component library and styles, then use components as regular template
 <elena-button variant="primary" onclick={() => console.log("clicked!")}>Click me</elena-button>
 \`\`\`
 
-### TypeScript (Svelte)
+### TypeScript
 
 Extend \`SvelteHTMLElements\` with Elena's \`CustomElements\` type map:
 
@@ -173,7 +175,7 @@ The Svelte for VS Code extension is required for template type checking.
 
 ## Vue
 
-Import the component library and styles, then use components as regular template tags:
+Import the component library and its styles, then use the components as regular template tags:
 
 \`\`\`vue
 <script setup lang="ts">
@@ -186,7 +188,7 @@ import "@elenajs/components/dist/bundle.css";
 </template>
 \`\`\`
 
-### TypeScript (Vue)
+### TypeScript
 
 Map Elena's \`CustomElements\` into Vue's \`GlobalComponents\` interface:
 
@@ -210,7 +212,7 @@ The Vue Volar extension is required for template type checking.
 
 ## Angular
 
-Import the component library and add \`CUSTOM_ELEMENTS_SCHEMA\` to accept custom element tags:
+Import the component library and its styles in a component, add \`CUSTOM_ELEMENTS_SCHEMA\` to the \`schemas\` array, then use the components as regular template tags:
 
 \`\`\`typescript
 // app.component.ts
@@ -268,5 +270,5 @@ React 17 does not pass non-primitive props (arrays, objects) or event handlers t
 
 React 17 SSR hydration can also conflict with Elena: Elena's \`connectedCallback\` fires \`replaceChildren()\` while React is reconciling its hydration tree, causing mismatch errors. Use React 18+ or ensure Elena elements render only client-side.
 
-> The provided examples import the existing \`@elenajs/components\` for demo purposes. Replace it with your own component library for production usage.
+> **Tip:** The provided examples import the existing \`@elenajs/components\` for demo purposes. Replace it with your own component library for production usage.
 `;

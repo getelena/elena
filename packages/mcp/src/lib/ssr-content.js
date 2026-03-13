@@ -4,13 +4,17 @@
  */
 export const SSR_CONTENT = `# Server-Side Rendering
 
-Elena's recommended approach to server-side rendering is simple and straightforward. Since Progressive Web Components are primarily HTML and CSS, you don't need any special logic on the server to render them. Components without a \`render()\` method are fully SSR-compatible by default, while components with \`render()\` provide partial support and complete hydration on the client side.
+Elena's approach to server-side rendering is simple and straightforward. Since Progressive Web Components are primarily HTML and CSS, you don't need any special logic on the server to render them.
 
-Partial SSR support for components with \`render()\` means that the component's base HTML and CSS lives in the Light DOM. The JavaScript lifecycle then progressively enhances the functionality and markup once the element is registered.
+Components without a \`render()\` method are fully SSR-compatible by default, while components with \`render()\` provide partial support and complete hydration on the client side.
+
+The "partial support" bit for the latter means that you can render the initial state without JavaScript, but JS is needed for the interactivity (unless you also use the provided \`@elenajs/ssr\` tool).
+
+Elena also supports Declarative Shadow DOM for cases where you may need stronger isolation, but still want the component to render server-side.
 
 ## Avoiding layout shifts
 
-For **components with \`render()\`** specifically, the recommendation is to ship them with CSS styles that visually match the \`loading\` and \`hydrated\` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided \`hydrated\` attribute in your component styles:
+For **components with \`render()\`** specifically, our recommendation is to ship them with CSS styles that visually match the \`loading\` and \`hydrated\` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided \`hydrated\` attribute in your component styles:
 
 \`\`\`css
 /* Elena SSR Pattern to avoid layout shift */
@@ -20,7 +24,7 @@ For **components with \`render()\`** specifically, the recommendation is to ship
 }
 \`\`\`
 
-Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support. This can be achieved with pseudo-elements in CSS by referencing the attributes set on the element itself:
+Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
 
 \`\`\`css
 :scope:not([hydrated])::before {
@@ -94,13 +98,57 @@ Output:
 </elena-stack>
 \`\`\`
 
-### With Eleventy
+## \`@elenajs/ssr\` API
+
+### \`register(...components)\`
+
+Register Elena component classes for SSR expansion. Each class must have a \`tagName\` defined. Call this once before using \`ssr()\`.
+
+\`\`\`js
+import { register } from "@elenajs/ssr";
+import Button from "./button.js";
+import Input from "./input.js";
+
+register(Button, Input);
+\`\`\`
+
+Throws an error if a component does not have a \`tagName\`.
+
+### \`ssr(html)\`
+
+Parse an HTML string, expand registered components with \`render()\`, and return the rendered HTML.
+
+| Parameter | Type     | Description                              |
+| --------- | -------- | ---------------------------------------- |
+| \`html\`  | \`string\` | HTML string containing Elena components. |
+
+**Returns:** \`string\`, the rendered HTML with components expanded.
+
+### How it works
+
+1. **Parse** the input HTML string into a tree (tags, attributes, children).
+2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
+3. **Expand** components with \`render()\` by constructing a lightweight instance, converting attribute strings to the correct prop types (boolean, number, array, object), calling \`willUpdate()\` if defined, and then calling \`render()\`.
+4. **Recurse** into wrapper component children and non-component tags.
+5. **Serialize** the tree back to an HTML string.
+
+The rendered output matches what Elena produces on the client, using the same \`html\` tagged template escaping and whitespace normalization.
+
+### Client-side hydration
+
+The HTML produced by \`ssr()\` is designed for progressive enhancement. When the component JavaScript loads on the client:
+
+1. Elena's \`connectedCallback\` fires on the pre-rendered element.
+2. \`render()\` runs and hydrates the component with interactivity.
+3. Event listeners are attached, methods become available, and the \`hydrated\` attribute is added.
+
+## Pre-rendering with Eleventy
 
 Use \`@elenajs/ssr\` with Eleventy as either a transform or a shortcode.
 
 #### As a transform
 
-A transform processes every rendered page automatically, expanding any registered components with \`render()\` found in the output HTML. No shortcodes or special syntax needed — just write Elena components directly in your templates:
+A transform processes every rendered page automatically, expanding any registered components with \`render()\` found in the output HTML. No shortcodes or special syntax needed: just write Elena components directly in your templates:
 
 \`\`\`js
 // eleventy.config.js
@@ -149,49 +197,36 @@ Then in a template:
 {% elena '<elena-button variant="primary">Save</elena-button>' %}
 \`\`\`
 
-### API
+## Declarative Shadow DOM
 
-#### \`register(...components)\`
+Declarative Shadow DOM lets you define a shadow root directly in HTML using a \`<template shadowrootmode="open">\` element. The browser attaches the shadow root during parsing, so the shadow content is visible before JavaScript loads.
 
-Register Elena component classes for SSR expansion. Each class must have a \`tagName\` defined. Call this once before using \`ssr()\`.
+When a component with \`static shadow\` connects and finds a shadow root already attached, Elena skips \`attachShadow()\` and works with the existing one instead. Content stays in the light DOM and is projected into the shadow root via \`<slot>\`:
 
-\`\`\`js
-import { register } from "@elenajs/ssr";
-import Button from "./button.js";
-import Input from "./input.js";
-
-register(Button, Input);
+\`\`\`html
+<elena-button>
+  <template shadowrootmode="open">
+    <link rel="stylesheet" href="button.css" />
+    <button><slot></slot></button>
+  </template>
+  Click me
+</elena-button>
 \`\`\`
 
-Throws an error if a component does not have a \`tagName\`.
+\`\`\`js
+import { Elena } from "@elenajs/core";
 
-#### \`ssr(html)\`
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static shadow = "open";
+}
 
-Parse an HTML string, expand registered components with \`render()\`, and return the rendered HTML.
+Button.define();
+\`\`\`
 
-| Parameter | Type     | Description                              |
-| --------- | -------- | ---------------------------------------- |
-| \`html\`  | \`string\` | HTML string containing Elena components. |
+In practice, you have to write the \`<template>\` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application. \`@elenajs/ssr\` may later get Declarative Shadow DOM support which would eliminate that entirely, but this isn't currently on our roadmap.
 
-**Returns:** \`string\`, the rendered HTML with components expanded.
-
-### How it works
-
-1. **Parse** the input HTML string into a tree (tags, attributes, children).
-2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
-3. **Expand** components with \`render()\` by constructing a lightweight instance, converting attribute strings to the correct prop types (boolean, number, array, object), calling \`willUpdate()\` if defined, and then calling \`render()\`.
-4. **Recurse** into wrapper component children and non-component tags.
-5. **Serialize** the tree back to an HTML string.
-
-The rendered output matches what Elena produces on the client, using the same \`html\` tagged template escaping and whitespace normalization.
-
-### Client-side hydration
-
-The HTML produced by \`ssr()\` is designed for progressive enhancement. When the component JavaScript loads on the client:
-
-1. Elena's \`connectedCallback\` fires on the pre-rendered element.
-2. \`render()\` runs and hydrates the component with interactivity.
-3. Event listeners are attached, methods become available, and the \`hydrated\` attribute is added.
+For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
 
 ## Framework examples
 

@@ -12,7 +12,7 @@ import { Elena, html, nothing, unsafeHTML, ElenaEvent } from "@elenajs/core";
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
-| \`Elena\` | \`Elena(superClass)\` | Creates an Elena component base class. Pass in \`HTMLElement\` to get started. Configure the component using static class fields on the returned class. |
+| \`Elena\` | \`Elena(superClass)\` | Creates an Elena component base class. Pass in \`HTMLElement\` to get started. Configure the component using static [component options](#component-options) on the returned class. |
 | \`ElenaEvent\` | \`new ElenaEvent(type, init?)\` | Extends the native \`Event\` with \`bubbles: true\` and \`composed: true\` already set. Use this to fire custom events from inside a component. |
 
 ### Template Utilities
@@ -23,9 +23,7 @@ import { Elena, html, nothing, unsafeHTML, ElenaEvent } from "@elenajs/core";
 | \`nothing\` | \`nothing\` | Use this in conditional expressions when you want to render nothing. Safer than \`""\` or \`false\`, which can produce unexpected output. |
 | \`unsafeHTML\` | \`unsafeHTML(str)\` | Renders a plain string as raw HTML, skipping automatic escaping. Only use this for content you fully control. |
 
-### Static Class Fields
-
-Configure components by declaring static class fields on the component class (not passed as constructor arguments):
+### Component Options
 
 \`\`\`js
 export default class Button extends Elena(HTMLElement) {
@@ -38,16 +36,16 @@ export default class Button extends Elena(HTMLElement) {
 
 | Field | Type | Description |
 |-------|------|-------------|
-| \`static tagName\` | \`string\` | The HTML tag name for this component (e.g. \`"elena-button"\`). Required for \`define()\` to register the element. |
-| \`static props\` | \`(string \\| { name: string, reflect?: boolean })[]\` | The list of props this component accepts. Each prop stays in sync with its matching HTML attribute. Use \`{ name, reflect: false }\` to keep a prop JS-only without writing it back to the attribute. |
-| \`static events\` | \`string[]\` | Events to forward from the inner element up to the host (e.g. \`["click", "focus", "blur"]\`). |
-| \`static element\` | \`string\` | A CSS selector for the inner element that \`this.element\` points to (e.g. \`".inner"\`, \`"button"\`). Defaults to the first child element when omitted. |
-| \`static shadow\` | \`"open" \\| "closed"\` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host. Only applies to components with a \`render()\` method. |
-| \`static styles\` | \`CSSStyleSheet \\| string \\| (CSSStyleSheet \\| string)[]\` | One or more stylesheets to adopt into the shadow root. Only applies when \`static shadow\` is also set. |
+| \`tagName\` | \`string\` | The HTML tag name for this component (e.g. \`"elena-button"\`). Required for \`define()\` to register the element. |
+| \`props\` | \`(string \\| { name: string, reflect?: boolean })[]\` | The list of props this component accepts. Each prop stays in sync with its matching HTML attribute. Use \`{ name, reflect: false }\` to keep a prop JS-only without writing it back to the attribute. |
+| \`events\` | \`string[]\` | Events to forward from the inner element up to the host (e.g. \`["click", "focus", "blur"]\`). |
+| \`element\` | \`string\` | A CSS selector for the inner element that \`this.element\` points to (e.g. \`".inner"\`, \`"button"\`). Defaults to the first child element when omitted. |
+| \`shadow\` | \`"open" \\| "closed"\` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host. |
+| \`styles\` | \`CSSStyleSheet \\| string \\| (CSSStyleSheet \\| string)[]\` | One or more stylesheets to adopt into the shadow root. Only applies when \`shadow\` is also set. |
 
 ### Host Attributes
 
-Attributes that Elena adds to the host element automatically. These are not JS properties — they appear in the DOM and can be targeted in CSS.
+Attributes that Elena adds to the host element automatically. These are not JS properties, they appear in the DOM and can be targeted in CSS.
 
 | Attribute | Description |
 |-----------|-------------|
@@ -58,20 +56,20 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 | Property | Type | Description |
 |----------|------|-------------|
 | \`text\` | \`string\` | The text content of the element. Elena reads this from the element's children before the first render. Setting it later triggers a re-render. When you need to dynamically update this, pass text via a property instead of children. |
-| \`element\` | \`HTMLElement \\| null\` | A reference to the inner element, resolved after the first render using the \`static element\` field. |
+| \`element\` | \`HTMLElement \\| null\` | A reference to the inner element, resolved after the first render using the \`element\` option. |
 
 ### Lifecycle Methods
 
 | Method | Description |
 |--------|-------------|
 | \`connectedCallback()\` | Runs when the element is added to the page. Sets up props, captures text content, renders, and wires up events. |
-| \`willUpdate()\` | Runs before every render, including the first. Override to compute derived state before the template evaluates. Do not call \`super\`. |
-| \`render()\` | Returns the HTML for this component as an \`html\` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for HTML Web Components. |
+| \`willUpdate()\` | Runs before every render, including the first. Override to compute derived state before the template evaluates. |
+| \`render()\` | Returns the HTML for this component as an \`html\` template. Called on connect and whenever the component needs re-rendering. Omit this method entirely for wrapper components that don't render their own HTML. |
 | \`firstUpdated()\` | Runs once after the first render. \`this.element\` is available here. Override to run one-time setup that requires the DOM. |
 | \`updated()\` | Runs after every render, including the first. \`this.element\` is available here. Override to react to changes after the DOM is updated. On first connect, \`firstUpdated()\` runs before \`updated()\`. |
-| \`requestUpdate()\` | Manually schedules a re-render. Use when Elena cannot detect a change automatically, e.g. when mutating an object or array in place. |
+| \`requestUpdate()\` | Manually schedules a re-render. Use when Elena can't detect a change automatically, e.g. when mutating an object or array in place. Returns nothing, use \`updateComplete\` to wait for the render to finish. |
 | \`disconnectedCallback()\` | Runs when the element is removed from the page. Cleans up event listeners. |
-| \`attributeChangedCallback(name, oldValue, newValue)\` | Runs when an observed attribute changes. Updates the matching JS property and triggers a re-render. |
+| \`attributeChangedCallback()\` | Runs when an observed attribute changes. Updates the matching JS property and triggers a re-render. |
 
 ### Instance Promises
 
@@ -83,21 +81,21 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 
 | Method | Description |
 |--------|-------------|
-| \`ClassName.define()\` | Registers the component with the browser using \`static tagName\`. Call this once after defining your class. Does nothing in non-browser environments. |
-| \`ClassName.observedAttributes\` | The list of attributes the browser should watch for changes, built from \`static props\` plus the built-in \`text\` attribute. |
+| \`ClassName.define()\` | Registers the component with the browser using \`tagName\` option. Call this once after defining your class. Does nothing in non-browser environments. |
+| \`ClassName.observedAttributes\` | The list of attributes the browser should watch for changes, built from \`props\` option plus the built-in \`text\` attribute. |
 
 ### Error Codes
 
 | Error | Explanation |
 |-------|-------------|
-| \`"text" is a reserved prop.\` | You included \`"text"\` in \`static props\`. Elena manages \`text\` as a built-in reactive property — remove it from the props array. |
+| \`"text" is a reserved prop.\` | You included \`"text"\` in \`static props\`. Elena manages \`text\` as a built-in reactive property, remove it from the props array to fix the error. |
 | \`define() called without a tagName.\` | \`ClassName.define()\` was called but \`static tagName\` is not set on the class. Add a \`static tagName\` before calling \`define()\`. |
 | \`Passed element not found.\` | The CSS selector in \`static element\` did not match any element in the rendered output. Check that the selector is correct and that \`render()\` produces a matching element. |
 | \`Cannot add events, no element found.\` | \`static events\` is set but no inner element reference could be resolved. Either add a \`render()\` that produces an inner element, or check your \`static element\` selector. |
-| \`Prop "<name>" has no default value.\` | An attribute changed for a prop that has no corresponding class field default. Add a default value (e.g. \`myProp = ""\`) to the component class body. |
+| \`Prop "<name>" has no default value.\` | An attribute changed for a prop that has no corresponding instance field default. Add a default value (e.g. \`myProp = ""\`) to the component class body. |
 | \`Invalid JSON for a prop: <value>\` | An \`Array\` or \`Object\` prop received an attribute value that could not be parsed as JSON. Check that the attribute value is valid JSON. The prop will be set to \`null\`. |
 | \`Cannot sync attrs to a null element.\` | \`syncAttribute()\` was called with a null element reference. This usually means the inner element was not found before attribute sync ran. Check your \`static element\` selector. |
-| \`Cannot render to a null element.\` | \`renderHtml()\` was called with a null element. This is an internal guard — the inner element reference was lost before rendering completed. |
+| \`Cannot render to a null element.\` | \`renderHtml()\` was called with a null element. This is an internal guard; if you see it, the inner element reference was lost before rendering completed. |
 
 ---
 
@@ -130,7 +128,16 @@ elena build
 npx elena-create
 \`\`\`
 
-Interactive scaffolding tool for creating new Elena components. Prompts for component name, language (JS/TS/HTML), output directory, and optional features.
+Starts an interactive prompt that walks you through creating a new Elena component. No flags needed, it asks you everything it needs:
+
+| Prompt | Options |
+|--------|---------|
+| Component name | Any valid kebab-case custom element name (e.g. \`my-button\`) |
+| Component features | Props, events, methods, CSS custom properties, encapsulation reset, SSR, and code comments (each optional) |
+| Language | JavaScript, TypeScript, or single-file HTML |
+| Output directory | Where to write the generated files |
+
+The generated files follow all Elena authoring patterns, including JSDoc annotations and \`@scope\` CSS.
 
 ---
 
@@ -144,8 +151,8 @@ import { ssr, register } from "@elenajs/ssr";
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
-| \`register\` | \`register(...components)\` | Tell the SSR renderer which component classes to expand. Each class must have \`static tagName\` set. Call this before \`ssr()\`. |
-| \`ssr\` | \`ssr(html)\` | Takes an HTML string, renders any registered components with \`render()\` into full HTML, and returns the result. HTML Web Components and regular HTML tags are left as-is. |
+| \`register\` | \`register(...components)\` | Tell the SSR renderer which component classes to expand. Each class must have \`tagName\` option set. Call this before \`ssr()\`. |
+| \`ssr\` | \`ssr(html)\` | Takes an HTML string, expands any registered components into full HTML, and returns the result. The rest of the HTML tags are left as-is. |
 
 ---
 
@@ -163,9 +170,9 @@ elena-mcp <project-root>
 |--------------|-------------|
 | \`elena://components\` | A list of all components with their name, description, and status. |
 | \`elena://components/{tagName}\` | Full details for one component: props, events, CSS custom properties, and slots. |
-| \`elena://patterns\` | The Elena component authoring guide: component patterns, lifecycle, CSS patterns, JSDoc, framework tips. |
-| \`elena://frameworks\` | Framework integration guide: Plain HTML, Eleventy, Next.js, React, Svelte, Vue, Angular, and TypeScript setup for each. |
-| \`elena://ssr\` | Server-side rendering guide: layout shift avoidance, \`@elenajs/ssr\` API, Eleventy transform and shortcode patterns. |
+| \`elena://patterns\` | The Elena component authoring guide. |
+| \`elena://frameworks\` | Framework integration guide (React, Vue, Angular, Svelte, Next.js, Eleventy, plain HTML). |
+| \`elena://ssr\` | Server-side rendering guide and \`@elenajs/ssr\` API reference. |
 | \`elena://api\` | Full API reference for all Elena packages. |
 
 ### Tools
@@ -204,7 +211,7 @@ elena-mcp <project-root>
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
-| \`elenaDefinePlugin\` | \`elenaDefinePlugin()\` | CEM plugin that reads \`static tagName\` from each Elena component class and registers it in the Custom Elements Manifest. |
+| \`elenaDefinePlugin\` | \`elenaDefinePlugin()\` | CEM plugin that reads \`tagName\` option from each Elena component class and registers it in the Custom Elements Manifest. |
 
 ---
 
@@ -212,7 +219,7 @@ elena-mcp <project-root>
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
-| \`elenaTagPlugin\` | \`elenaTagPlugin(tagName)\` | CEM plugin that copies a custom JSDoc tag (e.g. \`@status\`, \`@displayName\`) from each component's documentation comment into the Custom Elements Manifest. |
+| \`elenaTagPlugin\` | \`elenaTagPlugin(jsdocTag)\` | CEM plugin that copies a custom JSDoc tag from each component's documentation comment into the Custom Elements Manifest. \`jsdocTag\` is the tag name without the \`@\` (e.g. \`"status"\` for \`@status\`, \`"displayName"\` for \`@displayName\`). Call it once per tag you want to extract. |
 
 ---
 
@@ -220,7 +227,7 @@ elena-mcp <project-root>
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
-| \`elenaTypeScriptPlugin\` | \`elenaTypeScriptPlugin(options?)\` | CEM plugin that generates a \`.d.ts\` type file for each component, including typed props and event handler fields. Also adds the built-in \`text\` prop to every component's type. |
+| \`elenaTypeScriptPlugin\` | \`elenaTypeScriptPlugin(options?)\` | CEM plugin that generates a \`.d.ts\` type file for each component (e.g. \`button.d.ts\` alongside \`button.js\`), including typed props and event handler fields. Also adds the built-in \`text\` prop to every component's type. |
 
 ### Options
 
