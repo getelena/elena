@@ -98,11 +98,11 @@
 </g>
 <g class="c-gray">
 <rect x="70" y="122" width="120" height="36" rx="6" stroke-width="0.5" />
-<text class="ts" x="130" y="140" text-anchor="middle" dominant-baseline="central">Slotted HTML</text>
+<text class="ts" x="130" y="140" text-anchor="middle" dominant-baseline="central">slotted HTML</text>
 </g>
 <g class="c-blue">
 <rect x="70" y="168" width="120" height="36" rx="6" stroke-width="0.5" opacity="0.6" />
-<text class="ts" x="130" y="186" text-anchor="middle" dominant-baseline="central">CSS @scope</text>
+<text class="ts" x="130" y="186" text-anchor="middle" dominant-baseline="central">@scope CSS</text>
 </g>
 <g class="c-amber">
 <rect x="56" y="224" width="148" height="36" rx="6" stroke-width="0.5" />
@@ -118,11 +118,11 @@
 </g>
 <g class="c-gray">
 <rect x="280" y="122" width="120" height="36" rx="6" stroke-width="0.5" />
-<text class="ts" x="340" y="140" text-anchor="middle" dominant-baseline="central">Base HTML</text>
+<text class="ts" x="340" y="140" text-anchor="middle" dominant-baseline="central">base HTML</text>
 </g>
 <g class="c-blue">
 <rect x="280" y="168" width="120" height="36" rx="6" stroke-width="0.5" opacity="0.6" />
-<text class="ts" x="340" y="186" text-anchor="middle" dominant-baseline="central">CSS @scope</text>
+<text class="ts" x="340" y="186" text-anchor="middle" dominant-baseline="central">@scope CSS</text>
 </g>
 <g class="c-amber">
 <rect x="280" y="214" width="120" height="36" rx="6" stroke-width="0.5" />
@@ -142,7 +142,7 @@
 </g>
 <g class="c-gray">
 <rect x="490" y="122" width="120" height="36" rx="6" stroke-width="0.5" />
-<text class="ts" x="550" y="140" text-anchor="middle" dominant-baseline="central">Slotted HTML</text>
+<text class="ts" x="550" y="140" text-anchor="middle" dominant-baseline="central">slotted HTML</text>
 </g>
 <g class="c-pink">
 <rect x="476" y="182" width="148" height="130" rx="6" stroke-width="0.5" />
@@ -150,11 +150,11 @@
 </g>
 <g class="c-gray">
 <rect x="490" y="216" width="120" height="36" rx="6" stroke-width="0.5" />
-<text class="ts" x="550" y="234" text-anchor="middle" dominant-baseline="central">Template HTML</text>
+<text class="ts" x="550" y="234" text-anchor="middle" dominant-baseline="central">&lt;template&gt;</text>
 </g>
 <g class="c-blue">
 <rect x="490" y="262" width="120" height="36" rx="6" stroke-width="0.5" opacity="0.6" />
-<text class="ts" x="550" y="280" text-anchor="middle" dominant-baseline="central">CSS :host</text>
+<text class="ts" x="550" y="280" text-anchor="middle" dominant-baseline="central">:host CSS</text>
 </g>
 <g class="c-amber">
 <rect x="476" y="322" width="148" height="36" rx="6" stroke-width="0.5" />
