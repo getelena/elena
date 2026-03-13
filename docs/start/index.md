@@ -62,7 +62,7 @@ There are three types of Progressive Web Components:
 3. **Declarative Components** that are a hybrid of these and utilize [Declarative Shadow DOM](#3-declarative-components).
 
 > [!TIP]
-> Don’t worry, they’re all just “compontents” still, you choose however you build yours with Elena. But as [Progressive Web Components](https://arielsalminen.com/2026/progressive-web-components/) itself is more of a design philosophy, rather than a library, it’s good to understand on a high level the distiction between these approaches.
+> Elena doesn’t force you to think about these categories. They’re all just components, and you choose how to build yours. But since [Progressive Web Components](https://arielsalminen.com/2026/progressive-web-components/) is a design philosophy rather than a library feature, understanding the distinction between these approaches helps when deciding what fits your use case._
 
 ### 1. Composite Components
 
