@@ -4,7 +4,7 @@ Elena’s approach to server-side rendering is simple and straightforward. Since
 
 Components without a `render()` method are fully SSR-compatible by default, while components with `render()` provide partial support and complete hydration on the client&nbsp;side. 
 
-The “partial support” bit for the latter means that you can visually render them without JavaScript, but JS is needed for the full interactivity _(unless you also use the provided [@elenajs/ssr](#rendering-to-html-strings) tool)._
+The “partial support” bit for the latter means that you can render the initial state without JavaScript, but JS is needed for the interactivity _(unless you also use the provided [@elenajs/ssr](#rendering-to-html-strings) tool)._
 
 Elena also supports [Declarative Shadow DOM](#declarative-shadow-dom) for cases where you may need stronger isolation, but still want the component to render server-side.
 
