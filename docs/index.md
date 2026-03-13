@@ -21,7 +21,7 @@ title: Progressive Web Components
 
 **Elena is a simple, tiny library (2kB) for building [Progressive Web Components](https://arielsalminen.com/2026/progressive-web-components/).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity. [^1]
 
-[^1]: **Elena supports multiple component models:** Composite Components that wrap and enhance the HTML composed inside them, including other components; Primitive Components that are self-contained and render their own HTML;
+[^1]: **Elena supports [multiple component models](/components/overview):** Composite Components that wrap and enhance the HTML composed inside them; Primitive Components that are self-contained and render their own HTML;
 And Declarative Components that are a hybrid of these and utilize [Declarative Shadow DOM](/components/templates#declarative-shadow-dom).
 
 ### Here is a minimal example
