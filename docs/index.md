@@ -21,7 +21,8 @@ title: Progressive Web Components
 
 **Elena is a simple, tiny library (2kB) for building [Progressive Web Components](/).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity. [^1]
 
-[^1]: **Elena supports multiple component models:** HTML Web Components which enhance composed children with styling and behavior; Progressive Web Components which render their base HTML and CSS into the Light DOM before JavaScript loads; And full Shadow DOM enabled components including [Declarative Shadow DOM](/components/templates#declarative-shadow-dom).
+[^1]: **Elena supports multiple component models:** Composite Components that wrap and enhance the HTML composed inside them, including other components; Primitive Components that are self-contained and render their own HTML;
+And Declarative Components that are a hybrid of these and utilize [Declarative Shadow DOM](/components/templates#declarative-shadow-dom).
 
 ### Here is a minimal example
 
@@ -71,7 +72,7 @@ Stack.define();
 
 ## Why was Elena created
 
-Elena was created by [@arielle](https://arielsalminen.com) after nearly a decade of building enterprise-scale design systems with [web components](https://arielsalminen.com/2019/why-we-use-web-components/). The recurring pain points were often similar: accessibility problems, server-side rendering, layout shifts, flash of invisible content, challenges with React Server Components/Next.js, and compatibility with e.g. analytics tools.
+Elena was created by [@arielle](https://arielsalminen.com) after nearly a decade of building enterprise-scale design systems with [web components](https://arielsalminen.com/2019/why-we-use-web-components/). The recurring pain points were often similar: accessibility issues, server-side rendering, layout shifts, flash of invisible content, React Server Components, too much reliance on client side JavaScript, and compatibility with e.g. third party analytics tools.
 
 Elena was built to solve these problems while staying grounded in web standards and what the platform natively provides. This is how _“Progressive Web Components”_ were born.
 
