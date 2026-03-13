@@ -185,6 +185,7 @@ export default defineConfig({
         text: "Components",
         collapsed: false,
         items: [
+          { text: "Overview", link: "/components/overview" },
           { text: "Lifecycle", link: "/components/lifecycle" },
           { text: "Options", link: "/components/options" },
           { text: "Props", link: "/components/props" },
