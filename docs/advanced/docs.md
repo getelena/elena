@@ -195,7 +195,9 @@ export default class Button extends Elena(HTMLElement) {
    */
   render() {
     return html`
-      <button>${this.text}</button>
+      <button ${this.disabled ? "disabled" : nothing}>
+        ${this.text}
+      </button>
     `;
   }
 }
@@ -247,7 +249,9 @@ export default class Button extends Elena(HTMLElement) {
    */
   render() {
     return html`
-      <button>${this.text}</button>
+      <button ${this.disabled ? "disabled" : nothing}>
+        ${this.text}
+      </button>
     `;
   }
 }

@@ -11,7 +11,7 @@ import { html } from "@elenajs/core";
 
 render() {
   return html`
-    <button variant="${this.variant}">
+    <button type="${this.type}">
       ${this.text}
     </button>
   `;
