@@ -109,6 +109,47 @@ describe("multiple event delegation", () => {
   });
 });
 
+describe("custom event dispatch", () => {
+  it("manually dispatching ElenaEvent from component code works", async () => {
+    const el = await createElement("event-element");
+    const handler = vi.fn();
+    el.addEventListener("custom-event", handler);
+
+    el.dispatchEvent(new ElenaEvent("custom-event"));
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it("ElenaEvent does not carry detail (use CustomEvent for that)", async () => {
+    // ElenaEvent extends Event, not CustomEvent. The `detail` property
+    // is not part of EventInit, so it is not accessible on the event object.
+    const el = await createElement("event-element");
+    const handler = vi.fn();
+    el.addEventListener("custom-event", handler);
+
+    el.dispatchEvent(new ElenaEvent("custom-event", { detail: { value: 42 } }));
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    const dispatched = handler.mock.calls[0][0];
+    expect(dispatched.detail).toBeUndefined();
+  });
+
+  it("ElenaEvent defaults (bubbles, composed) work when dispatched manually", async () => {
+    const el = await createElement("event-element");
+    const handler = vi.fn();
+    // Listen on parent to verify bubbling
+    document.body.addEventListener("custom-event", handler);
+
+    el.dispatchEvent(new ElenaEvent("custom-event"));
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    const dispatched = handler.mock.calls[0][0];
+    expect(dispatched.bubbles).toBe(true);
+    expect(dispatched.composed).toBe(true);
+
+    document.body.removeEventListener("custom-event", handler);
+  });
+});
+
 describe("handleEvent filtering", () => {
   it("ignores events not listed in options.events", async () => {
     const el = await createElement("event-element");

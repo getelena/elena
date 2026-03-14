@@ -690,6 +690,183 @@ describe("lifecycle", () => {
     });
   });
 
+  describe("props changed during lifecycle hooks", () => {
+    it("setting a prop in willUpdate() syncs the attribute", () => {
+      class WillUpdatePropEl extends Elena(HTMLElement) {
+        static tagName = "test-willupdate-prop";
+        static props = ["label", "upper"];
+        label = "";
+        upper = "";
+        willUpdate() {
+          this.upper = this.label.toUpperCase();
+        }
+        render() {
+          return html`<span>${this.upper}</span>`;
+        }
+      }
+      WillUpdatePropEl.define();
+
+      const el = document.createElement("test-willupdate-prop");
+      el.label = "hello";
+      document.body.appendChild(el);
+      expect(el.querySelector("span").textContent).toBe("HELLO");
+      expect(el.getAttribute("upper")).toBe("HELLO");
+      el.remove();
+    });
+
+    it("setting a prop in updated() schedules a new microtask render", async () => {
+      let renderCount = 0;
+      class UpdatedPropEl extends Elena(HTMLElement) {
+        static tagName = "test-updated-prop";
+        static props = ["count"];
+        count = 0;
+        updated() {
+          renderCount++;
+          // Only set once to avoid infinite loop
+          if (this.count === 0 && this._hydrated) {
+            this.count = 1;
+          }
+        }
+        render() {
+          return html`<span>${this.count}</span>`;
+        }
+      }
+      UpdatedPropEl.define();
+
+      const el = document.createElement("test-updated-prop");
+      document.body.appendChild(el);
+      // First render: count=0, updated sets count=1, triggers re-render
+      await el.updateComplete;
+      expect(el.count).toBe(1);
+      expect(renderCount).toBeGreaterThanOrEqual(2);
+      el.remove();
+    });
+
+    it("setting a prop in firstUpdated() schedules a new render", async () => {
+      class FirstUpdatedPropEl extends Elena(HTMLElement) {
+        static tagName = "test-firstupdated-prop";
+        static props = ["label"];
+        label = "initial";
+        firstUpdated() {
+          this.label = "from-firstUpdated";
+        }
+        render() {
+          return html`<span>${this.label}</span>`;
+        }
+      }
+      FirstUpdatedPropEl.define();
+
+      const el = document.createElement("test-firstupdated-prop");
+      document.body.appendChild(el);
+      await el.updateComplete;
+      expect(el.label).toBe("from-firstUpdated");
+      expect(el.querySelector("span").textContent).toBe("from-firstUpdated");
+      el.remove();
+    });
+
+    it("modifying this.text in willUpdate() is available in render", () => {
+      class WillUpdateTextEl extends Elena(HTMLElement) {
+        static tagName = "test-willupdate-text";
+        willUpdate() {
+          if (this.text) {
+            this._processed = this.text.trim().toUpperCase();
+          }
+        }
+        render() {
+          return html`<span>${this._processed || ""}</span>`;
+        }
+      }
+      WillUpdateTextEl.define();
+
+      const el = document.createElement("test-willupdate-text");
+      el.textContent = "  hello  ";
+      document.body.appendChild(el);
+      expect(el.querySelector("span").textContent).toBe("HELLO");
+      el.remove();
+    });
+  });
+
+  describe("async lifecycle patterns", () => {
+    it("chaining updateComplete across multiple prop changes", async () => {
+      const el = createElement("basic-element", { label: "a" });
+
+      el.setAttribute("label", "b");
+      await el.updateComplete;
+      expect(el.querySelector(".inner").textContent).toBe("b");
+
+      el.setAttribute("label", "c");
+      await el.updateComplete;
+      expect(el.querySelector(".inner").textContent).toBe("c");
+
+      el.setAttribute("label", "d");
+      await el.updateComplete;
+      expect(el.querySelector(".inner").textContent).toBe("d");
+    });
+
+    it("multiple sequential await el.updateComplete calls", async () => {
+      const el = createElement("basic-element", { label: "start" });
+
+      // No pending render: should resolve immediately
+      await el.updateComplete;
+      await el.updateComplete;
+      await el.updateComplete;
+
+      expect(el.querySelector(".inner").textContent).toBe("start");
+    });
+
+    it("updateComplete after requestUpdate() in a setTimeout", async () => {
+      const el = createElement("basic-element", { label: "initial" });
+
+      await new Promise(resolve => {
+        setTimeout(() => {
+          el.requestUpdate();
+          resolve();
+        }, 0);
+      });
+
+      await el.updateComplete;
+      // Should complete without error
+      expect(el.hasAttribute("hydrated")).toBe(true);
+    });
+  });
+
+  describe("rapid disconnect/reconnect", () => {
+    it("10-cycle disconnect/reconnect does not break the component", async () => {
+      const el = createElement("basic-element", { label: "stable" });
+      const container = document.createElement("div");
+      document.body.appendChild(container);
+
+      for (let i = 0; i < 10; i++) {
+        el.remove();
+        container.appendChild(el);
+      }
+
+      expect(el.querySelector(".inner").textContent).toBe("stable");
+      expect(el.hasAttribute("hydrated")).toBe(true);
+
+      el.setAttribute("label", "after-cycles");
+      await el.updateComplete;
+      expect(el.querySelector(".inner").textContent).toBe("after-cycles");
+    });
+
+    it("events work correctly after rapid disconnect/reconnect cycles", async () => {
+      await import("./fixtures/event-element.js");
+      const el = createElement("event-element");
+      const container = document.createElement("div");
+      document.body.appendChild(container);
+
+      for (let i = 0; i < 5; i++) {
+        el.remove();
+        container.appendChild(el);
+      }
+
+      const handler = vi.fn();
+      el.addEventListener("click", handler);
+      el.element.click();
+      expect(handler).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe("_setupStaticProps (WeakSet guard)", () => {
     it("runs only once per class: getter is not redefined for a second instance", async () => {
       await createElement("basic-element");
