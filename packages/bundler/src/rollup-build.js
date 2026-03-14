@@ -90,8 +90,14 @@ function buildPlugins({
     cssStaticStylesPlugin(),
     minifyHtmlLiterals({
       options: {
-        // Minify any template literal containing HTML, regardless of tag name
-        shouldMinify: template => template.parts.some(({ text }) => /<[a-z]/i.test(text)),
+        // Minify tagged html/svg templates and any untagged template containing HTML
+        shouldMinify: template => {
+          const tag = template.tag && template.tag.toLowerCase();
+          return (
+            (tag && (tag.includes("html") || tag.includes("svg"))) ||
+            template.parts.some(({ text }) => /<[a-z]/i.test(text))
+          );
+        },
       },
     }),
     terser({
