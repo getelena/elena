@@ -32,6 +32,18 @@ render() {
 }
 ```
 
+Arrays of `html` fragments are rendered as HTML, so you can use `.map()` to render lists:
+
+```js
+render() {
+  return html`
+    <ul>
+      ${this.items.map(item => html`<li>${item}</li>`)}
+    </ul>
+  `;
+}
+```
+
 Templates can also have multiple root elements:
 
 ```js
@@ -137,6 +149,42 @@ When used with frameworks, static text as children works fine. For dynamic text 
 ```
 
 ## Advanced  examples
+
+### Rendering lists
+
+Use `.map()` to render arrays of data as repeated markup. Each array element can be an `html` fragment, a plain string, or `nothing`:
+
+```js
+render() {
+  return html`
+    <nav>
+      ${this.links.map(link =>
+        link.visible
+          ? html`<a href="${link.url}">${link.label}</a>`
+          : nothing
+      )}
+    </nav>
+  `;
+}
+```
+
+For components where the list data is a prop, use `willUpdate()` to derive the filtered or transformed list before rendering:
+
+```js
+willUpdate() {
+  this._visibleLinks = this.links.filter(link => link.visible);
+}
+
+render() {
+  return html`
+    <nav>
+      ${this._visibleLinks.map(link =>
+        html`<a href="${link.url}">${link.label}</a>`
+      )}
+    </nav>
+  `;
+}
+```
 
 ### Conditional attributes
 
