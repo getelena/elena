@@ -102,6 +102,43 @@ describe("array rendering in templates", () => {
     expect(container.querySelector("div").textContent).toBe("bold and italic");
   });
 
+  it("map with conditional nothing filters items", () => {
+    const container = el();
+    const links = [
+      { url: "/a", label: "A", visible: true },
+      { url: "/b", label: "B", visible: false },
+      { url: "/c", label: "C", visible: true },
+    ];
+    const t = html`<nav>${links.map(link =>
+      link.visible ? html`<a href="${link.url}">${link.label}</a>` : nothing
+    )}</nav>`;
+    renderTemplate(container, t.strings, t.values);
+    const anchors = container.querySelectorAll("a");
+    expect(anchors.length).toBe(2);
+    expect(anchors[0].getAttribute("href")).toBe("/a");
+    expect(anchors[0].textContent).toBe("A");
+    expect(anchors[1].getAttribute("href")).toBe("/c");
+    expect(anchors[1].textContent).toBe("C");
+  });
+
+  it("pre-filtered array renders only matching items", () => {
+    const container = el();
+    const links = [
+      { url: "/a", label: "A", visible: true },
+      { url: "/b", label: "B", visible: false },
+      { url: "/c", label: "C", visible: true },
+    ];
+    const visibleLinks = links.filter(link => link.visible);
+    const t = html`<nav>${visibleLinks.map(
+      link => html`<a href="${link.url}">${link.label}</a>`
+    )}</nav>`;
+    renderTemplate(container, t.strings, t.values);
+    const anchors = container.querySelectorAll("a");
+    expect(anchors.length).toBe(2);
+    expect(anchors[0].textContent).toBe("A");
+    expect(anchors[1].textContent).toBe("C");
+  });
+
   it("array with changing length triggers full render", () => {
     const container = el();
 
