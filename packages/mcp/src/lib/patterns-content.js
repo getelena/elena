@@ -8,13 +8,16 @@ export const PATTERNS_CONTENT = `# Elena Component Authoring Patterns
 
 Elena components are standard custom elements — they work everywhere HTML works.
 
-There are two recommended patterns for building Elena components:
+There are three types of Progressive Web Components:
 
-### Component with \`render()\`
+### 1. Composite Components
+Components that wrap and enhance the HTML composed inside them. All of their HTML and CSS lives in the Light DOM. Also known as HTML Web Components. They have no \`render()\` method and never touch the light DOM children. Examples: stack, table, layout, card, banner, visually-hidden, fieldset.
+
+### 2. Primitive Components
 Self-contained components that own and render their own HTML markup. All content is controlled through \`props\`. Examples: button, input, checkbox, radio, textarea, icon, spinner, switch.
 
-### HTML Web Components
-Components that wrap and enhance the HTML composed inside them. They have no \`render()\` method and never touch the light DOM children. Provide styling, layout, and behavior around composed content. Examples: stack, table, layout, card, banner, visually-hidden, fieldset.
+### 3. Declarative Components
+A hybrid that uses Declarative Shadow DOM (\`<template shadowrootmode="open">\`). The browser attaches the shadow root during parsing, so shadow content is visible before JavaScript loads. When a component with \`static shadow\` connects and finds a shadow root already attached, Elena skips \`attachShadow()\` and works with the existing one. Content stays in the light DOM and is projected via \`<slot>\`.
 
 ---
 
@@ -48,14 +51,13 @@ import { Elena, html } from "@elenajs/core";
  * @event focus - Programmatically move focus to the component.
  * @event blur - Programmatically remove focus from the component.
  *
- * @cssprop [--elena-button-color-text] - Controls the color of the text.
- * @cssprop [--elena-button-color-bg] - Controls the color of the background.
+ * @cssprop [--elena-button-text] - Overrides the default text color.
+ * @cssprop [--elena-button-bg] - Overrides the default background color.
  */
 export default class Button extends Elena(HTMLElement) {
   static tagName = "elena-button";
-  static props = ["variant", "size", "disabled"];
+  static props = ["variant", "disabled"];
   static events = ["click", "focus", "blur"];
-  static element = ".elena-button";
 
   /**
    * The style variant of the button.
@@ -63,13 +65,6 @@ export default class Button extends Elena(HTMLElement) {
    * @type {"default" | "primary" | "danger"}
    */
   variant = "default";
-
-  /**
-   * The size of the button.
-   * @attribute
-   * @type {"sm" | "md" | "lg"}
-   */
-  size = "md";
 
   /**
    * Makes the component disabled.
@@ -83,7 +78,7 @@ export default class Button extends Elena(HTMLElement) {
    * @internal
    */
   render() {
-    return html\\\`<button class="elena-button">\\\${this.text}</button>\\\`;
+    return html\\\`<button>\\\${this.text}</button>\\\`;
   }
 }
 
@@ -143,6 +138,40 @@ render() {
 \`\`\`
 
 Use \`nothing\` as a placeholder in conditional template expressions when there is nothing to render. Always prefer \`nothing\` over empty strings (\`""\`) or \`false\` in template conditionals.
+
+### \`unsafeHTML\`
+
+Values interpolated into \`html\` are auto-escaped to prevent XSS. \`unsafeHTML\` lets you render a plain string as raw HTML, skipping the escaping. Only use this for content you fully control, such as an SVG icon or trusted server markup:
+
+\`\`\`js
+import { html, unsafeHTML, nothing } from "@elenajs/core";
+
+render() {
+  const icon = this.icon ? unsafeHTML(\\\`<span>\\\${this.icon}</span>\\\`) : nothing;
+  const text = this.text ? html\\\`<span>\\\${this.text}</span>\\\` : nothing;
+
+  return html\\\`
+    <button class="my-button">
+      \\\${text} \\\${icon}
+    </button>
+  \\\`;
+}
+\`\`\`
+
+> **Warning:** Only use \`unsafeHTML\` with content you control. Never pass user-supplied strings to it.
+
+### Multi-root Templates
+
+Templates can have multiple root elements. Useful for components that pair a label with an input:
+
+\`\`\`js
+render() {
+  return html\\\`
+    <label for="\\\${this.identifier}">\\\${this.label}</label>
+    <input id="\\\${this.identifier}" type="\\\${this.type}" />
+  \\\`;
+}
+\`\`\`
 
 ### Conditional Attributes
 
@@ -322,6 +351,20 @@ The \`:where(:not(img, svg):not(svg *))\` selector excludes images and SVGs from
 
 **HTML Web Components must NOT use this reset** — they have no inner DOM to protect, and the reset would break composed children.
 
+### CSS Cascade Layers Alternative
+
+As an alternative to \`all: unset\`, you can control style precedence with \`@layer\`. Declare a layer order and wrap component styles in a named layer so they take precedence over global styles:
+
+\`\`\`css
+@layer global, elena;
+
+@layer elena {
+  @scope (elena-button) {
+    button { color: blue; }
+  }
+}
+\`\`\`
+
 ### Scoped styles (recommended)
 
 Full baseline pattern for a **component with \`render()\`**:
@@ -379,7 +422,7 @@ Key rules:
 - Use attribute selectors on \`:scope\` for variant/state styling.
 - Define public CSS custom properties on \`:scope\` for theming.
 
-### Composite Components
+### Composite Component CSS
 
 Composite Components style the host element and can pass styles down to their composed children. Since they never render their own internal markup, there are no pre-hydration concerns:
 
@@ -510,8 +553,8 @@ Always call \`ClassName.define()\` after the class body to register the element.
 Elena's approach to SSR:
 
 - **Composite Components** (HTML Web Components) provide full SSR support by default: their HTML lives entirely in the Light DOM.
-- **Primitive Components** (components with \`render()\`) provide partial SSR support: base HTML & CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
-- **Declarative Components** use Declarative Shadow DOM for cases where you need stronger isolation but still want the component visible before JavaScript loads.
+- **Primitive Components** (components with \`render()\`) provide partial SSR support: base HTML and CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
+- **Declarative Components** use Declarative Shadow DOM for cases where you need stronger isolation but still want the component to render server-side.
 
 For components with \`render()\`, ship CSS styles that visually match both loading and hydrated states to avoid FOUC/FOIC. Use the \`hydrated\` attribute:
 

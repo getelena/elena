@@ -36,4 +36,10 @@ describe("FRAMEWORKS_CONTENT", () => {
     expect(FRAMEWORKS_CONTENT).toContain("CustomElements");
     expect(FRAMEWORKS_CONTENT).toContain(".d.ts");
   });
+
+  it("includes example project links", () => {
+    expect(FRAMEWORKS_CONTENT).toContain("github.com/getelena/html-example-project");
+    expect(FRAMEWORKS_CONTENT).toContain("github.com/getelena/react-example-project");
+    expect(FRAMEWORKS_CONTENT).toContain("github.com/getelena/angular-example-project");
+  });
 });

@@ -118,7 +118,7 @@ elena build
 | \`bundle\` | \`string \\| false\` | \`"src/index.js"\` | Entry point for a single combined output file. Elena will look for \`src/index.ts\` automatically if no \`.js\` file is found. Set to \`false\` to skip the bundle entirely. |
 | \`plugins\` | \`Plugin[]\` | \`[]\` | Extra Rollup plugins to include in the build, added after Elena's built-in ones. |
 | \`analyze.plugins\` | \`Plugin[]\` | \`[]\` | Extra plugins for the Custom Elements Manifest generation step. |
-| \`target\` | \`string \\| string[] \\| false\` | \`false\` | Browserslist target(s) for transpilation. When set, enables syntax transforms via \`@babel/preset-env\` to widen browser support. Example: \`["chrome 71", "firefox 69", "safari 12.1"]\`. |
+| \`target\` | \`string \\| string[] \\| false\` | \`false\` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via \`@babel/preset-env\` to widen browser support. Example: \`["chrome 71", "firefox 69", "safari 12.1"]\`. |
 
 ---
 

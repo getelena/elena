@@ -32,4 +32,10 @@ describe("SSR_CONTENT", () => {
     expect(SSR_CONTENT).toContain("hydrat");
     expect(SSR_CONTENT).toContain("connectedCallback");
   });
+
+  it("includes framework example project links", () => {
+    expect(SSR_CONTENT).toContain("github.com/getelena/eleventy-example-project");
+    expect(SSR_CONTENT).toContain("github.com/getelena/html-example-project");
+    expect(SSR_CONTENT).toContain("github.com/getelena/next-example-project");
+  });
 });

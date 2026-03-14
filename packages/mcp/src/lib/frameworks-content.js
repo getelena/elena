@@ -19,6 +19,8 @@ Since Elena ships as ES modules, you can load your components directly on a webp
 
 This registers all Elena components globally as standard HTML tags.
 
+**[View plain HTML example project](https://github.com/getelena/html-example-project)**
+
 ---
 
 ## Eleventy
@@ -32,7 +34,7 @@ eleventyConfig.addPassthroughCopy({
 });
 \`\`\`
 
-How you can reference the bundle in your template:
+Now you can reference the bundle in your template:
 
 \`\`\`html
 <script src="/assets/bundle.js" type="module"></script>
@@ -43,11 +45,13 @@ This registers all Elena components globally, making them available as standard 
 
 For server-side rendering with Eleventy, see the SSR guide's "Pre-rendering with Eleventy" section.
 
+**[View Eleventy example project](https://github.com/getelena/eleventy-example-project)**
+
 ---
 
 ## Next.js
 
-Because Elena components access the DOM on registration, Next.js needs to be configured in a way that supports this. To achieve this, create a \`"use client"\` component with \`useEffect\` to defer Elena hydration to the browser:
+Because Elena components access the DOM on hydration, Next.js needs to be configured in a way that supports this. To achieve this, create a \`"use client"\` component with \`useEffect\` to defer Elena hydration to the browser:
 
 \`\`\`tsx
 // src/elements-registry.tsx
@@ -89,6 +93,8 @@ declare module "react" {
   }
 }
 \`\`\`
+
+**[View Next.js example project](https://github.com/getelena/next-example-project)**
 
 ---
 
@@ -141,6 +147,8 @@ declare module "react/jsx-dev-runtime" {
 
 Make sure \`tsconfig.json\` includes the \`src\` directory, then restart the TypeScript server in your editor after adding the file.
 
+**[View React example project](https://github.com/getelena/react-example-project)**
+
 ---
 
 ## Svelte
@@ -170,6 +178,8 @@ declare module "svelte/elements" {
 \`\`\`
 
 The Svelte for VS Code extension is required for template type checking.
+
+**[View Svelte example project](https://github.com/getelena/svelte-example-project)**
 
 ---
 
@@ -207,6 +217,8 @@ declare module "vue" {
 \`\`\`
 
 The Vue Volar extension is required for template type checking.
+
+**[View Vue example project](https://github.com/getelena/vue-example-project)**
 
 ---
 
@@ -247,6 +259,8 @@ export class AppComponent {
 | Event binding     | \`(click)="handler()"\`           |
 | Dynamic attribute | \`[attr.variant]="value"\`        |
 | Reactive state    | \`signal()\` from \`@angular/core\` |
+
+**[View Angular example project](https://github.com/getelena/angular-example-project)**
 
 ### Dynamic text in Angular
 

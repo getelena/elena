@@ -17,6 +17,11 @@ describe("PATTERNS_CONTENT", () => {
       expect(PATTERNS_CONTENT).toContain("HTML Web Components");
       expect(PATTERNS_CONTENT).toContain("no `render()` method");
     });
+
+    it("documents declarative components", () => {
+      expect(PATTERNS_CONTENT).toContain("Declarative Components");
+      expect(PATTERNS_CONTENT).toContain("Declarative Shadow DOM");
+    });
   });
 
   describe("options object", () => {
@@ -45,6 +50,15 @@ describe("PATTERNS_CONTENT", () => {
 
     it("documents nested html sub-templates", () => {
       expect(PATTERNS_CONTENT).toContain("double-escaping");
+    });
+
+    it("documents unsafeHTML", () => {
+      expect(PATTERNS_CONTENT).toContain("unsafeHTML");
+      expect(PATTERNS_CONTENT).toContain("raw HTML");
+    });
+
+    it("documents multi-root templates", () => {
+      expect(PATTERNS_CONTENT).toContain("multiple root elements");
     });
   });
 
@@ -113,6 +127,10 @@ describe("PATTERNS_CONTENT", () => {
 
     it("documents legacy style pattern without @scope", () => {
       expect(PATTERNS_CONTENT).toContain(":is(");
+    });
+
+    it("documents @layer cascade alternative", () => {
+      expect(PATTERNS_CONTENT).toContain("@layer");
     });
 
     it("documents pre-hydration pseudo-elements", () => {
