@@ -201,8 +201,8 @@ export function Elena(superClass) {
      * @internal
      */
     _captureClassFieldDefaults() {
-      // Suppress attribute reflection: _syncProps() handles it once after render.
       this._syncing = true;
+
       for (const name of this.constructor._propNames) {
         if (Object.prototype.hasOwnProperty.call(this, name)) {
           const value = this[name];
@@ -210,6 +210,7 @@ export function Elena(superClass) {
           this[name] = value;
         }
       }
+
       this._syncing = false;
     }
 
