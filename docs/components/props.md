@@ -89,13 +89,6 @@ disabled = false;
  * @type {string}
  */
 value = "";
-
-/**
- * The type of the button.
- * @attribute
- * @type {"submit" | "reset" | "button"}
- */
-type = "button";
 ```
 
 ```ts [TypeScript]
@@ -116,12 +109,6 @@ disabled: boolean = false;
  * @attribute
  */
 value: string = "";
-
-/**
- * The type of the button.
- * @attribute
- */
-type: "submit" | "reset" | "button" = "button";
 ```
 
 :::

@@ -9,14 +9,12 @@ The fastest way to get started is to include the following directly into your we
   export default class MyGreeting extends Elena(HTMLElement) {
     static tagName = "my-greeting";
     static props = ["name"];
-
     name = "Somebody";
 
     render() {
       return html`<p>Hello, ${this.name}!</p>`;
     }
   }
-
   MyGreeting.define();
 </script>
 
@@ -72,19 +70,6 @@ A Composite Component enhances whatever HTML is composed inside it, applying sty
 
 ::: code-group
 
-```ts [TypeScript]
-import { Elena } from "@elenajs/core";
-
-export default class Stack extends Elena(HTMLElement) {
-  static tagName = "my-stack";
-  static props = ["direction"];
-
-  direction: "column" | "row" = "column";
-}
-
-Stack.define();
-```
-
 ```js [JavaScript]
 import { Elena } from "@elenajs/core";
 
@@ -108,7 +93,6 @@ Stack.define();
     flex-direction: column;
     gap: 0.5rem;
   }
-
   :scope[direction="row"] {
     flex-direction: row;
   }
@@ -135,27 +119,6 @@ A Primitive Component owns and controls its inner HTML markup. Two things to kno
 - **`this.text`** is a built-in reactive property. Elena captures any text content placed inside the element before hydration, so you can pass text as a child node or set it as a property. Utilizing this helps to avoid layout shifts.
 
 ::: code-group
-
-```ts [TypeScript]
-import { Elena, html } from "@elenajs/core";
-
-export default class Button extends Elena(HTMLElement) {
-  static tagName = "my-button";
-  static props = ["variant"];
-
-  variant: "default" | "primary" | "danger" = "default";
-
-  render() {
-    return html`
-      <button class="my-button">
-        ${this.text}
-      </button>
-    `;
-  }
-}
-
-Button.define();
-```
 
 ```js [JavaScript]
 import { Elena, html } from "@elenajs/core";
@@ -187,22 +150,18 @@ Button.define();
     all: unset;
     display: revert;
   }
-
   :scope {
     --my-button-bg: pink;
     display: inline-block;
   }
-
   :scope:not([hydrated]),
   .my-button:is(button) {
     background: var(--my-button-bg);
     display: inline-flex;
   }
-
   :scope[variant="primary"] {
     --my-button-bg: green;
   }
-
   :scope[variant="danger"] {
     --my-button-bg: red;
   }

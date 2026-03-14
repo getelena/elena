@@ -7,7 +7,7 @@ Elena uses an HTML-based template syntax built on JavaScript [tagged template li
 Use the `html` tagged template to write your component’s markup:
 
 ```js
-import { Elena, html } from "@elenajs/core";
+import { html } from "@elenajs/core";
 
 render() {
   return html`
@@ -48,12 +48,12 @@ render() {
 Use `nothing` in conditional template expressions when there is nothing to render. It always produces an empty string and signals the template engine that no processing is needed:
 
 ```js
-import { Elena, html, nothing } from "@elenajs/core";
+import { html, nothing } from "@elenajs/core";
 
 render() {
   return html`
     <button>
-      ${this.icon ? html`<span class="icon">${this.icon}</span>` : nothing}
+      ${this.icon ? html`<span>${this.icon}</span>` : nothing}
       ${this.text}
     </button>
   `;
@@ -67,16 +67,15 @@ Prefer `nothing` over `""` or `false` in template expressions. Empty strings and
 Values interpolated into `html` are auto-escaped to prevent XSS. `unsafeHTML` lets you render a plain string as raw HTML, skipping the escaping. Only use this for content you fully control, such as an SVG icon or trusted server markup:
 
 ```js
-import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
+import { html, unsafeHTML, nothing } from "@elenajs/core";
 
 render() {
-  const icon = this.icon ? unsafeHTML(`<span class="icon">${this.icon}</span>`) : nothing;
+  const icon = this.icon ? unsafeHTML(`<span>${this.icon}</span>`) : nothing;
   const text = this.text ? html`<span>${this.text}</span>` : nothing;
 
   return html`
     <button class="my-button">
-      ${text}
-      ${icon}
+      ${text} ${icon}
     </button>
   `;
 }
@@ -162,7 +161,7 @@ render() {
 For components that can render as different elements (e.g. a button that becomes a link when `href` is set), split the logic into helper methods and compose them in `render()`:
 
 ```js
-import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
+import { html, unsafeHTML, nothing } from "@elenajs/core";
 
 /** @internal */
 renderButton(template) {
@@ -192,7 +191,7 @@ renderLink(template) {
 }
 
 render() {
-  const icon = this.icon ? unsafeHTML(`<span class="icon">${this.icon}</span>`) : nothing;
+  const icon = this.icon ? unsafeHTML(`<span>${this.icon}</span>`) : nothing;
   const markup = html`
     ${this.text ? html`<span>${this.text}</span>` : nothing}
     ${icon}
