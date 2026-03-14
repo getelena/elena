@@ -332,7 +332,6 @@ export function Elena(superClass) {
 
           const attrValue = getPropValue(typeof value, value, "toAttribute");
 
-          // Skip no-op: don't call removeAttribute on an attribute that doesn't exist.
           if (attrValue === null && !this.hasAttribute(prop)) {
             continue;
           }
