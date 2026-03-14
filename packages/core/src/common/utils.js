@@ -24,9 +24,32 @@ export function escapeHtml(str) {
 }
 
 /**
- * Tagged template for trusted HTML. Use as the return value of render(), or for
- * sub-fragments inside render methods. Interpolated values are auto-escaped;
- * nested `html` fragments are passed through without double-escaping.
+ * Resolve an interpolated template value to its
+ * HTML string representation.
+ *
+ * @param {*} value
+ * @returns {string}
+ */
+export function resolveValue(value) {
+  if (Array.isArray(value)) {
+    return value
+      .map(item => {
+        if (item && item.__raw) {
+          return String(item);
+        }
+        return escapeHtml(String(item ?? ""));
+      })
+      .join("");
+  }
+  if (value && value.__raw) {
+    return String(value);
+  }
+  return escapeHtml(String(value ?? ""));
+}
+
+/**
+ * Tagged template for trusted HTML. Use as the return value
+ * of render(), or for sub-fragments inside render methods.
  *
  * @param {TemplateStringsArray} strings
  * @param {...*} values
@@ -34,8 +57,7 @@ export function escapeHtml(str) {
  */
 export function html(strings, ...values) {
   const result = strings.reduce((acc, str, i) => {
-    const v = values[i];
-    return acc + str + (v && v.__raw ? String(v) : escapeHtml(String(v ?? "")));
+    return acc + str + resolveValue(values[i]);
   }, "");
   return { __raw: true, strings, values, toString: () => result };
 }
@@ -51,9 +73,8 @@ export function unsafeHTML(str) {
 }
 
 /**
- * A placeholder you can return from a conditional expression inside a template
- * to render nothing. Always produces an empty string; signals to the template
- * engine that no further processing is needed.
+ * A placeholder you can return from a conditional expression
+ * inside a template to render nothing.
  *
  * @type {{ __raw: true, toString(): string }}
  */
