@@ -119,9 +119,14 @@ export function Elena(superClass) {
      * Reads from the subclass’s `static props` field.
      */
     static get observedAttributes() {
-      const propNames = (this.props || []).map(p => (typeof p === "string" ? p : p.name));
+      if (this._observedAttrs) {
+        return this._observedAttrs;
+      }
 
-      return [...propNames, "text"];
+      const propNames =
+        this._propNames || (this.props || []).map(p => (typeof p === "string" ? p : p.name));
+      this._observedAttrs = [...propNames, "text"];
+      return this._observedAttrs;
     }
 
     /**
@@ -160,10 +165,9 @@ export function Elena(superClass) {
 
       // Props with reflect: false
       const noRef = new Set();
+      const names = [];
 
       if (component.props) {
-        const names = [];
-
         for (const p of component.props) {
           if (typeof p === "string") {
             names.push(p);
@@ -183,6 +187,7 @@ export function Elena(superClass) {
         setProps(component.prototype, names, noRef);
       }
 
+      component._propNames = names;
       component._noReflect = noRef;
       component._elenaEvents = component.events || null;
       component._resolver = elementResolver(component.element);
@@ -196,18 +201,16 @@ export function Elena(superClass) {
      * @internal
      */
     _captureClassFieldDefaults() {
-      const propNames = (this.constructor.props || []).map(p =>
-        typeof p === "string" ? p : p.name
-      );
-
-      for (const name of propNames) {
+      // Suppress attribute reflection: _syncProps() handles it once after render.
+      this._syncing = true;
+      for (const name of this.constructor._propNames) {
         if (Object.prototype.hasOwnProperty.call(this, name)) {
           const value = this[name];
           delete this[name];
-
           this[name] = value;
         }
       }
+      this._syncing = false;
     }
 
     /**
@@ -328,6 +331,12 @@ export function Elena(superClass) {
           }
 
           const attrValue = getPropValue(typeof value, value, "toAttribute");
+
+          // Skip no-op: don't call removeAttribute on an attribute that doesn't exist.
+          if (attrValue === null && !this.hasAttribute(prop)) {
+            continue;
+          }
+
           syncAttribute(this, prop, attrValue);
         }
       }
@@ -348,10 +357,10 @@ export function Elena(superClass) {
         } else {
           this._events = true;
 
-          events.forEach(e => {
+          for (const e of events) {
             this.element.addEventListener(e, this);
             this[e] = (...args) => this.element[e](...args);
-          });
+          }
         }
       }
     }
@@ -389,9 +398,9 @@ export function Elena(superClass) {
       if (this._events) {
         this._events = false;
 
-        this.constructor._elenaEvents?.forEach(e => {
+        for (const e of this.constructor._elenaEvents) {
           this.element?.removeEventListener(e, this);
-        });
+        }
       }
     }
 
