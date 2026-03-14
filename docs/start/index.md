@@ -17,8 +17,10 @@ The fastest way to get started is to include the following directly into your we
   }
   MyGreeting.define();
 </script>
+```
 
-<!-- Use it anywhere on the page: -->
+```html
+<!-- Use it anywhere on the page -->
 <my-greeting name="World"></my-greeting>
 ```
 
