@@ -1,4 +1,4 @@
-import { escapeHtml } from "./utils.js";
+import { collapseWhitespace, processValue } from "./utils.js";
 
 /** @type {WeakMap<TemplateStringsArray, string[]>} */
 const _stringsCache = new WeakMap();
@@ -45,11 +45,7 @@ function patchTextNodes(element, strings, values) {
   let needsFullRender = false;
 
   for (let i = 0; i < values.length; i++) {
-    const v = values[i];
-    // Check if this value is a trusted HTML fragment (isRaw),
-    // created via the `html` tag, which bypasses escaping
-    const isRaw = v && v.__raw;
-    const newRendered = isRaw ? String(v) : escapeHtml(String(v ?? ""));
+    const { result: newRendered, isRaw } = processValue(values[i]);
     const oldRendered = element._tplValues[i];
 
     if (newRendered === oldRendered) {
@@ -65,7 +61,10 @@ function patchTextNodes(element, strings, values) {
       const textNode = element._tplParts[i];
       if (textNode) {
         // Value is in a text position, update the DOM node directly
-        textNode.textContent = String(v ?? "");
+        const v = values[i];
+        textNode.textContent = Array.isArray(v)
+          ? v.map(item => String(item ?? "")).join("")
+          : String(v ?? "");
       } else {
         // No mapped text node for this value, need full render
         needsFullRender = true;
@@ -86,22 +85,19 @@ function patchTextNodes(element, strings, values) {
  * @param {Array} values - Dynamic interpolated values
  */
 function fullRender(element, strings, values) {
-  const renderedValues = values.map(v => (v && v.__raw ? String(v) : escapeHtml(String(v ?? ""))));
+  const renderedValues = values.map(v => processValue(v).result);
 
   // The JS engine reuses the same `strings` object for every call from the same template
   // literal, so cache the cleaned-up parts and run the regex only once per template.
   let processedStrings = _stringsCache.get(strings);
   if (!processedStrings) {
-    processedStrings = Array.from(strings, s => s.replace(/\n\s*/g, " "));
+    processedStrings = Array.from(strings, collapseWhitespace);
     _stringsCache.set(strings, processedStrings);
   }
 
   // Build the complete HTML markup
   const markup = processedStrings
     .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
-    .replace(/>\s+</g, "><")
-    .replace(/>\s+/g, ">")
-    .replace(/\s+</g, "<")
     .trim();
 
   renderHtml(element, markup);
