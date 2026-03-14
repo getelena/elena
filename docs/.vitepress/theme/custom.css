@@ -299,3 +299,45 @@ sup {
   position: absolute;
   transform: translateX(3px) translateY(-4px);
 }
+
+div[class*="language-"][data-folded] > pre {
+  max-height: 500px;
+  overflow: hidden;
+}
+
+div[class*="language-"][data-folded]::after {
+  content: "";
+  position: absolute;
+  bottom: 42px;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--vp-code-block-bg));
+  pointer-events: none;
+  border-radius: 0 0 8px 8px;
+  z-index: 1000;
+}
+
+div[class*="language-"]:has(.codeblock-fold-btn) {
+  position: relative;
+}
+
+.codeblock-fold-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
+  height: 42px;
+  border-top: 1px solid var(--vp-c-divider);
+  background: var(--vp-code-block-bg);
+  color: var(--vp-c-text-2);
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 0 0 8px 8px;
+  transition: color 0.2s;
+}
+
+.codeblock-fold-btn:hover {
+  color: var(--vp-c-brand-1);
+}
