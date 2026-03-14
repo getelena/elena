@@ -61,8 +61,8 @@ function elementResolver(selector) {
  * }} ElenaElementConstructor
  */
 
-/** @type {WeakSet<Function>} Tracks which component classes have already been set up. */
-const _setupRegistry = new WeakSet();
+// Tracks which component classes have already been set up.
+const setupRegistry = new WeakSet();
 
 /**
  * Creates an Elena component class by extending `superClass`.
@@ -159,7 +159,7 @@ export function Elena(superClass) {
     _setupStaticProps() {
       const component = this.constructor;
 
-      if (_setupRegistry.has(component)) {
+      if (setupRegistry.has(component)) {
         return;
       }
 
@@ -191,7 +191,7 @@ export function Elena(superClass) {
       component._noReflect = noRef;
       component._elenaEvents = component.events || null;
       component._resolver = elementResolver(component.element);
-      _setupRegistry.add(component);
+      setupRegistry.add(component);
     }
 
     /**

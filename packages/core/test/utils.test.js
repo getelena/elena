@@ -43,18 +43,18 @@ describe("utils", () => {
   });
 
   describe("template cache lifecycle", () => {
-    it("_tplParts references live DOM nodes after initial render", () => {
+    it("_templateParts references live DOM nodes after initial render", () => {
       const tpl = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
       const el = document.createElement("div");
       renderTemplate(el, tpl, ["Hello"]);
 
-      // _tplParts[0] should be the actual text node inside the span
-      const textNode = el._tplParts[0];
+      // _templateParts[0] should be the actual text node inside the span
+      const textNode = el._templateParts[0];
       expect(textNode).toBeDefined();
       expect(textNode.parentNode).toBe(el.querySelector("span"));
     });
 
-    it("replaces _tplParts with fresh nodes after full re-render", () => {
+    it("replaces _templateParts with fresh nodes after full re-render", () => {
       // Both values in text positions so mapTextNodes can match them
       const tpl = Object.assign(["<span>", "</span><span>", "</span>"], {
         raw: ["<span>", "</span><span>", "</span>"],
@@ -62,16 +62,16 @@ describe("utils", () => {
       const el = document.createElement("div");
 
       renderTemplate(el, tpl, ["A", "B"]);
-      const oldTextNode = el._tplParts[0];
+      const oldTextNode = el._templateParts[0];
       expect(oldTextNode.textContent).toBe("A");
 
       // Switch first value to raw HTML: forces full re-render
       renderTemplate(el, tpl, [html`<b>bold</b>`, "B"]);
-      const newParts = el._tplParts;
+      const newParts = el._templateParts;
 
       // Old text node is no longer in the element's subtree
       expect(el.contains(oldTextNode)).toBe(false);
-      // _tplParts was rebuilt with fresh nodes
+      // _templateParts was rebuilt with fresh nodes
       expect(newParts[0]).not.toBe(oldTextNode);
     });
 
@@ -81,28 +81,28 @@ describe("utils", () => {
       const el = document.createElement("div");
 
       renderTemplate(el, tplA, ["Hello"]);
-      expect(el._tplStrings).toBe(tplA);
-      const oldParts = el._tplParts;
+      expect(el._templateStrings).toBe(tplA);
+      const oldParts = el._templateParts;
 
       // Render a different template shape
       renderTemplate(el, tplB, ["World"]);
-      expect(el._tplStrings).toBe(tplB);
-      expect(el._tplParts).not.toBe(oldParts);
-      expect(el._tplValues).toEqual(["World"]);
+      expect(el._templateStrings).toBe(tplB);
+      expect(el._templateParts).not.toBe(oldParts);
+      expect(el._templateValues).toEqual(["World"]);
       expect(el.querySelector("div").textContent).toBe("World");
       expect(el.querySelector("span")).toBeNull();
     });
 
-    it("does not accumulate stale entries in _tplValues across renders", () => {
+    it("does not accumulate stale entries in _templateValues across renders", () => {
       const tpl = Object.assign(["<p>", " ", "</p>"], { raw: ["<p>", " ", "</p>"] });
       const el = document.createElement("div");
 
       renderTemplate(el, tpl, ["A", "B"]);
-      expect(el._tplValues).toEqual(["A", "B"]);
+      expect(el._templateValues).toEqual(["A", "B"]);
 
       renderTemplate(el, tpl, ["C", "D"]);
-      expect(el._tplValues).toEqual(["C", "D"]);
-      expect(el._tplValues.length).toBe(2);
+      expect(el._templateValues).toEqual(["C", "D"]);
+      expect(el._templateValues.length).toBe(2);
     });
   });
 

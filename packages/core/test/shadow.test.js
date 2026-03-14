@@ -474,16 +474,16 @@ describe("shadow DOM", () => {
       delete root.innerHTML;
     });
 
-    it("_tplParts holds live DOM nodes inside shadow root", () => {
+    it("_templateParts holds live DOM nodes inside shadow root", () => {
       const el = createElement("shadow-element", { label: "Hello" });
       const root = el.shadowRoot;
-      const textNode = root._tplParts[0];
+      const textNode = root._templateParts[0];
       expect(textNode.textContent).toBe("Hello");
 
       // Different strings ref forces cold-path fullRender
       const t = html`<button>${"World"}</button>`;
       renderTemplate(root, t.strings, t.values);
-      const newTextNode = root._tplParts[0];
+      const newTextNode = root._templateParts[0];
       expect(newTextNode.textContent).toBe("World");
       expect(root.contains(newTextNode)).toBe(true);
     });
@@ -491,7 +491,7 @@ describe("shadow DOM", () => {
     it("template cache stays coherent after disconnect and reconnect", async () => {
       const el = await createElement("shadow-element", { label: "Hello" });
       const root = el.shadowRoot;
-      const textNode = root._tplParts[0];
+      const textNode = root._templateParts[0];
 
       // Remove and re-insert
       el.remove();
@@ -502,7 +502,7 @@ describe("shadow DOM", () => {
       await el.updateComplete;
       expect(root.querySelector("button").textContent).toBe("World");
       // Same text node was patched (not a full re-render)
-      expect(root._tplParts[0]).toBe(textNode);
+      expect(root._templateParts[0]).toBe(textNode);
     });
 
     it("element ref is preserved across fast-path re-renders", async () => {
