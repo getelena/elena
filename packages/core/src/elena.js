@@ -458,7 +458,13 @@ export function Elena(superClass) {
         this._updateComplete = new Promise(resolve => {
           this._resolveUpdate = resolve;
         });
-        queueMicrotask(() => this._performUpdate());
+        queueMicrotask(() => {
+          try {
+            this._performUpdate();
+          } catch (e) {
+            console.error("░█ [ELENA]:", e);
+          }
+        });
       }
     }
 
@@ -474,13 +480,13 @@ export function Elena(superClass) {
       this._resolveUpdate = null;
       this._updateComplete = null;
       try {
-        this.willUpdate();
-        this._isRendering = true;
-        this._applyRender();
-      } finally {
-        this._isRendering = false;
-      }
-      try {
+        try {
+          this.willUpdate();
+          this._isRendering = true;
+          this._applyRender();
+        } finally {
+          this._isRendering = false;
+        }
         this.updated();
       } finally {
         resolve();
