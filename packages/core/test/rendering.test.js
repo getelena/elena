@@ -225,6 +225,21 @@ describe("rendering", () => {
       // Should be <div><span>a</span><span>b</span></div>, not with whitespace between tags
       expect(el.innerHTML).not.toMatch(/>\s+</);
     });
+
+    it("collapses whitespace between adjacent interpolated HTML fragments", () => {
+      const el = createElement("basic-element", { label: "Hello" });
+      const t = html`
+        <div class="inner">
+          ${html`<span>a</span>`}
+          ${html`<span>b</span>`}
+        </div>
+      `;
+      renderTemplate(el, t.strings, t.values);
+      // The newline between the two fragments becomes a space after string processing;
+      // the final >\s+< collapse should remove it
+      expect(el.innerHTML).not.toMatch(/>\s+</);
+      expect(el.querySelector(".inner").children.length).toBe(2);
+    });
   });
 
   describe("DOM diffing", () => {
