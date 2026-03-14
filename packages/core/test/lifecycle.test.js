@@ -889,6 +889,17 @@ describe("lifecycle", () => {
       expect(NoPropEl.observedAttributes).toEqual(["text"]);
     });
 
+    it("observedAttributes returns cached array on subsequent access", () => {
+      class CachedAttrEl extends Elena(HTMLElement) {
+        static props = ["foo"];
+        foo = "";
+      }
+      const first = CachedAttrEl.observedAttributes;
+      const second = CachedAttrEl.observedAttributes;
+      expect(first).toBe(second);
+      expect(first).toEqual(["foo", "text"]);
+    });
+
     it("subclass gets its own independent setup from its parent Elena component", () => {
       class ParentComp extends Elena(HTMLElement) {
         static props = ["base"];

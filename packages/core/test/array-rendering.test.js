@@ -132,4 +132,21 @@ describe("array rendering in templates", () => {
     expect(result).toBe(false); // patched (no changes)
     expect(container.querySelector("span").textContent).toBe("ab");
   });
+
+  it("array of plain strings updates text on fast path when values change", () => {
+    const container = el();
+
+    function render(items) {
+      return html`<span>${items}</span>`;
+    }
+
+    const t1 = render(["a", "b"]);
+    renderTemplate(container, t1.strings, t1.values);
+    expect(container.querySelector("span").textContent).toBe("ab");
+
+    const t2 = render(["x", "y", "z"]);
+    const result = renderTemplate(container, t2.strings, t2.values);
+    expect(result).toBe(false); // patched via fast path
+    expect(container.querySelector("span").textContent).toBe("xyz");
+  });
 });
