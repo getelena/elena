@@ -306,15 +306,15 @@ describe("rendering", () => {
   });
 
   describe("template cache lifecycle", () => {
-    it("_templateParts holds live DOM nodes after cold-path re-render", () => {
+    it("_tplParts holds live DOM nodes after cold-path re-render", () => {
       const el = createElement("basic-element", { label: "Hello" });
-      const oldTextNode = el._templateParts[0];
+      const oldTextNode = el._tplParts[0];
       expect(oldTextNode.textContent).toBe("Hello");
 
       // Different strings ref (from this call site) forces cold-path fullRender
       const t = html`<span class="inner">${"World"}</span>`;
       renderTemplate(el, t.strings, t.values);
-      const newTextNode = el._templateParts[0];
+      const newTextNode = el._tplParts[0];
       expect(newTextNode.textContent).toBe("World");
       // Old text node is no longer in the element's subtree, new one is
       expect(el.contains(oldTextNode)).toBe(false);
@@ -323,7 +323,7 @@ describe("rendering", () => {
 
     it("cache stays coherent after disconnect and reconnect", async () => {
       const el = createElement("basic-element", { label: "Hello" });
-      const textNode = el._templateParts[0];
+      const textNode = el._tplParts[0];
 
       // Remove and re-insert
       const container = document.createElement("div");
@@ -336,18 +336,18 @@ describe("rendering", () => {
       await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("World");
       // Same text node was patched (not a full re-render)
-      expect(el._templateParts[0]).toBe(textNode);
+      expect(el._tplParts[0]).toBe(textNode);
     });
 
-    it("repeated attribute changes do not grow _templateValues", () => {
+    it("repeated attribute changes do not grow _tplValues", () => {
       const el = createElement("basic-element", { label: "A" });
-      const initialLength = el._templateValues.length;
+      const initialLength = el._tplValues.length;
 
       el.setAttribute("label", "B");
       el.setAttribute("label", "C");
       el.setAttribute("label", "D");
 
-      expect(el._templateValues.length).toBe(initialLength);
+      expect(el._tplValues.length).toBe(initialLength);
     });
   });
 

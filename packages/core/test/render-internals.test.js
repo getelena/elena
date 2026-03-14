@@ -41,8 +41,8 @@ describe("render internals", () => {
       expect(c1.querySelector("span").textContent).toBe("first");
       expect(c2.querySelector("span").textContent).toBe("second");
 
-      expect(c1._templateParts).not.toBe(c2._templateParts);
-      expect(c1._templateParts[0]).not.toBe(c2._templateParts[0]);
+      expect(c1._tplParts).not.toBe(c2._tplParts);
+      expect(c1._tplParts[0]).not.toBe(c2._tplParts[0]);
     });
 
     it("handles static template with zero interpolations", () => {
@@ -82,7 +82,7 @@ describe("render internals", () => {
     it("fast-patches text values on re-render even in fallback path", () => {
       const container = el();
       renderTemplate(container, attrAndText, ["cls", "hello"]);
-      const textNode = container._templateParts[1];
+      const textNode = container._tplParts[1];
 
       // Re-render with same attribute but different text
       renderTemplate(container, attrAndText, ["cls", "world"]);
@@ -90,12 +90,12 @@ describe("render internals", () => {
       expect(container.querySelector("span").textContent).toBe("world");
     });
 
-    it("attribute-position values leave _templateParts unmapped", () => {
+    it("attribute-position values leave _tplParts unmapped", () => {
       const container = el();
       renderTemplate(container, attrAndText, ["cls-a", "text"]);
 
-      expect(container._templateParts[0]).toBeUndefined();
-      expect(container._templateParts[1]).toBeUndefined();
+      expect(container._tplParts[0]).toBeUndefined();
+      expect(container._tplParts[1]).toBeUndefined();
     });
 
     it("handles multiple attributes with interpolations", () => {
@@ -153,12 +153,12 @@ describe("render internals", () => {
       expect(container.querySelector("div").textContent).toBe("");
     });
 
-    it("raw HTML value has no fast-patch text node (undefined in _templateParts)", () => {
+    it("raw HTML value has no fast-patch text node (undefined in _tplParts)", () => {
       const container = el();
       const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
       renderTemplate(container, tpl, [html`<b>raw</b>`]);
       // Raw values can't be fast-patched
-      expect(container._templateParts[0]).toBeUndefined();
+      expect(container._tplParts[0]).toBeUndefined();
     });
 
     it("mix of raw and plain values in same template", () => {
@@ -174,12 +174,12 @@ describe("render internals", () => {
     it("clone path → fast path on re-render with changed text", () => {
       const container = el();
       renderTemplate(container, singleText, ["hello"]);
-      const textNode = container._templateParts[0];
+      const textNode = container._tplParts[0];
 
       const result = renderTemplate(container, singleText, ["world"]);
       expect(result).toBe(false); // patched, no full render
       expect(container.querySelector("span").textContent).toBe("world");
-      expect(container._templateParts[0]).toBe(textNode);
+      expect(container._tplParts[0]).toBe(textNode);
     });
 
     it("fast path → full render when template shape changes", () => {
@@ -325,13 +325,13 @@ describe("render internals", () => {
     it("re-rendering with same values is a no-op", () => {
       const container = el();
       renderTemplate(container, twoTexts, ["A", "B"]);
-      const node0 = container._templateParts[0];
-      const node1 = container._templateParts[1];
+      const node0 = container._tplParts[0];
+      const node1 = container._tplParts[1];
 
       const result = renderTemplate(container, twoTexts, ["A", "B"]);
       expect(result).toBe(false);
-      expect(container._templateParts[0]).toBe(node0);
-      expect(container._templateParts[1]).toBe(node1);
+      expect(container._tplParts[0]).toBe(node0);
+      expect(container._tplParts[1]).toBe(node1);
     });
 
     it("HTML comment in template does not interfere with markers", () => {
@@ -370,7 +370,7 @@ describe("render internals", () => {
       }
 
       expect(container.querySelector("span").textContent).toBe("value-99");
-      expect(container._templateParts[0].textContent).toBe("value-99");
+      expect(container._tplParts[0].textContent).toBe("value-99");
     });
 
     it("alternating full and fast renders stay consistent", () => {
