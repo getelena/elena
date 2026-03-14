@@ -1,24 +1,14 @@
 # Creating documentation
 
-Elena components are documented using [JSDoc](https://jsdoc.app) annotations written directly in the source file. When you run `elena build`, the `@elenajs/bundler` reads these annotations and generates a Custom Elements Manifest, per-component TypeScript declarations, and JSX integration types.
-
-## How it works
-
-`@elenajs/bundler` runs `elena build` in two stages:
-
-1. **Rollup build:** compiles JavaScript and TypeScript source files, minifies CSS, and writes output to `dist/`.
-2. **CEM analysis:** reads your source files and JSDoc annotations, then produces:
-   - **`custom-elements.json`:** the [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/), a machine-readable description of your components used by IDEs and documentation tools.
-   - **Per-component `.d.ts` files:** a TypeScript declaration file for each component (e.g. `button.d.ts`) with typed props and event handlers derived from your JSDoc. This lets TypeScript resolve sub-path imports like `@my-lib/components/dist/button.js`.
-   - **`custom-elements.d.ts`:** JSX integration types that map your custom element tag names to their prop types, enabling autocomplete and type checking for `<elena-button variant="primary" />` in JSX/TSX files.
+Elena components are documented using [JSDoc](https://jsdoc.app) annotations directly in the source code. When you run `elena build`, Elena reads these annotations and generates a Custom Elements Manifest, per-component TypeScript declarations, and JSX integration types.
 
 ## Class-level annotations
 
-Place these on the JSDoc comment directly above the class declaration.
+Place these on the JSDoc comment directly above the class declaration. These are picked up by `@elenajs/bundler` and included in the Custom Elements Manifest.
 
 ### `@displayName`
 
-Sets the human-readable display name for the component in documentation tools. This is picked up by `@elenajs/bundler` and included in the Custom Elements Manifest:
+Sets the human-readable display name for the component in documentation tools.
 
 ```js
 /**
@@ -29,7 +19,7 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 ### `@status`
 
-Indicates the stability of the component. Common values are `alpha`, `beta`, and `stable`. This is picked up by `@elenajs/bundler` and included in the Custom Elements Manifest:
+Indicates the stability of the component. Common values are `alpha`, `beta`, and `stable`.
 
 ```js
 /**
@@ -40,7 +30,7 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 ### `@slot`
 
-Documents the default slot of an HTML Web Component or the slots that a web component with Shadow DOM accepts. This is picked up by `@elenajs/bundler` and included in the Custom Elements Manifest:
+Documents the default slot of an HTML Web Component or the slots that a web component with Shadow DOM accepts.
 
 ```js
 /**
@@ -51,7 +41,7 @@ export default class Stack extends Elena(HTMLElement) { /*...*/ }
 
 ### `@event`
 
-Documents the events a component fires. These are picked up by `@elenajs/bundler` and included in the Custom Elements Manifest:
+Documents the events a component fires.
 
 ```js
 /**
@@ -64,7 +54,7 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 ### `@cssprop`
 
-Documents public CSS custom properties exposed for theming. These are picked up by `@elenajs/bundler` and included in the Custom Elements Manifest:
+Documents public CSS custom properties exposed for theming.
 
 ```js
 /**
@@ -141,7 +131,7 @@ In TypeScript, write inline type annotations instead of `@type` and the bundler 
 
 ## Method annotations
 
-Use `@internal` to mark methods that are implementation details and should not appear in the public API documentation:
+Use `@internal` to mark methods that are implementation details and should not appear in the public API documentation.
 
 ```js
 /**
@@ -155,12 +145,12 @@ renderLink(template) {
 
 ## Full example
 
-Here is a complete component with all JSDoc annotations in place:
+Here is a complete component with all JSDoc annotations in place.
 
 ::: code-group
 
 ```js [JavaScript]
-import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
+import { Elena, html } from "@elenajs/core";
 
 /**
  * Button component is used for interface actions.
@@ -183,8 +173,6 @@ export default class Button extends Elena(HTMLElement) {
   static props = [
     "variant",
     "disabled",
-    "label",
-    { name: "icon", reflect: false },
   ];
 
   /**
@@ -202,37 +190,12 @@ export default class Button extends Elena(HTMLElement) {
   disabled = false;
 
   /**
-   * Sets aria-label for the inner button.
-   * @attribute
-   * @type {string}
-   */
-  label = "";
-
-  /**
-   * An SVG icon to display inside the button.
-   * @attribute
-   * @type {string}
-   */
-  icon = "";
-
-  /**
    * Renders the template.
    * @internal
    */
   render() {
-    const icon = this.icon
-      ? unsafeHTML(`<span class="elena-icon">${this.icon}</span>`)
-      : nothing;
-
     return html`
-      <button
-        class="elena-button"
-        ${this.disabled ? "disabled" : nothing}
-        ${this.label ? html`aria-label="${this.label}"` : nothing}
-      >
-        ${this.text ? html`<span>${this.text}</span>` : nothing}
-        ${icon}
-      </button>
+      <button>${this.text}</button>
     `;
   }
 }
@@ -241,7 +204,7 @@ Button.define();
 ```
 
 ```ts [TypeScript]
-import { Elena, html, unsafeHTML, nothing } from "@elenajs/core";
+import { Elena, html } from "@elenajs/core";
 
 /**
  * Button component is used for interface actions.
@@ -264,8 +227,6 @@ export default class Button extends Elena(HTMLElement) {
   static props = [
     "variant",
     "disabled",
-    "label",
-    { name: "icon", reflect: false },
   ];
 
   /**
@@ -281,35 +242,12 @@ export default class Button extends Elena(HTMLElement) {
   disabled: boolean = false;
 
   /**
-   * Sets aria-label for the inner button.
-   * @attribute
-   */
-  label: string = "";
-
-  /**
-   * An SVG icon to display inside the button.
-   * @attribute
-   */
-  icon: string = "";
-
-  /**
    * Renders the template.
    * @internal
    */
   render() {
-    const icon = this.icon
-      ? unsafeHTML(`<span class="elena-icon">${this.icon}</span>`)
-      : nothing;
-
     return html`
-      <button
-        class="elena-button"
-        ${this.disabled ? "disabled" : nothing}
-        ${this.label ? html`aria-label="${this.label}"` : nothing}
-      >
-        ${this.text ? html`<span>${this.text}</span>` : nothing}
-        ${icon}
-      </button>
+      <button>${this.text}</button>
     `;
   }
 }
@@ -319,29 +257,310 @@ Button.define();
 
 :::
 
+## How it works
+
+`@elenajs/bundler` runs `elena build` in two stages:
+
+1. **Rollup build:** compiles JavaScript and TypeScript source files, minifies CSS, and writes output to `dist/`.
+2. **CEM analysis:** reads your source files and JSDoc annotations, then produces:
+   - **`custom-elements.json`:** the [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/) describing the component’s tag name, props, events, and CSS custom properties in a machine-readable format.
+   - **Per-component `.d.ts` files:** a TypeScript declaration file for each component (e.g. `button.d.ts`) with typed props and event handlers derived from your JSDoc. This lets TypeScript resolve sub-path imports like `@my-lib/components/dist/button.js`.
+   - **`custom-elements.d.ts`:** JSX integration types that map your custom element tag names to their prop types, enabling autocomplete and type checking for `<elena-button variant="primary" />` in JSX/TSX files.
+
 ## Generated output
 
-Running `elena build` on the above produces:
+### `dist/custom-elements.json`
 
-**`dist/custom-elements.json`:** a manifest describing the component’s tag name, props, events, and CSS custom properties for IDEs and documentation tools.
+The [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/) describing the component’s tag name, props, events, and CSS custom properties in a machine-readable format.
 
-**`dist/button.d.ts`:** a TypeScript declaration with typed props and event handlers:
-
-```ts
-export default class Button extends HTMLElement {
-  variant: "default" | "primary" | "danger" | "outline";
-  disabled: boolean;
-  label: string;
-  icon: string;
-  text: string;
+```json
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/index.js",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Button",
+          "declaration": {
+            "name": "default",
+            "module": "./button/button.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/button/button.js",
+      "declarations": [
+        {
+          "name": "Button",
+          "displayName": "Button",
+          "description": "Button component is used for interface actions.",
+          "status": "alpha",
+          "tagName": "elena-button",
+          "customElement": true,
+          "kind": "class",
+          "cssProperties": [
+            {
+              "description": "Overrides the default text color.",
+              "name": "--elena-button-text"
+            },
+            {
+              "description": "Overrides the default background color.",
+              "name": "--elena-button-bg"
+            },
+            {
+              "description": "Overrides the default font family.",
+              "name": "--elena-button-font"
+            },
+            {
+              "description": "Overrides the default border radius.",
+              "name": "--elena-button-radius"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tagName",
+              "type": {
+                "text": "string"
+              },
+              "static": true,
+              "default": "\"elena-button\""
+            },
+            {
+              "kind": "field",
+              "name": "events",
+              "type": {
+                "text": "array"
+              },
+              "static": true,
+              "default": "[\"click\", \"focus\", \"blur\"]"
+            },
+            {
+              "kind": "field",
+              "name": "props",
+              "type": {
+                "text": "array"
+              },
+              "static": true,
+              "default": "[\"variant\", \"disabled\"]"
+            }
+          ],
+          "events": [
+            {
+              "description": "Programmatically fire click on the component.",
+              "name": "click"
+            },
+            {
+              "description": "Programmatically move focus to the component.",
+              "name": "focus"
+            },
+            {
+              "description": "Programmatically remove focus from the component.",
+              "name": "blur"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"primary\" | \"danger\" | \"outline\""
+              },
+              "default": "\"default\"",
+              "description": "The style variant of the button.",
+              "fieldName": "variant"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the component disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "text",
+              "fieldName": "text",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text content of the element, captured from light DOM before the first render."
+            }
+          ],
+          "mixins": [
+            {
+              "name": "Elena",
+              "package": "@elenajs/core"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Button",
+            "module": "src/button/button.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "elena-button",
+          "declaration": {
+            "name": "Button",
+            "module": "src/button/button.js"
+          }
+        }
+      ]
+    }
+  ]
 }
 ```
 
-**`dist/custom-elements.d.ts`:** JSX integration types exporting a `CustomElements` map and `ScopedElements` helper for typed JSX usage.
+### `dist/button.d.ts`
+
+A TypeScript declaration file for the component with typed props and event handlers derived from your JSDoc. This lets TypeScript resolve sub-path imports like `@my-lib/components/dist/button.js`.
+
+```ts
+export type { ButtonProps } from './custom-elements.js';
+
+declare class Button extends HTMLElement {
+  /** The style variant of the button. */
+  variant?: "default" | "primary" | "danger" | "outline";
+  /** Makes the component disabled. */
+  disabled?: boolean;
+  /** The text content of the element, captured from light DOM before the first render. */
+  text?: string;
+  /** Programmatically fire click on the component. */
+  onclick?: (e: CustomEvent<never>) => void;
+  /** Programmatically move focus to the component. */
+  onfocus?: (e: CustomEvent<never>) => void;
+  /** Programmatically remove focus from the component. */
+  onblur?: (e: CustomEvent<never>) => void;
+}
+
+export default Button;
+```
+
+### `dist/custom-elements.d.ts`
+
+JSX integration types that map your custom element tag names to their prop types, enabling autocomplete and type checking for `<elena-button variant="primary" />` in JSX/TSX files.
+
+```ts
+/**
+ * This type can be used to create scoped tags for your components.
+ *
+ * Usage:
+ *
+ * ```ts
+ * import type { ScopedElements } from "path/to/library/jsx-integration";
+ *
+ * declare module "my-library" {
+ *   namespace JSX {
+ *     interface IntrinsicElements
+ *       extends ScopedElements<'test-', ''> {}
+ *   }
+ * }
+ * ```
+ *
+ */
+export type ScopedElements<Prefix extends string = "", Suffix extends string = ""> = {
+  [Key in keyof CustomElements as `${Prefix}${Key}${Suffix}`]: CustomElements[Key];
+};
+
+type BaseProps = {
+  /** Content added between the opening and closing tags of the element */
+  children?: any;
+  /** Used for declaratively styling one or more elements using CSS (Cascading Stylesheets) */
+  class?: string;
+  /** Used for declaratively styling one or more elements using CSS (Cascading Stylesheets) */
+  className?: string;
+  /** Takes an object where the key is the class name(s) and the value is a boolean expression. When true, the class is applied, and when false, it is removed. */
+  classList?: Record<string, boolean | undefined>;
+  /** Specifies the text direction of the element. */
+  dir?: "ltr" | "rtl";
+  /** Contains a space-separated list of the part names of the element that should be exposed on the host element. */
+  exportparts?: string;
+  /** For <label> and <output>, lets you associate the label with some control. */
+  htmlFor?: string;
+  /** Specifies whether the element should be hidden. */
+  hidden?: boolean | string;
+  /** A unique identifier for the element. */
+  id?: string;
+  /** Keys tell React which array item each component corresponds to */
+  key?: string | number;
+  /** Specifies the language of the element. */
+  lang?: string;
+  /** Contains a space-separated list of the part names of the element. Part names allows CSS to select and style specific elements in a shadow tree via the ::part pseudo-element. */
+  part?: string;
+  /** Use the ref attribute with a variable to assign a DOM element to the variable once the element is rendered. */
+  ref?: unknown | ((e: unknown) => void);
+  /** Adds a reference for a custom element slot */
+  slot?: string;
+  /** Prop for setting inline styles */
+  style?: Record<string, string | number>;
+  /** Overrides the default Tab button behavior. Avoid using values other than -1 and 0. */
+  tabIndex?: number;
+  /** Specifies the tooltip text for the element. */
+  title?: string;
+  /** Passing 'no' excludes the element content from being translated. */
+  translate?: "yes" | "no";
+};
+
+type BaseEvents = {};
+
+export type ButtonProps = {
+  /** The style variant of the button. */
+  variant?: "default" | "primary" | "danger" | "outline";
+  /** Makes the component disabled. */
+  disabled?: boolean;
+  /** The text content of the element, captured from light DOM before the first render. */
+  text?: string;
+
+  /** Programmatically fire click on the component. */
+  onclick?: (e: CustomEvent<never>) => void;
+  /** Programmatically move focus to the component. */
+  onfocus?: (e: CustomEvent<never>) => void;
+  /** Programmatically remove focus from the component. */
+  onblur?: (e: CustomEvent<never>) => void;
+};
+
+export type CustomElements = {
+  /**
+   * Button component is used for interface actions.
+   * ---
+   *
+   *
+   * ### **Events:**
+   *  - **click** - Programmatically fire click on the component.
+   * - **focus** - Programmatically move focus to the component.
+   * - **blur** - Programmatically remove focus from the component.
+   *
+   * ### **CSS Properties:**
+   *  - **--elena-button-text** - Overrides the default text color. _(default: undefined)_
+   * - **--elena-button-bg** - Overrides the default background color. _(default: undefined)_
+   * - **--elena-button-font** - Overrides the default font family. _(default: undefined)_
+   * - **--elena-button-radius** - Overrides the default border radius. _(default: undefined)_
+   */
+  "elena-button": Partial<ButtonProps & BaseProps & BaseEvents>;
+};
+
+```
 
 ## Using the generated types
 
-Import `CustomElements` in your consuming project to enable autocomplete in JSX:
+Import `CustomElements` in your consuming project to enable autocomplete in JSX.
 
 ```ts
 // types.d.ts (in your consuming project)

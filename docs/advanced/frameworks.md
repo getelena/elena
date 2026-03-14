@@ -2,10 +2,6 @@
 
 Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers.
 
-Components that use `render()` own their inner DOM and frameworks must treat these as leaf nodes and never try to render inside them. HTML Web Components on the other hand work like any HTML container element and integrate naturally.
-
-For integration rules and framework-specific notes, see [Known Issues](/advanced/gotchas#javascript-frameworks). For SSR-specific notes, see [Server-Side Rendering](/advanced/ssr#framework-compatibility).
-
 ## Plain HTML
 
 Since Elena ships as ES modules, you can load your components directly on a webpage. Here’s an example that loads the `@elenajs/components` from [unpkg](https://unpkg.com):
@@ -30,7 +26,7 @@ eleventyConfig.addPassthroughCopy({
 });
 ```
 
-How you can reference the bundle in your template:
+Now you can reference the bundle in your template:
 
 ```html
 <script src="/assets/bundle.js" type="module"></script>
@@ -45,7 +41,7 @@ For server-side rendering with Eleventy, see [Pre-rendering with Eleventy](/adva
 
 ## Next.js
 
-Because Elena components access the DOM on registration, Next.js needs to be configured in a way that supports this. To achieve this, create a `"use client"` component with `useEffect` to defer Elena hydration to the browser:
+Because Elena components access the DOM on hydration, Next.js needs to be configured in a way that supports this. To achieve this, create a `"use client"` component with `useEffect` to defer Elena hydration to the browser:
 
 ```tsx
 // src/elements-registry.tsx
@@ -250,3 +246,8 @@ export class AppComponent {
 
 > [!TIP]
 > The provided examples import the existing `@elenajs/components` for demo purposes. Replace it with your own component library for production usage.
+
+## Next steps
+
+- For integration rules and framework-specific notes, see [known issues](/advanced/gotchas#javascript-frameworks).
+- For SSR-specific notes, see [server-side rendering](/advanced/ssr).

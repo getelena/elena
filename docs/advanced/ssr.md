@@ -127,7 +127,7 @@ Parse an HTML string, expand registered components with `render()`, and return t
 1. **Parse** the input HTML string into a tree (tags, attributes, children).
 2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
 3. **Expand** components with `render()` by constructing a lightweight instance, converting attribute strings to the correct prop types (boolean, number, array, object), calling `willUpdate()` if defined, and then calling `render()`.
-4. **Recurse** into wrapper component children and non-component tags.
+4. **Recurse** into composite component children and non-component tags.
 5. **Serialize** the tree back to an HTML string.
 
 The rendered output matches what Elena produces on the client, using the same `html` tagged template escaping and whitespace normalization.
@@ -138,7 +138,7 @@ The HTML produced by `ssr()` is designed for progressive enhancement. When the c
 
 1. Elena’s `connectedCallback` fires on the pre-rendered element.
 2. `render()` runs and hydrates the component with interactivity.
-3. Event listeners are attached, methods become available, and the `hydrated` attribute is added.
+3. Event listeners are attached and methods become available.
 
 ## Pre-rendering with Eleventy
 
