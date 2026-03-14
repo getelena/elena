@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { createElement } from "./setup.js";
 import { renderHtml, renderTemplate } from "../src/common/render.js";
-import { html } from "../src/elena.js";
+import { html, nothing, unsafeHTML } from "../src/elena.js";
 import "./fixtures/basic-element.js";
 import "./fixtures/attr-element.js";
 import "./fixtures/multiline-element.js";
@@ -174,11 +174,12 @@ describe("rendering", () => {
       expect(btn.getAttribute("type")).toBe("submit");
     });
 
-    it("strips whitespace in multiline template called directly", () => {
+    it("preserves inline spaces in single-line template", () => {
       const el = createElement("basic-element", { label: "Hello" });
       const t = html` <span class="inner"> ${"world"} </span> `;
       renderTemplate(el, t.strings, t.values);
-      expect(el.querySelector(".inner").textContent).toBe("world");
+      // Spaces around the value are inline (no newlines), so they're preserved
+      expect(el.querySelector(".inner").textContent).toBe(" world ");
     });
 
     it("does not strip spaces within single-line content", () => {
@@ -482,6 +483,65 @@ describe("rendering", () => {
       // Both should have no stray indentation (proof that strings were processed)
       expect(firstOutput).not.toMatch(/>\s{3,}</);
       expect(secondOutput).not.toMatch(/>\s{3,}</);
+    });
+  });
+
+  describe("template edge cases", () => {
+    it("back-to-back expressions with no static text between them", () => {
+      const el = document.createElement("div");
+      const t = html`<span>${"hello"}${" world"}</span>`;
+      renderTemplate(el, t.strings, t.values);
+      expect(el.querySelector("span").textContent).toBe("hello world");
+    });
+
+    it("HTML comments in templates", () => {
+      const el = document.createElement("div");
+      const t = html`<!-- comment --><span>${"value"}</span>`;
+      renderTemplate(el, t.strings, t.values);
+      expect(el.querySelector("span").textContent).toBe("value");
+    });
+
+    it("template with only dynamic content (no static wrapper)", () => {
+      const el = document.createElement("div");
+      const t = html`${"hello"}`;
+      renderTemplate(el, t.strings, t.values);
+      expect(el.textContent).toBe("hello");
+    });
+
+    it("multiple expressions in same attribute", () => {
+      const el = document.createElement("div");
+      const t = html`<span class="${"base"} ${"variant"}">text</span>`;
+      renderTemplate(el, t.strings, t.values);
+      expect(el.querySelector("span").getAttribute("class")).toBe("base variant");
+    });
+
+    it("nothing in render output produces empty content", () => {
+      const el = document.createElement("div");
+      const t = html`<span>${nothing}</span>`;
+      renderTemplate(el, t.strings, t.values);
+      expect(el.querySelector("span").textContent).toBe("");
+    });
+
+    it("less-than signs in text content are escaped", () => {
+      const el = document.createElement("div");
+      const t = html`<span>${"a < b"}</span>`;
+      renderTemplate(el, t.strings, t.values);
+      expect(el.querySelector("span").textContent).toBe("a < b");
+    });
+
+    it("boolean-like strings render as text", () => {
+      const el = document.createElement("div");
+      const t = html`<span>${"true"}</span>`;
+      renderTemplate(el, t.strings, t.values);
+      expect(el.querySelector("span").textContent).toBe("true");
+    });
+
+    it("SVG content via unsafeHTML renders correctly", () => {
+      const el = document.createElement("div");
+      const svg = `<svg width="10" height="10"><circle cx="5" cy="5" r="5"/></svg>`;
+      const t = html`<span>${unsafeHTML(svg)}</span>`;
+      renderTemplate(el, t.strings, t.values);
+      expect(el.querySelector("svg")).not.toBeNull();
     });
   });
 

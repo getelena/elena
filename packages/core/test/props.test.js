@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { createElement } from "./setup.js";
 import { getPropValue, setProps, getProps, syncAttribute } from "../src/common/props.js";
+import { Elena, html } from "../src/elena.js";
 import "./fixtures/basic-element.js";
 import "./fixtures/boolean-element.js";
 import "./fixtures/number-element.js";
@@ -255,6 +256,87 @@ describe("reflect: false", () => {
     expect(el.hasAttribute("content")).toBe(false);
     expect(el.element.textContent).toContain("pre-connect");
     el.remove();
+  });
+});
+
+describe("same-value optimization", () => {
+  it("same object reference does not trigger re-render", async () => {
+    const el = await createElement("object-element");
+    const obj = { theme: "dark" };
+    el.config = obj;
+    await el.updateComplete;
+
+    const spy = vi.spyOn(el, "render");
+    el.config = obj; // same reference
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it("different object with same contents does NOT re-render (JSON serialization matches)", async () => {
+    const el = await createElement("object-element");
+    el.config = { theme: "dark" };
+    await el.updateComplete;
+
+    const spy = vi.spyOn(el, "render");
+    el.config = { theme: "dark" }; // same JSON serialization
+    await el.updateComplete;
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it("same array reference does not trigger re-render", async () => {
+    const el = await createElement("object-element");
+    const arr = [1, 2, 3];
+    el.items = arr;
+    await el.updateComplete;
+
+    const spy = vi.spyOn(el, "render");
+    el.items = arr; // same reference
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it("same number does not trigger re-render", async () => {
+    const el = await createElement("number-element");
+    el.count = 42;
+    await el.updateComplete;
+
+    const spy = vi.spyOn(el, "render");
+    el.count = 42;
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it("same boolean does not trigger re-render", async () => {
+    const el = await createElement("boolean-element");
+    el.disabled = true;
+    await el.updateComplete;
+
+    const spy = vi.spyOn(el, "render");
+    el.disabled = true;
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+});
+
+describe("reserved prop warning", () => {
+  it('defining "text" in static props triggers console warning', () => {
+    const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    class ReservedPropEl extends Elena(HTMLElement) {
+      static tagName = "test-reserved-prop";
+      static props = ["text", "label"];
+      text = "";
+      label = "";
+      render() {
+        return html`<span>${this.label}</span>`;
+      }
+    }
+    ReservedPropEl.define();
+    const el = document.createElement("test-reserved-prop");
+    document.body.appendChild(el);
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('"text" is a reserved prop'));
+    el.remove();
+    spy.mockRestore();
   });
 });
 

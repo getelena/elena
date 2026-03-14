@@ -218,6 +218,37 @@ describe("utils", () => {
     });
   });
 
+  describe("nothing vs empty values", () => {
+    it("nothing in attribute value position produces empty attribute", () => {
+      const container = document.createElement("div");
+      const t = html`<input value="${nothing}">`;
+      renderTemplate(container, t.strings, t.values);
+      expect(container.querySelector("input").getAttribute("value")).toBe("");
+    });
+
+    it("nothing vs empty string vs null vs undefined behavioral differences", () => {
+      // nothing: __raw, toString() → ""
+      expect(String(nothing)).toBe("");
+      expect(nothing.__raw).toBe(true);
+
+      // empty string: goes through escapeHtml, produces ""
+      const withEmpty = html`<span>${""}</span>`;
+      expect(String(withEmpty)).toBe("<span></span>");
+
+      // null: coerced to ""
+      const withNull = html`<span>${null}</span>`;
+      expect(String(withNull)).toBe("<span></span>");
+
+      // undefined: coerced to ""
+      const withUndef = html`<span>${undefined}</span>`;
+      expect(String(withUndef)).toBe("<span></span>");
+
+      // false: becomes "false" string (not empty!)
+      const withFalse = html`<span>${false}</span>`;
+      expect(String(withFalse)).toBe("<span>false</span>");
+    });
+  });
+
   describe("unsafeHTML", () => {
     it("is marked as __raw", () => {
       expect(unsafeHTML("<b>bold</b>").__raw).toBe(true);
