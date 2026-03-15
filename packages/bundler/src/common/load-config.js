@@ -1,6 +1,8 @@
 import { pathToFileURL } from "url";
 import { resolve } from "path";
 import { existsSync } from "fs";
+import { color } from "./color.js";
+import { validateConfig } from "./validate-config.js";
 
 /**
  * @typedef {object} ElenaOutputConfig
@@ -21,11 +23,13 @@ import { existsSync } from "fs";
  * @property {ElenaOutputConfig}  [output]  Rollup output options.
  * @property {string|false}       [bundle]  Entry for the single-file bundle; `false` to disable.
  * @property {import("rollup").Plugin[]} [plugins] Additional Rollup plugins appended after built-ins.
- * @property {ElenaAnalyzeConfig} [analyze] CEM analysis options.
+ * @property {ElenaAnalyzeConfig|false} [analyze] CEM analysis options; `false` to skip analysis.
  * @property {string | string[] | false} [target] Browserslist target(s) for transpilation via
  *   `@babel/preset-env`. When set, enables syntax transforms (e.g. class fields, optional
  *   chaining) to widen browser support. Set to `false` (default) to skip transpilation.
  *   Example: `["chrome 71", "firefox 69", "safari 12.1"]`
+ * @property {object} [terser] Custom Terser minifier options, merged with the defaults
+ *   `{ ecma: 2020, module: true }`.
  */
 
 /** @type {Required<ElenaConfig>} */
@@ -36,29 +40,75 @@ const DEFAULTS = {
   plugins: [],
   analyze: { plugins: [] },
   target: false,
+  terser: { ecma: 2020, module: true },
 };
 
 /**
- * Loads the Elena config from `elena.config.mjs` or `elena.config.js` in `cwd`,
+ * Merges user config with defaults.
+ *
+ * @param {ElenaConfig} user
+ * @returns {Required<ElenaConfig>}
+ */
+function mergeConfig(user) {
+  return {
+    ...DEFAULTS,
+    ...user,
+    output: { ...DEFAULTS.output, ...user.output },
+    analyze: user.analyze === false ? false : { ...DEFAULTS.analyze, ...user.analyze },
+    terser: { ...DEFAULTS.terser, ...user.terser },
+  };
+}
+
+/**
+ * Loads and imports a config file, returning the merged config.
+ *
+ * @param {string} configPath
+ * @returns {Promise<Required<ElenaConfig>>}
+ */
+async function importConfig(configPath) {
+  const mod = await import(pathToFileURL(configPath).href);
+  const user = mod.default ?? {};
+  validateConfig(user);
+  return mergeConfig(user);
+}
+
+/**
+ * Loads the Elena config from the specified path, or from
+ * `elena.config.mjs` / `elena.config.js` in `cwd`,
  * falling back to defaults if no config file is found.
  *
  * @param {string} [cwd]
+ * @param {string} [explicitPath]
  * @returns {Promise<Required<ElenaConfig>>}
  */
-export async function loadConfig(cwd = process.cwd()) {
+export async function loadConfig(cwd = process.cwd(), explicitPath) {
+  if (explicitPath) {
+    const configPath = resolve(cwd, explicitPath);
+    if (!existsSync(configPath)) {
+      throw new Error(`Config file not found: ${configPath}`);
+    }
+    return importConfig(configPath);
+  }
+
   for (const name of ["elena.config.mjs", "elena.config.js"]) {
     const configPath = resolve(cwd, name);
     if (!existsSync(configPath)) {
       continue;
     }
-    const mod = await import(pathToFileURL(configPath).href);
-    const user = mod.default ?? {};
-    return {
-      ...DEFAULTS,
-      ...user,
-      output: { ...DEFAULTS.output, ...user.output },
-      analyze: { ...DEFAULTS.analyze, ...user.analyze },
-    };
+    return importConfig(configPath);
   }
+
+  const wrongExtensions = [".ts", ".json", ".yaml", ".yml", ".cjs"];
+  for (const ext of wrongExtensions) {
+    const wrongPath = resolve(cwd, `elena.config${ext}`);
+    if (existsSync(wrongPath)) {
+      console.warn(
+        color(`░█ [ELENA]: Found "elena.config${ext}" but only .mjs and .js are supported.`)
+      );
+      break;
+    }
+  }
+
+  console.log(color(`░█ [ELENA]: No config file found, using defaults.`));
   return { ...DEFAULTS };
 }
