@@ -89,7 +89,7 @@ export function unsafeHTML(str) {
  *
  * @type {{ __raw: true, toString(): string }}
  */
-export const nothing = { __raw: true, toString: () => "" };
+export const nothing = Object.freeze({ __raw: true, toString: () => "" });
 
 /**
  * Check if a value contains trusted HTML fragments.
