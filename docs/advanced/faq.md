@@ -40,12 +40,6 @@ As a baseline, Elena’s progressive approach supports any web browser that’s 
 - Edge 79+
 - Opera 58+
 
-## What is the performance compared to Lit?
-
-At the time of writing, the performance is very similar. According to our benchmark tests, Elena is roughly 1.2x faster than Lit for single element creation and batch creation of up to 1000 components. Lit is roughly 1.2x faster on re-renders via attribute change.
-
-That said, synthetic benchmarks only measure isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
-
 ## Can I use Elena in any project?
 
 Yes. Elena is licensed under the [MIT License](https://opensource.org/licenses/MIT), which means you can use it in personal, commercial, and open source projects. You can modify, distribute, and sublicense it freely. The only requirement is that you include the original copyright notice and license text in any copy or substantial portion of the software.
@@ -83,6 +77,12 @@ Elena’s documentation is built with [VitePress](https://vitepress.dev), a stat
 ## How do you version Elena?
 
 Elena follows [Semantic Versioning](https://semver.org/). Under this scheme, version numbers and the way they change convey meaning about the underlying features and what has been modified from one version to the next.
+
+## How is the performance compared to Lit?
+
+At the time of writing, the performance is very similar. According to our benchmark tests, Elena is roughly 1.2x faster than Lit for single element creation and batch creation of up to 1000 components. Lit is roughly 1.2x faster on re-renders via attribute change.
+
+That said, synthetic benchmarks only measure isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
 
 ## How can I contribute?
 
