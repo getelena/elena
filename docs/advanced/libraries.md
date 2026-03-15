@@ -34,7 +34,7 @@ Create an `elena.config.mjs` (or `elena.config.js`) at the root of your package:
 
 ```js
 /**
- * ░ [ELENA]: Bundler configuration
+ * ░█ [ELENA]: Bundler configuration
  *
  * @type {import("@elenajs/bundler").ElenaConfig}
  */

@@ -3,6 +3,9 @@
 Elena components are configured using static class fields:
 
 ```js
+/**
+ * ░█ [ELENA]: Options
+ */
 export default class Button extends Elena(HTMLElement) {
   // Custom element tag name to register.
   static tagName = "elena-button";

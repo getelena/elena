@@ -7,6 +7,9 @@ Props are values you pass to an Elena component. Declare them in `static props` 
 List prop names in `static props`, and give each one a default value as a class field:
 
 ```js
+/**
+ * ░█ [ELENA]: Props
+ */
 export default class Button extends Elena(HTMLElement) {
   static props = ["variant", "disabled", "value", "type"];
 

@@ -6,6 +6,7 @@ The fastest way to get started is to include the following directly into your we
 <script type="module">
   import { Elena, html } from "https://unpkg.com/@elenajs/core";
 
+  /** ░█ [ELENA]: Hello world example */
   export default class MyGreeting extends Elena(HTMLElement) {
     static tagName = "my-greeting";
     static props = ["name"];
@@ -75,6 +76,7 @@ A Composite Component enhances whatever HTML is composed inside it, applying sty
 ```js [JavaScript]
 import { Elena } from "@elenajs/core";
 
+/** ░█ [ELENA]: Composite Component example */
 export default class Stack extends Elena(HTMLElement) {
   static tagName = "my-stack";
   static props = ["direction"];
@@ -125,6 +127,7 @@ A Primitive Component owns and controls its inner HTML markup. Two things to kno
 ```js [JavaScript]
 import { Elena, html } from "@elenajs/core";
 
+/** ░█ [ELENA]: Primitive Component example */
 export default class Button extends Elena(HTMLElement) {
   static tagName = "my-button";
   static props = ["variant"];
@@ -185,6 +188,18 @@ A Declarative Component utilizes Declarative Shadow DOM which lets you define a 
 
 ::: code-group
 
+```js [JavaScript]
+import { Elena } from "@elenajs/core";
+
+/** ░█ [ELENA]: Declarative Component example */
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static shadow = "open";
+}
+
+Button.define();
+```
+
 ```html [HTML]
 <elena-button>
   <template shadowrootmode="open">
@@ -193,17 +208,6 @@ A Declarative Component utilizes Declarative Shadow DOM which lets you define a 
   </template>
   Click me
 </elena-button>
-```
-
-```js [JavaScript]
-import { Elena } from "@elenajs/core";
-
-export default class Button extends Elena(HTMLElement) {
-  static tagName = "elena-button";
-  static shadow = "open";
-}
-
-Button.define();
 ```
 
 :::
@@ -338,7 +342,8 @@ Create an `elena.config.mjs` at the root of your package:
 
 ```js
 /**
- * ░ [ELENA]: Bundler configuration
+ * ░█ [ELENA]: Bundler configuration
+ *
  * @type {import("@elenajs/bundler").ElenaConfig}
  */
 export default {
@@ -358,7 +363,7 @@ export default {
   // Additional Rollup plugins appended after Elena’s built-in set.
   // plugins: [],
 
-  // Custom Elements Manifest options.
+  // Custom Elements Manifest options. Set to false to skip entirely.
   // analyze: {
   //   plugins: [],
   // },
@@ -366,6 +371,9 @@ export default {
   // Browserslist targets for transpilation. Enables syntax transforms
   // (e.g. class fields, optional chaining) to widen browser support.
   // target: ["chrome 71", "firefox 69", "safari 12.1"],
+
+  // Custom Terser minifier options, merged with the defaults.
+  // terser: { ecma: 2020, module: true },
 };
 ```
 

@@ -7,6 +7,9 @@ When a web component renders its own inner DOM via `render()`, native events lik
 `static events` tells Elena to listen for those events on the inner element and re-fire them on the host, so consumers can attach listeners to the custom element directly:
 
 ```js
+/**
+ * ░█ [ELENA]: Events
+ */
 export default class Button extends Elena(HTMLElement) {
   static events = ["click", "focus", "blur"];
 }
