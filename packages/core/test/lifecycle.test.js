@@ -227,7 +227,7 @@ describe("lifecycle", () => {
       // no-template-element uses element: ".missing" which never resolves
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
       const el = await createElement("no-template-element");
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining("Passed element not found."));
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining("Element not found."));
       spy.mockRestore();
     });
   });

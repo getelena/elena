@@ -32,7 +32,7 @@ export function getPropValue(type, value, transform) {
         try {
           return JSON.parse(value);
         } catch {
-          console.warn("░█ [ELENA]: Invalid JSON for a prop: " + value);
+          console.warn("░█ [ELENA]: Invalid JSON: " + value);
           return null;
         }
       case "boolean":
@@ -54,7 +54,7 @@ export function getPropValue(type, value, transform) {
  */
 export function syncAttribute(element, name, value) {
   if (!element) {
-    console.warn("░█ [ELENA]: Cannot sync attrs to a null element.");
+    console.warn("░█ [ELENA]: Cannot sync attrs.");
     return;
   }
   if (value === null) {
@@ -124,7 +124,7 @@ export function getProps(context, name, oldValue, newValue) {
   if (oldValue !== newValue) {
     const type = typeof context[name];
     if (type === "undefined") {
-      console.warn(`░█ [ELENA]: Prop "${name}" has no default value.`);
+      console.warn(`░█ [ELENA]: Prop "${name}" has no default.`);
     }
     const newAttr = getPropValue(type, newValue, "toProp");
     context[name] = newAttr;

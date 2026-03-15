@@ -75,13 +75,13 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 
 | Error | Explanation |
 |---------|-------------|
-| <code style="white-space:nowrap;">"text" is a reserved prop.</code> | You included `"text"` in `static props`. Elena manages `text` as a built-in reactive property, remove it from the props array to fix the error. |
-| <code style="white-space:nowrap;">define() called without a tagName.</code> | `ClassName.define()` was called but `static tagName` is not set on the class. Add a `static tagName` before calling `define()`. |
-| `Passed element not found.` | The CSS selector in `static element` did not match any element in the rendered output. Check that the selector is correct and that `render()` produces a matching element. |
-| <code style="white-space:nowrap;">Cannot add events, no element found.</code> | `static events` is set but no inner element reference could be resolved. Either add a `render()` that produces an inner element, or check your `static element` selector. |
-| `Prop "<name>" has no default value.` | An attribute changed for a prop that has no corresponding instance field default. Add a default value (e.g. `myProp = ""`) to the component class body. |
-| `Invalid JSON for a prop: <value>` | An `Array` or `Object` prop received an attribute value that could not be parsed as JSON. Check that the attribute value is valid JSON. The prop will be set to `null`. |
-| <code style="white-space:nowrap;">Cannot sync attrs to a null element.</code> | `syncAttribute()` was called with a null element reference. This usually means the inner element was not found before attribute sync ran. Check your `static element` selector. |
+| <code style="white-space:nowrap;">"text" is reserved.</code> | You included `"text"` in `static props`. Elena manages `text` as a built-in reactive property, remove it from the props array to fix the error. |
+| <code style="white-space:nowrap;">define() without a tagName.</code> | `ClassName.define()` was called but `static tagName` is not set on the class. Add a `static tagName` before calling `define()`. |
+| `Element not found.` | The CSS selector in `static element` did not match any element in the rendered output. Check that the selector is correct and that `render()` produces a matching element. |
+| `Cannot add events.` | `static events` is set but no inner element reference could be resolved. Either add a `render()` that produces an inner element, or check your `static element` selector. |
+| <code style="white-space:nowrap;">Prop "&lt;name&gt;" has no default.</code> | An attribute changed for a prop that has no corresponding instance field default. Add a default value (e.g. `myProp = ""`) to the component class body. |
+| `Invalid JSON: <value>` | An `Array` or `Object` prop received an attribute value that could not be parsed as JSON. Check that the attribute value is valid JSON. The prop will be set to `null`. |
+| `Cannot sync attrs.` | `syncAttribute()` was called with a null element reference. This usually means the inner element was not found before attribute sync ran. Check your `static element` selector. |
 
 ## `@elenajs/bundler`
 

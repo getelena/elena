@@ -182,7 +182,7 @@ export function Elena(superClass) {
         }
 
         if (names.includes("text")) {
-          console.warn('░█ [ELENA]: "text" is a reserved prop.');
+          console.warn('░█ [ELENA]: "text" is reserved.');
         }
 
         setProps(component.prototype, names, noRef);
@@ -310,7 +310,7 @@ export function Elena(superClass) {
 
         if (!this.element) {
           if (this.constructor.element) {
-            console.warn("░█ [ELENA]: Passed element not found.");
+            console.warn("░█ [ELENA]: Element not found.");
           }
           this.element = root.firstElementChild;
         }
@@ -354,7 +354,7 @@ export function Elena(superClass) {
 
       if (!this._events && events?.length) {
         if (!this.element) {
-          console.warn("░█ [ELENA]: Cannot add events, no element found.");
+          console.warn("░█ [ELENA]: Cannot add events.");
         } else {
           this._events = true;
 
@@ -450,7 +450,7 @@ export function Elena(superClass) {
       if (this.tagName) {
         defineElement(this.tagName, this);
       } else {
-        console.warn("░█ [ELENA]: define() called without a tagName.");
+        console.warn("░█ [ELENA]: define() without a tagName.");
       }
     }
 

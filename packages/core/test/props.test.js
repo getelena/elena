@@ -144,7 +144,7 @@ describe("syncAttribute", () => {
   it("warns and returns early when element is null", () => {
     const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
     syncAttribute(null, "data-test", "value");
-    expect(spy).toHaveBeenCalledWith(expect.stringContaining("null element"));
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining("Cannot sync attrs"));
     spy.mockRestore();
   });
 
@@ -334,7 +334,7 @@ describe("reserved prop warning", () => {
     ReservedPropEl.define();
     const el = document.createElement("test-reserved-prop");
     document.body.appendChild(el);
-    expect(spy).toHaveBeenCalledWith(expect.stringContaining('"text" is a reserved prop'));
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('"text" is reserved'));
     el.remove();
     spy.mockRestore();
   });

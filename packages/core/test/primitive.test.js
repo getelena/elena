@@ -171,7 +171,7 @@ describe("Primitive Components", () => {
       TextPropElement.define();
       const el = document.createElement("text-prop-element");
       document.body.appendChild(el);
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining('"text" is a reserved prop.'));
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining('"text" is reserved.'));
       spy.mockRestore();
     });
   });
