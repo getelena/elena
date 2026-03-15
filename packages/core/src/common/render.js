@@ -1,22 +1,17 @@
-import { collapseWhitespace, resolveValue } from "./utils.js";
+import { collapseWhitespace, isRaw, resolveValue, toPlainText } from "./utils.js";
 
 const stringsCache = new WeakMap();
+const markerKey = "e" + Math.random().toString(36).slice(2, 6);
 
 /**
  * Render a tagged template into an Elena Element with DOM diffing.
- *
- * On first render, builds the full HTML markup and renders it.
- * On re-renders, patches only the text nodes whose values changed,
- * avoiding a full DOM rebuild.
- *
- * Cache state is stored on the element instance:
- * - _tplStrings: reference to the template’s static strings array
- * - _tplValues:  array of escaped values from the last render
- * - _tplParts:   array mapping each value index to its DOM text node (or undefined)
+ * Returns true if the DOM was fully rebuilt, false if only text
+ * nodes were patched in place.
  *
  * @param {HTMLElement} element
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
  * @param {Array} values - Dynamic interpolated values
+ * @returns {boolean}
  */
 export function renderTemplate(element, strings, values) {
   if (patchTextNodes(element, strings, values)) {
@@ -28,7 +23,6 @@ export function renderTemplate(element, strings, values) {
 
 /**
  * Fast path: patch only the text nodes whose values changed.
- * Returns true if all changes were handled (no full render needed).
  *
  * @param {HTMLElement} element - The host element with cached template state
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
@@ -41,111 +35,138 @@ function patchTextNodes(element, strings, values) {
     return false;
   }
 
-  let needsFullRender = false;
-
   for (let i = 0; i < values.length; i++) {
     const v = values[i];
-    // Check if this value contains trusted HTML fragments (isRaw),
-    // created via the `html` tag, which bypasses escaping
-    const isRaw = Array.isArray(v) ? v.some(item => item && item.__raw) : v && v.__raw;
     const newRendered = resolveValue(v);
-    const oldRendered = element._tplValues[i];
 
-    if (newRendered === oldRendered) {
+    if (newRendered === element._tplValues[i]) {
       continue;
     }
 
-    element._tplValues[i] = newRendered;
-
-    // Raw HTML values require a full render
-    if (isRaw) {
-      needsFullRender = true;
-    } else {
-      const textNode = element._tplParts[i];
-      if (textNode) {
-        // Value is in a text position, update the DOM node directly
-        const plain = Array.isArray(v)
-          ? v.map(item => String(item ?? "")).join("")
-          : String(v ?? "");
-        textNode.textContent = plain;
-      } else {
-        // No mapped text node for this value, need full render
-        needsFullRender = true;
-      }
+    if (isRaw(v) || !element._tplParts[i]) {
+      return false;
     }
+
+    element._tplValues[i] = newRendered;
+    element._tplParts[i].textContent = toPlainText(v);
   }
 
-  return !needsFullRender;
+  return true;
 }
 
 /**
- * Cold path: build full HTML markup, render it via DocumentFragment,
- * and map each interpolated value to its corresponding DOM text node
- * for future fast-path patching.
+ * Cold path: clone a cached <template> and patch in values.
  *
  * @param {HTMLElement} element - The host element to render into
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
  * @param {Array} values - Dynamic interpolated values
  */
 function fullRender(element, strings, values) {
-  const renderedValues = values.map(v => resolveValue(v));
-  let processedStrings = stringsCache.get(strings);
+  const renderedValues = values.map(value => resolveValue(value));
+  let entry = stringsCache.get(strings);
 
-  if (!processedStrings) {
-    processedStrings = Array.from(strings, str => collapseWhitespace(str));
-    stringsCache.set(strings, processedStrings);
+  if (!entry) {
+    const processedStrings = Array.from(strings, collapseWhitespace);
+    entry = {
+      processedStrings,
+      template: values.length > 0 ? createTemplate(processedStrings, values.length) : null,
+    };
+    stringsCache.set(strings, entry);
   }
 
-  // Build the complete HTML markup
-  const markup = processedStrings
-    .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
-    .replace(/>\s+</g, "><")
-    .trim();
+  if (entry.template) {
+    element._tplParts = cloneAndPatch(element, entry.template, values, renderedValues);
+  } else {
+    // Fallback for attribute-position values or static templates.
+    // White space collapsing here protects against Vue SSR mismatches.
+    const markup = entry.processedStrings
+      .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
+      .replace(/>\s+</g, "><")
+      .trim();
 
-  renderHtml(element, markup);
+    element.innerHTML = markup;
+    element._tplParts = new Array(renderedValues.length);
+  }
 
-  // Cache template identity and rendered values
   element._tplStrings = strings;
   element._tplValues = renderedValues;
-
-  // Walk text nodes to map each value index to its DOM node
-  element._tplParts = mapTextNodes(element, renderedValues);
 }
 
 /**
- * Walk the Elena Element’s text nodes and map each escaped value
- * to its corresponding DOM text node. Values without a matching
- * text node will be undefined.
+ * Build a <template> element with comment markers.
  *
- * Known limitation: text nodes are matched by content. This could
- * cause the wrong node to be patched if a static part of the template
- * contains text that exactly matches a dynamic value with no surrounding
- * tag. In practice this is extremely rare, static template parts should
- * be HTML structure (tags, attributes, punctuation), not raw text.
- *
- * Example: `<span>Elena</span>${name}` with `name = "Elena"`. The
- * walker matches the static "Elena" inside the span first, so when
- * `name` later changes to "Bob", the span text is patched instead
- * of the trailing text node.
- *
- * @param {HTMLElement} element - The host element to walk
- * @param {string[]} escapedValues - HTML-escaped interpolated values
- * @returns {Array<Text | undefined>} Array mapping each value index to its text node
+ * @param {string[]} processedStrings - Whitespace-collapsed static parts
+ * @param {number} valueCount - Number of dynamic values
+ * @returns {HTMLTemplateElement | null}
  */
-function mapTextNodes(element, escapedValues) {
-  const parts = new Array(escapedValues.length);
-  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+function createTemplate(processedStrings, valueCount) {
+  const marker = `<!--${markerKey}-->`;
+  const markup = processedStrings
+    .reduce((out, str, i) => {
+      const collapsed = str.replace(/>\s+</g, "><");
+      return out + collapsed + (i < valueCount ? marker : "");
+    }, "")
+    .trim();
 
-  let valueIndex = 0;
-  let node;
+  const tpl = document.createElement("template");
+  tpl.innerHTML = markup;
 
-  while ((node = walker.nextNode()) && valueIndex < escapedValues.length) {
-    if (node.textContent === escapedValues[valueIndex]) {
-      parts[valueIndex] = node;
-      valueIndex++;
+  // Mismatch means this template shape cannot use the clone path.
+  const walker = document.createTreeWalker(tpl.content, NodeFilter.SHOW_COMMENT);
+  let count = 0;
+
+  while (walker.nextNode()) {
+    if (walker.currentNode.data === markerKey) {
+      count++;
     }
   }
 
+  return count === valueCount ? tpl : null;
+}
+
+/**
+ * Clone a cached template and replace comment markers
+ * with actual content.
+ *
+ * @param {HTMLElement} element - The host element to render into
+ * @param {HTMLTemplateElement} template - Cached template with markers
+ * @param {Array} values - Raw interpolated values
+ * @param {string[]} renderedValues - HTML-escaped rendered values
+ * @returns {Array<Text | undefined>} Text node map for fast-path patching
+ */
+function cloneAndPatch(element, template, values, renderedValues) {
+  const clone = template.content.cloneNode(true);
+  const walker = document.createTreeWalker(clone, NodeFilter.SHOW_COMMENT);
+  const parts = new Array(values.length);
+  const markers = [];
+  let node;
+
+  // Collect markers before modifying the tree
+  while ((node = walker.nextNode())) {
+    if (node.data === markerKey) {
+      markers.push(node);
+    }
+  }
+
+  for (let i = 0; i < markers.length; i++) {
+    const value = values[i];
+
+    if (isRaw(value)) {
+      // Raw HTML: parse and insert as fragment
+      const tmp = document.createElement("template");
+      tmp.innerHTML = renderedValues[i];
+      markers[i].parentNode.replaceChild(tmp.content, markers[i]);
+
+      // Raw values can't be fast-patched; leave parts undefined
+    } else {
+      // Create text node with unescaped content
+      const textNode = document.createTextNode(toPlainText(value));
+      markers[i].parentNode.replaceChild(textNode, markers[i]);
+      parts[i] = textNode;
+    }
+  }
+
+  element.replaceChildren(clone);
   return parts;
 }
 
@@ -156,9 +177,7 @@ function mapTextNodes(element, escapedValues) {
  * @param {string} markup
  */
 export function renderHtml(element, markup) {
-  if (!element) {
-    console.warn("░█ [ELENA]: Cannot render to a null element.");
-    return;
+  if (element) {
+    element.innerHTML = markup;
   }
-  element.innerHTML = markup;
 }

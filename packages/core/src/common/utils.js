@@ -32,19 +32,20 @@ export function escapeHtml(str) {
  */
 export function resolveValue(value) {
   if (Array.isArray(value)) {
-    return value
-      .map(item => {
-        if (item && item.__raw) {
-          return String(item);
-        }
-        return escapeHtml(String(item ?? ""));
-      })
-      .join("");
+    return value.map(item => resolveItem(item)).join("");
   }
-  if (value && value.__raw) {
-    return String(value);
-  }
-  return escapeHtml(String(value ?? ""));
+  return resolveItem(value);
+}
+
+/**
+ * Resolve a single value to its HTML string
+ * representation.
+ *
+ * @param {*} value
+ * @returns {string}
+ */
+function resolveItem(value) {
+  return value?.__raw ? String(value) : escapeHtml(String(value ?? ""));
 }
 
 /**
@@ -79,6 +80,24 @@ export function unsafeHTML(str) {
  * @type {{ __raw: true, toString(): string }}
  */
 export const nothing = { __raw: true, toString: () => "" };
+
+/**
+ * Check if a value contains trusted HTML fragments.
+ *
+ * @param {*} value
+ * @returns {boolean}
+ */
+export const isRaw = value =>
+  Array.isArray(value) ? value.some(item => item?.__raw) : value?.__raw;
+
+/**
+ * Convert a value to its plain text string.
+ *
+ * @param {*} value
+ * @returns {string}
+ */
+export const toPlainText = value =>
+  Array.isArray(value) ? value.map(item => String(item ?? "")).join("") : String(value ?? "");
 
 /**
  * Collapse whitespace from a static string part.
