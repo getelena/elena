@@ -381,8 +381,8 @@ export function Elena(superClass) {
     render() {}
 
     /**
-     * Called before every render. Override to prepare state
-     * before the template runs.
+     * Called before every render.
+     * Override to prepare state before the template runs.
      */
     willUpdate() {}
 
@@ -397,14 +397,6 @@ export function Elena(superClass) {
      * Override to react to changes.
      */
     updated() {}
-
-    /**
-     * Called by the browser when the element is moved
-     * to a new document via `adoptNode()`.
-     */
-    adoptedCallback() {
-      super.adoptedCallback?.();
-    }
 
     /**
      * Called by the browser each time the element
@@ -495,8 +487,8 @@ export function Elena(superClass) {
     }
 
     /**
-     * Runs the batched update cycle: willUpdate → render → updated.
-     * Called by the microtask scheduled in _safeRender().
+     * Runs the batched update cycle.
+     * Called by the microtask in _safeRender().
      *
      * @internal
      */
@@ -520,7 +512,7 @@ export function Elena(superClass) {
     }
 
     /**
-     * A Promise that resolves after the next pending render completes.
+     * A Promise that resolves after the render completes.
      * Resolves immediately if no render is scheduled.
      *
      * @type {Promise<void>}
@@ -534,8 +526,7 @@ export function Elena(superClass) {
 
     /**
      * Schedules a re-render. Use this to manually trigger an
-     * update when Elena cannot detect the change automatically
-     * (e.g. deep object mutation).
+     * update when Elena cannot detect the change automatically.
      */
     requestUpdate() {
       if (this._hydrated && !this._isRendering) {
