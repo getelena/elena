@@ -4,6 +4,7 @@ head:
     - rel: preload
       href: /elena/components/bundle.js
       as: script
+      crossOrigin: anonymous
   - - script
     - type: module
       src: /elena/components/bundle.js
