@@ -107,6 +107,8 @@ function generateJS(name, features) {
         `   * @type {"default" | "primary" | "danger"}`,
         `   */`
       );
+    } else {
+      bodyLines.push(`  /** @attribute @type {"default" | "primary" | "danger"} */`);
     }
     bodyLines.push(`  variant = "default";`);
   }
@@ -172,6 +174,8 @@ function generateTS(name, features) {
         `   * @attribute`,
         `   */`
       );
+    } else {
+      bodyLines.push(`  /** @attribute */`);
     }
     bodyLines.push(`  variant: "default" | "primary" | "danger" = "default";`);
   }
