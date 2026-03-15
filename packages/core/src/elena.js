@@ -95,6 +95,8 @@ export function Elena(superClass) {
      * @param {string} newValue
      */
     attributeChangedCallback(prop, oldValue, newValue) {
+      super.attributeChangedCallback?.(prop, oldValue, newValue);
+
       if (prop === "text") {
         this.text = newValue ?? "";
         return;
@@ -221,7 +223,7 @@ export function Elena(superClass) {
      * @internal
      */
     _captureText() {
-      if (!this._hydrated && !this._text) {
+      if (!this._hydrated && this._text === undefined) {
         this.text = this.textContent.trim();
       }
     }
@@ -233,7 +235,7 @@ export function Elena(superClass) {
      * @type {ShadowRoot | HTMLElement}
      */
     get _renderRoot() {
-      return this.shadowRoot ?? this;
+      return this._shadow ?? this.shadowRoot ?? this;
     }
 
     /**
@@ -251,9 +253,14 @@ export function Elena(superClass) {
 
       // A shadow root may already exist if Declarative Shadow DOM was used.
       // In that case skip attachShadow() but still adopt styles below.
-      if (!this.shadowRoot) {
-        this.attachShadow({ mode: component.shadow });
+      // Store the reference so closed shadow roots remain accessible.
+      const root = this._shadow ?? this.shadowRoot;
+
+      if (!root) {
+        this._shadow = this.attachShadow({ mode: component.shadow });
       }
+
+      const shadowRoot = this._shadow ?? this.shadowRoot;
 
       if (!component.styles) {
         return;
@@ -274,7 +281,7 @@ export function Elena(superClass) {
         });
       }
 
-      this.shadowRoot.adoptedStyleSheets = component._adoptedSheets;
+      shadowRoot.adoptedStyleSheets = component._adoptedSheets;
     }
 
     /**
@@ -392,6 +399,14 @@ export function Elena(superClass) {
     updated() {}
 
     /**
+     * Called by the browser when the element is moved
+     * to a new document via `adoptNode()`.
+     */
+    adoptedCallback() {
+      super.adoptedCallback?.();
+    }
+
+    /**
      * Called by the browser each time the element
      * is removed from the page.
      */
@@ -489,7 +504,6 @@ export function Elena(superClass) {
       this._renderPending = false;
       const resolve = this._resolveUpdate;
       this._resolveUpdate = null;
-      this._updateComplete = null;
       try {
         try {
           this.willUpdate();
@@ -500,6 +514,7 @@ export function Elena(superClass) {
         }
         this.updated();
       } finally {
+        this._updateComplete = null;
         resolve();
       }
     }
