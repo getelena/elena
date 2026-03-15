@@ -23,3 +23,9 @@ Declarative Components are a hybrid of these and utilize [Declarative Shadow DOM
 
 > [!TIP]
 > Elena doesn’t force this taxonomy. They’re all just components, and you choose how to build yours. But since [Progressive Web Components](https://arielsalminen.com/2026/progressive-web-components/) is a design philosophy rather than a library feature, understanding the distinction between these approaches helps when deciding what fits your use case.
+
+## Next steps
+
+- Start with the [Quick Start](/start/) guide.
+- View the [Live examples](/examples/) for demos.
+- Browse our [FAQ](/advanced/faq) for frequently asked questions.

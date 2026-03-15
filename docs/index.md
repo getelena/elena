@@ -152,3 +152,4 @@ Elena is tested in the latest two versions of the following browsers. We may add
 
 - Start with the [Quick Start](/start/) guide.
 - View the [Live examples](/examples/) for demos.
+- Browse our [FAQ](/advanced/faq) for frequently asked questions.

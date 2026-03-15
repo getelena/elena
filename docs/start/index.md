@@ -417,6 +417,7 @@ For more, see the [CLI documentation](/advanced/cli).
 ## Next steps
 
 - View the [Live Examples](/examples/) to see Elena in action.
+- Browse our [FAQ](/advanced/faq) for frequently asked questions.
 - Read the [Component API](/api/) reference to learn about props, events, and lifecycle hooks.
 - Learn how to build a full [Component Library](/advanced/libraries).
 - Explore [Framework Integration](/advanced/frameworks) examples for React, Vue, Angular, Next.js and more.
