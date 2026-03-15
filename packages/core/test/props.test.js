@@ -7,6 +7,7 @@ import "./fixtures/boolean-element.js";
 import "./fixtures/number-element.js";
 import "./fixtures/object-element.js";
 import "./fixtures/no-reflect-element.js";
+import "./fixtures/array-prop-element.js";
 
 describe("getPropValue", () => {
   describe("string", () => {
@@ -472,5 +473,55 @@ describe("runtime type preservation", () => {
       expect(el.items).toEqual([4, 5, 6]);
       expect(Array.isArray(el.items)).toBe(true);
     });
+  });
+});
+
+describe("array prop re-render", () => {
+  it("setting array prop after connect triggers re-render with new items", async () => {
+    const el = createElement("array-prop-element");
+
+    // Initial render: links = [] → no links in nav
+    expect(el.querySelectorAll("nav a").length).toBe(0);
+
+    el.links = [
+      { label: "link 1", url: "#one", visible: true },
+      { label: "link 2", url: "#two", visible: true },
+    ];
+    await el.updateComplete;
+
+    const anchors = el.querySelectorAll("nav a");
+    expect(anchors.length).toBe(2);
+    expect(anchors[0].textContent).toBe("link 1");
+    expect(anchors[0].getAttribute("href")).toBe("#one");
+    expect(anchors[1].textContent).toBe("link 2");
+    expect(anchors[1].getAttribute("href")).toBe("#two");
+  });
+
+  it("setting array prop to empty array clears rendered items", async () => {
+    const el = createElement("array-prop-element");
+
+    el.links = [{ label: "link 1", url: "#one", visible: true }];
+    await el.updateComplete;
+    expect(el.querySelectorAll("nav a").length).toBe(1);
+
+    el.links = [];
+    await el.updateComplete;
+    expect(el.querySelectorAll("nav a").length).toBe(0);
+  });
+
+  it("array prop with visible: false filters items", async () => {
+    const el = createElement("array-prop-element");
+
+    el.links = [
+      { label: "visible", url: "#a", visible: true },
+      { label: "hidden", url: "#b", visible: false },
+      { label: "also visible", url: "#c", visible: true },
+    ];
+    await el.updateComplete;
+
+    const anchors = el.querySelectorAll("nav a");
+    expect(anchors.length).toBe(2);
+    expect(anchors[0].textContent).toBe("visible");
+    expect(anchors[1].textContent).toBe("also visible");
   });
 });
