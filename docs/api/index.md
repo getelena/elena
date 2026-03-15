@@ -82,7 +82,6 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 | `Prop "<name>" has no default value.` | An attribute changed for a prop that has no corresponding instance field default. Add a default value (e.g. `myProp = ""`) to the component class body. |
 | `Invalid JSON for a prop: <value>` | An `Array` or `Object` prop received an attribute value that could not be parsed as JSON. Check that the attribute value is valid JSON. The prop will be set to `null`. |
 | <code style="white-space:nowrap;">Cannot sync attrs to a null element.</code> | `syncAttribute()` was called with a null element reference. This usually means the inner element was not found before attribute sync ran. Check your `static element` selector. |
-| `Cannot render to a null element.` | `renderHtml()` was called with a null element. This is an internal guard; if you see it, the inner element reference was lost before rendering completed. |
 
 ## `@elenajs/bundler`
 
