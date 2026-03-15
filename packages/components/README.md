@@ -24,11 +24,6 @@
 
 <br/>
 
-> [!WARNING]
-> Please note that `@elenajs/components` is in active development and the APIs may change without notice.
-
-<br/>
-
 ## Table of contents
 
 - **[Install](#install)**
