@@ -75,11 +75,12 @@ describe("getPropValue", () => {
     });
 
     it("toProp returns null for null", () => {
-      expect(getPropValue("array", null, "toProp")).toBeNull();
+      // typeof [] is "object", so arrays go through the object case
+      expect(getPropValue("object", null, "toProp")).toBeNull();
     });
 
     it("toAttribute returns null for null", () => {
-      expect(getPropValue("array", null, "toAttribute")).toBeNull();
+      expect(getPropValue("object", null, "toAttribute")).toBeNull();
     });
 
     it("toProp returns null and warns on invalid JSON object string", () => {
@@ -91,7 +92,8 @@ describe("getPropValue", () => {
 
     it("toProp returns null and warns on malformed JSON array string", () => {
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
-      expect(getPropValue("array", "[1,2,broken]", "toProp")).toBeNull();
+      // typeof [] is "object", so arrays go through the object case
+      expect(getPropValue("object", "[1,2,broken]", "toProp")).toBeNull();
       expect(spy).toHaveBeenCalledWith(expect.stringContaining("[ELENA]"));
       spy.mockRestore();
     });

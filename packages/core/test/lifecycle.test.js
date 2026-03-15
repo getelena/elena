@@ -560,8 +560,18 @@ describe("lifecycle", () => {
       const el = document.createElement("basic-element");
       el.text = "pre-set";
       document.body.appendChild(el);
-      // _captureText should skip because _text is already truthy
+      // _captureText should skip because _text is already set
       expect(el.text).toBe("pre-set");
+      document.body.removeChild(el);
+    });
+
+    it("skips capture when text was explicitly set to empty string", () => {
+      const el = document.createElement("content-element");
+      el.textContent = "DOM content";
+      el.text = "";
+      document.body.appendChild(el);
+      // _captureText should not overwrite an explicitly set empty string
+      expect(el.text).toBe("");
       document.body.removeChild(el);
     });
   });
@@ -926,6 +936,72 @@ describe("lifecycle", () => {
       el.base = "base-updated";
       expect(el.base).toBe("base-updated");
 
+      el.remove();
+    });
+  });
+
+  describe("adoptedCallback", () => {
+    it("is defined and callable", async () => {
+      const el = await createElement("basic-element");
+      expect(typeof el.adoptedCallback).toBe("function");
+      expect(() => el.adoptedCallback()).not.toThrow();
+    });
+
+    it("propagates super.adoptedCallback in mixin chains", async () => {
+      const calls = [];
+
+      const Mixin = superClass =>
+        class extends superClass {
+          adoptedCallback() {
+            super.adoptedCallback?.();
+            calls.push("mixin");
+          }
+        };
+
+      class AdoptedEl extends Mixin(Elena(HTMLElement)) {
+        static tagName = "test-adopted-cb";
+        adoptedCallback() {
+          super.adoptedCallback();
+          calls.push("component");
+        }
+      }
+      AdoptedEl.define();
+
+      const el = document.createElement("test-adopted-cb");
+      document.body.appendChild(el);
+      el.adoptedCallback();
+      expect(calls).toEqual(["mixin", "component"]);
+      el.remove();
+    });
+  });
+
+  describe("attributeChangedCallback super propagation", () => {
+    it("calls super.attributeChangedCallback when present", async () => {
+      const spy = vi.fn();
+
+      const Mixin = superClass =>
+        class extends superClass {
+          attributeChangedCallback(name, oldValue, newValue) {
+            spy(name, oldValue, newValue);
+            super.attributeChangedCallback?.(name, oldValue, newValue);
+          }
+        };
+
+      class SuperAttrEl extends Mixin(Elena(HTMLElement)) {
+        static tagName = "test-super-attr";
+        static props = ["label"];
+        label = "";
+        render() {
+          return html`<span>${this.label}</span>`;
+        }
+      }
+      SuperAttrEl.define();
+
+      const el = document.createElement("test-super-attr");
+      document.body.appendChild(el);
+      el.setAttribute("label", "hello");
+      expect(spy).toHaveBeenCalledWith("label", null, "hello");
+      expect(el.label).toBe("hello");
       el.remove();
     });
   });

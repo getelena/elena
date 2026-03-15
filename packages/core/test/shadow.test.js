@@ -11,6 +11,9 @@ import "./fixtures/dsd-element.js";
 import "./fixtures/shadow-event-element.js";
 import "./fixtures/shadow-complex-element.js";
 import "./fixtures/shadow-boolean-element.js";
+import "./fixtures/shadow-closed-element.js";
+import "./fixtures/shadow-slot-element.js";
+import "./fixtures/shadow-named-slot-element.js";
 
 describe("shadow DOM", () => {
   describe("shadow root", () => {
@@ -767,6 +770,128 @@ describe("shadow DOM", () => {
       container.appendChild(el);
 
       expect(el.shadowRoot.querySelector("button").textContent).toBe("updated-while-disconnected");
+    });
+  });
+
+  describe("closed shadow DOM", () => {
+    it("renders into a closed shadow root", async () => {
+      const el = await createElement("shadow-closed-element", { label: "Hello" });
+      // el.shadowRoot is null for closed mode (per spec)
+      expect(el.shadowRoot).toBeNull();
+      // But the component should still have rendered into its shadow root
+      expect(el._shadow).not.toBeNull();
+      expect(el._shadow.querySelector("button")).not.toBeNull();
+      expect(el._shadow.querySelector("button").textContent).toBe("Hello");
+    });
+
+    it("does not render into light DOM", async () => {
+      const el = await createElement("shadow-closed-element", { label: "Hello" });
+      expect(el.innerHTML.trim()).toBe("");
+    });
+
+    it("re-renders after prop change", async () => {
+      const el = await createElement("shadow-closed-element", { label: "Before" });
+      el.setAttribute("label", "After");
+      await el.updateComplete;
+      expect(el._shadow.querySelector("button").textContent).toBe("After");
+    });
+
+    it("adopts styles into closed shadow root", async () => {
+      const el = await createElement("shadow-closed-element");
+      expect(el._shadow.adoptedStyleSheets.length).toBe(1);
+    });
+
+    it("delegates events from closed shadow elements", async () => {
+      const el = await createElement("shadow-closed-element", { label: "Click" });
+      const spy = vi.fn();
+      el.addEventListener("click", spy);
+      el._shadow.querySelector("button").click();
+      expect(spy).toHaveBeenCalledOnce();
+    });
+
+    it("does not re-attach on reconnection", async () => {
+      const el = await createElement("shadow-closed-element", { label: "test" });
+      const root = el._shadow;
+      el.remove();
+      document.body.appendChild(el);
+      expect(el._shadow).toBe(root);
+    });
+
+    it("preserves content after re-insertion", async () => {
+      const el = await createElement("shadow-closed-element", { label: "persist" });
+      el.remove();
+      document.body.appendChild(el);
+      expect(el._shadow.querySelector("button").textContent).toBe("persist");
+    });
+  });
+
+  describe("slot projection", () => {
+    it("projects light DOM children through default slot", async () => {
+      const el = document.createElement("shadow-slot-element");
+      el.innerHTML = "<span>Projected</span>";
+      document.body.appendChild(el);
+      expect(el.shadowRoot.querySelector("slot")).not.toBeNull();
+      // Light DOM child remains in the host
+      expect(el.querySelector("span").textContent).toBe("Projected");
+      el.remove();
+    });
+
+    it("preserves slotted content after re-render", async () => {
+      const el = document.createElement("shadow-slot-element");
+      el.innerHTML = "<span>Child</span>";
+      document.body.appendChild(el);
+      el.label = "Updated header";
+      await el.updateComplete;
+      // Slotted content should still be there
+      expect(el.querySelector("span").textContent).toBe("Child");
+      expect(el.shadowRoot.querySelector("header").textContent).toBe("Updated header");
+      el.remove();
+    });
+
+    it("preserves slotted content after re-insertion", async () => {
+      const el = document.createElement("shadow-slot-element");
+      el.innerHTML = "<span>Sticky</span>";
+      document.body.appendChild(el);
+      el.remove();
+      document.body.appendChild(el);
+      expect(el.querySelector("span").textContent).toBe("Sticky");
+      el.remove();
+    });
+
+    it("adopts styles with ::slotted selectors", async () => {
+      const el = await createElement("shadow-slot-element");
+      expect(el.shadowRoot.adoptedStyleSheets.length).toBe(1);
+      el.remove();
+    });
+
+    it("projects named slots correctly", async () => {
+      const el = document.createElement("shadow-named-slot-element");
+      el.innerHTML =
+        '<span slot="header">Header</span>' +
+        "<span>Default</span>" +
+        '<span slot="footer">Footer</span>';
+      document.body.appendChild(el);
+
+      const slots = el.shadowRoot.querySelectorAll("slot");
+      expect(slots.length).toBe(3);
+
+      const namedSlots = el.shadowRoot.querySelectorAll("slot[name]");
+      expect(namedSlots.length).toBe(2);
+      expect(namedSlots[0].name).toBe("header");
+      expect(namedSlots[1].name).toBe("footer");
+      el.remove();
+    });
+
+    it("preserves named slot assignments after re-render", async () => {
+      const el = document.createElement("shadow-named-slot-element");
+      el.innerHTML =
+        '<span slot="header">H</span>' + "<span>Body</span>" + '<span slot="footer">F</span>';
+      document.body.appendChild(el);
+
+      // Light DOM children with slot assignments persist
+      expect(el.querySelector('[slot="header"]').textContent).toBe("H");
+      expect(el.querySelector('[slot="footer"]').textContent).toBe("F");
+      el.remove();
     });
   });
 });
