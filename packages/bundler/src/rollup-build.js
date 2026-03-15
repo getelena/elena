@@ -13,7 +13,7 @@
  */
 
 import { existsSync, readdirSync } from "fs";
-import { rollup } from "rollup";
+import { rollup, watch } from "rollup";
 import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
@@ -60,6 +60,7 @@ function buildPlugins({
   extraPlugins = [],
   hasTs = false,
   target = false,
+  terserOpts = { ecma: 2020, module: true },
 }) {
   const plugins = [cssModuleScriptPlugin(), resolve({ extensions: [".js", ".ts", ".css"] })];
 
@@ -100,10 +101,7 @@ function buildPlugins({
         },
       },
     }),
-    terser({
-      ecma: 2020,
-      module: true,
-    }),
+    terser(terserOpts),
     cssPlugin(src)
   );
 
@@ -136,6 +134,13 @@ export function createRollupConfig(options = {}) {
   let bundle = options.bundle !== undefined ? options.bundle : "src/index.js";
   const extraPlugins = options.plugins ?? [];
   const target = options.target ?? false;
+  const terserOpts = options.terser ?? { ecma: 2020, module: true };
+
+  if (!existsSync(src)) {
+    throw new Error(
+      `░█ [ELENA]: Input directory "${src}" does not exist. Check your "input" config option.`
+    );
+  }
 
   const entries = readdirSync(src, { recursive: true })
     .filter(
@@ -152,6 +157,12 @@ export function createRollupConfig(options = {}) {
     bundle = "src/index.ts";
   }
 
+  if (bundle && !existsSync(bundle)) {
+    throw new Error(
+      `░█ [ELENA]: Bundle entry "${bundle}" does not exist. Check your "bundle" config option.`
+    );
+  }
+
   const configs = [
     {
       input: entries,
@@ -163,6 +174,7 @@ export function createRollupConfig(options = {}) {
         extraPlugins,
         hasTs,
         target,
+        terserOpts,
       }),
       output: {
         format,
@@ -187,6 +199,7 @@ export function createRollupConfig(options = {}) {
         extraPlugins,
         hasTs,
         target,
+        terserOpts,
       }),
       output: { format, sourcemap, file: `${outdir}/bundle.js` },
       preserveEntrySignatures: "strict",
@@ -211,6 +224,8 @@ export async function runRollupBuild(config) {
   console.log(color(`░█ [ELENA]: Building Progressive Web Components...`));
   console.log(` `);
 
+  let cache;
+
   for (const { output, ...inputOpts } of configs) {
     if (Array.isArray(inputOpts.input)) {
       for (const entry of inputOpts.input) {
@@ -221,8 +236,61 @@ export async function runRollupBuild(config) {
       console.log(` `);
     }
 
-    const build = await rollup(inputOpts);
+    const build = await rollup({ ...inputOpts, cache });
+    cache = build.cache;
     await build.write(output);
     await build.close();
   }
+}
+
+/**
+ * Starts a Rollup watch session using the Rollup Node.js watch API.
+ * Rebuilds on file changes and optionally re-runs a callback after each build.
+ *
+ * @param {import("./common/load-config.js").ElenaConfig} config
+ * @param {{ onRebuild?: (config: import("./common/load-config.js").ElenaConfig) => Promise<void> }} [opts]
+ * @returns {import("rollup").RollupWatcher}
+ */
+export function watchRollupBuild(config, opts = {}) {
+  const configs = createRollupConfig(config);
+
+  console.log(color(`░█ [ELENA]: Watching for changes...`));
+  console.log(` `);
+
+  const watchConfigs = configs.map(({ output, ...inputOpts }) => ({
+    ...inputOpts,
+    output,
+    watch: { clearScreen: false },
+  }));
+
+  const watcher = watch(watchConfigs);
+
+  watcher.on("event", async event => {
+    if (event.code === "BUNDLE_START") {
+      console.log(color(`░█ [ELENA]: Rebuilding...`));
+    }
+    if (event.code === "BUNDLE_END") {
+      console.log(color(`░█ [ELENA]: Build completed in ${event.duration}ms.`));
+      await event.result.close();
+      if (opts.onRebuild) {
+        try {
+          await opts.onRebuild(config);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    }
+    if (event.code === "ERROR") {
+      console.error(color(`░█ [ELENA]: Build error:`));
+      console.error(event.error);
+      if (event.result) {
+        await event.result.close();
+      }
+    }
+    if (event.code === "END") {
+      console.log(color(`░█ [ELENA]: Waiting for changes...`));
+    }
+  });
+
+  return watcher;
 }
