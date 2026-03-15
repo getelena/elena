@@ -60,9 +60,20 @@ export function createCemConfig(options = {}) {
  * @returns {Promise<void>}
  */
 export async function runCemAnalyze(config, cwd = process.cwd()) {
+  if (config.analyze === false) {
+    return;
+  }
+
   const src = config.input ?? "src";
   const outdir = config.output?.dir ?? "dist";
   const extraPlugins = config.analyze?.plugins ?? [];
+
+  const srcPath = resolve(cwd, src);
+  if (!existsSync(srcPath)) {
+    throw new Error(
+      `░█ [ELENA]: Input directory "${src}" does not exist. Check your "input" config option.`
+    );
+  }
 
   console.log(` `);
   console.log(color(`░█ [ELENA]: Analyzing the build output...`));
