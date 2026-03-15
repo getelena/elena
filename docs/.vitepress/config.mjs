@@ -191,6 +191,7 @@ export default defineConfig({
           { text: "Props", link: "/components/props" },
           { text: "Events", link: "/components/events" },
           { text: "Methods", link: "/components/methods" },
+          { text: "Mixins", link: "/components/mixins" },
           { text: "Templates", link: "/components/templates" },
           { text: "Styles", link: "/components/styles" },
         ],
