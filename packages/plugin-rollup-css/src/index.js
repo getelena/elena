@@ -101,6 +101,7 @@ export function cssPlugin(srcDir) {
         .map(f => `${srcDir}/${f}`);
 
       for (const file of cssFiles) {
+        this.addWatchFile(resolve(file));
         const source = minifyCss(readFileSync(file, "utf8"), basename(file));
         this.emitFile({ type: "asset", fileName: basename(file), source });
       }
