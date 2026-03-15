@@ -39,4 +39,17 @@ describe("generateSource, TS", () => {
     expect(out).not.toContain("myMethod");
     expect(out).toContain("render()");
   });
+
+  test("only props", () => {
+    const out = generateSource("my-button", "typescript", ["props"]);
+
+    expect(out).toContain('static props = ["variant"]');
+    expect(out).toContain('variant: "default" | "primary" | "danger" = "default"');
+    expect(out).toContain("@attribute");
+
+    expect(out).not.toContain("static events");
+    expect(out).not.toContain("@event");
+    expect(out).not.toContain("@cssprop");
+    expect(out).not.toContain("myMethod");
+  });
 });

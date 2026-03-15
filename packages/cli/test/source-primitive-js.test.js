@@ -67,11 +67,13 @@ describe("generateSource, JS", () => {
   test("only props", () => {
     const out = generateSource("my-button", "javascript", ["props"]);
 
+    expect(out).toContain("@attribute");
+    expect(out).toContain("@type");
     expect(out).toContain('static props = ["variant"]');
     expect(out).toContain('variant = "default"');
+
     expect(out).not.toContain("constructor()");
     expect(out).not.toContain("this.variant");
-
     expect(out).not.toContain("static events");
     expect(out).not.toContain("@event");
     expect(out).not.toContain("@cssprop");
