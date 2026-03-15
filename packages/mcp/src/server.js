@@ -33,7 +33,7 @@ const { version } = JSON.parse(readFileSync(new URL("../package.json", import.me
  * Server-level instructions sent to AI clients during initialization.
  * Provides essential context so the AI uses Elena patterns correctly.
  */
-const INSTRUCTIONS = `You are working with Elena, a lightweight (2kB) library for building Progressive Web Components. Elena renders base HTML & CSS first, then progressively enhances with JavaScript. Zero runtime dependencies.
+const INSTRUCTIONS = `You are working with Elena, a lightweight (2.5kB) library for building Progressive Web Components. Elena renders base HTML & CSS first, then progressively enhances with JavaScript. Zero runtime dependencies.
 
 ## How Elena Works
 

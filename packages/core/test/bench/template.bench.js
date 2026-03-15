@@ -2,10 +2,16 @@ import { describe, bench, beforeAll, afterAll } from "vitest";
 import "../../src/elena.js";
 import "../fixtures/elena-element.js";
 import "../fixtures/vanilla-element.js";
+import "../fixtures/lit-element.js";
 
 /**
  * Template rendering benchmarks.
  * Run with: npx vitest bench
+ *
+ * Compares three element types:
+ * - vanilla-element:         Plain HTMLElement, no framework (baseline)
+ * - elena-element:           Elena (Custom Element, reactive properties)
+ * - lit-bench-element:       Lit (shadow DOM, async batched updates)
  */
 
 // Suppress console.warn during benchmarks (happy-dom fires
@@ -30,6 +36,13 @@ describe("single element creation", () => {
     document.body.appendChild(el);
     document.body.removeChild(el);
   });
+
+  bench("Lit Element", async () => {
+    const el = document.createElement("lit-bench-element");
+    document.body.appendChild(el);
+    await el.updateComplete;
+    document.body.removeChild(el);
+  });
 });
 
 describe("batch creation (100 elements)", () => {
@@ -50,6 +63,19 @@ describe("batch creation (100 elements)", () => {
       fragment.appendChild(el);
     }
     document.body.appendChild(fragment);
+    document.body.innerHTML = "";
+  });
+
+  bench("100 Lit Elements", async () => {
+    const els = [];
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < 100; i++) {
+      const el = document.createElement("lit-bench-element");
+      fragment.appendChild(el);
+      els.push(el);
+    }
+    document.body.appendChild(fragment);
+    await Promise.all(els.map(el => el.updateComplete));
     document.body.innerHTML = "";
   });
 });
@@ -74,6 +100,19 @@ describe("batch creation (500 elements)", () => {
     document.body.appendChild(fragment);
     document.body.innerHTML = "";
   });
+
+  bench("500 Lit Elements", async () => {
+    const els = [];
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < 500; i++) {
+      const el = document.createElement("lit-bench-element");
+      fragment.appendChild(el);
+      els.push(el);
+    }
+    document.body.appendChild(fragment);
+    await Promise.all(els.map(el => el.updateComplete));
+    document.body.innerHTML = "";
+  });
 });
 
 describe("batch creation (1000 elements)", () => {
@@ -96,6 +135,19 @@ describe("batch creation (1000 elements)", () => {
     document.body.appendChild(fragment);
     document.body.innerHTML = "";
   });
+
+  bench("1000 Lit Elements", async () => {
+    const els = [];
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < 1000; i++) {
+      const el = document.createElement("lit-bench-element");
+      fragment.appendChild(el);
+      els.push(el);
+    }
+    document.body.appendChild(fragment);
+    await Promise.all(els.map(el => el.updateComplete));
+    document.body.innerHTML = "";
+  });
 });
 
 describe("re-render via attribute change", () => {
@@ -109,6 +161,11 @@ describe("re-render via attribute change", () => {
   document.body.appendChild(basicEl);
   let basicCounter = 0;
 
+  const litEl = document.createElement("lit-bench-element");
+  litEl.setAttribute("variant", "initial");
+  document.body.appendChild(litEl);
+  let litCounter = 0;
+
   bench("Re-render Vanilla Custom Element", () => {
     vanillaEl.setAttribute("variant", `updated-${vanillaCounter++}`);
   });
@@ -116,5 +173,10 @@ describe("re-render via attribute change", () => {
   bench("Re-render Elena Web Component", async () => {
     basicEl.setAttribute("variant", `updated-${basicCounter++}`);
     await basicEl.updateComplete;
+  });
+
+  bench("Re-render Lit Element", async () => {
+    litEl.setAttribute("variant", `updated-${litCounter++}`);
+    await litEl.updateComplete;
   });
 });
