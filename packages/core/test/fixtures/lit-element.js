@@ -13,16 +13,8 @@ class LitBenchElement extends LitElement {
     this.variant = "";
   }
 
-  createRenderRoot() {
-    return this;
-  }
-
   render() {
     return html`<span>${this.variant}</span>`;
-  }
-
-  firstUpdated() {
-    this.setAttribute("hydrated", "");
   }
 }
 
