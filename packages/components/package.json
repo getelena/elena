@@ -36,8 +36,8 @@
   ],
   "scripts": {
     "prebuild": "npm run -s clean",
-    "start": "concurrently -k -n build,serve \"nodemon --watch src -e js,css --exec elena\" \"web-dev-server --node-resolve --app-index index.html --open --watch\"",
-    "build": "elena",
+    "start": "concurrently -k --hide 1 --prefix none \"elena watch\" \"web-dev-server --node-resolve --app-index index.html --open --watch\"",
+    "build": "elena build",
     "clean": "rm -rf dist/",
     "test": "vitest run"
   },
@@ -49,7 +49,6 @@
     "@web/dev-server": "0.4.6",
     "concurrently": "9.1.2",
     "happy-dom": "20.7.0",
-    "nodemon": "3.1.10",
     "vitest": "4.0.18"
   }
 }
