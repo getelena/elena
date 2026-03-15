@@ -79,3 +79,16 @@ export function unsafeHTML(str) {
  * @type {{ __raw: true, toString(): string }}
  */
 export const nothing = { __raw: true, toString: () => "" };
+
+/**
+ * Collapse whitespace from a static string part.
+ *
+ * @param {string} string
+ * @returns {string}
+ */
+export function collapseWhitespace(string) {
+  return string
+    .replace(/>\n\s*/g, ">") // newline after tag close
+    .replace(/\n\s*</g, "<") // newline before tag open
+    .replace(/\n\s*/g, " "); // newline in text content, preserve word boundary
+}

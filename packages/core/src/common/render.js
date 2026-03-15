@@ -1,4 +1,4 @@
-import { resolveValue } from "./utils.js";
+import { collapseWhitespace, resolveValue } from "./utils.js";
 
 const stringsCache = new WeakMap();
 
@@ -92,14 +92,7 @@ function fullRender(element, strings, values) {
   let processedStrings = stringsCache.get(strings);
 
   if (!processedStrings) {
-    processedStrings = Array.from(
-      strings,
-      s =>
-        s
-          .replace(/>\n\s*/g, ">") // strip newline+indent after >
-          .replace(/\n\s*</g, "<") // strip newline+indent before <
-          .replace(/\n\s*/g, " ") // remaining newlines → space (attribute separation)
-    );
+    processedStrings = Array.from(strings, str => collapseWhitespace(str));
     stringsCache.set(strings, processedStrings);
   }
 
