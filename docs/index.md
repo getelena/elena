@@ -28,7 +28,7 @@ And Declarative Components that are a hybrid of these and utilize [Declarative S
 
 ::: code-group
 
-```js [HTML]
+```html [HTML]
 <elena-stack direction="row">
   <div>First</div>
   <div>Second</div>
