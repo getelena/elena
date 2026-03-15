@@ -141,10 +141,6 @@ export default defineConfig({
             text: "@elenajs/plugin-rollup-css",
             link: "https://github.com/getelena/elena/tree/main/packages/plugin-rollup-css",
           },
-          {
-            text: "@elenajs/mcp",
-            link: "https://github.com/getelena/elena/tree/main/packages/mcp",
-          },
         ],
       },
       {
@@ -213,7 +209,6 @@ export default defineConfig({
           { text: "Using TypeScript", link: "/advanced/typescript" },
           { text: "Scoping styles", link: "/advanced/scoping" },
           { text: "Known issues", link: "/advanced/gotchas" },
-          { text: "MCP server", link: "/advanced/mcp" },
           { text: "FAQ", link: "/advanced/faq" },
         ],
       },
