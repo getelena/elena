@@ -133,6 +133,7 @@ export function Elena(superClass) {
      * Called by the browser each time the element is added to the page.
      */
     connectedCallback() {
+      super.connectedCallback?.();
       this._setupStaticProps();
       this._captureClassFieldDefaults();
       this._captureText();
@@ -395,6 +396,7 @@ export function Elena(superClass) {
      * is removed from the page.
      */
     disconnectedCallback() {
+      super.disconnectedCallback?.();
       if (this._events) {
         this._events = false;
 
