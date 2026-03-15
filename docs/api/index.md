@@ -56,6 +56,7 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 | `updated()` | Runs after every render, including the first. `this.element` is available here. Override to react to changes after the DOM is updated. On first connect, `firstUpdated()` runs before `updated()`. |
 | `requestUpdate()` | Manually schedules a re-render. Use when Elena can’t detect a change automatically, e.g. when mutating an object or array in place. Returns nothing, use `updateComplete` to wait for the render to finish. |
 | `disconnectedCallback()` | Runs when the element is removed from the page. Cleans up event listeners. |
+| `adoptedCallback()` | Runs when the element is moved to a new document via `document.adoptNode()`. Override to react to document changes. |
 | `attributeChangedCallback()` | Runs when an observed attribute changes. Updates the matching JS property and triggers a re-render. |
 
 ### Instance Promises

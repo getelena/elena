@@ -56,6 +56,17 @@ Resolves immediately if no render is pending.
 
 Runs when the element is removed from the page. Cleans up event listeners.
 
+## `adoptedCallback()`
+
+Runs when the element is moved to a new document via `document.adoptNode()`. Override to react to document changes:
+
+```js
+adoptedCallback() {
+  super.adoptedCallback();
+  // react to the document change
+}
+```
+
 ## `attributeChangedCallback()`
 
 Runs when an observed attribute changes. Updates the matching JavaScript property and triggers a re-render. Override to react to attribute changes directly:

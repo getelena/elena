@@ -62,6 +62,7 @@ Elena’s lifecycle methods follow the standard `super` call pattern. Mixins tha
 |---|---|
 | `connectedCallback()` | Yes |
 | `disconnectedCallback()` | Yes |
+| `adoptedCallback()` | Yes |
 | `attributeChangedCallback()` | Yes |
 | `firstUpdated()` | Yes |
 | `updated()` | Yes |
