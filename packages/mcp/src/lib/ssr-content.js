@@ -140,7 +140,7 @@ The HTML produced by \`ssr()\` is designed for progressive enhancement. When the
 
 1. Elena's \`connectedCallback\` fires on the pre-rendered element.
 2. \`render()\` runs and hydrates the component with interactivity.
-3. Event listeners are attached, methods become available, and the \`hydrated\` attribute is added.
+3. Event listeners are attached and methods become available.
 
 ## Pre-rendering with Eleventy
 

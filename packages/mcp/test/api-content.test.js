@@ -37,7 +37,7 @@ describe("API_CONTENT", () => {
 
   it("documents error codes", () => {
     expect(API_CONTENT).toContain("Error Codes");
-    expect(API_CONTENT).toContain("reserved prop");
+    expect(API_CONTENT).toContain('"text" is reserved');
     expect(API_CONTENT).toContain("tagName");
   });
 

@@ -582,6 +582,9 @@ Composite Components style the host element and can pass styles down to their co
 
   :scope {
     display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-flow: column wrap;
     flex-direction: column;
     gap: 0.5rem;
   }
@@ -768,21 +771,21 @@ Rules for **components with \`render()\`** when used with a framework:
 
 | Error | Cause |
 |---|---|
-| \`"text" is a reserved prop.\` | Remove \`text\` from \`static props\` — it is built-in |
-| \`define() called without a tagName.\` | Add \`static tagName\` to the class |
-| \`Passed element not found.\` | The CSS selector in \`static element\` did not match any element |
-| \`Cannot add events, no element found.\` | No inner element exists for event delegation |
-| \`Prop "<name>" has no default value.\` | Add a class field with a default (e.g. \`variant = "default";\`) |
-| \`Invalid JSON for a prop: <value>\` | Array or Object prop received a non-JSON attribute value |
-| \`Cannot sync attrs to a null element.\` | Inner element ref was lost (element was removed from DOM) |
+| \`"text" is reserved.\` | Remove \`text\` from \`static props\` — it is built-in |
+| \`define() without a tagName.\` | Add \`static tagName\` to the class |
+| \`Element not found.\` | The CSS selector in \`static element\` did not match any element |
+| \`Cannot add events.\` | No inner element exists for event delegation |
+| \`Prop "<name>" has no default.\` | Add a class field with a default (e.g. \`variant = "default";\`) |
+| \`Invalid JSON: <value>\` | Array or Object prop received a non-JSON attribute value |
+| \`Cannot sync attrs.\` | Inner element ref was lost (element was removed from DOM) |
 
 ---
 
 ## Browser Support
 
-**Elena base support** (no \`@scope\`): Chrome 71+, Firefox 69+, Safari 12.1+, Edge 79+
+**Elena base support** (no \`@scope\`): Chrome 71+, Firefox 69+, Safari 12.1+, Edge 79+, Opera 58+
 
-**With \`@scope\` CSS**: Chrome 118+, Firefox 128+, Safari 17.4+, Edge 118+
+**With \`@scope\` CSS**: Chrome 118+, Firefox 128+, Safari 17.4+, Edge 118+, Opera 104+
 
 **Known issue:** Firefox 148 had a bug with CSS \`@scope\` and \`attr[value]\` selectors. It is fixed in newer Firefox releases. Use the legacy (non-\`@scope\`) pattern as a fallback for older Firefox if needed.
 `;
