@@ -19,6 +19,13 @@
   "main": "./dist/elena.js",
   "types": "./dist/elena.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/elena.d.ts",
+      "default": "./dist/elena.js"
+    },
+    "./bundle": "./dist/bundle.js"
+  },
   "files": [
     "dist"
   ],
