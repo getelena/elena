@@ -114,6 +114,19 @@ elena watch
 | `target` | `string \| string[] \| false` | `false` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via `@babel/preset-env` to widen browser support. Example: `["chrome 71", "firefox 69", "safari 12.1"]`. |
 | `terser` | `object` | `{ ecma: 2020, module: true }` | Custom Terser minifier options, merged with the defaults. |
 
+### Error Codes
+
+| Error | Explanation |
+|---------|-------------|
+| <code style="white-space:nowrap;">Unknown command: &lt;command&gt;.</code> | You ran `elena <command>` with an unrecognized command. The CLI only accepts `elena build` or `elena watch`. |
+| <code style="white-space:nowrap;">Config file not found: &lt;path&gt;.</code> | The `--config` flag points to a file that does not exist. Check the path and try again. |
+| <code style="white-space:nowrap;">Found "elena.config&lt;ext&gt;" but only .mjs and .js are supported.</code> | Elena found a config file with an unsupported extension (e.g. `.ts`, `.json`, `.cjs`). Rename it to `elena.config.mjs` or `elena.config.js`. |
+| <code style="white-space:nowrap;">Unknown config option "&lt;key&gt;".</code> | Your config file contains an unrecognized option. Check for typos. Valid options are: `input`, `output`, `bundle`, `plugins`, `analyze`, `target`, `terser`. |
+| <code style="white-space:nowrap;">Invalid config: "&lt;option&gt;" must be &lt;type&gt;.</code> | A config option has the wrong type. The error message tells you which option and what type it expects. See the [config options](#elena-config-mjs-options) table for correct types. |
+| <code style="white-space:nowrap;">Input directory "&lt;dir&gt;" does not exist.</code> | The `input` directory (default `"src"`) was not found. Make sure it exists, or set the `input` option to the correct path. |
+| <code style="white-space:nowrap;">Bundle entry "&lt;path&gt;" does not exist.</code> | The `bundle` entry point (default `"src/index.js"`) was not found. Create the file, or set `bundle` to `false` to skip bundling. |
+| `Build error:` | Rollup encountered an error during a `watch` rebuild. The underlying error is logged directly after this message. |
+
 ## `@elenajs/cli`
 
 ```bash
