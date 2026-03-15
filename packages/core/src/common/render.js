@@ -37,9 +37,9 @@ function patchTextNodes(element, strings, values) {
 
   for (let i = 0; i < values.length; i++) {
     const v = values[i];
-    const newRendered = resolveValue(v);
+    const comparable = Array.isArray(v) ? toPlainText(v) : v;
 
-    if (newRendered === element._tplValues[i]) {
+    if (comparable === element._tplValues[i]) {
       continue;
     }
 
@@ -47,7 +47,7 @@ function patchTextNodes(element, strings, values) {
       return false;
     }
 
-    element._tplValues[i] = newRendered;
+    element._tplValues[i] = comparable;
     element._tplParts[i].textContent = toPlainText(v);
   }
 
@@ -62,7 +62,6 @@ function patchTextNodes(element, strings, values) {
  * @param {Array} values - Dynamic interpolated values
  */
 function fullRender(element, strings, values) {
-  const renderedValues = values.map(value => resolveValue(value));
   let entry = stringsCache.get(strings);
 
   if (!entry) {
@@ -75,21 +74,22 @@ function fullRender(element, strings, values) {
   }
 
   if (entry.template) {
-    element._tplParts = cloneAndPatch(element, entry.template, values, renderedValues);
+    element._tplParts = cloneAndPatch(element, entry.template, values);
   } else {
     // Fallback for attribute-position values or static templates.
     // White space collapsing here protects against Vue SSR mismatches.
+    const renderedValues = values.map(value => resolveValue(value));
     const markup = entry.processedStrings
       .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
       .replace(/>\s+</g, "><")
       .trim();
 
     element.innerHTML = markup;
-    element._tplParts = new Array(renderedValues.length);
+    element._tplParts = new Array(values.length);
   }
 
   element._tplStrings = strings;
-  element._tplValues = renderedValues;
+  element._tplValues = values.map(v => (Array.isArray(v) ? toPlainText(v) : v));
 }
 
 /**
@@ -134,7 +134,7 @@ function createTemplate(processedStrings, valueCount) {
  * @param {string[]} renderedValues - HTML-escaped rendered values
  * @returns {Array<Text | undefined>} Text node map for fast-path patching
  */
-function cloneAndPatch(element, template, values, renderedValues) {
+function cloneAndPatch(element, template, values) {
   const clone = template.content.cloneNode(true);
   const walker = document.createTreeWalker(clone, NodeFilter.SHOW_COMMENT);
   const parts = new Array(values.length);
@@ -154,7 +154,7 @@ function cloneAndPatch(element, template, values, renderedValues) {
     if (isRaw(value)) {
       // Raw HTML: parse and insert as fragment
       const tmp = document.createElement("template");
-      tmp.innerHTML = renderedValues[i];
+      tmp.innerHTML = resolveValue(value);
       markers[i].parentNode.replaceChild(tmp.content, markers[i]);
 
       // Raw values can't be fast-patched; leave parts undefined

@@ -57,10 +57,20 @@ function resolveItem(value) {
  * @returns {{ __raw: true, strings: TemplateStringsArray, values: Array, toString(): string }}
  */
 export function html(strings, ...values) {
-  const result = strings.reduce((acc, str, i) => {
-    return acc + str + resolveValue(values[i]);
-  }, "");
-  return { __raw: true, strings, values, toString: () => result };
+  let str;
+  return {
+    __raw: true,
+    strings,
+    values,
+    toString: () => {
+      if (str === undefined) {
+        str = strings.reduce((acc, s, i) => {
+          return acc + s + resolveValue(values[i]);
+        }, "");
+      }
+      return str;
+    },
+  };
 }
 
 /**
