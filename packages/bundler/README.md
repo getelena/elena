@@ -41,7 +41,7 @@ npm install --save-dev @elenajs/bundler
 
 ## CLI usage
 
-The bundler provides an `elena` CLI binary with a single `build` command:
+The bundler provides an `elena` CLI binary with `build` and `watch` commands:
 
 ```bash
 npx elena build
@@ -51,6 +51,24 @@ If no command is provided, `build` is assumed:
 
 ```bash
 npx elena
+```
+
+To start a watch session that rebuilds on file changes:
+
+```bash
+npx elena watch
+```
+
+### Flags
+
+| Flag               | Description                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------- |
+| `--config <path>`  | Path to a config file. Defaults to `elena.config.mjs` or `elena.config.js` in the project root. |
+
+Example:
+
+```bash
+npx elena build --config config/elena.config.mjs
 ```
 
 ## Configuration
@@ -77,10 +95,10 @@ export default {
   // Entry for the single-file bundle. Set to false to disable.
   bundle: "src/index.js",
 
-  // Additional Rollup plugins appended after Elena’s built-in set.
+  // Additional Rollup plugins appended after Elena's built-in set.
   // plugins: [],
 
-  // Custom Elements Manifest options.
+  // Custom Elements Manifest options. Set to false to skip entirely.
   // analyze: {
   //   plugins: [],
   // },
@@ -88,6 +106,9 @@ export default {
   // Browserslist targets for transpilation. Enables syntax transforms
   // (e.g. class fields, optional chaining) to widen browser support.
   // target: ["chrome 71", "firefox 69", "safari 12.1"],
+
+  // Custom Terser minifier options, merged with the defaults.
+  // terser: { ecma: 2020, module: true },
 };
 ```
 
@@ -101,8 +122,10 @@ export default {
 | `output.sourcemap` | `boolean`         | `true`           | Whether to emit sourcemaps.                                                                                              |
 | `bundle`           | `string \| false` | `"src/index.js"` | Entry point for the single-file bundle. Auto-detects `src/index.ts` if no `.js` entry exists. Set to `false` to disable. |
 | `plugins`          | `Plugin[]`        | `[]`             | Additional Rollup plugins appended after the built-in set.                                                               |
+| `analyze`          | `object \| false` | `{ plugins: [] }` | CEM analysis options. Set to `false` to skip Custom Elements Manifest generation, TypeScript declarations, and JSX types entirely. |
 | `analyze.plugins`  | `Plugin[]`        | `[]`             | Additional CEM analyzer plugins.                                                                                         |
 | `target`           | `string \| string[] \| false` | `false` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via `@babel/preset-env` to widen browser support. Example: `["chrome 71", "firefox 69", "safari 12.1"]`. |
+| `terser`           | `object`          | `{ ecma: 2020, module: true }` | Custom Terser minifier options, merged with the defaults. See the [Terser API docs](https://terser.org/docs/api-reference/) for available options. |
 
 ## Build output
 
@@ -113,10 +136,12 @@ Running `elena build` produces:
 | `dist/*.js`                 | Individual ES modules for each source file.                                                          |
 | `dist/*.css`                | Minified individual CSS files.                                                                       |
 | `dist/bundle.js`            | Single-file JavaScript bundle _(optional)_.                                                          |
-| `dist/bundle.css`           | Concatenated and minified CSS bundle.                                                                |
+| `dist/bundle.css`           | Concatenated and minified CSS bundle. CSS files imported as CSS Module Scripts (`with { type: "css" }`) for Shadow DOM are excluded. |
 | `dist/custom-elements.json` | [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/) describing all components. |
 | `dist/custom-elements.d.ts` | JSX integration types mapping tag names to prop types.                                               |
 | `dist/*.d.ts`               | Per-component TypeScript declarations with typed props and events.                                   |
+
+> **Note:** CSS files that are imported as CSS Module Scripts for Shadow DOM use (`import styles from "./button.css" with { type: "css" }`) are inlined as `CSSStyleSheet` objects in the JavaScript output and excluded from `bundle.css`. Individual `.css` files are still emitted.
 
 ## TypeScript support
 
@@ -168,6 +193,7 @@ The bundler exports its internals so you can integrate it into your own build sc
 import {
   createRollupConfig,
   runRollupBuild,
+  watchRollupBuild,
   createCemConfig,
   runCemAnalyze,
 } from "@elenajs/bundler";
@@ -176,7 +202,7 @@ import {
 Sub-path imports are also available:
 
 ```js
-import { createRollupConfig, runRollupBuild } from "@elenajs/bundler/rollup";
+import { createRollupConfig, runRollupBuild, watchRollupBuild } from "@elenajs/bundler/rollup";
 import { createCemConfig, runCemAnalyze } from "@elenajs/bundler/cem";
 ```
 
@@ -187,6 +213,10 @@ Returns a Rollup configuration array. Useful if you want to wrap or extend the c
 ### `runRollupBuild(config)`
 
 Runs both build phases (individual modules + optional single-file bundle) programmatically.
+
+### `watchRollupBuild(config, opts?)`
+
+Starts a Rollup watch session that rebuilds on file changes. Returns the Rollup watcher instance. Pass `opts.onRebuild` as an async callback to run after each successful rebuild (e.g. to re-run CEM analysis).
 
 ### `createCemConfig(options?)`
 

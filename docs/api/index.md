@@ -90,7 +90,14 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 
 ```bash
 elena build
+elena watch
 ```
+
+### CLI Flags
+
+| Flag | Description |
+|------|-------------|
+| `--config <path>` | Path to a config file. Defaults to `elena.config.mjs` or `elena.config.js` in the project root. |
 
 ### `elena.config.mjs` Options
 
@@ -102,8 +109,10 @@ elena build
 | `output.sourcemap` | `boolean` | `true` | Whether to generate source maps alongside the output. |
 | `bundle` | `string \| false` | `"src/index.js"` | Entry point for a single combined output file. Elena will look for `src/index.ts` automatically if no `.js` file is found. Set to `false` to skip the bundle entirely. |
 | `plugins` | `Plugin[]` | `[]` | Extra Rollup plugins to include in the build, added after Elena’s built-in ones. |
+| `analyze` | `object \| false` | `{ plugins: [] }` | CEM analysis options. Set to `false` to skip Custom Elements Manifest generation, TypeScript declarations, and JSX types entirely. |
 | `analyze.plugins` | `Plugin[]` | `[]` | Extra plugins for the Custom Elements Manifest generation step. |
 | `target` | `string \| string[] \| false` | `false` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via `@babel/preset-env` to widen browser support. Example: `["chrome 71", "firefox 69", "safari 12.1"]`. |
+| `terser` | `object` | `{ ecma: 2020, module: true }` | Custom Terser minifier options, merged with the defaults. |
 
 ## `@elenajs/cli`
 
