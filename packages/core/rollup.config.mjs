@@ -3,7 +3,6 @@ import terser from "@rollup/plugin-terser";
 import summary from "rollup-plugin-summary";
 import pkg from "./package.json" with { type: "json" };
 
-// ░ Applies the Elena brand color (#f19c77) to a string using ANSI true color escape codes.
 const color = str => `\x1b[38;2;241;156;119m${str}\x1b[0m`;
 
 console.log(
@@ -25,9 +24,6 @@ console.log(color(`░█ [ELENA]: Found the following JavaScript modules:`));
 /**
  * Creates a Elena Rollup config for a single build target.
  *
- * All outputs use ESM format with sourcemaps. The `summary` plugin is opt-in
- * so it can be shown once per logical build rather than for every entry chunk.
- *
  * @param {object} options
  * @param {import("rollup").InputOption} options.input - Entry point(s) to bundle.
  * @param {import("rollup").OutputOptions} [options.output] - Output options merged over the ESM defaults.
@@ -42,9 +38,6 @@ function createConfig({ input, output, hasSummary = false, mangleProperties = fa
       ...(mangleProperties && {
         mangle: {
           properties: {
-            // Mangle all _-prefixed internal properties (e.g. _hydrated, _props, __raw).
-            // Public API properties (element, text, render, etc.) don't start with _.
-            // Only safe in the single-file bundle where Terser sees all code at once.
             regex: /^_/,
           },
         },
