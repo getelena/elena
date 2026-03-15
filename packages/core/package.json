@@ -46,11 +46,11 @@
     "@playwright/test": "^1.58.2",
     "@rollup/plugin-terser": "0.4.4",
     "@vitest/coverage-v8": "4.0.18",
-    "happy-dom": "20.7.0",
+    "happy-dom": "20.8.3",
     "lit": "^3.3.0",
-    "rollup": "4.58.0",
+    "rollup": "4.59.0",
     "rollup-plugin-summary": "3.0.1",
-    "serve": "^14.2.5",
+    "serve": "^14.2.6",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
   }

@@ -31,11 +31,11 @@
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
-    "happy-dom": "20.7.0",
-    "lerna": "9.0.4",
+    "happy-dom": "20.8.3",
+    "lerna": "9.0.5",
     "markdown-it-footnote": "^4.0.0",
     "prettier": "3.8.1",
-    "vitepress": "1.6.3",
+    "vitepress": "1.6.4",
     "vitest": "4.0.18"
   },
   "scripts": {

@@ -47,8 +47,8 @@
   "devDependencies": {
     "@elenajs/bundler": "^0.9.0",
     "@web/dev-server": "0.4.6",
-    "concurrently": "9.1.2",
-    "happy-dom": "20.7.0",
+    "concurrently": "9.2.1",
+    "happy-dom": "20.8.3",
     "vitest": "4.0.18"
   }
 }
