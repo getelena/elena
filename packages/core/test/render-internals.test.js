@@ -358,6 +358,159 @@ describe("render internals", () => {
       expect(text).toContain("dynamic");
       expect(text).toContain("<");
     });
+
+    it("renders a Symbol as its string representation", () => {
+      const container = el();
+      const sym = Symbol("test");
+      const t = html`<span>${sym}</span>`;
+      renderTemplate(container, t.strings, t.values);
+      expect(container.querySelector("span").textContent).toBe("Symbol(test)");
+    });
+
+    it("does not call a function bound to a text position", () => {
+      const container = el();
+      const fn = () => "should not be called";
+      const t = html`<span>${fn}</span>`;
+      renderTemplate(container, t.strings, t.values);
+      // Function should be stringified, not invoked
+      expect(container.querySelector("span").textContent).toContain("should not be called");
+    });
+
+    it("renders NaN as 'NaN'", () => {
+      const container = el();
+      const t = html`<span>${NaN}</span>`;
+      renderTemplate(container, t.strings, t.values);
+      expect(container.querySelector("span").textContent).toBe("NaN");
+    });
+
+    it("renders Infinity as 'Infinity'", () => {
+      const container = el();
+      const t = html`<span>${Infinity}</span>`;
+      renderTemplate(container, t.strings, t.values);
+      expect(container.querySelector("span").textContent).toBe("Infinity");
+    });
+
+    it("renders negative zero as '0'", () => {
+      const container = el();
+      const t = html`<span>${-0}</span>`;
+      renderTemplate(container, t.strings, t.values);
+      expect(container.querySelector("span").textContent).toBe("0");
+    });
+
+    it("renders an object via its toString()", () => {
+      const container = el();
+      const obj = { toString: () => "custom string" };
+      const t = html`<span>${obj}</span>`;
+      renderTemplate(container, t.strings, t.values);
+      expect(container.querySelector("span").textContent).toBe("custom string");
+    });
+
+    it("renders an object without custom toString as [object Object]", () => {
+      const container = el();
+      const t = html`<span>${{}}</span>`;
+      renderTemplate(container, t.strings, t.values);
+      expect(container.querySelector("span").textContent).toBe("[object Object]");
+    });
+
+    it("boolean true renders as 'true'", () => {
+      const container = el();
+      const t = html`<span>${true}</span>`;
+      renderTemplate(container, t.strings, t.values);
+      expect(container.querySelector("span").textContent).toBe("true");
+    });
+
+    it("empty string renders as empty content", () => {
+      const container = el();
+      const t = html`<span>${""}</span>`;
+      renderTemplate(container, t.strings, t.values);
+      expect(container.querySelector("span").textContent).toBe("");
+    });
+  });
+
+  describe("value type transitions", () => {
+    it("switches from template result to plain string", () => {
+      const container = el();
+      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+
+      renderTemplate(container, tpl, [html`<b>bold</b>`]);
+      expect(container.querySelector("b")).not.toBeNull();
+
+      renderTemplate(container, tpl, ["just text"]);
+      expect(container.querySelector("b")).toBeNull();
+      expect(container.querySelector("div").textContent).toBe("just text");
+    });
+
+    it("switches from plain string to template result", () => {
+      const container = el();
+      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+
+      renderTemplate(container, tpl, ["just text"]);
+      expect(container.querySelector("div").textContent).toBe("just text");
+
+      renderTemplate(container, tpl, [html`<em>emphasis</em>`]);
+      expect(container.querySelector("em").textContent).toBe("emphasis");
+    });
+
+    it("switches from template result to null", () => {
+      const container = el();
+      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+
+      renderTemplate(container, tpl, [html`<b>content</b>`]);
+      expect(container.querySelector("b")).not.toBeNull();
+
+      renderTemplate(container, tpl, [null]);
+      expect(container.querySelector("b")).toBeNull();
+      expect(container.querySelector("div").textContent).toBe("");
+    });
+
+    it("switches from template result to undefined", () => {
+      const container = el();
+      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+
+      renderTemplate(container, tpl, [html`<b>content</b>`]);
+      expect(container.querySelector("b")).not.toBeNull();
+
+      renderTemplate(container, tpl, [undefined]);
+      expect(container.querySelector("b")).toBeNull();
+      expect(container.querySelector("div").textContent).toBe("");
+    });
+
+    it("switches from number to string to template result", () => {
+      const container = el();
+      const tpl = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
+
+      renderTemplate(container, tpl, [42]);
+      expect(container.querySelector("span").textContent).toBe("42");
+
+      renderTemplate(container, tpl, ["hello"]);
+      expect(container.querySelector("span").textContent).toBe("hello");
+
+      renderTemplate(container, tpl, [html`<i>styled</i>`]);
+      expect(container.querySelector("i").textContent).toBe("styled");
+    });
+
+    it("switches between different template results", () => {
+      const container = el();
+      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+
+      renderTemplate(container, tpl, [html`<b>bold</b>`]);
+      expect(container.querySelector("b")).not.toBeNull();
+
+      renderTemplate(container, tpl, [html`<em>emphasis</em>`]);
+      expect(container.querySelector("b")).toBeNull();
+      expect(container.querySelector("em").textContent).toBe("emphasis");
+    });
+
+    it("renders a nested template multiple times", () => {
+      const container = el();
+      const inner = html`<b>reused</b>`;
+      const t = html`<div>${inner}${inner}</div>`;
+      renderTemplate(container, t.strings, t.values);
+      const bolds = container.querySelectorAll("b");
+      expect(bolds.length).toBe(2);
+      expect(bolds[0].textContent).toBe("reused");
+      expect(bolds[1].textContent).toBe("reused");
+    });
   });
 
   describe("rapid successive renders", () => {

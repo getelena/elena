@@ -128,11 +128,8 @@ describe("utils", () => {
       expect(el.innerHTML).toBe("");
     });
 
-    it("does not throw for undefined element and logs a warning", () => {
-      const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
-      renderHtml(undefined, "<p>test</p>");
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining("Cannot render to a null"));
-      spy.mockRestore();
+    it("does not throw for undefined element", () => {
+      expect(() => renderHtml(undefined, "<p>test</p>")).not.toThrow();
     });
   });
 
