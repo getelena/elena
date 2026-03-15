@@ -12,16 +12,22 @@ export function escapeHtml(str) {
 
 /**
  * Normalize whitespace to match Elena’s client-side
- * fullRender output.
+ * rendering output.
+ *
+ * Mirrors the core’s collapseWhitespace() pipeline:
+ * 1. Strip newline+indent after tag close
+ * 2. Strip newline+indent before tag open
+ * 3. Collapse remaining newlines to a space (word boundary)
+ * 4. Remove whitespace-only gaps between adjacent tags
  *
  * @param {string} markup
  * @returns {string}
  */
 export function normalizeWhitespace(markup) {
   return markup
+    .replace(/>\n\s*/g, ">")
+    .replace(/\n\s*</g, "<")
     .replace(/\n\s*/g, " ")
     .replace(/>\s+</g, "><")
-    .replace(/>\s+/g, ">")
-    .replace(/\s+</g, "<")
     .trim();
 }

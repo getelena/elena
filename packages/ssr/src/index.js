@@ -232,11 +232,12 @@ function walk(nodes, preserveWhitespace = false) {
         // that htmlparser2 decoded during parsing.
         out += escapeHtml(node.data);
       } else {
-        // Collapse whitespace-only text between tags to avoid
-        // preserving template literal indentation in output.
-        const trimmed = node.data.replace(/\n\s*/g, "");
-        if (trimmed) {
-          out += escapeHtml(trimmed);
+        // Collapse template indentation but preserve word boundaries.
+        // Use replace to turn newlines into spaces, then check if any
+        // non-whitespace content remains before emitting.
+        const collapsed = node.data.replace(/\n\s*/g, " ");
+        if (collapsed.trim()) {
+          out += escapeHtml(collapsed);
         }
       }
       continue;
