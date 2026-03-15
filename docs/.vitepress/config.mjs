@@ -209,6 +209,7 @@ export default defineConfig({
           { text: "Using TypeScript", link: "/advanced/typescript" },
           { text: "Scoping styles", link: "/advanced/scoping" },
           { text: "Known issues", link: "/advanced/gotchas" },
+          { text: "MCP Server", link: "/advanced/mcp" },
         ],
       },
     ],
