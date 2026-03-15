@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { Elena } from "../src/elena.js";
 import { defineElement, html, nothing, unsafeHTML } from "../src/common/utils.js";
-import { renderHtml, renderTemplate } from "../src/common/render.js";
+import { renderTemplate } from "../src/common/render.js";
 import { escapeHtml } from "../src/common/utils.js";
 import NothingElement from "./fixtures/nothing-element.js";
 
@@ -103,33 +103,6 @@ describe("utils", () => {
       renderTemplate(el, tpl, ["C", "D"]);
       expect(el._tplValues).toEqual(["C", "D"]);
       expect(el._tplValues.length).toBe(2);
-    });
-  });
-
-  describe("renderHtml", () => {
-    it("renders markup into an empty element", () => {
-      const el = document.createElement("div");
-      renderHtml(el, "<p>hello</p>");
-      expect(el.innerHTML).toBe("<p>hello</p>");
-    });
-
-    it("replaces existing content with new markup", () => {
-      const el = document.createElement("div");
-      el.innerHTML = "<span>old</span>";
-      renderHtml(el, "<p>new</p>");
-      expect(el.innerHTML).toBe("<p>new</p>");
-      expect(el.querySelectorAll("span").length).toBe(0);
-    });
-
-    it("clears element when given empty markup", () => {
-      const el = document.createElement("div");
-      el.innerHTML = "<span>content</span>";
-      renderHtml(el, "");
-      expect(el.innerHTML).toBe("");
-    });
-
-    it("does not throw for undefined element", () => {
-      expect(() => renderHtml(undefined, "<p>test</p>")).not.toThrow();
     });
   });
 

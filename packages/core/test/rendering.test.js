@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { createElement } from "./setup.js";
-import { renderHtml, renderTemplate } from "../src/common/render.js";
+import { renderTemplate } from "../src/common/render.js";
 import { html, nothing, unsafeHTML } from "../src/elena.js";
 import "./fixtures/basic-element.js";
 import "./fixtures/attr-element.js";
@@ -74,7 +74,7 @@ describe("rendering", () => {
     });
   });
 
-  describe("renderHtml", () => {
+  describe("re-rendering", () => {
     it("clears previous content before rendering", async () => {
       const el = await createElement("basic-element", { label: "First" });
       expect(el.querySelector(".inner").textContent).toBe("First");
@@ -92,47 +92,6 @@ describe("rendering", () => {
       el.setAttribute("label", "B");
       await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("B");
-    });
-
-    it("does not throw for null element", () => {
-      expect(() => renderHtml(null, "<p>test</p>")).not.toThrow();
-    });
-
-    it("renders correctly into an element in a secondary document", () => {
-      const otherDoc = document.implementation.createHTMLDocument("secondary");
-      const container = otherDoc.createElement("div");
-      otherDoc.body.appendChild(container);
-
-      renderHtml(container, "<span>hello from other doc</span>");
-
-      expect(container.querySelector("span").textContent).toBe("hello from other doc");
-      expect(container.ownerDocument).toBe(otherDoc);
-    });
-
-    it("renders correctly into an element in a secondary document", () => {
-      const otherDoc = document.implementation.createHTMLDocument("secondary");
-      const container = otherDoc.createElement("div");
-      otherDoc.body.appendChild(container);
-
-      renderHtml(container, "<span>test</span>");
-
-      expect(container.querySelector("span").textContent).toBe("test");
-      expect(container.ownerDocument).toBe(otherDoc);
-    });
-
-    it("renders correctly into an element inside an iframe", () => {
-      const iframe = document.createElement("iframe");
-      document.body.appendChild(iframe);
-
-      const iframeDoc = iframe.contentDocument;
-      const container = iframeDoc.createElement("div");
-      iframeDoc.body.appendChild(container);
-
-      renderHtml(container, "<span>hello from iframe</span>");
-
-      expect(container.querySelector("span").textContent).toBe("hello from iframe");
-      expect(container.ownerDocument).toBe(iframeDoc);
-      expect(container.ownerDocument).not.toBe(document);
     });
   });
 

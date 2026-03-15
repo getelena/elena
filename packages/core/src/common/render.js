@@ -169,15 +169,3 @@ function cloneAndPatch(element, template, values) {
   element.replaceChildren(clone);
   return parts;
 }
-
-/**
- * Render an HTML string into an element.
- *
- * @param {HTMLElement} element
- * @param {string} markup
- */
-export function renderHtml(element, markup) {
-  if (element) {
-    element.innerHTML = markup;
-  }
-}
