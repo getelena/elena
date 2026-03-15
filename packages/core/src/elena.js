@@ -399,6 +399,14 @@ export function Elena(superClass) {
     updated() {}
 
     /**
+     * Called by the browser when the element is moved
+     * to a new document via `adoptNode()`.
+     */
+    adoptedCallback() {
+      super.adoptedCallback?.();
+    }
+
+    /**
      * Called by the browser each time the element
      * is removed from the page.
      */
