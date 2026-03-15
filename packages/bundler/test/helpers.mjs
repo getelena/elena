@@ -49,3 +49,49 @@ export function setupBuild(elenaConfigContent) {
 
   return { tmpDir, dist };
 }
+
+/**
+ * Creates a temp directory with component sources and a minimal package.json.
+ * Does NOT run the CLI. Use `runCli` separately to invoke the CLI with custom args.
+ *
+ * @param {string} [elenaConfigContent] - Config file content.
+ * @param {string} [configFileName] - Config file name (default: `"elena.config.mjs"`).
+ * @returns {string} Path to the temp directory.
+ */
+export function setupDir(elenaConfigContent, configFileName = "elena.config.mjs") {
+  const tmpDir = mkdtempSync(join(tmpdir(), "elena-bundler-test-"));
+
+  cpSync(COMPONENTS_SRC, join(tmpDir, "src"), { recursive: true });
+
+  writeFileSync(
+    join(tmpDir, "package.json"),
+    JSON.stringify({ name: "test-components", type: "module" })
+  );
+
+  if (elenaConfigContent !== undefined) {
+    writeFileSync(join(tmpDir, configFileName), elenaConfigContent);
+  }
+
+  return tmpDir;
+}
+
+/**
+ * Runs the CLI with the given args in the specified directory and returns
+ * the full result without throwing on non-zero exit.
+ *
+ * @param {string} cwd
+ * @param {string[]} [args]
+ * @returns {{ status: number; stdout: string; stderr: string }}
+ */
+export function runCli(cwd, args = []) {
+  const result = spawnSync("node", [CLI, ...args], {
+    cwd,
+    stdio: "pipe",
+    encoding: "utf8",
+  });
+  return {
+    status: result.status,
+    stdout: result.stdout,
+    stderr: result.stderr,
+  };
+}
