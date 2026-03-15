@@ -147,6 +147,10 @@ export default defineConfig({
         text: "About",
         items: [
           {
+            text: "FAQ",
+            link: "/advanced/faq",
+          },
+          {
             text: "Changelog",
             link: "https://github.com/getelena/elena/blob/main/CHANGELOG.md",
           },
@@ -205,6 +209,7 @@ export default defineConfig({
           { text: "Using TypeScript", link: "/advanced/typescript" },
           { text: "Scoping styles", link: "/advanced/scoping" },
           { text: "Known issues", link: "/advanced/gotchas" },
+          { text: "FAQ", link: "/advanced/faq" },
         ],
       },
     ],
