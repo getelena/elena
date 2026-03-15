@@ -129,43 +129,6 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 | `register` | `register(...components)` | Tell the SSR renderer which component classes to expand. Each class must have `tagName` option set. Call this before `ssr()`. |
 | `ssr` | `ssr(html)` | Takes an HTML string, expands any registered components into full HTML, and returns the result. The rest of the HTML tags are left as-is. |
 
-## `@elenajs/mcp`
-
-### Commands
-
-```bash
-elena-mcp <project-root>
-```
-
-### Resources
-
-| Resource URI | Description |
-|--------------|-------------|
-| `elena://components` | A list of all components with their name, description, and status. |
-| `elena://components/{tagName}` | Full details for one component: props, events, CSS custom properties, and slots. |
-| `elena://patterns` | The Elena component authoring guide. |
-| `elena://frameworks` | Framework integration guide (React, Vue, Angular, Svelte, Next.js, Eleventy, plain HTML). |
-| `elena://ssr` | Server-side rendering guide and `@elenajs/ssr` API reference. |
-| `elena://api` | Full API reference for all Elena packages. |
-
-### Tools
-
-| Tool | Description |
-|------|-------------|
-| `scaffold-component` | Generates a starter JS class and CSS file for a new component. |
-| `lookup-component` | Looks up a component’s API from the Custom Elements Manifest. |
-| `get-patterns` | Returns the Elena component authoring guide. |
-| `get-api-reference` | Returns the full API reference for all Elena packages. |
-| `get-frameworks-guide` | Returns the framework integration guide. |
-| `get-ssr-guide` | Returns the SSR guide and `@elenajs/ssr` API reference. |
-
-### Prompts
-
-| Prompt | Description |
-|--------|-------------|
-| `create-component` | A guided prompt for creating a new Elena component. |
-| `review-component` | A guided prompt for reviewing a component against Elena best practices. |
-
 ## `@elenajs/plugin-rollup-css`
 
 | Export | Signature | Description |

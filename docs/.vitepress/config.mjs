@@ -126,10 +126,6 @@ export default defineConfig({
             link: "https://github.com/getelena/elena/tree/main/packages/components",
           },
           {
-            text: "@elenajs/mcp",
-            link: "https://github.com/getelena/elena/tree/main/packages/mcp",
-          },
-          {
             text: "@elenajs/plugin-cem-define",
             link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-define",
           },
