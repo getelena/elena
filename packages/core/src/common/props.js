@@ -40,7 +40,7 @@ export function getPropValue(type, value, transform) {
       case "number":
         return value !== null ? +value : value;
       default:
-        return value;
+        return value ?? "";
     }
   }
 }
