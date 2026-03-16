@@ -70,8 +70,8 @@ describe("render internals", () => {
     });
   });
 
-  describe("innerHTML fallback path", () => {
-    it("falls back to innerHTML when value is in attribute position", () => {
+  describe("morph fallback path", () => {
+    it("renders correctly when value is in attribute position", () => {
       const container = el();
       renderTemplate(container, attrAndText, ["my-class", "content"]);
       const span = container.querySelector("span");
@@ -79,15 +79,25 @@ describe("render internals", () => {
       expect(span.textContent).toBe("content");
     });
 
-    it("fast-patches text values on re-render even in fallback path", () => {
+    it("updates text content on re-render in fallback path", () => {
       const container = el();
       renderTemplate(container, attrAndText, ["cls", "hello"]);
-      const textNode = container._tplParts[1];
 
       // Re-render with same attribute but different text
       renderTemplate(container, attrAndText, ["cls", "world"]);
-      // Text node should be patched in place
       expect(container.querySelector("span").textContent).toBe("world");
+    });
+
+    it("preserves element identity across re-renders", () => {
+      const container = el();
+      renderTemplate(container, attrAndText, ["cls", "hello"]);
+      const span = container.querySelector("span");
+
+      // Re-render: morph should patch in-place, not recreate the element
+      renderTemplate(container, attrAndText, ["cls-new", "world"]);
+      expect(container.querySelector("span")).toBe(span);
+      expect(span.getAttribute("class")).toBe("cls-new");
+      expect(span.textContent).toBe("world");
     });
 
     it("attribute-position values leave _tplParts unmapped", () => {
@@ -107,6 +117,36 @@ describe("render internals", () => {
       const input = container.querySelector("input");
       expect(input.getAttribute("type")).toBe("email");
       expect(input.getAttribute("name")).toBe("user-email");
+    });
+
+    it("removes attributes that disappear on re-render", () => {
+      const container = el();
+      // Template with a conditional boolean attribute: `${disabled ? "disabled" : ""}`
+      const tpl = Object.assign(["<button ", ">click</button>"], {
+        raw: ["<button ", ">click</button>"],
+      });
+      renderTemplate(container, tpl, ["disabled"]);
+      expect(container.querySelector("button").hasAttribute("disabled")).toBe(true);
+
+      renderTemplate(container, tpl, [""]);
+      expect(container.querySelector("button").hasAttribute("disabled")).toBe(false);
+    });
+
+    it("preserves element identity when conditional attribute is toggled", () => {
+      const container = el();
+      const tpl = Object.assign(["<button ", ">click</button>"], {
+        raw: ["<button ", ">click</button>"],
+      });
+      renderTemplate(container, tpl, [""]);
+      const button = container.querySelector("button");
+
+      renderTemplate(container, tpl, ["disabled"]);
+      expect(container.querySelector("button")).toBe(button);
+      expect(button.hasAttribute("disabled")).toBe(true);
+
+      renderTemplate(container, tpl, [""]);
+      expect(container.querySelector("button")).toBe(button);
+      expect(button.hasAttribute("disabled")).toBe(false);
     });
   });
 

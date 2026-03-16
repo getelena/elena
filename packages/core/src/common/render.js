@@ -84,7 +84,10 @@ function fullRender(element, strings, values) {
       .replace(/>\s+</g, "><")
       .trim();
 
-    element.innerHTML = markup;
+    // Morph existing DOM to match new markup instead of replacing it.
+    const tpl = document.createElement("template");
+    tpl.innerHTML = markup;
+    morphContent(element, tpl.content.childNodes);
     element._tplParts = new Array(values.length);
   }
 
@@ -168,4 +171,64 @@ function cloneAndPatch(element, template, values) {
 
   element.replaceChildren(clone);
   return parts;
+}
+
+/**
+ * Patches attributes and text content in-place when structure is stable,
+ * preserving element identity and focus state across re-renders.
+ *
+ * @param {Node} parent
+ * @param {NodeList} nextNodes - The desired child nodes from the new render
+ */
+function morphContent(parent, nextNodes) {
+  const current = Array.from(parent.childNodes);
+  const next = Array.from(nextNodes);
+  const len = Math.max(current.length, next.length);
+
+  for (let i = 0; i < len; i++) {
+    const cur = current[i];
+    const nxt = next[i];
+
+    if (!cur) {
+      parent.appendChild(nxt);
+    } else if (!nxt) {
+      parent.removeChild(cur);
+    } else if (
+      cur.nodeType !== nxt.nodeType ||
+      (cur.nodeType === Node.ELEMENT_NODE && cur.tagName !== nxt.tagName)
+    ) {
+      parent.replaceChild(nxt, cur);
+    } else if (cur.nodeType === Node.TEXT_NODE) {
+      if (cur.textContent !== nxt.textContent) {
+        cur.textContent = nxt.textContent;
+      }
+    } else if (cur.nodeType === Node.ELEMENT_NODE) {
+      morphAttributes(cur, nxt);
+      morphContent(cur, nxt.childNodes);
+    }
+  }
+}
+
+/**
+ * Morhp element’s attributes without rebuilding the DOM.
+ *
+ * @param {Element} current - The current existing DOM element
+ * @param {Element} next - The desired element from the new render
+ */
+function morphAttributes(current, next) {
+  for (let i = current.attributes.length - 1; i >= 0; i--) {
+    const { name } = current.attributes[i];
+
+    if (!next.hasAttribute(name)) {
+      current.removeAttribute(name);
+    }
+  }
+
+  for (let i = 0; i < next.attributes.length; i++) {
+    const { name, value } = next.attributes[i];
+
+    if (current.getAttribute(name) !== value) {
+      current.setAttribute(name, value);
+    }
+  }
 }
