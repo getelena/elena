@@ -9,7 +9,7 @@ const props = defineProps({
 });
 
 const iframe = ref(null);
-const srcdoc = ref("");
+const srcdoc = ref(null);
 const ready = ref(false);
 
 function updatePreview() {

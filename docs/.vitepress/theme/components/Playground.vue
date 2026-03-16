@@ -37,10 +37,10 @@ function onHashChange() {
   }
 }
 
+const defaultId = examples[0]?.items[0]?.id || "hello-world";
+selectExample(getHashId() || defaultId);
+
 onMounted(() => {
-  const hashId = getHashId();
-  const defaultId = examples[0]?.items[0]?.id || "hello-world";
-  selectExample(hashId || defaultId);
   window.addEventListener("hashchange", onHashChange);
 });
 

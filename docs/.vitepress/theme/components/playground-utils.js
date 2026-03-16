@@ -25,6 +25,12 @@ window.addEventListener("error", function (e) {
     e.message + "\\n" + (e.filename ? "at " + e.filename + ":" + e.lineno : "") +
     "</pre>";
 });
+window.addEventListener("unhandledrejection", function (e) {
+  document.body.innerHTML =
+    '<pre style="color:#e53e3e;padding:1rem;font-size:13px;white-space:pre-wrap;font-family:ui-monospace,monospace">' +
+    (e.reason?.message || String(e.reason)) +
+    "</pre>";
+});
 </script>
 <script type="module">
 ${js}
