@@ -9,7 +9,7 @@ const props = defineProps({
   activeTab: { type: String, default: "js" },
 });
 
-const emit = defineEmits(["update:js", "update:css", "update:html", "update:activeTab"]);
+const emit = defineEmits(["update:js", "update:css", "update:html", "update:activeTab", "toggle-sidebar"]);
 
 const { isDark } = useData();
 const editorContainer = ref(null);
@@ -180,6 +180,20 @@ onUnmounted(() => {
 <template>
   <div class="pg-editor">
     <div class="pg-editor-tabs">
+      <button
+        class="pg-sidebar-toggle"
+        @click="emit('toggle-sidebar')"
+        aria-label="Toggle examples"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M2 4h12M2 8h12M2 12h12"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
       <button
         v-for="tab in tabs"
         :key="tab"

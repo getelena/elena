@@ -29,6 +29,10 @@
   display: none;
 }
 
+.pg-sidebar-backdrop {
+  display: none;
+}
+
 .pg-sidebar-nav {
   outline: 0;
 }
@@ -250,9 +254,21 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
     grid-template-columns: 1fr 1fr;
   }
 
+  .pg-sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .pg-sidebar-backdrop.open {
+    display: block;
+  }
+
   .pg-sidebar {
     position: fixed;
-    top: var(--vp-nav-height);
+    top: 0;
     left: 0;
     bottom: 0;
     width: calc(100vw - 64px);
@@ -273,18 +289,14 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: fixed;
-    top: calc(var(--vp-nav-height) + 0.5rem);
-    left: 0.5rem;
-    z-index: 101;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    border: 1px solid var(--vp-c-divider);
-    background: var(--vp-c-bg);
+    flex-shrink: 0;
+    width: 43px;
+    height: 43px;
+    border: none;
+    border-right: 1px solid var(--vp-c-divider);
+    background: none;
     color: var(--vp-c-text-2);
     cursor: pointer;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   }
 
   .pg-sidebar-toggle:hover {

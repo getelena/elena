@@ -67,6 +67,7 @@ onUnmounted(() => {
       @update:css="editor.css = $event"
       @update:html="editor.html = $event"
       @update:active-tab="activeTab = $event"
+      @toggle-sidebar="sidebarOpen = !sidebarOpen"
     />
     <PlaygroundPreview :js="editor.js" :css="editor.css" :html="editor.html" />
   </div>
