@@ -34,12 +34,10 @@ npm install @elenajs/core
 
 ## Packages
 
-Elena is a monorepo containing several packages published to npm under the `@elenajs` scope:
+Elena is a monorepo containing several packages published to npm under the `@elenajs` scope. These are the main packages intended for development:
 
 | Package | Description | Version | Stability |
 | --- | --- | --- | --- |
-| [`@elenajs/eslint-config`](https://github.com/getelena/elena/tree/main/packages/eslint-config) | Elena ESLint config. | [![npm](https://img.shields.io/npm/v/@elenajs/eslint-config.svg)](https://www.npmjs.com/package/@elenajs/eslint-config) | [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature) |
-| [`@elenajs/prettier-config`](https://github.com/getelena/elena/tree/main/packages/prettier-config) | Elena Prettier config. | [![npm](https://img.shields.io/npm/v/@elenajs/prettier-config.svg)](https://www.npmjs.com/package/@elenajs/prettier-config) | [![stability-mature](https://img.shields.io/badge/stability-mature-008000.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#mature) |
 | [`@elenajs/core`](https://github.com/getelena/elena/tree/main/packages/core) | Elena core runtime library. | [![npm](https://img.shields.io/npm/v/@elenajs/core.svg)](https://www.npmjs.com/package/@elenajs/core) | [![stability-release-candidate](https://img.shields.io/badge/stability-pre--release-48c9b0.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#release-candidate) |
 | [`@elenajs/components`](https://github.com/getelena/elena/tree/main/packages/components) | Elena web components. | [![npm](https://img.shields.io/npm/v/@elenajs/components.svg)](https://www.npmjs.com/package/@elenajs/components) | [![stability-release-candidate](https://img.shields.io/badge/stability-pre--release-48c9b0.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#release-candidate) |
 | [`@elenajs/bundler`](https://github.com/getelena/elena/tree/main/packages/bundler) | Elena bundler for web component libraries. | [![npm](https://img.shields.io/npm/v/@elenajs/bundler.svg)](https://www.npmjs.com/package/@elenajs/bundler) | [![stability-release-candidate](https://img.shields.io/badge/stability-pre--release-48c9b0.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#release-candidate) |
@@ -49,7 +47,6 @@ Elena is a monorepo containing several packages published to npm under the `@ele
 | [`@elenajs/plugin-cem-typescript`](https://github.com/getelena/elena/tree/main/packages/plugin-cem-typescript) | Elena CEM TypeScript plugin. | [![npm](https://img.shields.io/npm/v/@elenajs/plugin-cem-typescript.svg)](https://www.npmjs.com/package/@elenajs/plugin-cem-typescript) | [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta) |
 | [`@elenajs/plugin-rollup-css`](https://github.com/getelena/elena/tree/main/packages/plugin-rollup-css) | Elena Rollup CSS plugin. | [![npm](https://img.shields.io/npm/v/@elenajs/plugin-rollup-css.svg)](https://www.npmjs.com/package/@elenajs/plugin-rollup-css) | [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta) |
 | [`@elenajs/ssr`](https://github.com/getelena/elena/tree/main/packages/ssr) | Elena server-side rendering tools. | [![npm](https://img.shields.io/npm/v/@elenajs/ssr.svg)](https://www.npmjs.com/package/@elenajs/ssr) | [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#experimental) |
-| [`@elenajs/mcp`](https://github.com/getelena/elena/tree/main/packages/mcp) | Elena MCP server. | [![npm](https://img.shields.io/npm/v/@elenajs/mcp.svg)](https://www.npmjs.com/package/@elenajs/mcp) | [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#experimental) |
 
 <!-- https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md -->
 
