@@ -16,14 +16,14 @@
   - Edge 118+ (Oct 2023)
   - Opera 104+ (Oct 2023)
 - When using CSS `@scope` and `attr[value]` selectors, be aware that Firefox 148 had an open issue regarding this that we’ve [documented here](https://codepen.io/arielsalminen/full/raMazZV). This is already fixed in the newer releases though. When necessary, you can improve the support for older Firefox version by [omitting `@scope`](/components/styles#styles-without-scope).
-- Safari has a bug where `@scope` rules are not applied to `<input>` and `<textarea>` elements. This is fixed in Safari Technology Preview 237 but not yet in a stable release. When necessary, you can work around it by styling form controls outside `@scope` using namespaced selectors:
+- Safari has a bug where `@scope` rules are not applied to `<input>` and `<textarea>` elements. This is fixed in [Safari Technology Preview 237](https://webkit.org/blog/17842/release-notes-for-safari-technology-preview-237/) but not yet in a stable release. When necessary, you can work around it by [omitting `@scope`](/components/styles#styles-without-scope) or styling form controls outside of `@scope` using namespaced selectors:
 
   ```css
   @scope (my-component) {
     /* Other styles here */
   }
 
-  /* Safari workaround: @scope rules don’t apply to input/textarea */
+  /* Safari workaround */
   my-component input { ... }
   my-component textarea { ... }
   ```
