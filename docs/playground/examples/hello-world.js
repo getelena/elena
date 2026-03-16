@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "hello-world",
   title: "Hello World",
-  js: `import { Elena, html } from "${CDN}";
+  js: `import { Elena, html } from "@elenajs/core";
 
 export default class MyGreeting extends Elena(HTMLElement) {
   static tagName = "my-greeting";

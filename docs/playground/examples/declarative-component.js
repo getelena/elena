@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "declarative-component",
   title: "Declarative Component",
-  js: `import { Elena } from "${CDN}";
+  js: `import { Elena } from "@elenajs/core";
 
 export default class MyButton extends Elena(HTMLElement) {
   static tagName = "my-button";

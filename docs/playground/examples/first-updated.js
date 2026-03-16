@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "first-updated",
   title: "firstUpdated",
-  js: `import { Elena, html } from "${CDN}";
+  js: `import { Elena, html } from "@elenajs/core";
 
 export default class MyAutofocus extends Elena(HTMLElement) {
   static tagName = "my-autofocus";

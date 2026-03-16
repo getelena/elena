@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "css-custom-properties",
   title: "CSS Custom Properties",
-  js: `import { Elena, html } from "${CDN}";
+  js: `import { Elena, html } from "@elenajs/core";
 
 /**
  * @cssprop [--my-button-bg] - Background color.

@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "array-object-props",
   title: "Array/Object Props",
-  js: `import { Elena, html } from "${CDN}";
+  js: `import { Elena, html } from "@elenajs/core";
 
 export default class MyList extends Elena(HTMLElement) {
   static tagName = "my-list";

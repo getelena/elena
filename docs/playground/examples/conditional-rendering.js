@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "conditional-rendering",
   title: "Conditional Rendering",
-  js: `import { Elena, html, nothing } from "${CDN}";
+  js: `import { Elena, html, nothing } from "@elenajs/core";
 
 export default class MyAlert extends Elena(HTMLElement) {
   static tagName = "my-alert";

@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "manual-listeners",
   title: "Manual Listeners",
-  js: `import { Elena, html } from "${CDN}";
+  js: `import { Elena, html } from "@elenajs/core";
 
 export default class MyKeyLogger extends Elena(HTMLElement) {
   static tagName = "my-key-logger";

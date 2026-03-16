@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "will-update",
   title: "willUpdate",
-  js: `import { Elena, html } from "${CDN}";
+  js: `import { Elena, html } from "@elenajs/core";
 
 export default class MyFilter extends Elena(HTMLElement) {
   static tagName = "my-filter";

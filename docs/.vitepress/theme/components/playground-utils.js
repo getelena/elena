@@ -1,3 +1,10 @@
+import elenaSource from "../../../../packages/core/dist/bundle.js?raw";
+
+// Strip the sourcemap comment so the browser doesn't try to fetch it from a null base URL.
+const _cleanSource = elenaSource.replace(/\/\/# sourceMappingURL=.*$/m, "").trim();
+const _elenaDataUrl = `data:text/javascript;charset=utf-8,${encodeURIComponent(_cleanSource)}`;
+const _importMap = JSON.stringify({ imports: { "@elenajs/core": _elenaDataUrl } });
+
 /**
  * Generate the full srcdoc HTML string for the preview iframe.
  */
@@ -7,6 +14,7 @@ export function generateSrcdoc(js, css, htmlContent) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="importmap">${_importMap}</script>
 <style>
 body {
   font-family: system-ui, -apple-system, sans-serif;

@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "unsafe-html",
   title: "unsafeHTML",
-  js: `import { Elena, html, unsafeHTML } from "${CDN}";
+  js: `import { Elena, html, unsafeHTML } from "@elenajs/core";
 
 export default class MyIcon extends Elena(HTMLElement) {
   static tagName = "my-icon";

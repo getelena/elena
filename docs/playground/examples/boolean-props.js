@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "boolean-props",
   title: "Boolean Props",
-  js: `import { Elena, html } from "${CDN}";
+  js: `import { Elena, html } from "@elenajs/core";
 
 export default class MyCheckbox extends Elena(HTMLElement) {
   static tagName = "my-checkbox";

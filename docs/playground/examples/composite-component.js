@@ -1,9 +1,7 @@
-const CDN = "https://unpkg.com/@elenajs/core";
-
 export default {
   id: "composite-component",
   title: "Composite Component",
-  js: `import { Elena } from "${CDN}";
+  js: `import { Elena } from "@elenajs/core";
 
 export default class MyStack extends Elena(HTMLElement) {
   static tagName = "my-stack";
