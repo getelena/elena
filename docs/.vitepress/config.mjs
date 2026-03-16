@@ -142,6 +142,10 @@ export default defineConfig({
             text: "@elenajs/plugin-rollup-css",
             link: "https://github.com/getelena/elena/tree/main/packages/plugin-rollup-css",
           },
+          {
+            text: "@elenajs/mcp",
+            link: "https://github.com/getelena/elena/tree/main/packages/mcp",
+          },
         ],
       },
       {
