@@ -3,30 +3,32 @@ export default {
   title: "firstUpdated",
   js: `import { Elena, html } from "@elenajs/core";
 
-export default class MyAutofocus extends Elena(HTMLElement) {
-  static tagName = "my-autofocus";
-  static element = "input";
+export default class MyCard extends Elena(HTMLElement) {
+  static tagName = "my-card";
+  static element = ".card";
 
   firstUpdated() {
-    requestAnimationFrame(() => {
-      this.element.focus();
-      this.querySelector(".status").textContent = "Input focused!";
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      this.querySelector(".size").textContent =
+        \`\${Math.round(width)} × \${Math.round(height)}px\`;
     });
+    observer.observe(this.element);
   }
 
   render() {
     return html\`
-      <div class="my-autofocus">
-        <label for="input">Auto-focused input</label>
-        <input id="input" type="text" placeholder="Focus on mount" />
-        <small class="status">Waiting...</small>
+      <div class="card">
+        <h2>Hello, Elena</h2>
+        <p>firstUpdated() runs once after the first render. Use it to set up observers, third-party libraries, or anything that needs a real DOM element.</p>
+        <small class="size">Measuring...</small>
       </div>
     \`;
   }
 }
 
-MyAutofocus.define();`,
-  css: `@scope (my-autofocus) {
+MyCard.define();`,
+  css: `@scope (my-card) {
   :scope,
   *:where(:not(img, svg):not(svg *)),
   *::before,
@@ -37,35 +39,33 @@ MyAutofocus.define();`,
 
   :scope { display: block; }
 
-  .my-autofocus {
+  .card {
     font-family: system-ui, sans-serif;
     display: flex;
     flex-direction: column;
-    gap: 0.375rem;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
   }
 
-  label {
-    font-weight: 600;
-    color: #4a5568;
+  h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a202c;
     display: block;
   }
 
-  .status {
+  p {
+    color: #4a5568;
+    line-height: 1.5;
+    display: block;
+  }
+
+  .size {
     color: #00963e;
   }
-}
-
-input {
-  all: unset;
-  padding: 0.5rem;
-  border: 1px solid #a5a9af;;
-  border-radius: 4px;
-  display: block;
-}
-
-input:focus {
-  outline: 2px solid #3182ce;
-  outline-offset: -1px;
 }`,
-  html: `<my-autofocus></my-autofocus>`,
+  html: `<my-card></my-card>`,
 };

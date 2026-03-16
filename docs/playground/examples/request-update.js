@@ -63,9 +63,6 @@ MyTags.define();`,
 
   :scope { display: block; }
 
-  .my-tags {
-  }
-
   .list {
     font-family: ui-monospace, monospace;
     display: flex;
@@ -100,7 +97,8 @@ MyTags.define();`,
   }
 }
 
-input {
+/* See https://elenajs.com/advanced/gotchas#browser-compatibility */
+my-tags input {
   all: unset;
   width: 100%;
   padding: 0.5rem;
@@ -111,7 +109,7 @@ input {
   display: block;
 }
 
-input:focus {
+my-tags input:focus {
   outline: 2px solid #3182ce;
   outline-offset: -1px;
 }`,

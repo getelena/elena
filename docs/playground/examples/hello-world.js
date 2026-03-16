@@ -16,10 +16,5 @@ export default class MyGreeting extends Elena(HTMLElement) {
 }
 
 MyGreeting.define();`,
-  css: `@scope (my-greeting) {
-  :scope {
-    display: inline-block;
-  }
-}`,
   html: `<my-greeting name="Elena"></my-greeting>`,
 };

@@ -87,8 +87,9 @@ MyFilter.define();`,
     display: block;
   }
 }
-  
-input {
+
+/* See https://elenajs.com/advanced/gotchas#browser-compatibility */
+my-filter input {
   all: unset;
   width: 100%;
   padding: 0.5rem 1rem;
@@ -98,7 +99,7 @@ input {
   display: block;
 }
 
-input:focus {
+my-filter input:focus {
   outline: 2px solid #3182ce;
   outline-offset: -1px;
 }`,

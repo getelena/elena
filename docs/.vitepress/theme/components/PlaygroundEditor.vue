@@ -1,5 +1,5 @@
 <script setup>
-import { ref, shallowRef, onMounted, onUnmounted, watch } from "vue";
+import { ref, shallowRef, computed, onMounted, onUnmounted, watch } from "vue";
 import { useData } from "vitepress";
 
 const props = defineProps({
@@ -14,7 +14,7 @@ const emit = defineEmits(["update:js", "update:css", "update:html", "update:acti
 const { isDark } = useData();
 const editorContainer = ref(null);
 const view = shallowRef(null);
-const tabs = ["js", "css", "html"];
+const tabs = computed(() => (props.css ? ["js", "css", "html"] : ["js", "html"]));
 
 // Track modules loaded by dynamic import
 let cmModules = null;

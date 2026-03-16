@@ -62,7 +62,8 @@ MyInput.define();`,
   }
 }
 
-input {
+/* See https://elenajs.com/advanced/gotchas#browser-compatibility */
+my-input input {
   all: unset;
   padding: 0.5rem;
   border: 1px solid #a5a9af;
@@ -70,7 +71,7 @@ input {
   display: block;
 }
 
-input:focus {
+my-input input:focus {
   outline: 2px solid #3182ce;
   outline-offset: -1px;
 }`,

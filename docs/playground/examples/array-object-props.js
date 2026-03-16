@@ -26,11 +26,6 @@ export default class MyList extends Elena(HTMLElement) {
 }
 
 MyList.define();`,
-  css: `@scope (my-list) {
-  :scope {
-    display: block;
-  }
-}`,
   html: `<my-list
   heading="Fruits"
   items='["Apple", "Banana", "Cherry", "Date"]'
