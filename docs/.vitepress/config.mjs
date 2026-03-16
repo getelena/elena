@@ -169,7 +169,6 @@ export default defineConfig({
           },
         ],
       },
-      { text: "GitHub", link: "https://github.com/getelena/elena" },
     ],
 
     sidebar: [
