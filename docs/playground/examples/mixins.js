@@ -1,0 +1,82 @@
+const CDN = "https://unpkg.com/@elenajs/core";
+
+export default {
+  id: "mixins",
+  title: "Mixins",
+  js: `import { Elena, html } from "${CDN}";
+
+// A mixin adds reusable behavior to any component
+const Draggable = superclass =>
+  class extends superclass {
+    #offsetX = 0;
+    #offsetY = 0;
+
+    connectedCallback() {
+      super.connectedCallback();
+      this.style.position = "absolute";
+      this.style.cursor = "grab";
+
+      this.addEventListener("mousedown", e => {
+        this.#offsetX = e.offsetX;
+        this.#offsetY = e.offsetY;
+        this.style.cursor = "grabbing";
+
+        const onMove = e => {
+          this.style.left = e.clientX - this.#offsetX + "px";
+          this.style.top = e.clientY - this.#offsetY + "px";
+        };
+        const onUp = () => {
+          this.style.cursor = "grab";
+          document.removeEventListener("mousemove", onMove);
+          document.removeEventListener("mouseup", onUp);
+        };
+
+        document.addEventListener("mousemove", onMove);
+        document.addEventListener("mouseup", onUp);
+      });
+    }
+  };
+
+// Apply the mixin AFTER Elena()
+export default class MyDraggable extends Draggable(Elena(HTMLElement)) {
+  static tagName = "my-draggable";
+  static props = ["color"];
+
+  /** @attribute @type {String} */
+  color = "#3182ce";
+
+  render() {
+    return html\`<div class="my-draggable">Drag me!</div>\`;
+  }
+}
+MyDraggable.define();`,
+  css: `@scope (my-draggable) {
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
+    all: unset;
+    display: revert;
+  }
+
+  :scope {
+    display: block;
+    user-select: none;
+  }
+
+  .my-draggable:is(div) {
+    font-family: system-ui, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+    background: #3182ce;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+}`,
+  html: `<div style="position: relative; height: 200px; border: 2px dashed #e2e8f0; border-radius: 8px;">
+  <my-draggable style="left: 40px; top: 40px;"></my-draggable>
+</div>`,
+};

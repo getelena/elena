@@ -100,7 +100,8 @@ export default defineConfig({
       },
     },
     nav: [
-      { text: "Docs", link: "/", activeMatch: "^(?!/api/)" },
+      { text: "Docs", link: "/", activeMatch: "^(?!/api/|/playground/)" },
+      { text: "Playground", link: "/playground/", activeMatch: "/playground/" },
       { text: "API Reference", link: "/api/" },
       {
         text: "Tools",
