@@ -43,13 +43,19 @@ MyIcon.define();`,
     color: #4a5568;
   }
 
-  .my-icon:is(span) {
+  .my-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 5rem;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
   }
 }`,
-  html: `<my-icon name="star" style="color: #ecc94b"></my-icon>
-<my-icon name="heart" style="color: #e53e3e"></my-icon>
+  html: `<my-icon name="heart" style="color: #e53e3e"></my-icon>
+<my-icon name="star" style="color: #ecc94b"></my-icon>
 <my-icon name="check" style="color: #48bb78"></my-icon>`,
 };

@@ -13,7 +13,7 @@ export default class MyKeyLogger extends Elena(HTMLElement) {
   connectedCallback() {
     super.connectedCallback();
     this._onKeyDown = e => {
-      this.keys = [...this.keys.slice(-9), e.key];
+      this.keys = [...this.keys.slice(-100), e.key];
     };
     this.setAttribute("tabindex", "0");
     this.addEventListener("keydown", this._onKeyDown);
@@ -73,7 +73,6 @@ MyKeyLogger.define();`,
   }
 
   .hint {
-    font-size: 0.8rem;
     color: #718096;
     margin: 0 0 0.75rem;
     display: block;
@@ -89,7 +88,6 @@ MyKeyLogger.define();`,
 
   kbd {
     font-family: ui-monospace, monospace;
-    font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
     background: #edf2f7;
     border: 1px solid #e2e8f0;
@@ -98,22 +96,20 @@ MyKeyLogger.define();`,
   }
 
   .empty {
-    font-size: 0.8rem;
     color: #a0aec0;
   }
 
   button.clear {
     margin-top: 0.75rem;
-    font-size: 0.75rem;
-    padding: 0.25rem 0.75rem;
-    border: 1px solid #e2e8f0;
+    padding: 0.5rem 0.75rem;
+    background: #e2e8f0;
     border-radius: 4px;
     cursor: pointer;
     display: inline-flex;
   }
 
   button.clear:hover {
-    background: #f7fafc;
+    filter: brightness(0.95);
   }
 
   button.clear:active {

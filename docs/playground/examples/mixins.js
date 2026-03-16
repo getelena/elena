@@ -73,7 +73,7 @@ MyDraggable.define();`,
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 }`,
-  html: `<div style="position: relative; height: 200px; border: 2px dashed #e2e8f0; border-radius: 8px;">
+  html: `<div style="position: relative; height: calc(100vh - 2.5rem); border: 2px dashed #e2e8f0; border-radius: 8px;">
   <my-draggable style="left: 40px; top: 40px;"></my-draggable>
 </div>`,
 };

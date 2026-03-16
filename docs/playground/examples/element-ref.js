@@ -14,7 +14,7 @@ export default class MyInput extends Elena(HTMLElement) {
   firstUpdated() {
     this.element.addEventListener("input", () => {
       this.querySelector(".hint").textContent =
-        "Character count: " + this.element.value.length;
+        "Characters: " + this.element.value.length;
     });
   }
 
@@ -23,7 +23,7 @@ export default class MyInput extends Elena(HTMLElement) {
       <div class="my-input">
         <label for="input">\${this.label}</label>
         <input id="input" type="text" placeholder="Start typing..." />
-        <small class="hint">Character count: 0</small>
+        <small class="hint">Characters: 0</small>
       </div>
     \`;
   }
@@ -52,14 +52,12 @@ MyInput.define();`,
   }
 
   label {
-    font-size: 0.75rem;
     font-weight: 600;
     color: #4a5568;
     display: block;
   }
 
   input {
-    font-size: 0.875rem;
     padding: 0.5rem;
     border: 1px solid #a5a9af;
     border-radius: 4px;
@@ -71,11 +69,9 @@ MyInput.define();`,
     outline-offset: -1px;
   }
 
-  .hint:is(small) {
-    font-size: 0.7rem;
-    color: #a0aec0;
-    display: block;
+  .hint {
+    color: #898f97;
   }
 }`,
-  html: `<my-input label="Your name"></my-input>`,
+  html: `<my-input label="Character counter"></my-input>`,
 };

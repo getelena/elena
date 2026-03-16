@@ -58,16 +58,16 @@ document.querySelector("my-rating").addEventListener("rate", e => {
   }
 
   .star {
-    font-size: 1.5rem;
+    font-size: 2rem;
     cursor: pointer;
-    color: #cbd5e0;
+    color: #b9c3ce;
     padding: 0.125rem;
     display: inline-flex;
   }
 
   .star.active,
   .star:hover {
-    color: #ecc94b;
+    color: #ffb300;
   }
 }`,
   html: `<my-rating></my-rating>

@@ -34,6 +34,11 @@ button:hover {
 
 button:active {
   opacity: 0.7;
+}
+
+button:focus {
+    outline: 2px solid #3182ce;
+    outline-offset: 1px;
 }`,
   html: `<my-button>
   <template shadowrootmode="open">
@@ -54,6 +59,10 @@ button:active {
       }
       button:active {
         opacity: 0.7;
+      }
+      button:focus {
+        outline: 2px solid #3182ce;
+        outline-offset: 1px;
       }
     </style>
     <button><slot></slot></button>
@@ -80,6 +89,10 @@ button:active {
       }
       button:active {
         opacity: 0.7;
+      }
+      button:focus {
+        outline: 2px solid #3182ce;
+        outline-offset: 1px;
       }
     </style>
     <button><slot></slot></button>

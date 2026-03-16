@@ -10,10 +10,12 @@ export default class MyTags extends Elena(HTMLElement) {
   /** @type {Array} */
   tags = ["Elena", "Web Components"];
 
-  addTag(value) {
+  async addTag(value) {
     if (value.trim()) {
       this.tags.push(value.trim());
       this.requestUpdate();
+      await this.updateComplete;
+      this.querySelector("input").focus();
     }
   }
 
@@ -25,6 +27,11 @@ export default class MyTags extends Elena(HTMLElement) {
   render() {
     return html\`
       <div class="my-tags">
+        <input 
+          type="text"
+          placeholder="Add tag + Enter"
+          onkeydown="if(event.key==='Enter'){this.closest('my-tags').addTag(this.value);this.value='';}"
+        />
         <div class="list">
           \${this.tags.map(
             (tag, i) => html\`
@@ -39,11 +46,6 @@ export default class MyTags extends Elena(HTMLElement) {
             \`
           )}
         </div>
-        <input 
-          type="text"
-          placeholder="Add tag + Enter"
-          onkeydown="if(event.key==='Enter'){this.closest('my-tags').addTag(this.value);this.value='';}"
-        />
       </div>
     \`;
   }
@@ -62,22 +64,21 @@ MyTags.define();`,
   :scope { display: block; }
 
   .my-tags {
-    font-family: system-ui, sans-serif;
   }
 
   .list {
+    font-family: ui-monospace, monospace;
     display: flex;
     flex-wrap: wrap;
     gap: 0.375rem;
-    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
     min-height: 1.75rem;
   }
 
   .tag {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
-    background: #ebf4ff;
-    color: #2b6cb0;
+    padding: 0.35rem 0.75rem;
+    background: #ddecff;
+    color: #235a95;
     border-radius: 4px;
     display: inline-flex;
     align-items: center;
@@ -85,21 +86,32 @@ MyTags.define();`,
   }
 
   .remove {
-    font-size: 0.65rem;
     cursor: pointer;
+    margin-left: 0.5rem;
     opacity: 0.6;
   }
 
-  .remove:hover { opacity: 1; }
+  .remove:hover {
+    opacity: 1;
+  }
+
+  .remove:active {
+    transform: translateY(1px);
+  }
 
   input {
-    font-size: 0.875rem;
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #a5a9af;
+    font-family: system-ui, sans-serif;
     border-radius: 4px;
     box-sizing: border-box;
     display: block;
+  }
+
+  input:focus {
+    outline: 2px solid #3182ce;
+    outline-offset: -1px;
   }
 }`,
   html: `<my-tags></my-tags>`,

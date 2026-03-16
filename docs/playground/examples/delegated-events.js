@@ -54,6 +54,14 @@ document.querySelectorAll("my-button").forEach(btn => {
     display: inline-flex;
   }
 
+  :scope:hover {
+    filter: brightness(0.95);
+  }
+
+  :scope:active {
+    opacity: 0.7;
+  }
+
   :scope[variant="primary"] {
     --my-button-bg: #3182ce;
     color: white;
@@ -62,7 +70,6 @@ document.querySelectorAll("my-button").forEach(btn => {
 
 #log {
   font-family: ui-monospace, monospace;
-  font-size: 0.8rem;
   background: #f7fafc;
   padding: 0.75rem;
   border-radius: 4px;

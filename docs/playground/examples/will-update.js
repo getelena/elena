@@ -12,7 +12,7 @@ export default class MyFilter extends Elena(HTMLElement) {
   static element = "input";
 
   /** @type {Array} */
-  items = ["Apple", "Banana", "Cherry", "Fig", "Grape"];
+  items = ["Apple", "Banana", "Cherry", "Date", "Fig", "Grape", "Tomato"];
 
   /** @attribute @type {String} */
   search = "";
@@ -32,13 +32,11 @@ export default class MyFilter extends Elena(HTMLElement) {
   render() {
     return html\`
       <div class="my-filter">
-        <input
-          type="text"
-          placeholder="Filter fruits"
-          oninput="this.closest('my-filter').search = this.value"
-        />
+        <input type="text" placeholder="Filter fruits" oninput="this.closest('my-filter').search = this.value" />
         <ul>
-          \${this.filtered.map(item => html\`<li>\${item}</li>\`)}
+          \${this.filtered.length > 0
+            ? this.filtered.map(item => html\`<li>\${item}</li>\`)
+            : html\`<li class="empty">No results</li>\`}
         </ul>
         <small>\${this.filtered.length} of \${this.items.length} shown</small>
       </div>
@@ -64,14 +62,12 @@ MyFilter.define();`,
   }
 
   input {
-    font-size: 0.875rem;
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     border: 1px solid #a5a9af;
     border-radius: 4px;
     box-sizing: border-box;
     display: block;
-    margin-bottom: 0.5rem;
   }
 
   input:focus {
@@ -81,22 +77,27 @@ MyFilter.define();`,
 
   ul {
     display: block;
-    padding: 0;
+    padding: 0.5rem 0;
     margin: 0;
     list-style: none;
+    background: #f7fafc;
+    border: 1px solid #e9ecee;
+    border-top: 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
   }
 
   li {
     display: block;
-    padding: 0.375rem 0.5rem;
-    font-size: 0.875rem;
-    border-bottom: 1px solid #f7fafc;
+    padding: 0.5rem 1rem;
+  }
+
+  li.empty {
+    color: #718096;
   }
 
   small {
-    font-size: 0.7rem;
-    color: #a0aec0;
-    margin-top: 0.25rem;
+    margin-top: 1rem;
     display: block;
   }
 }`,

@@ -40,7 +40,7 @@ MyBadge.define();`,
     font-family: system-ui, sans-serif;
     font-size: 0.75rem;
     font-weight: 600;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.75rem 0.3rem;
     border-radius: 9999px;
     background: var(--my-badge-bg);
     color: var(--my-badge-text);

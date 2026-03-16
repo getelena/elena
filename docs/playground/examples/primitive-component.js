@@ -34,6 +34,7 @@ MyButton.define();`,
     --my-button-bg: #e2e8f0;
     --my-button-text: #1a202c;
     display: inline-block;
+    border-radius: 6px;
     cursor: pointer;
   }
 
@@ -57,6 +58,11 @@ MyButton.define();`,
 
   :scope:active {
     opacity: 0.7;
+  }
+
+  :scope:focus-within {
+    outline: 2px solid #3182ce;
+    outline-offset: 1px;
   }
 
   :scope[variant="primary"] {

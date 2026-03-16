@@ -59,7 +59,7 @@ MyList.define();`,
   }
 
   .summary {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     color: #718096;
     margin: 0 0 0.5rem;
     display: block;
@@ -77,7 +77,6 @@ MyList.define();`,
     align-items: center;
     gap: 0.5rem;
     padding: 0.375rem 0;
-    font-size: 0.875rem;
     border-bottom: 1px solid #edf2f7;
   }
 

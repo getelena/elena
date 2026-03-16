@@ -41,7 +41,7 @@ MyAlert.define();`,
   }
 
   :scope {
-    --my-alert-bg: #bee3f8;
+    --my-alert-bg: #cdedff;
     --my-alert-border: #3182ce;
   }
 
@@ -79,8 +79,8 @@ MyAlert.define();`,
   button:hover { opacity: 1; }
 
   :scope[variant="warning"] {
-    --my-alert-bg: #fefcbf;
-    --my-alert-border: #d69e2e;
+    --my-alert-bg: #ffedc2;
+    --my-alert-border: #e7af20;
   }
 
   :scope[variant="error"] {
@@ -88,7 +88,7 @@ MyAlert.define();`,
     --my-alert-border: #e53e3e;
   }
 }`,
-  html: `<my-alert variant="info">This is an informational message.</my-alert>
-<my-alert variant="warning" dismissible>This warning can be dismissed.</my-alert>
-<my-alert variant="error">Something went wrong!</my-alert>`,
+  html: `<my-alert variant="error">Something went wrong!</my-alert>
+<my-alert variant="info">This is an informational message.</my-alert>
+<my-alert variant="warning" dismissible>This warning can be dismissed.</my-alert>`,
 };
