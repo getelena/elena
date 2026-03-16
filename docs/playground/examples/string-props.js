@@ -7,18 +7,20 @@ export default {
 
 export default class MyBadge extends Elena(HTMLElement) {
   static tagName = "my-badge";
-  static props = ["variant", "label"];
+  static props = ["variant"];
 
   /** @attribute @type {"info" | "success" | "warning" | "error"} */
   variant = "info";
 
-  /** @attribute @type {String} */
-  label = "";
-
   render() {
-    return html\`<span class="my-badge">\${this.label || this.text}</span>\`;
+    return html\`
+      <span class="my-badge">
+        \${this.text}
+      </span>
+    \`;
   }
 }
+
 MyBadge.define();`,
   css: `@scope (my-badge) {
   :scope,

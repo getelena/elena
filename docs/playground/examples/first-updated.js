@@ -9,21 +9,22 @@ export default class MyAutofocus extends Elena(HTMLElement) {
   static tagName = "my-autofocus";
   static element = "input";
 
-  render() {
-    return html\`<div class="my-autofocus">
-      <label>Auto-focused input:</label>
-      <input type="text" placeholder="I get focus on mount..." />
-      <small class="status">Waiting...</small>
-    </div>\`;
-  }
-
-  // firstUpdated runs once after the first render
   firstUpdated() {
-    // this.element is the <input> (via static element)
     this.element.focus();
     this.querySelector(".status").textContent = "Input focused!";
   }
+
+  render() {
+    return html\`
+      <div class="my-autofocus">
+        <label for="input">Auto-focused input:</label>
+        <input id="input" type="text" placeholder="Focus on mount" />
+        <small class="status">Waiting...</small>
+      </div>
+    \`;
+  }
 }
+
 MyAutofocus.define();`,
   css: `@scope (my-autofocus) {
   :scope,
@@ -36,7 +37,7 @@ MyAutofocus.define();`,
 
   :scope { display: block; }
 
-  .my-autofocus:is(div) {
+  .my-autofocus {
     font-family: system-ui, sans-serif;
     display: flex;
     flex-direction: column;
@@ -63,7 +64,7 @@ MyAutofocus.define();`,
     outline-offset: -1px;
   }
 
-  .status:is(small) {
+  .status {
     font-size: 0.7rem;
     color: #48bb78;
     display: block;

@@ -12,19 +12,6 @@ export default class MyKeyLogger extends Elena(HTMLElement) {
   /** @type {Array} */
   keys = [];
 
-  render() {
-    return html\`<div class="my-key-logger">
-      <p class="hint">Press any key while focused here:</p>
-      <div class="keys">\${
-        this.keys.length
-          ? this.keys.map(k => html\`<kbd>\${k}</kbd>\`)
-          : html\`<span class="empty">No keys pressed yet</span>\`
-      }</div>
-      <button class="clear" onclick="this.closest('my-key-logger').clear()">Clear</button>
-    </div>\`;
-  }
-
-  // Manually add listener in connectedCallback
   connectedCallback() {
     super.connectedCallback();
     this._onKeyDown = e => {
@@ -35,7 +22,6 @@ export default class MyKeyLogger extends Elena(HTMLElement) {
     this.focus();
   }
 
-  // Clean up in disconnectedCallback
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener("keydown", this._onKeyDown);
@@ -44,7 +30,23 @@ export default class MyKeyLogger extends Elena(HTMLElement) {
   clear() {
     this.keys = [];
   }
+
+  render() {
+    return html\`
+      <div class="my-key-logger">
+        <p class="hint">Press any key while focused here:</p>
+        <div class="keys">
+          \${this.keys.length
+            ? this.keys.map(k => html\`<kbd>\${k}</kbd>\`)
+            : html\`<span class="empty">No keys pressed yet</span>\`
+          }
+        </div>
+        <button class="clear" onclick="this.closest('my-key-logger').clear()">Clear</button>
+      </div>
+    \`;
+  }
 }
+
 MyKeyLogger.define();`,
   css: `@scope (my-key-logger) {
   :scope,
@@ -64,7 +66,7 @@ MyKeyLogger.define();`,
     border-color: #3182ce;
   }
 
-  .my-key-logger:is(div) {
+  .my-key-logger {
     font-family: system-ui, sans-serif;
     border: 2px dashed #e2e8f0;
     border-radius: 8px;
@@ -72,14 +74,14 @@ MyKeyLogger.define();`,
     display: block;
   }
 
-  .hint:is(p) {
+  .hint {
     font-size: 0.8rem;
     color: #718096;
     margin: 0 0 0.75rem;
     display: block;
   }
 
-  .keys:is(div) {
+  .keys {
     display: flex;
     flex-wrap: wrap;
     gap: 0.375rem;
@@ -97,12 +99,12 @@ MyKeyLogger.define();`,
     display: inline-flex;
   }
 
-  .empty:is(span) {
+  .empty {
     font-size: 0.8rem;
     color: #a0aec0;
   }
 
-  .clear:is(button) {
+  button.clear {
     margin-top: 0.75rem;
     font-size: 0.75rem;
     padding: 0.25rem 0.75rem;
@@ -112,8 +114,12 @@ MyKeyLogger.define();`,
     display: inline-flex;
   }
 
-  .clear:is(button):hover {
+  button.clear:hover {
     background: #f7fafc;
+  }
+
+  button.clear:active {
+    opacity: 0.7;
   }
 }`,
   html: `<my-key-logger></my-key-logger>`,

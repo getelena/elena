@@ -7,31 +7,30 @@ export default {
 
 export default class MyInput extends Elena(HTMLElement) {
   static tagName = "my-input";
-  static props = ["label", "value"];
-  // static element tells Elena which inner element to expose as this.element
+  static props = ["label"];
   static element = "input";
 
   /** @attribute @type {String} */
   label = "";
 
-  /** @attribute @type {String} */
-  value = "";
-
-  render() {
-    return html\`<div class="my-input">
-      <label>\${this.label}</label>
-      <input type="text" value="\${this.value}" />
-      <small class="hint">Character count: \${this.value.length}</small>
-    </div>\`;
-  }
-
   firstUpdated() {
-    // this.element is the <input> because of static element = "input"
-    this.element.addEventListener("input", e => {
-      this.value = e.target.value;
+    this.element.addEventListener("input", () => {
+      this.querySelector(".hint").textContent =
+        "Character count: " + this.element.value.length;
     });
   }
+
+  render() {
+    return html\`
+      <div class="my-input">
+        <label for="input">\${this.label}</label>
+        <input id="input" type="text" placeholder="Start typing..." />
+        <small class="hint">Character count: 0</small>
+      </div>
+    \`;
+  }
 }
+
 MyInput.define();`,
   css: `@scope (my-input) {
   :scope,
@@ -80,5 +79,5 @@ MyInput.define();`,
     display: block;
   }
 }`,
-  html: `<my-input label="Your name" value="Elena"></my-input>`,
+  html: `<my-input label="Your name"></my-input>`,
 };

@@ -16,18 +16,12 @@ export default class MyGreeting extends Elena(HTMLElement) {
     return html\`<p>Hello, \${this.name}!</p>\`;
   }
 }
+
 MyGreeting.define();`,
   css: `@scope (my-greeting) {
   :scope {
-    display: block;
-  }
-
-  p {
-    font-size: 1.5rem;
-    font-family: system-ui, sans-serif;
-    margin: 0;
+    display: inline-block;
   }
 }`,
-  html: `<my-greeting name="World"></my-greeting>
-<my-greeting name="Elena"></my-greeting>`,
+  html: `<my-greeting name="Elena"></my-greeting>`,
 };

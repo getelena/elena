@@ -12,7 +12,6 @@ export default class MyIcon extends Elena(HTMLElement) {
   /** @attribute @type {String} */
   name = "star";
 
-  // SVG icons stored as trusted markup
   get icons() {
     return {
       star: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>',
@@ -23,10 +22,13 @@ export default class MyIcon extends Elena(HTMLElement) {
 
   render() {
     const svg = this.icons[this.name] || this.icons.star;
-    // unsafeHTML bypasses auto-escaping for trusted content
-    return html\`<span class="my-icon">\${unsafeHTML(svg)}</span>\`;
+
+    return html\`
+      <span class="my-icon">\${unsafeHTML(svg)}</span>
+    \`;
   }
 }
+
 MyIcon.define();`,
   css: `@scope (my-icon) {
   :scope,

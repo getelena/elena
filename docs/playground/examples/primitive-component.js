@@ -14,9 +14,14 @@ export default class MyButton extends Elena(HTMLElement) {
   variant = "default";
 
   render() {
-    return html\`<button class="my-button">\${this.text}</button>\`;
+    return html\`
+      <button class="my-button">
+        \${this.text}
+      </button>
+    \`;
   }
 }
+
 MyButton.define();`,
   css: `@scope (my-button) {
   :scope,
@@ -48,8 +53,12 @@ MyButton.define();`,
     justify-content: center;
   }
 
-  .my-button:is(button):hover {
+  :scope:hover {
     filter: brightness(0.95);
+  }
+
+  :scope:active {
+    opacity: 0.7;
   }
 
   :scope[variant="primary"] {

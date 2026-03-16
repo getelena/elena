@@ -15,20 +15,31 @@ export default class MyCounter extends Elena(HTMLElement) {
   /** @attribute @type {Number} */
   step = 1;
 
-  render() {
-    return html\`<div class="my-counter">
-      <button class="decrement" onclick="this.getRootNode().host.decrement()">-</button>
-      <span class="value">\${this.count}</span>
-      <button class="increment" onclick="this.getRootNode().host.increment()">+</button>
-    </div>\`;
-  }
-
   increment() {
     this.count += this.step;
   }
 
   decrement() {
     this.count -= this.step;
+  }
+
+  render() {
+    return html\`
+      <!-- Please note this isn’t accessible! -->
+      <div class="my-counter">
+        <button 
+          class="decrement"
+          onclick="this.closest('my-counter').decrement()">
+            -
+        </button>
+        <span class="value">\${this.count}</span>
+        <button
+          class="increment"
+          onclick="this.closest('my-counter').increment()">
+            +
+        </button>
+      </div>
+    \`;
   }
 }
 MyCounter.define();`,
@@ -45,7 +56,7 @@ MyCounter.define();`,
     display: inline-block;
   }
 
-  .my-counter:is(div) {
+  .my-counter {
     display: inline-flex;
     align-items: center;
     gap: 0;
@@ -55,9 +66,8 @@ MyCounter.define();`,
     overflow: hidden;
   }
 
-  .decrement:is(button),
-  .increment:is(button) {
-    padding: 0.5rem 0.75rem;
+  .my-counter button {
+    padding: 0.6rem 0.75rem;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
@@ -67,12 +77,15 @@ MyCounter.define();`,
     justify-content: center;
   }
 
-  .decrement:is(button):hover,
-  .increment:is(button):hover {
+  .my-counter button:hover {
     background: #edf2f7;
   }
 
-  .value:is(span) {
+  .my-counter button:active {
+    opacity: 0.7;
+  }
+
+  .my-counter .value {
     padding: 0.5rem 1rem;
     font-size: 1.125rem;
     font-weight: 600;

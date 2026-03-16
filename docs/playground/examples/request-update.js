@@ -12,26 +12,9 @@ export default class MyTags extends Elena(HTMLElement) {
   /** @type {Array} */
   tags = ["Elena", "Web Components"];
 
-  render() {
-    return html\`<div class="my-tags">
-      <div class="list">
-        \${this.tags.map(
-          (tag, i) => html\`<span class="tag">
-            \${tag}
-            <button class="remove" onclick="this.closest('my-tags').removeTag(\${i})">x</button>
-          </span>\`
-        )}
-      </div>
-      <input type="text" placeholder="Add tag + Enter"
-        onkeydown="if(event.key==='Enter'){this.closest('my-tags').addTag(this.value);this.value='';}" />
-    </div>\`;
-  }
-
   addTag(value) {
     if (value.trim()) {
-      // Mutating the array in place: Elena can't detect this automatically
       this.tags.push(value.trim());
-      // So we call requestUpdate() to trigger a re-render
       this.requestUpdate();
     }
   }
@@ -40,7 +23,34 @@ export default class MyTags extends Elena(HTMLElement) {
     this.tags.splice(index, 1);
     this.requestUpdate();
   }
+
+  render() {
+    return html\`
+      <div class="my-tags">
+        <div class="list">
+          \${this.tags.map(
+            (tag, i) => html\`
+              <span class="tag">
+                \${tag}
+                <button
+                  class="remove"
+                  onclick="this.closest('my-tags').removeTag(\${i})">
+                    x
+                </button>
+              </span>
+            \`
+          )}
+        </div>
+        <input 
+          type="text"
+          placeholder="Add tag + Enter"
+          onkeydown="if(event.key==='Enter'){this.closest('my-tags').addTag(this.value);this.value='';}"
+        />
+      </div>
+    \`;
+  }
 }
+
 MyTags.define();`,
   css: `@scope (my-tags) {
   :scope,
@@ -53,11 +63,11 @@ MyTags.define();`,
 
   :scope { display: block; }
 
-  .my-tags:is(div) {
+  .my-tags {
     font-family: system-ui, sans-serif;
   }
 
-  .list:is(div) {
+  .list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.375rem;
@@ -65,7 +75,7 @@ MyTags.define();`,
     min-height: 1.75rem;
   }
 
-  .tag:is(span) {
+  .tag {
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
     background: #ebf4ff;
@@ -76,19 +86,19 @@ MyTags.define();`,
     gap: 0.375rem;
   }
 
-  .remove:is(button) {
+  .remove {
     font-size: 0.65rem;
     cursor: pointer;
     opacity: 0.6;
   }
 
-  .remove:is(button):hover { opacity: 1; }
+  .remove:hover { opacity: 1; }
 
   input {
     font-size: 0.875rem;
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #a5a9af;
     border-radius: 4px;
     box-sizing: border-box;
     display: block;

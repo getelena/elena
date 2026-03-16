@@ -7,33 +7,31 @@ export default {
 
 export default class MyAlert extends Elena(HTMLElement) {
   static tagName = "my-alert";
-  static props = ["type", "dismissible"];
+  static props = ["variant", "dismissible"];
 
   /** @attribute @type {"info" | "warning" | "error"} */
-  type = "info";
+  variant = "info";
 
   /** @attribute @type {Boolean} */
   dismissible = false;
 
   render() {
-    // Use \`nothing\` instead of empty strings for conditional rendering
-    const closeBtn = this.dismissible
-      ? html\`<button class="close" onclick="this.closest('my-alert').remove()">x</button>\`
+    const close = this.dismissible
+      ? html\`<button onclick="this.closest('my-alert').remove()">x</button>\`
       : nothing;
 
-    const icon = this.type === "error"
-      ? html\`<span class="icon">&#9888;</span>\`
-      : this.type === "warning"
-        ? html\`<span class="icon">&#9888;</span>\`
-        : html\`<span class="icon">&#8505;</span>\`;
+    const icon = html\`<span class="icon">&#9888;</span>\`;
 
-    return html\`<div class="my-alert" role="alert">
-      \${icon}
-      <span class="message">\${this.text}</span>
-      \${closeBtn}
-    </div>\`;
+    return html\`
+      <div class="my-alert" role="alert">
+        \${icon}
+        <span class="message">\${this.text}</span>
+        \${close}
+      </div>
+    \`;
   }
 }
+
 MyAlert.define();`,
   css: `@scope (my-alert) {
   :scope,
@@ -47,15 +45,15 @@ MyAlert.define();`,
   :scope {
     --my-alert-bg: #bee3f8;
     --my-alert-border: #3182ce;
-    display: block;
-    margin-bottom: 0.5rem;
   }
 
-  .my-alert:is(div) {
+  :scope:not([hydrated]),
+  .my-alert {
+    margin-bottom: 0.5rem;
     font-family: system-ui, sans-serif;
     font-size: 0.875rem;
     padding: 0.75rem 1rem;
-    border-radius: 6px;
+    min-height: 1.5rem;
     border-left: 3px solid var(--my-alert-border);
     background: var(--my-alert-bg);
     display: flex;
@@ -63,28 +61,36 @@ MyAlert.define();`,
     gap: 0.5rem;
   }
 
-  .icon:is(span) { font-size: 1rem; }
-  .message:is(span) { flex: 1; }
+  :scope:not([hydrated]) {
+    padding-left: 2.5rem;
+  }
 
-  .close:is(button) {
+  .icon {
+    font-size: 1rem;
+    width: 1rem;
+  }
+
+  .message { flex: 1; }
+
+  button {
     cursor: pointer;
     font-size: 1rem;
     opacity: 0.6;
   }
 
-  .close:is(button):hover { opacity: 1; }
+  button:hover { opacity: 1; }
 
-  :scope[type="warning"] {
+  :scope[variant="warning"] {
     --my-alert-bg: #fefcbf;
     --my-alert-border: #d69e2e;
   }
 
-  :scope[type="error"] {
+  :scope[variant="error"] {
     --my-alert-bg: #fed7d7;
     --my-alert-border: #e53e3e;
   }
 }`,
-  html: `<my-alert type="info">This is an informational message.</my-alert>
-<my-alert type="warning" dismissible>This warning can be dismissed.</my-alert>
-<my-alert type="error">Something went wrong!</my-alert>`,
+  html: `<my-alert variant="info">This is an informational message.</my-alert>
+<my-alert variant="warning" dismissible>This warning can be dismissed.</my-alert>
+<my-alert variant="error">Something went wrong!</my-alert>`,
 };

@@ -5,7 +5,6 @@ export default {
   title: "Mixins",
   js: `import { Elena, html } from "${CDN}";
 
-// A mixin adds reusable behavior to any component
 const Draggable = superclass =>
   class extends superclass {
     #offsetX = 0;
@@ -37,18 +36,18 @@ const Draggable = superclass =>
     }
   };
 
-// Apply the mixin AFTER Elena()
 export default class MyDraggable extends Draggable(Elena(HTMLElement)) {
   static tagName = "my-draggable";
-  static props = ["color"];
-
-  /** @attribute @type {String} */
-  color = "#3182ce";
 
   render() {
-    return html\`<div class="my-draggable">Drag me!</div>\`;
+    return html\`
+      <div class="my-draggable">
+        Drag me!
+      </div>
+    \`;
   }
 }
+
 MyDraggable.define();`,
   css: `@scope (my-draggable) {
   :scope,
@@ -64,7 +63,7 @@ MyDraggable.define();`,
     user-select: none;
   }
 
-  .my-draggable:is(div) {
+  .my-draggable {
     font-family: system-ui, sans-serif;
     font-size: 0.875rem;
     font-weight: 600;

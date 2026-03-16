@@ -12,6 +12,7 @@ export default class MyStack extends Elena(HTMLElement) {
   /** @attribute @type {"column" | "row"} */
   direction = "column";
 }
+
 MyStack.define();`,
   css: `@scope (my-stack) {
   :scope {
@@ -26,9 +27,17 @@ MyStack.define();`,
     flex-direction: row;
   }
 }`,
-  html: `<my-stack direction="row">
-  <div style="padding: 1rem; background: #fef3cd; border-radius: 4px;">First</div>
-  <div style="padding: 1rem; background: #d1ecf1; border-radius: 4px;">Second</div>
-  <div style="padding: 1rem; background: #d4edda; border-radius: 4px;">Third</div>
+  html: `<my-stack direction="column">
+  <div>First</div>
+  <div>Second</div>
+  <div>Third</div>
+</my-stack>
+
+<br/>
+
+<my-stack direction="row">
+  <div>First</div>
+  <div>Second</div>
+  <div>Third</div>
 </my-stack>`,
 };

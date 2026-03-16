@@ -10,8 +10,10 @@ const props = defineProps({
 
 const iframe = ref(null);
 const srcdoc = ref("");
+const ready = ref(false);
 
 function updatePreview() {
+  ready.value = false;
   srcdoc.value = generateSrcdoc(props.js, props.css, props.html);
 }
 
@@ -48,6 +50,7 @@ watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) =>
     <iframe
       ref="iframe"
       class="pg-preview-iframe"
+      :class="{ 'pg-preview-ready': ready }"
       :srcdoc="srcdoc"
       sandbox="allow-scripts"
       title="Component preview"

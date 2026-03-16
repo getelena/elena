@@ -16,9 +16,12 @@ export default class MyButton extends Elena(HTMLElement) {
   static events = ["click"];
 
   render() {
-    return html\`<button class="my-button">\${this.text}</button>\`;
+    return html\`
+      <button class="my-button">\${this.text}</button>
+    \`;
   }
 }
+
 MyButton.define();`,
   css: `@scope (my-button) {
   :scope,
@@ -29,25 +32,20 @@ MyButton.define();`,
     display: revert;
   }
 
-  /* Define public CSS custom properties with defaults */
   :scope {
-    --my-button-bg: #e2e8f0;
-    --my-button-text: #1a202c;
-    --my-button-radius: 6px;
-    --my-button-font: system-ui, sans-serif;
     display: inline-block;
     cursor: pointer;
   }
 
   :scope:not([hydrated]),
   .my-button:is(button) {
-    font-family: var(--my-button-font);
+    font-family: var(--my-button-font, system-ui, sans-serif);
     font-size: 0.875rem;
     font-weight: 500;
     padding: 0.5rem 1rem;
-    border-radius: var(--my-button-radius);
-    background: var(--my-button-bg);
-    color: var(--my-button-text);
+    border-radius: var(--my-button-radius, 6px);
+    background: var(--my-button-bg, #e2e8f0);
+    color: var(--my-button-text, #1a202c);
     display: inline-flex;
   }
 }`,

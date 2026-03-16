@@ -7,33 +7,47 @@ export default {
 
 export default class MyFilter extends Elena(HTMLElement) {
   static tagName = "my-filter";
-  static props = [{ name: "items", reflect: false }, "search"];
+  static props = [
+    { name: "items", reflect: false },
+    { name: "search", reflect: false }
+  ];
+  static element = "input";
 
   /** @type {Array} */
-  items = ["Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape"];
+  items = ["Apple", "Banana", "Cherry", "Fig", "Grape"];
 
   /** @attribute @type {String} */
   search = "";
 
-  // willUpdate runs before every render: compute derived state here
   willUpdate() {
     this.filtered = this.items.filter(item =>
       item.toLowerCase().includes(this.search.toLowerCase())
     );
   }
 
+  updated() {
+    this.element.value = this.search;
+    this.element.focus();
+    this.element.selectionStart = this.element.selectionEnd = this.search.length;
+  }
+
   render() {
-    return html\`<div class="my-filter">
-      <input type="text" placeholder="Filter fruits..."
-        value="\${this.search}"
-        oninput="this.closest('my-filter').search = this.value" />
-      <ul>
-        \${this.filtered.map(item => html\`<li>\${item}</li>\`)}
-      </ul>
-      <small>\${this.filtered.length} of \${this.items.length} shown</small>
-    </div>\`;
+    return html\`
+      <div class="my-filter">
+        <input
+          type="text"
+          placeholder="Filter fruits"
+          oninput="this.closest('my-filter').search = this.value"
+        />
+        <ul>
+          \${this.filtered.map(item => html\`<li>\${item}</li>\`)}
+        </ul>
+        <small>\${this.filtered.length} of \${this.items.length} shown</small>
+      </div>
+    \`;
   }
 }
+
 MyFilter.define();`,
   css: `@scope (my-filter) {
   :scope,
@@ -46,7 +60,7 @@ MyFilter.define();`,
 
   :scope { display: block; }
 
-  .my-filter:is(div) {
+  .my-filter {
     font-family: system-ui, sans-serif;
     max-width: 250px;
   }

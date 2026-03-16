@@ -8,16 +8,20 @@ export default {
 export default class MyButton extends Elena(HTMLElement) {
   static tagName = "my-button";
   static props = ["variant"];
-  // static events delegates these events from the inner element to the host
   static events = ["click", "focus", "blur"];
 
   /** @attribute @type {"default" | "primary"} */
   variant = "default";
 
   render() {
-    return html\`<button class="my-button">\${this.text}</button>\`;
+    return html\`
+      <button class="my-button">
+        \${this.text}
+      </button>
+    \`;
   }
 }
+
 MyButton.define();
 
 // Now we can listen on the host element
@@ -70,5 +74,6 @@ document.querySelectorAll("my-button").forEach(btn => {
 }`,
   html: `<my-button>Say Hello</my-button>
 <my-button variant="primary">Say World</my-button>
+
 <pre id="log"></pre>`,
 };

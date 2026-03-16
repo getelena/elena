@@ -3,7 +3,7 @@ const CDN = "https://unpkg.com/@elenajs/core";
 export default {
   id: "custom-events",
   title: "Custom Events",
-  js: `import { Elena, html, ElenaEvent } from "${CDN}";
+  js: `import { Elena, html } from "${CDN}";
 
 export default class MyRating extends Elena(HTMLElement) {
   static tagName = "my-rating";
@@ -12,25 +12,33 @@ export default class MyRating extends Elena(HTMLElement) {
   /** @type {Number} */
   value = 0;
 
-  render() {
-    return html\`<div class="my-rating">
-      \${[1, 2, 3, 4, 5].map(
-        n => html\`<button
-          class="star \${n <= this.value ? "active" : ""}"
-          onclick="this.closest('my-rating').rate(\${n})"
-        >\${n <= this.value ? "&#9733;" : "&#9734;"}</button>\`
-      )}
-    </div>\`;
+  rate(stars) {
+    this.value = stars;
+    this.dispatchEvent(new CustomEvent("rate", {
+      bubbles: true,
+      detail: { value: stars } 
+    }));
   }
 
-  rate(n) {
-    this.value = n;
-    // Dispatch a custom event with ElenaEvent (bubbles + composed by default)
-    this.dispatchEvent(new ElenaEvent("rate", { detail: { value: n } }));
+  render() {
+    return html\`
+      <div class="my-rating">
+        \${[1, 2, 3, 4, 5].map(
+          stars => html\`
+          <button
+            class="star \${stars <= this.value ? "active" : ""}"
+            onclick="this.closest('my-rating').rate(\${stars})">
+              \${stars <= this.value ? "★" : "☆"}
+          </button>\`
+        )}
+      </div>
+    \`;
   }
 }
+
 MyRating.define();
 
+// Now we can listen on the host element
 document.querySelector("my-rating").addEventListener("rate", e => {
   document.getElementById("output").textContent =
     "You rated: " + e.detail.value + " star(s)";
@@ -46,12 +54,12 @@ document.querySelector("my-rating").addEventListener("rate", e => {
 
   :scope { display: inline-block; }
 
-  .my-rating:is(div) {
+  .my-rating {
     display: inline-flex;
     gap: 0.125rem;
   }
 
-  .star:is(button) {
+  .star {
     font-size: 1.5rem;
     cursor: pointer;
     color: #cbd5e0;
@@ -59,18 +67,12 @@ document.querySelector("my-rating").addEventListener("rate", e => {
     display: inline-flex;
   }
 
-  .star.active:is(button),
-  .star:is(button):hover {
+  .star.active,
+  .star:hover {
     color: #ecc94b;
   }
-}
-
-#output {
-  font-family: system-ui, sans-serif;
-  font-size: 0.875rem;
-  margin-top: 0.75rem;
-  color: #4a5568;
 }`,
   html: `<my-rating></my-rating>
+
 <p id="output">Click a star to rate.</p>`,
 };
