@@ -13,18 +13,19 @@
   }
 
   :scope {
-    --elena-button-bg: #eaecf0;
-    --elena-button-text: #172b4d;
-    --elena-button-border: #eaecf0;
-    --elena-button-font: system-ui, sans-serif;
-    --elena-button-font-size: 15px;
-    --elena-button-font-weight: 500;
-    --elena-button-radius: 6px;
-    --elena-button-focus: #5a44d4;
+    /* Public theming API (with default values set) */
+    --_elena-button-bg: var(--elena-button-bg, #eaecf0);
+    --_elena-button-text: var(--elena-button-text, #172b4d);
+    --_elena-button-border: var(--elena-button-border, #eaecf0);
+    --_elena-button-font: var(--elena-button-font, system-ui, sans-serif);
+    --_elena-button-font-size: var(--elena-button-font-size, 15px);
+    --_elena-button-font-weight: var(--elena-button-font-weight, 500);
+    --_elena-button-radius: var(--elena-button-radius, 6px);
+    --_elena-button-focus: var(--elena-button-focus, #5a44d4);
 
     all: unset;
     display: inline-block;
-    border-radius: var(--elena-button-radius);
+    border-radius: var(--_elena-button-radius);
     transition:
       background-color 0.2s ease,
       filter 0.2s ease;
@@ -38,17 +39,17 @@
     cursor: pointer;
     box-sizing: border-box;
     touch-action: manipulation;
-    font-weight: var(--elena-button-font-weight);
-    font-family: var(--elena-button-font);
-    font-size: var(--elena-button-font-size);
+    font-weight: var(--_elena-button-font-weight);
+    font-family: var(--_elena-button-font);
+    font-size: var(--_elena-button-font-size);
     padding: 0.5em 1.1em 0.55em;
-    block-size: calc(var(--elena-button-font) * 4);
-    min-block-size: calc(var(--elena-button-font) * 4);
+    block-size: calc(var(--_elena-button-font) * 4);
+    min-block-size: calc(var(--_elena-button-font) * 4);
     line-height: 1.3;
-    color: var(--elena-button-text);
-    background: var(--elena-button-bg);
-    border: 2px solid var(--elena-button-border);
-    border-radius: var(--elena-button-radius);
+    color: var(--_elena-button-text);
+    background: var(--_elena-button-bg);
+    border: 2px solid var(--_elena-button-border);
+    border-radius: var(--_elena-button-radius);
     transition: none;
     text-decoration: none;
     text-align: center;
@@ -60,8 +61,8 @@
   }
 
   .elena-icon {
-    inline-size: var(--elena-button-font-size);
-    block-size: var(--elena-button-font-size);
+    inline-size: var(--_elena-button-font-size);
+    block-size: var(--_elena-button-font-size);
     display: inline-flex;
     transform: translateZ(0);
     margin-inline: -0.3rem;
@@ -86,13 +87,13 @@
 
   :scope[icon]:not([hydrated])::after {
     content: "";
-    background: var(--elena-button-text);
-    border-radius: var(--elena-button-radius);
+    background: var(--_elena-button-text);
+    border-radius: var(--_elena-button-radius);
     margin-inline: 0 -0.3rem;
     margin-block: 0.15rem;
     opacity: 0.2;
-    width: var(--elena-button-font-size);
-    height: var(--elena-button-font-size);
+    width: var(--_elena-button-font-size);
+    height: var(--_elena-button-font-size);
     display: inline-block;
   }
 
@@ -109,7 +110,7 @@
   }
 
   .elena-button:is(button, a):hover {
-    color: var(--elena-button-text);
+    color: var(--_elena-button-text);
   }
 
   :scope:active {
@@ -123,7 +124,7 @@
     transition: none;
     box-shadow:
       0 0 0 1px #fff,
-      0 0 0 3px var(--elena-button-focus);
+      0 0 0 3px var(--_elena-button-focus);
   }
 
   .elena-button:focus {

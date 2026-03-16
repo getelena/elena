@@ -13,8 +13,12 @@ import "../spinner/spinner.js";
  *
  * @cssprop [--elena-button-text] - Overrides the default text color.
  * @cssprop [--elena-button-bg] - Overrides the default background color.
+ * @cssprop [--elena-button-border] - Overrides the default border color.
  * @cssprop [--elena-button-font] - Overrides the default font family.
+ * @cssprop [--elena-button-font-size] - Overrides the default font size.
+ * @cssprop [--elena-button-font-weight] - Overrides the default font weight.
  * @cssprop [--elena-button-radius] - Overrides the default border radius.
+ * @cssprop [--elena-button-focus] - Overrides the default focus ring color.
  */
 export default class Button extends Elena(HTMLElement) {
   static tagName = "elena-button";
