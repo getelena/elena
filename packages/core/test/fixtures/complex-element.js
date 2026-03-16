@@ -1,9 +1,5 @@
 import { Elena, html } from "../../src/elena.js";
 
-/**
- * Test fixture with a complex template containing conditional
- * HTML blocks, conditional attributes, and multiple interpolation types.
- */
 export default class ComplexElement extends Elena(HTMLElement) {
   static tagName = "complex-element";
   static props = ["label", "description", "error", "type", "name", "disabled", "value"];

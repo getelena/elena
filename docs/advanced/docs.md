@@ -30,7 +30,7 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 ### `@slot`
 
-Documents the default slot of an HTML Web Component or the slots that a web component with Shadow DOM accepts.
+Documents the default slot of a Composite Component or the slots that a web component with Shadow DOM accepts.
 
 ```js
 /**

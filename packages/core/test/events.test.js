@@ -120,8 +120,6 @@ describe("custom event dispatch", () => {
   });
 
   it("ElenaEvent does not carry detail (use CustomEvent for that)", async () => {
-    // ElenaEvent extends Event, not CustomEvent. The `detail` property
-    // is not part of EventInit, so it is not accessible on the event object.
     const el = await createElement("event-element");
     const handler = vi.fn();
     el.addEventListener("custom-event", handler);
@@ -136,7 +134,7 @@ describe("custom event dispatch", () => {
   it("ElenaEvent defaults (bubbles, composed) work when dispatched manually", async () => {
     const el = await createElement("event-element");
     const handler = vi.fn();
-    // Listen on parent to verify bubbling
+
     document.body.addEventListener("custom-event", handler);
 
     el.dispatchEvent(new ElenaEvent("custom-event"));

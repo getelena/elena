@@ -26,6 +26,8 @@ export function toPascal(str) {
 }
 
 /**
+ * Checks if a feature is selected.
+ *
  * @param {string[]} features
  * @param {string} feature
  * @returns {boolean}
@@ -77,7 +79,7 @@ function buildJSDoc(className, tagName, features) {
  * Generates the JavaScript source for an Elena component.
  *
  * @param {string} name - kebab-case component name (e.g. "button")
- * @param {string[]} features
+ * @param {string[]} features - selected features (e.g. "props","methods")
  * @returns {string}
  */
 function generateJS(name, features) {
@@ -145,7 +147,7 @@ ${className}.define();
  * Generates the TypeScript source for an Elena component.
  *
  * @param {string} name - kebab-case component name (e.g. "button")
- * @param {string[]} features
+ * @param {string[]} features - selected features (e.g. "props","methods")
  * @returns {string}
  */
 function generateTS(name, features) {

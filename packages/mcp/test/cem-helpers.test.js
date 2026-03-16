@@ -81,7 +81,7 @@ describe("cem-helpers", () => {
   });
 
   describe("getComponentType", () => {
-    it("returns 'with-render' for components with render()", () => {
+    it("returns 'primitive' for components with render()", () => {
       if (!cem) {
         return;
       }
@@ -89,15 +89,23 @@ describe("cem-helpers", () => {
       // Button has render in its source but CEM may not list it as a member
       // depending on the analyzer config. Check the actual data.
       const type = getComponentType(button);
-      expect(["with-render", "html-web-component"]).toContain(type);
+      expect(["primitive", "composite"]).toContain(type);
     });
 
-    it("returns 'html-web-component' for components without render()", () => {
+    it("returns 'composite' for components without render()", () => {
       if (!cem) {
         return;
       }
       const stack = findComponent(cem, "elena-stack");
-      expect(getComponentType(stack)).toBe("html-web-component");
+      expect(getComponentType(stack)).toBe("composite");
+    });
+
+    it("returns 'declarative' for components with static shadow", () => {
+      if (!cem) {
+        return;
+      }
+      const baseline = findComponent(cem, "elena-baseline");
+      expect(getComponentType(baseline)).toBe("declarative");
     });
   });
 
@@ -138,7 +146,7 @@ describe("cem-helpers", () => {
       expect(variant.default).toBe('"default"');
     });
 
-    it("includes slots for HTML Web Components", () => {
+    it("includes slots for Composite Components", () => {
       if (!cem) {
         return;
       }

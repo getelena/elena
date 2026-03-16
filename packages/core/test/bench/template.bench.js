@@ -7,15 +7,9 @@ import "../fixtures/lit-element.js";
 /**
  * Template rendering benchmarks.
  * Run with: npx vitest bench
- *
- * Compares three element types:
- * - vanilla-element:         Plain HTMLElement, no framework (baseline)
- * - elena-element:           Elena (Custom Element, reactive properties)
- * - lit-bench-element:       Lit (shadow DOM, async batched updates)
  */
 
-// Suppress console.warn during benchmarks (happy-dom fires
-// extra callbacks during DOM teardown that trigger warnings)
+// Suppress console.warn during benchmarks
 const originalWarn = console.warn;
 beforeAll(() => {
   console.warn = () => {};

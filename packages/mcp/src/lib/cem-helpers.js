@@ -27,14 +27,19 @@ export function findComponent(cem, nameOrTag) {
 }
 
 /**
- * Determine component type based on whether it has a render() method.
+ * Determine component type based on class members.
  *
  * @param {object} decl - CEM class declaration
- * @returns {"with-render" | "html-web-component"}
+ * @returns {"primitive" | "composite" | "declarative"}
  */
 export function getComponentType(decl) {
-  const hasRender = (decl.members || []).some(m => m.kind === "method" && m.name === "render");
-  return hasRender ? "with-render" : "html-web-component";
+  const members = decl.members || [];
+  const hasShadow = members.some(m => m.kind === "field" && m.name === "shadow" && m.static);
+  if (hasShadow) {
+    return "declarative";
+  }
+  const hasRender = members.some(m => m.kind === "method" && m.name === "render");
+  return hasRender ? "primitive" : "composite";
 }
 
 /**

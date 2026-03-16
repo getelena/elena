@@ -6,8 +6,6 @@ export const FRAMEWORKS_CONTENT = `# Framework Integrations
 
 Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers.
 
-Components that use \`render()\` own their inner DOM and frameworks must treat these as leaf nodes and never try to render inside them. HTML Web Components on the other hand work like any HTML container element and integrate naturally.
-
 ## Plain HTML
 
 Since Elena ships as ES modules, you can load your components directly on a webpage:

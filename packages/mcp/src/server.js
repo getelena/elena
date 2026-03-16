@@ -43,10 +43,26 @@ Components are built by extending the \`Elena()\` factory function from \`@elena
 import { Elena, html, nothing } from "@elenajs/core";
 \`\`\`
 
-There are two recommended patterns for building Elena components:
+There are three types of Progressive Web Components:
 
-### Component with \`render()\`
-Owns and renders its own HTML markup. All content is controlled through props. Examples: button, input, checkbox, switch.
+### 1. Composite Components
+Wrap and enhance the HTML composed inside them. No \`render()\` method: never touches the light DOM children. Examples: stack, card, layout, fieldset.
+
+\`\`\`js
+import { Elena } from "@elenajs/core";
+
+export default class Stack extends Elena(HTMLElement) {
+  static tagName = "elena-stack";
+  static props = ["direction"];
+
+  /** @attribute @type {"column" | "row"} */
+  direction = "column";
+}
+Stack.define();
+\`\`\`
+
+### 2. Primitive Components
+Own and render their own HTML markup. All content is controlled through props. Examples: button, input, checkbox, switch.
 
 \`\`\`js
 import { Elena, html } from "@elenajs/core";
@@ -68,35 +84,32 @@ export default class Button extends Elena(HTMLElement) {
 Button.define();
 \`\`\`
 
-### HTML Web Component
-Wraps and enhances composed children. No \`render()\` method — never touches the light DOM children. Examples: stack, card, layout, fieldset.
+### 3. Declarative Components
+A hybrid that uses Declarative Shadow DOM (\`<template shadowrootmode="open">\`). The browser attaches the shadow root during parsing, so the content is visible before JavaScript loads.
 
 \`\`\`js
 import { Elena } from "@elenajs/core";
 
-export default class Stack extends Elena(HTMLElement) {
-  static tagName = "elena-stack";
-  static props = ["direction"];
-
-  /** @attribute @type {"column" | "row"} */
-  direction = "column";
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static shadow = "open";
 }
-Stack.define();
+Button.define();
 \`\`\`
 
 ## Critical Rules
 
 1. **Always import from \`@elenajs/core\`** — use \`Elena\`, \`html\`, and \`nothing\` from this package.
-2. **Static class fields** — configure components with \`static tagName\`, \`static props\`, \`static events\`, \`static element\` (all optional). Do NOT use an options object.
+2. **Static class fields** — configure components with \`static tagName\`, \`static props\`, \`static events\`, \`static element\` (all optional).
 3. **Props** must be listed in \`static props\` AND given default class field values with JSDoc \`@attribute\` and \`@type\` annotations. Use \`{ name: "prop", reflect: false }\` in \`static props\` to suppress attribute reflection.
 4. **Text content** — Every Elena component has a built-in reactive \`this.text\` property. Use it in \`render()\` instead of \`this.textContent\`.
 5. **Templates** — \`render()\` must return an \`html\` tagged template literal. Use \`nothing\` (not empty strings) in conditional expressions.
 6. **Registration** — Always call \`ClassName.define()\` after the class body.
-7. **CSS (components with \`render()\`)** — Use \`@scope (tag-name)\` for style isolation. The encapsulation reset is: \`:scope, *:where(:not(img, svg):not(svg *)), *::before, *::after { all: unset; display: revert; }\`. Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles.
-8. **CSS (HTML Web Components)** — Use \`@scope (tag-name)\` but do NOT include the encapsulation reset. Only style the host element.
+7. **CSS (Primitive Components)** — Use \`@scope (tag-name)\` for style isolation. The encapsulation reset is: \`:scope, *:where(:not(img, svg):not(svg *)), *::before, *::after { all: unset; display: revert; }\`. Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles.
+8. **CSS (Composite Components)** — Use \`@scope (tag-name)\` but do NOT include the encapsulation reset. Only style the host element and provide customization with attribute selectors.
 9. **JSDoc** — Use class-level \`@displayName\`, \`@status\`, \`@event\`, \`@cssprop\`, \`@slot\` annotations. Mark internal methods with \`@internal\`.
-10. **HTML Web Components** must NOT have \`render()\`, \`static events\`, or \`static element\`.
-11. **Components with \`render()\`** must NOT have framework components rendered inside them — Elena calls \`replaceChildren()\` on render.
+10. **Composite Components** must NOT have \`render()\`, \`static events\`, or \`static element\`.
+11. **Primitive Components** must NOT have framework components rendered inside them — Elena calls \`replaceChildren()\` on render.
 12. **\`willUpdate()\`** — Optional lifecycle hook that runs before every render. Use it to compute derived state. Do not call \`super\` inside it.
 
 ## Attribute Naming Rules

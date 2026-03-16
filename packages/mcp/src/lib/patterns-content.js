@@ -36,7 +36,7 @@ Elena components are configured using static class fields on the class body:
 
 All static fields are optional.
 
-### Component with \`render()\`
+### Primitive Component
 
 \`\`\`js
 import { Elena, html } from "@elenajs/core";
@@ -85,7 +85,7 @@ export default class Button extends Elena(HTMLElement) {
 Button.define();
 \`\`\`
 
-### HTML Web Component
+### Composite Component
 
 \`\`\`js
 import { Elena } from "@elenajs/core";
@@ -110,6 +110,35 @@ export default class Stack extends Elena(HTMLElement) {
 }
 
 Stack.define();
+\`\`\`
+
+### Declarative Component
+
+\`\`\`js
+import { Elena } from "@elenajs/core";
+
+/**
+ * Button component using Declarative Shadow DOM.
+ *
+ * @displayName Button
+ * @status alpha
+ */
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static shadow = "open";
+}
+
+Button.define();
+\`\`\`
+
+\`\`\`html
+<elena-button>
+  <template shadowrootmode="open">
+    <link rel="stylesheet" href="button.css" />
+    <button><slot></slot></button>
+  </template>
+  Click me
+</elena-button>
 \`\`\`
 
 ---
@@ -478,7 +507,7 @@ Elena recommends the \`@scope\` at-rule for component styles. It prevents styles
 
 ### Elena CSS Encapsulation Pattern
 
-\`@scope\` prevents component styles from leaking out, but does not prevent global styles from leaking in. For components with \`render()\`, combine \`@scope\` with a universal \`all: unset\` reset:
+\`@scope\` prevents component styles from leaking out, but does not prevent global styles from leaking in. For Primitive Components, combine \`@scope\` with a universal \`all: unset\` reset:
 
 \`\`\`css
 /* Scope makes sure styles don't leak out */
@@ -499,7 +528,7 @@ Elena recommends the \`@scope\` at-rule for component styles. It prevents styles
 
 The \`:where(:not(img, svg):not(svg *))\` selector excludes images and SVGs from the reset so they continue to render correctly. \`display: revert\` restores browser default display values after \`all: unset\` clears them.
 
-**HTML Web Components must NOT use this reset** — they have no inner DOM to protect, and the reset would break composed children.
+**Composite Components must NOT use this reset** — they have no inner DOM to protect, and the reset would break composed children.
 
 ### CSS Cascade Layers Alternative
 
@@ -517,7 +546,7 @@ As an alternative to \`all: unset\`, you can control style precedence with \`@la
 
 ### Scoped styles (recommended)
 
-Full baseline pattern for a **component with \`render()\`**:
+Full baseline pattern for a **Primitive Component**:
 
 \`\`\`css
 /* Scope makes sure styles don't leak out */
@@ -616,7 +645,7 @@ elena-button[variant="primary"] { /* variant overrides */ }
 
 ### Pre-hydration pseudo-elements
 
-For better SSR support in components with \`render()\`, use CSS pseudo-elements referencing host attributes to surface content before JavaScript loads:
+For better SSR support in Primitive Components, use CSS pseudo-elements referencing host attributes to surface content before JavaScript loads:
 
 \`\`\`css
 :scope:not([hydrated])::before { content: attr(label); }
@@ -705,11 +734,11 @@ Always call \`ClassName.define()\` after the class body to register the element.
 
 Elena's approach to SSR:
 
-- **Composite Components** (HTML Web Components) provide full SSR support by default: their HTML lives entirely in the Light DOM.
-- **Primitive Components** (components with \`render()\`) provide partial SSR support: base HTML and CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
+- **Composite Components** provide full SSR support by default: their HTML lives entirely in the Light DOM.
+- **Primitive Components** provide partial SSR support: base HTML and CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
 - **Declarative Components** use Declarative Shadow DOM for cases where you need stronger isolation but still want the component to render server-side.
 
-For components with \`render()\`, ship CSS styles that visually match both loading and hydrated states to avoid FOUC/FOIC. Use the \`hydrated\` attribute:
+For Primitive Components, ship CSS styles that visually match both loading and hydrated states to avoid FOUC/FOIC. Use the \`hydrated\` attribute:
 
 \`\`\`css
 :scope:not([hydrated]),
@@ -718,7 +747,7 @@ For components with \`render()\`, ship CSS styles that visually match both loadi
 }
 \`\`\`
 
-For better SSR in components with \`render()\`, use CSS pseudo-elements referencing host attributes:
+For better SSR in Primitive Components, use CSS pseudo-elements referencing host attributes:
 
 \`\`\`css
 :scope:not([hydrated])::before { content: attr(label); }
@@ -742,12 +771,12 @@ button.click(); // Safe after defined
 
 ## Framework Compatibility
 
-Rules for **components with \`render()\`** when used with a framework:
+Rules for **Primitive Components** when used with a framework:
 
-- Never render a framework component _inside_ a component with \`render()\`. Elena calls \`replaceChildren()\` on render, which destroys the framework's component tree.
+- Never render a framework component _inside_ a Primitive Component. Elena calls \`replaceChildren()\` on render, which destroys the framework's component tree.
 - Avoid the framework and Elena both mutating the same attribute — the framework's reconciler would overwrite Elena's changes, triggering many re-renders.
 - Treat framework-controlled props as read-only inputs inside \`render()\`. Elena communicates back via events, the framework updates state.
-- For dynamic text, use the \`text\` property instead of children, since components with \`render()\` own their internal DOM and frameworks cannot update children after hydration:
+- For dynamic text, use the \`text\` property instead of children, since Primitive Components own their internal DOM and frameworks cannot update children after hydration:
 
 \`\`\`jsx
 // React
@@ -763,7 +792,7 @@ Rules for **components with \`render()\`** when used with a framework:
 
 **React 17 note:** React 17 does not pass Array or Object props (or event handlers) to web components correctly. Use React 18+.
 
-**HTML Web Components** are safe to compose just like any HTML container element — the framework renders both the wrapper and its children.
+**Composite Components** are safe to compose just like any HTML container element — the framework renders both the wrapper and its children.
 
 ---
 

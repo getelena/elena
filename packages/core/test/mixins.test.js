@@ -328,7 +328,7 @@ describe("mixins", () => {
     });
   });
 
-  describe("mixin with HTML Web Component", () => {
+  describe("mixin with Composite Component", () => {
     const Collapsible = superClass =>
       class extends superClass {
         connectedCallback() {
@@ -354,7 +354,7 @@ describe("mixins", () => {
     }
     CollapsiblePanelEl.define();
 
-    it("mixin works with HTML Web Component (no render)", () => {
+    it("mixin works with Composite Component (no render)", () => {
       const el = createElement("test-collapsible-mixin");
       expect(el.hasAttribute("hydrated")).toBe(true);
       expect(el.style.display).toBe("");

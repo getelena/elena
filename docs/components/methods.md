@@ -27,7 +27,7 @@ willUpdate() {
 
 ### `render()`
 
-Returns the component’s HTML as an `html` template. Called on connect and on every re-render. HTML Web Components that don’t own their inner HTML don’t use this method. See [Templates](./templates) for full details.
+Returns the component’s HTML as an `html` template. Called on connect and on every re-render. Composite Components that don’t own their inner HTML don’t use this method. See [Templates](./templates) for full details.
 
 ```js
 render() {

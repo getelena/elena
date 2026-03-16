@@ -1,9 +1,5 @@
 import { Elena, html } from "../../src/elena.js";
 
-/**
- * Test fixture with a multiline template to verify
- * whitespace stripping from template indentation.
- */
 export default class MultilineElement extends Elena(HTMLElement) {
   static tagName = "multiline-element";
   static props = ["label", "type", "name", "disabled"];

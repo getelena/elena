@@ -3,7 +3,7 @@ import { createElement } from "./setup.js";
 import "./fixtures/wrapper-element.js";
 import "./fixtures/child-element.js";
 
-describe("HTML Web Components", () => {
+describe("Composite Components", () => {
   describe("hydration", () => {
     it("gets hydrated attribute after connecting", async () => {
       const el = await createElement("wrapper-element");
@@ -12,7 +12,6 @@ describe("HTML Web Components", () => {
 
     it("does not render any inner template", async () => {
       const el = await createElement("wrapper-element");
-      // HTML Web Components have no render(), they must not replace their light DOM
       expect(el.innerHTML.trim()).toBe("");
     });
   });
@@ -132,10 +131,6 @@ describe("HTML Web Components", () => {
       const wrapper = await createElement("wrapper-element");
       const child = document.createElement("child-element");
       wrapper.appendChild(child);
-      // element ref is set on first connectedCallback (before child was added here),
-      // so it may be null or the first child depending on timing
-      // The key invariant: wrapper's own element ref must never be one of its children
-      // when children are added after connection
       expect(wrapper.element).not.toBe(child);
     });
 
@@ -143,7 +138,6 @@ describe("HTML Web Components", () => {
       const wrapper = await createElement("wrapper-element");
       const child = document.createElement("child-element");
       wrapper.appendChild(child);
-      // child's .element is its own inner rendered element, not the wrapper
       expect(child.element).toBe(child.querySelector(".child-inner"));
     });
   });

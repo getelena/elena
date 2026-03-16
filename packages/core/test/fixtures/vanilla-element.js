@@ -1,7 +1,3 @@
-/**
- * Vanilla custom element with no framework.
- * Used as a performance baseline in benchmarks.
- */
 class VanillaElement extends HTMLElement {
   static get observedAttributes() {
     return ["variant"];

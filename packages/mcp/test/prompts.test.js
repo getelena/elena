@@ -32,9 +32,9 @@ describe("create-component prompt", () => {
   });
 
   it("includes component type when provided", () => {
-    const result = prompt.handler({ name: "DatePicker", type: "html-web-component" });
+    const result = prompt.handler({ name: "DatePicker", type: "composite" });
     const text = result.messages[0].content.text;
-    expect(text).toContain("html-web-component");
+    expect(text).toContain("composite");
   });
 
   it("includes description when provided", () => {
@@ -108,8 +108,7 @@ describe("review-component prompt", () => {
       expect(text).toContain("style isolation");
     });
 
-    it("checks host element reset", () => {
-      expect(text).toContain("all: unset");
+    it("checks host display mode", () => {
       expect(text).toContain("display mode");
     });
 

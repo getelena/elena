@@ -8,17 +8,17 @@ describe("PATTERNS_CONTENT", () => {
   });
 
   describe("component types", () => {
-    it("documents components with render()", () => {
-      expect(PATTERNS_CONTENT).toContain("Component with");
+    it("documents Primitive Components", () => {
+      expect(PATTERNS_CONTENT).toContain("Primitive Components");
       expect(PATTERNS_CONTENT).toContain("render()");
     });
 
-    it("documents html web components", () => {
-      expect(PATTERNS_CONTENT).toContain("HTML Web Components");
+    it("documents Composite Components", () => {
+      expect(PATTERNS_CONTENT).toContain("Composite Components");
       expect(PATTERNS_CONTENT).toContain("no `render()` method");
     });
 
-    it("documents declarative components", () => {
+    it("documents Declarative Components", () => {
       expect(PATTERNS_CONTENT).toContain("Declarative Components");
       expect(PATTERNS_CONTENT).toContain("Declarative Shadow DOM");
     });
@@ -162,8 +162,8 @@ describe("PATTERNS_CONTENT", () => {
   });
 
   describe("SSR", () => {
-    it("documents html web component full SSR support", () => {
-      expect(PATTERNS_CONTENT).toContain("HTML Web Components");
+    it("documents compostive component full SSR support", () => {
+      expect(PATTERNS_CONTENT).toContain("Composite Components");
       expect(PATTERNS_CONTENT).toContain("full SSR support");
     });
 
@@ -197,7 +197,7 @@ describe("PATTERNS_CONTENT", () => {
       expect(PATTERNS_CONTENT).toContain(':text="buttonText"');
     });
 
-    it("notes HTML Web Components are safe to compose", () => {
+    it("notes Composite Components are safe to compose", () => {
       expect(PATTERNS_CONTENT).toContain("safe to compose");
     });
   });

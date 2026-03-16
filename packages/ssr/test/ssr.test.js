@@ -72,12 +72,12 @@ describe("ssr", () => {
     expect(html).toBe('<br><hr><img src="test.png">');
   });
 
-  it("renders an HTML Web Component preserving children", () => {
+  it("renders a Composite Component preserving children", () => {
     const html = ssr(`<elena-stack direction="row"><p>Hello</p></elena-stack>`);
     expect(html).toBe('<elena-stack direction="row"><p>Hello</p></elena-stack>');
   });
 
-  it("renders nested primitive inside HTML Web Component", () => {
+  it("renders nested primitive inside Composite Component", () => {
     const html = ssr(`
       <elena-stack>
         <elena-button>Send</elena-button>
@@ -88,7 +88,7 @@ describe("ssr", () => {
     );
   });
 
-  it("renders multiple primitives inside HTML Web Component", () => {
+  it("renders multiple primitives inside Composite Component", () => {
     const html = ssr(`
       <elena-stack direction="row">
         <elena-input type="email" placeholder="you@example.com"></elena-input>
@@ -105,7 +105,7 @@ describe("ssr", () => {
     );
   });
 
-  it("renders deeply nested HTML Web Components and primitives", () => {
+  it("renders deeply nested composites and primitives", () => {
     const html = ssr(`
       <elena-stack>
         <elena-stack direction="row">
@@ -146,7 +146,7 @@ describe("ssr", () => {
     expect(html).not.toContain("elena-input-error");
   });
 
-  it("renders a complex template inside an HTML Web Component", () => {
+  it("renders a complex template inside a composite", () => {
     const html = ssr(`
       <elena-stack>
         <elena-complex-input identifier="email" label="Email" type="email" error="Invalid"></elena-complex-input>

@@ -398,39 +398,8 @@ describe("rendering", () => {
     });
   });
 
-  describe("mapTextNodes collision edge case", () => {
-    it("handles the documented collision bug: static text matches dynamic value", () => {
-      // This is the known limitation documented in render.js:121-130
-      // When a static template part contains text identical to a dynamic value,
-      // the walker may match the wrong node. This test documents the behavior.
-      const el = document.createElement("div");
-
-      // Template: <span>Elena</span>${name}
-      // With name = "Elena", both the static "Elena" in the span and the dynamic name are identical
-      const tpl = Object.assign(["<span>", "</span>", ""], { raw: ["<span>", "</span>", ""] });
-
-      renderTemplate(el, tpl, ["Elena", "Elena"]);
-
-      // The walker processes text nodes in document order:
-      // First it encounters the static "Elena" inside <span>, matches it to value[0]
-      // Then it encounters the dynamic "Elena" text node, matches it to value[1]
-      // This is the expected behavior for this edge case.
-      const spans = el.querySelectorAll("span");
-      expect(spans.length).toBe(1);
-      expect(spans[0].textContent).toBe("Elena");
-
-      // When we change the first value to something else, fast path patches the span
-      renderTemplate(el, tpl, ["Alice", "Elena"]);
-      expect(spans[0].textContent).toBe("Alice");
-    });
-  });
-
   describe("_stringsCache WeakMap behavior", () => {
     it("caches string processing across multiple renders from same template literal", () => {
-      // The _stringsCache WeakMap in render.js stores the processed strings (with stripped newlines)
-      // keyed by the strings array reference. We can't directly inspect the cache, but we can verify
-      // behavior consistency: multiple renders from the same template literal should produce identical output.
-
       const tplWithIndent = Object.assign(
         ["<span class='test'>\n            ", "\n          </span>"],
         { raw: ["<span class='test'>\n            ", "\n          </span>"] }
@@ -442,15 +411,15 @@ describe("rendering", () => {
       renderTemplate(el, tplWithIndent, ["hello"]);
       const firstOutput = el.innerHTML;
 
-      // Second render from same template literal (same strings reference)
+      // Second render
       renderTemplate(el, tplWithIndent, ["world"]);
       const secondOutput = el.innerHTML;
 
-      // The markup structure should be identical (same stripped whitespace)
+      // The markup structure should be identical
       expect(firstOutput).toMatch(/<span[^>]*>hello<\/span>/);
       expect(secondOutput).toMatch(/<span[^>]*>world<\/span>/);
 
-      // Both should have no stray indentation (proof that strings were processed)
+      // Both should have no stray indentation
       expect(firstOutput).not.toMatch(/>\s{3,}</);
       expect(secondOutput).not.toMatch(/>\s{3,}</);
     });

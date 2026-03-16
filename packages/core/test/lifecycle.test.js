@@ -16,8 +16,6 @@ describe("lifecycle", () => {
     });
 
     it("falls back to firstElementChild when selector does not match", async () => {
-      // basic-element's selector is ".inner" which does match,
-      // so element should be the .inner span
       const el = await createElement("basic-element");
       expect(el.element.tagName).toBe("SPAN");
     });
@@ -25,7 +23,6 @@ describe("lifecycle", () => {
 
   describe("disconnectedCallback", () => {
     it("removes event listeners on disconnect", async () => {
-      // Import event-element which has events
       await import("./fixtures/event-element.js");
       const el = await createElement("event-element");
       const inner = el.element;
@@ -39,7 +36,6 @@ describe("lifecycle", () => {
       await import("./fixtures/event-element.js");
       const el = await createElement("event-element");
       el.remove();
-      // _events is now false; calling disconnectedCallback again should be a no-op
       const spy = vi.spyOn(el.element, "removeEventListener");
       el.disconnectedCallback();
       expect(spy).not.toHaveBeenCalled();
@@ -53,7 +49,6 @@ describe("lifecycle", () => {
 
       el.setAttribute("label", "World");
       await el.updateComplete;
-      // render replaces children, so query the fresh DOM
       expect(el.querySelector(".inner").textContent).toBe("World");
     });
 
@@ -69,7 +64,6 @@ describe("lifecycle", () => {
       const el = createElement("basic-element", { label: "hello" });
       const spy = vi.spyOn(el, "render");
 
-      // Simulate attributeChangedCallback firing while render() is on the stack
       el._isRendering = true;
       el.attributeChangedCallback("label", "hello", "world");
 
@@ -84,7 +78,6 @@ describe("lifecycle", () => {
       el._isRendering = true;
       el.attributeChangedCallback("label", "hello", "world");
 
-      // getProps still runs, prop is updated even though render() was not called
       expect(el.label).toBe("world");
       el._isRendering = false;
     });
@@ -107,9 +100,6 @@ describe("lifecycle", () => {
     it("does not stack overflow when render() normalizes its own prop", async () => {
       await import("./fixtures/self-mutating-element.js");
       const el = createElement("self-mutating-element", { label: "hello" });
-
-      // Changing the label triggers render() which calls setAttribute("label", "WORLD"),
-      // which would re-enter attributeChangedCallback, the guard must stop the loop.
       expect(() => el.setAttribute("label", "world")).not.toThrow();
       await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("WORLD");
@@ -218,13 +208,11 @@ describe("lifecycle", () => {
     it("no render and no options: connects safely with null element ref", async () => {
       await import("./fixtures/no-render-no-options.js");
       const el = await createElement("no-render-no-options");
-      // No element option → wrapper-style component, null element ref is expected (no warn)
       expect(el.element).toBeNull();
       expect(el.hasAttribute("hydrated")).toBe(true);
     });
 
     it("warns when an explicit element selector is set but does not match", async () => {
-      // no-template-element uses element: ".missing" which never resolves
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
       const el = await createElement("no-template-element");
       expect(spy).toHaveBeenCalledWith(expect.stringContaining("Element not found."));
@@ -263,14 +251,10 @@ describe("lifecycle", () => {
   });
 
   describe("render call count (no redundant re-renders)", () => {
-    // Helper: resolves after current macrotask so MutationObserver callbacks have fired.
+    // Helper: resolves after current macrotask.
     const tick = () => new Promise(r => setTimeout(r, 0));
 
     it("text-position attribute change: render called exactly once", async () => {
-      // basic-element uses text-position interpolation only → patchTextNodes fast path,
-      // no replaceChildren → observer never fires.
-      // Start with a non-empty label so the initial render creates a real text node that
-      // mapTextNodes can capture; then patchTextNodes can update it in-place without fullRender.
       const el = await createElement("basic-element", { label: "initial" });
       const spy = vi.spyOn(el, "render");
 
@@ -295,8 +279,6 @@ describe("lifecycle", () => {
     });
 
     it("attribute-position first change: render called exactly once", async () => {
-      // attr-element has variant="${this.variant}" in an attribute position.
-      // Changing variant triggers fullRender → replaceChildren.
       const el = await createElement("attr-element");
       const spy = vi.spyOn(el, "render");
 
@@ -609,7 +591,7 @@ describe("lifecycle", () => {
       expect(() => el.remove()).not.toThrow();
     });
 
-    it("safely handles disconnect of a HTML Web Component with no events", async () => {
+    it("safely handles disconnect of a Composite Component with no events", async () => {
       await import("./fixtures/wrapper-element.js");
       const el = await createElement("wrapper-element");
       expect(() => el.remove()).not.toThrow();

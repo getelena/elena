@@ -1,8 +1,5 @@
 import { LitElement, html } from "lit";
 
-/**
- * Lit element used as a comparison in benchmarks.
- */
 class LitBenchElement extends LitElement {
   static properties = {
     variant: { type: String },

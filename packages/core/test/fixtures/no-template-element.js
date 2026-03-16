@@ -8,7 +8,6 @@ export default class NoTemplateElement extends Elena(HTMLElement) {
   label = "";
 
   render() {
-    // Intentionally renders nothing.
     return html`<div></div>`;
   }
 }

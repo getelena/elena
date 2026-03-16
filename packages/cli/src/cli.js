@@ -38,7 +38,6 @@ const BANNER = `
 const enterAltScreen = () => process.stdout.write("\x1b[?1049h");
 const exitAltScreen = () => process.stdout.write("\x1b[?1049l");
 
-/** Runs the interactive CLI prompts and writes the generated component files. */
 async function main() {
   enterAltScreen();
 

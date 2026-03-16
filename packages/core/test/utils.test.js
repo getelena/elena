@@ -7,7 +7,6 @@ import NothingElement from "./fixtures/nothing-element.js";
 
 describe("utils", () => {
   describe("renderTemplate fast-path edge cases", () => {
-    // Reuse the same strings reference to trigger the patchTextNodes fast path
     const tplStrings = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
 
     it("patches text node with null value on fast path", () => {
@@ -197,23 +196,18 @@ describe("utils", () => {
     });
 
     it("nothing vs empty string vs null vs undefined behavioral differences", () => {
-      // nothing: __raw, toString() → ""
       expect(String(nothing)).toBe("");
       expect(nothing.__raw).toBe(true);
 
-      // empty string: goes through escapeHtml, produces ""
       const withEmpty = html`<span>${""}</span>`;
       expect(String(withEmpty)).toBe("<span></span>");
 
-      // null: coerced to ""
       const withNull = html`<span>${null}</span>`;
       expect(String(withNull)).toBe("<span></span>");
 
-      // undefined: coerced to ""
       const withUndef = html`<span>${undefined}</span>`;
       expect(String(withUndef)).toBe("<span></span>");
 
-      // false: becomes "false" string (not empty!)
       const withFalse = html`<span>${false}</span>`;
       expect(String(withFalse)).toBe("<span>false</span>");
     });
@@ -283,7 +277,6 @@ describe("utils", () => {
     it("nested html fragment escapes its own dynamic values but not the fragment itself", () => {
       const inner = html`<b>${"<script>"}</b>`;
       const outer = html`<div>${inner}</div>`;
-      // inner value is escaped, but the html fragment tags are passed through raw
       expect(String(outer)).toBe("<div><b>&lt;script&gt;</b></div>");
       expect(String(outer)).not.toContain("<script>");
     });

@@ -86,7 +86,7 @@ describe("complex HTML structures", () => {
       '<elena-link href="/contact" target="_blank" hydrated><a href="/contact" target="_blank">Contact</a></elena-link>'
     );
 
-    // HTML Web Components preserved with children
+    // Composite Components preserved with children
     expect(html).toContain("<elena-section>");
     expect(html).toContain('<elena-card variant="primary">');
 

@@ -15,7 +15,7 @@ export function registerCreatePrompt(server) {
       argsSchema: {
         name: z.string().describe("Component name in PascalCase"),
         type: z
-          .enum(["with-render", "html-web-component"])
+          .enum(["primitive", "composite", "declarative"])
           .optional()
           .describe("Component type (will ask if not provided)"),
         description: z.string().optional().describe("Brief component description"),
@@ -39,11 +39,11 @@ export function registerCreatePrompt(server) {
               "4. Review the generated code and suggest any improvements.",
               "",
               "Key Elena rules to follow:",
-              "- Components with render() own their internal DOM. HTML Web Components wrap children with no render().",
-              "- Configure components with static class fields: static tagName, static props, static events, static element. No options object.",
+              "- Primitive Components own their internal DOM via render(). Composite Components wrap children with no render(). Declarative Components use Declarative Shadow DOM.",
+              "- Configure components with static class fields: static tagName, static props, static events, static element.",
               "- Props must be listed in static props AND given default class field values.",
               "- Use JSDoc @attribute, @type, @cssprop, @event, @status, @displayName annotations.",
-              "- CSS must use @scope for style isolation. Components with render() need the encapsulation reset (:scope, *:where(:not(img, svg):not(svg *)), *::before, *::after { all: unset; display: revert; }) and must style both :scope:not([hydrated]) and the inner element. HTML Web Components must NOT include the reset.",
+              "- CSS must use @scope for style isolation. Primitive Components need the encapsulation reset (:scope, *:where(:not(img, svg):not(svg *)), *::before, *::after { all: unset; display: revert; }) and must style both :scope:not([hydrated]) and the inner element. Composite Components must NOT include the reset.",
               "- Tag name format: elena-<name> (e.g. elena-button).",
               "- If the component needs computed/derived state before rendering, add a willUpdate() method (no super call needed).",
             ]

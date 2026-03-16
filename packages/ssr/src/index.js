@@ -143,7 +143,7 @@ function renderComponent(ComponentClass, attrs, textContent) {
   instance._text = textContent;
 
   // Read each declared prop’s default value type so we know how to convert
-  // the incoming attribute strings (e.g. "5" → 5 for a number prop).
+  // the incoming attribute strings (e.g. "5" to 5 for a number prop).
   const propDefaultTypes = {};
   for (const p of ComponentClass.props || []) {
     const name = typeof p === "string" ? p : p.name;
