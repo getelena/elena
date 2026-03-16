@@ -101,11 +101,10 @@ describe("cem-helpers", () => {
     });
 
     it("returns 'declarative' for components with static shadow", () => {
-      if (!cem) {
-        return;
-      }
-      const baseline = findComponent(cem, "elena-baseline");
-      expect(getComponentType(baseline)).toBe("declarative");
+      const decl = {
+        members: [{ kind: "field", name: "shadow", static: true }],
+      };
+      expect(getComponentType(decl)).toBe("declarative");
     });
   });
 
