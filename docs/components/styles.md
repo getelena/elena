@@ -178,7 +178,13 @@ Define public CSS custom properties on `:scope` to expose a theming API for cons
 /* Component definition */
 @scope (elena-button) {
   :scope {
-    --elena-button-bg: blue;
+    /* Public theming API (with default values set) */
+    --_elena-button-bg: var(--elena-button-bg, blue);
+    --_elena-button-text: var(--elena-button-text, white);
+
+    /* Internal theming API references (usage) */
+    background-color: var(--_elena-button-bg);
+    color: var(--_elena-button-text);
   }
 }
 ```
