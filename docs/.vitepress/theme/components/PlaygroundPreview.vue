@@ -52,7 +52,7 @@ watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) =>
       class="pg-preview-iframe"
       :class="{ 'pg-preview-ready': ready }"
       :srcdoc="srcdoc"
-      sandbox="allow-scripts"
+      sandbox="allow-scripts allow-same-origin"
       title="Component preview"
     ></iframe>
   </div>
