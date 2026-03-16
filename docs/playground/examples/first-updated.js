@@ -52,7 +52,7 @@ MyAutofocus.define();`,
   input {
     font-size: 0.875rem;
     padding: 0.5rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #a5a9af;;
     border-radius: 4px;
     display: block;
   }

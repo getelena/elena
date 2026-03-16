@@ -44,7 +44,7 @@ MyInput.define();`,
     margin-bottom: 0.75rem;
   }
 
-  .my-input:is(div) {
+  .my-input {
     font-family: system-ui, sans-serif;
     display: flex;
     flex-direction: column;
@@ -61,7 +61,7 @@ MyInput.define();`,
   input {
     font-size: 0.875rem;
     padding: 0.5rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #a5a9af;
     border-radius: 4px;
     display: block;
   }

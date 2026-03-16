@@ -59,7 +59,7 @@ MyCounter.define();`,
     align-items: center;
     gap: 0;
     font-family: system-ui, sans-serif;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #a5a9af;
     border-radius: 6px;
     overflow: hidden;
   }
@@ -69,14 +69,14 @@ MyCounter.define();`,
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    background: #f7fafc;
+    background: #e2e8f0;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .my-counter button:hover {
-    background: #edf2f7;
+    filter: brightness(0.95);
   }
 
   .my-counter button:active {
