@@ -61,20 +61,6 @@ MyFilter.define();`,
     max-width: 250px;
   }
 
-  input {
-    width: 100%;
-    padding: 0.5rem 1rem;
-    border: 1px solid #a5a9af;
-    border-radius: 4px;
-    box-sizing: border-box;
-    display: block;
-  }
-
-  input:focus {
-    outline: 2px solid #3182ce;
-    outline-offset: -1px;
-  }
-
   ul {
     display: block;
     padding: 0.5rem 0;
@@ -100,6 +86,21 @@ MyFilter.define();`,
     margin-top: 1rem;
     display: block;
   }
+}
+  
+input {
+  all: unset;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #a5a9af;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
+}
+
+input:focus {
+  outline: 2px solid #3182ce;
+  outline-offset: -1px;
 }`,
   html: `<my-filter></my-filter>`,
 };

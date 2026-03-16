@@ -98,21 +98,22 @@ MyTags.define();`,
   .remove:active {
     transform: translateY(1px);
   }
+}
 
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #a5a9af;
-    font-family: system-ui, sans-serif;
-    border-radius: 4px;
-    box-sizing: border-box;
-    display: block;
-  }
+input {
+  all: unset;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #a5a9af;
+  font-family: system-ui, sans-serif;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
+}
 
-  input:focus {
-    outline: 2px solid #3182ce;
-    outline-offset: -1px;
-  }
+input:focus {
+  outline: 2px solid #3182ce;
+  outline-offset: -1px;
 }`,
   html: `<my-tags></my-tags>`,
 };

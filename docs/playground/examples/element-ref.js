@@ -57,21 +57,22 @@ MyInput.define();`,
     display: block;
   }
 
-  input {
-    padding: 0.5rem;
-    border: 1px solid #a5a9af;
-    border-radius: 4px;
-    display: block;
-  }
-
-  input:focus {
-    outline: 2px solid #3182ce;
-    outline-offset: -1px;
-  }
-
   .hint {
     color: #898f97;
   }
+}
+
+input {
+  all: unset;
+  padding: 0.5rem;
+  border: 1px solid #a5a9af;
+  border-radius: 4px;
+  display: block;
+}
+
+input:focus {
+  outline: 2px solid #3182ce;
+  outline-offset: -1px;
 }`,
   html: `<my-input label="Character counter"></my-input>`,
 };
