@@ -69,8 +69,8 @@ const CHEVRON_ICON = \`<svg xmlns="http://www.w3.org/2000/svg" width="11" height
  * @cssprop [--baseline-color-limited] - Overrides the "limited availability" accent color.
  * @cssprop [--baseline-color-no-data] - Overrides the "unknown" accent color.
  */
-export default class Baseline extends Elena(HTMLElement) {
-  static tagName = "elena-baseline";
+export default class BaselineSupport extends Elena(HTMLElement) {
+  static tagName = "baseline-support";
   static props = ["featureid"];
   static element = "details";
   static shadow = "open";
@@ -467,10 +467,10 @@ export default class Baseline extends Elena(HTMLElement) {
   }
 }
 
-Baseline.define();`,
-  html: `<elena-baseline featureid="autonomous-custom-elements"></elena-baseline>
-<elena-baseline featureid="cascade-layers"></elena-baseline>
-<elena-baseline featureid="scope"></elena-baseline>
-<elena-baseline featureid="declarative-shadow-dom"></elena-baseline>
-<elena-baseline featureid="anchor-positioning"></elena-baseline>`,
+BaselineSupport.define();`,
+  html: `<baseline-support featureid="autonomous-custom-elements"></baseline-support>
+<baseline-support featureid="cascade-layers"></baseline-support>
+<baseline-support featureid="scope"></baseline-support>
+<baseline-support featureid="declarative-shadow-dom"></baseline-support>
+<baseline-support featureid="anchor-positioning"></baseline-support>`,
 };
