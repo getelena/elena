@@ -31,19 +31,28 @@ MyButton.define();`,
   }
 
   :scope {
+    /* Public theming API (with default values set) */
+    --_my-button-font: var(--my-button-font, system-ui, sans-serif);
+    --_my-button-radius: var(--my-button-radius, 6px);
+    --_my-button-text: var(--my-button-text, #1a202c);
+    --_my-button-bg: var(--my-button-bg, #e2e8f0);
+
     display: inline-block;
     cursor: pointer;
   }
 
   :scope:not([hydrated]),
   .my-button:is(button) {
-    font-family: var(--my-button-font, system-ui, sans-serif);
+
+    /* Internal theming API references (usage) */
+    border-radius: var(--_my-button-radius);
+    background: var(--_my-button-bg);
+    color: var(--_my-button-text);
+    font-family: var(--_my-button-font);
+
     font-size: 0.875rem;
     font-weight: 500;
     padding: 0.5rem 1rem;
-    border-radius: var(--my-button-radius, 6px);
-    background: var(--my-button-bg, #e2e8f0);
-    color: var(--my-button-text, #1a202c);
     display: inline-flex;
   }
 }`,
