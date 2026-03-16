@@ -178,6 +178,10 @@
   background: var(--vp-code-block-bg);
 }
 
+html:not(.dark) .pg-editor-container .cm-selectionBackground {
+  background: #3e4451 !important;
+}
+
 /* ---------------------------------------------
 / PREVIEW
 / --------------------------------------------- */
