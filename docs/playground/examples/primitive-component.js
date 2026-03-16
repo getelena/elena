@@ -31,8 +31,8 @@ MyButton.define();`,
   }
 
   :scope {
-    --my-button-bg: #e2e8f0;
-    --my-button-text: #1a202c;
+    --my-button-bg: #eaecf0;
+    --my-button-text: #172b4d;
     display: inline-block;
     border-radius: 6px;
     cursor: pointer;
@@ -56,23 +56,23 @@ MyButton.define();`,
     filter: brightness(0.95);
   }
 
-  :scope:active {
+  .my-button:active {
     opacity: 0.7;
   }
 
-  :scope:focus-within {
-    outline: 2px solid #3182ce;
+  .my-button:focus {
+    outline: 2px solid #5a44d4;
     outline-offset: 1px;
   }
 
   :scope[variant="primary"] {
-    --my-button-bg: #3182ce;
-    --my-button-text: white;
+    --my-button-bg: #5a44d4;
+    --my-button-text: #fff;
   }
 
   :scope[variant="danger"] {
-    --my-button-bg: #e53e3e;
-    --my-button-text: white;
+    --my-button-bg: #d44444;
+    --my-button-text: #fff;
   }
 }`,
   html: `<my-button>Default</my-button>

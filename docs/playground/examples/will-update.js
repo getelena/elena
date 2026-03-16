@@ -100,7 +100,7 @@ my-filter input {
 }
 
 my-filter input:focus {
-  outline: 2px solid #3182ce;
+  outline: 2px solid #5a44d4;
   outline-offset: -1px;
 }`,
   html: `<my-filter></my-filter>`,

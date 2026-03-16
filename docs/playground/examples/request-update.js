@@ -74,8 +74,8 @@ MyTags.define();`,
 
   .tag {
     padding: 0.35rem 0.75rem;
-    background: #ddecff;
-    color: #235a95;
+    background: #ede9ff;
+    color: #5a44d4;
     border-radius: 4px;
     display: inline-flex;
     align-items: center;
@@ -110,7 +110,7 @@ my-tags input {
 }
 
 my-tags input:focus {
-  outline: 2px solid #3182ce;
+  outline: 2px solid #5a44d4;
   outline-offset: -1px;
 }`,
   html: `<my-tags></my-tags>`,

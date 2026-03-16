@@ -19,16 +19,16 @@ export default class MyBadge extends Elena(HTMLElement) {
       font-weight: 600;
       padding: 0.25rem 0.75rem;
       border-radius: 9999px;
-      background: var(--badge-bg, #e2e8f0);
-      color: var(--badge-text, #1a202c);
+      background: var(--badge-bg, #eaecf0);
+      color: var(--badge-text, #172b4d);
     }
     :host([variant="success"]) {
-      --badge-bg: #c6f6d5;
-      --badge-text: #22543d;
+      --badge-bg: #5B7F24;
+      --badge-text: #fff;
     }
     :host([variant="error"]) {
-      --badge-bg: #fed7d7;
-      --badge-text: #742a2a;
+      --badge-bg: #d44444;
+      --badge-text: #fff;
     }
   \`;
 

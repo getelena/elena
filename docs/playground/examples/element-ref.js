@@ -72,7 +72,7 @@ my-input input {
 }
 
 my-input input:focus {
-  outline: 2px solid #3182ce;
+  outline: 2px solid #5a44d4;
   outline-offset: -1px;
 }`,
   html: `<my-input label="Character counter"></my-input>`,

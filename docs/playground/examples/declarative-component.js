@@ -9,40 +9,11 @@ export default class MyButton extends Elena(HTMLElement) {
 }
 
 MyButton.define();`,
-  css: `/* Styles are linked inside each <template> block.
-   Since this playground injects CSS into the page,
-   we define the shadow root styles here for reference.
-
-   In production, these would live in a separate
-   stylesheet loaded via <link> in the template. */
-
-button {
-  font-family: system-ui, sans-serif;
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: none;
-  background: #3182ce;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  filter: brightness(0.9);
-}
-
-button:active {
-  opacity: 0.7;
-}
-
-button:focus {
-    outline: 2px solid #3182ce;
-    outline-offset: 1px;
-}`,
   html: `<my-button>
   <template shadowrootmode="open">
     <style>
+      /* In production, these would live in a separate 
+         stylesheet loaded via <link> in the template. */
       button {
         font-family: system-ui, sans-serif;
         font-size: 0.875rem;
@@ -50,8 +21,8 @@ button:focus {
         padding: 0.5rem 1rem;
         border-radius: 6px;
         border: none;
-        background: #3182ce;
-        color: white;
+        background: #5a44d4;
+        color: #fff;
         cursor: pointer;
       }
       button:hover {
@@ -61,7 +32,7 @@ button:focus {
         opacity: 0.7;
       }
       button:focus {
-        outline: 2px solid #3182ce;
+        outline: 2px solid #5a44d4;
         outline-offset: 1px;
       }
     </style>
@@ -73,6 +44,8 @@ button:focus {
 <my-button>
   <template shadowrootmode="open">
     <style>
+      /* In production, these would live in a separate 
+         stylesheet loaded via <link> in the template. */
       button {
         font-family: system-ui, sans-serif;
         font-size: 0.875rem;
@@ -80,8 +53,8 @@ button:focus {
         padding: 0.5rem 1rem;
         border-radius: 6px;
         border: none;
-        background: #e2e8f0;
-        color: #1a202c;
+        background: #eaecf0;
+        color: #172b4d;
         cursor: pointer;
       }
       button:hover {
@@ -91,7 +64,7 @@ button:focus {
         opacity: 0.7;
       }
       button:focus {
-        outline: 2px solid #3182ce;
+        outline: 2px solid #5a44d4;
         outline-offset: 1px;
       }
     </style>

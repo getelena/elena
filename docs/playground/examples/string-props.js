@@ -30,8 +30,8 @@ MyBadge.define();`,
   }
 
   :scope {
-    --my-badge-bg: #bee3f8;
-    --my-badge-text: #2a4365;
+    --my-badge-bg: #5a44d4;
+    --my-badge-text: #fff;
     display: inline-block;
   }
 
@@ -48,18 +48,18 @@ MyBadge.define();`,
   }
 
   :scope[variant="success"] {
-    --my-badge-bg: #c6f6d5;
-    --my-badge-text: #22543d;
+    --my-badge-bg: #5B7F24;
+    --my-badge-text: #fff;
   }
 
   :scope[variant="warning"] {
-    --my-badge-bg: #fefcbf;
-    --my-badge-text: #744210;
+    --my-badge-bg: #FBC828;
+    --my-badge-text: #292A2E;
   }
 
   :scope[variant="error"] {
-    --my-badge-bg: #fed7d7;
-    --my-badge-text: #742a2a;
+    --my-badge-bg: #d44444;
+    --my-badge-text: #fff;
   }
 }`,
   html: `<my-badge variant="info">Info</my-badge>

@@ -34,9 +34,10 @@ MyButton.define();`,
     /* Public theming API (with default values set) */
     --_my-button-font: var(--my-button-font, system-ui, sans-serif);
     --_my-button-radius: var(--my-button-radius, 6px);
-    --_my-button-text: var(--my-button-text, #1a202c);
-    --_my-button-bg: var(--my-button-bg, #e2e8f0);
+    --_my-button-text: var(--my-button-text, #172b4d);
+    --_my-button-bg: var(--my-button-bg, #eaecf0);
 
+    border-radius: var(--_my-button-radius);
     display: inline-block;
     cursor: pointer;
   }
@@ -55,15 +56,29 @@ MyButton.define();`,
     padding: 0.5rem 1rem;
     display: inline-flex;
   }
+
+  :scope:hover {
+    filter: brightness(0.9);
+  }
+
+  :scope:active {
+    transform: translateY(1px);
+    opacity: 0.9;
+  }
+
+  :scope:focus-within {
+    outline: 2px solid #5a44d4;
+    outline-offset: 1px;
+  }
 }`,
   html: `<!-- Default styling -->
 <my-button>Default</my-button>
 
 <!-- Override CSS custom properties from the consumer side -->
-<my-button style="--my-button-bg: #3182ce; --my-button-text: white">Blue</my-button>
+<my-button style="--my-button-bg: #5a44d4; --my-button-text: white">Purple</my-button>
 
-<my-button style="--my-button-bg: #805ad5; --my-button-text: white; --my-button-radius: 9999px">
-  Rounded Purple
+<my-button style="--my-button-bg: #d44444; --my-button-text: white; --my-button-radius: 9999px">
+  Rounded Red
 </my-button>
 
 <!-- Or override via a CSS class -->
@@ -72,6 +87,7 @@ MyButton.define();`,
     --my-button-bg: #f95b1f;
     --my-button-text: white;
     --my-button-font: Georgia, serif;
+    --my-button-radius: 0;
   }
 </style>
 <my-button class="brand-theme">Brand Theme</my-button>`,

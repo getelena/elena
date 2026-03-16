@@ -39,9 +39,10 @@ document.querySelectorAll("my-button").forEach(btn => {
   }
 
   :scope {
-    --my-button-bg: #e2e8f0;
+    --my-button-bg: #eaecf0;
     display: inline-block;
     cursor: pointer;
+    color: #172b4d;
   }
 
   :scope:not([hydrated]),
@@ -54,17 +55,22 @@ document.querySelectorAll("my-button").forEach(btn => {
     display: inline-flex;
   }
 
-  :scope:hover {
+  .my-button:hover {
     filter: brightness(0.95);
   }
 
-  :scope:active {
+  .my-button:active {
     opacity: 0.7;
   }
 
+  .my-button:focus {
+    outline: 2px solid #5a44d4;
+    outline-offset: 1px;
+  }
+
   :scope[variant="primary"] {
-    --my-button-bg: #3182ce;
-    color: white;
+    --my-button-bg: #5a44d4;
+    color: #fff;
   }
 }
 

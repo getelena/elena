@@ -67,7 +67,7 @@ MyCheckbox.define();`,
     -webkit-appearance: none;
     width: 1.125rem;
     height: 1.125rem;
-    border: 2px solid #a5a9af;
+    border: 2px solid #a6a8ab;
     border-radius: 4px;
     background: #fff;
     cursor: pointer;
@@ -88,8 +88,8 @@ MyCheckbox.define();`,
   }
 
   input[type="checkbox"]:checked {
-    background: #3182ce;
-    border-color: #3182ce;
+    background: #5a44d4;
+    border-color: #5a44d4
   }
 
   input[type="checkbox"]:checked::before {
@@ -97,7 +97,7 @@ MyCheckbox.define();`,
   }
 
   input[type="checkbox"]:focus {
-    outline: 2px solid #3182ce;
+    outline: 2px solid #5a44d4;
     outline-offset: 1px;
   }
 

@@ -62,15 +62,17 @@ MyDraggable.define();`,
   }
 
   .my-draggable {
+    -webkit-user-select: none;
+    user-select: none;
     font-family: system-ui, sans-serif;
     font-size: 0.875rem;
     font-weight: 600;
-    color: white;
-    background: #3182ce;
+    color: #fff;
+    background: #5a44d4;
     padding: 1rem 1.5rem;
     border-radius: 8px;
     display: inline-block;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   }
 }`,
   html: `<div style="position: relative; height: calc(100vh - 2.5rem); border: 2px dashed #e2e8f0; border-radius: 8px;">

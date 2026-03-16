@@ -61,7 +61,7 @@ MyKeyLogger.define();`,
   }
 
   :scope:focus-within .my-key-logger {
-    border-color: #3182ce;
+    border-color: #5a44d4;
   }
 
   .my-key-logger {
@@ -102,7 +102,8 @@ MyKeyLogger.define();`,
   button.clear {
     margin-top: 0.75rem;
     padding: 0.5rem 0.75rem;
-    background: #e2e8f0;
+    background: #eaecf0;
+    color: #172b4d;
     border-radius: 4px;
     cursor: pointer;
     display: inline-flex;
