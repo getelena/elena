@@ -22,6 +22,14 @@ describe("getPropValue", () => {
     it("toProp returns value as-is", () => {
       expect(getPropValue("string", "hello", "toProp")).toBe("hello");
     });
+
+    it("toProp coerces null to empty string", () => {
+      expect(getPropValue("string", null, "toProp")).toBe("");
+    });
+
+    it("toAttribute returns null for empty string", () => {
+      expect(getPropValue("string", "", "toAttribute")).toBeNull();
+    });
   });
 
   describe("boolean", () => {
@@ -130,6 +138,18 @@ describe("setProps", () => {
     // without adding an empty attribute to the host
     const el = await createElement("basic-element");
     expect(el.hasAttribute("label")).toBe(false);
+  });
+
+  it("string prop recovers after being set to empty string", async () => {
+    const el = await createElement("basic-element", { label: "hello" });
+    el.label = "";
+    expect(el.label).toBe("");
+    expect(el.hasAttribute("label")).toBe(false);
+
+    // Setting a new value should work — the prop type must not be corrupted
+    el.label = "world";
+    expect(el.label).toBe("world");
+    expect(el.getAttribute("label")).toBe("world");
   });
 
   it("setter is a no-op when the same value is assigned again", async () => {

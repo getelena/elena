@@ -100,7 +100,8 @@ export default defineConfig({
       },
     },
     nav: [
-      { text: "Docs", link: "/", activeMatch: "^(?!/api/)" },
+      { text: "Docs", link: "/", activeMatch: "^(?!/api/|/playground/)" },
+      { text: "Playground", link: "/playground/", activeMatch: "/playground/" },
       { text: "API Reference", link: "/api/" },
       {
         text: "Tools",
@@ -168,7 +169,6 @@ export default defineConfig({
           },
         ],
       },
-      { text: "GitHub", link: "https://github.com/getelena/elena" },
     ],
 
     sidebar: [

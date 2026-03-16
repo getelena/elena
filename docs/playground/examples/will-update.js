@@ -1,0 +1,106 @@
+export default {
+  id: "will-update",
+  title: "willUpdate",
+  js: `import { Elena, html } from "@elenajs/core";
+
+export default class MyFilter extends Elena(HTMLElement) {
+  static tagName = "my-filter";
+  static props = [
+    { name: "items", reflect: false },
+    { name: "search", reflect: false }
+  ];
+  static element = "input";
+
+  /** @type {Array} */
+  items = ["Apple", "Banana", "Cherry", "Date", "Fig", "Grape", "Tomato"];
+
+  /** @attribute @type {String} */
+  search = "";
+
+  willUpdate() {
+    this.filtered = this.items.filter(item =>
+      item.toLowerCase().includes(this.search.toLowerCase())
+    );
+  }
+
+  updated() {
+    this.element.value = this.search;
+    this.element.focus();
+    this.element.selectionStart = this.element.selectionEnd = this.search.length;
+  }
+
+  render() {
+    return html\`
+      <div class="my-filter">
+        <input type="text" placeholder="Filter fruits" oninput="this.closest('my-filter').search = this.value" />
+        <ul>
+          \${this.filtered.length > 0
+            ? this.filtered.map(item => html\`<li>\${item}</li>\`)
+            : html\`<li class="empty">No results</li>\`}
+        </ul>
+        <small>\${this.filtered.length} of \${this.items.length} shown</small>
+      </div>
+    \`;
+  }
+}
+
+MyFilter.define();`,
+  css: `@scope (my-filter) {
+  :scope,
+  *:where(:not(img, svg):not(svg *)),
+  *::before,
+  *::after {
+    all: unset;
+    display: revert;
+  }
+
+  :scope { display: block; }
+
+  .my-filter {
+    font-family: system-ui, sans-serif;
+    max-width: 250px;
+  }
+
+  ul {
+    display: block;
+    padding: 0.5rem 0;
+    margin: 0;
+    list-style: none;
+    background: #f7fafc;
+    border: 1px solid #e9ecee;
+    border-top: 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  li {
+    display: block;
+    padding: 0.5rem 1rem;
+  }
+
+  li.empty {
+    color: #718096;
+  }
+
+  small {
+    margin-top: 1rem;
+    display: block;
+  }
+}
+  
+input {
+  all: unset;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #a5a9af;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
+}
+
+input:focus {
+  outline: 2px solid #3182ce;
+  outline-offset: -1px;
+}`,
+  html: `<my-filter></my-filter>`,
+};
