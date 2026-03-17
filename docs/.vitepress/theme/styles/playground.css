@@ -9,7 +9,7 @@
 .pg-layout {
   display: grid;
   grid-template-columns: var(--vp-sidebar-width) 1fr 1fr;
-  height: calc(100vh - var(--vp-nav-height));
+  block-size: calc(100vh - var(--vp-nav-height));
   overflow: hidden;
 }
 
@@ -18,7 +18,7 @@
 / --------------------------------------------- */
 
 .pg-sidebar {
-  border-right: 1px solid var(--vp-c-gutter);
+  border-inline-end: 1px solid var(--vp-c-gutter);
   background: var(--vp-c-bg);
   overflow-y: auto;
   overflow-x: hidden;
@@ -38,13 +38,13 @@
 }
 
 .pg-sidebar-group {
-  padding-top: 10px;
-  padding-bottom: 24px;
-  padding-left: 16px;
+  padding-block-start: 10px;
+  padding-block-end: 24px;
+  padding-inline-start: 16px;
 }
 
 .pg-sidebar-group + .pg-sidebar-group {
-  border-top: 1px solid var(--vp-c-divider);
+  border-block-start: 1px solid var(--vp-c-divider);
 }
 
 .pg-sidebar-heading {
@@ -59,15 +59,15 @@
 .pg-sidebar-item .item {
   position: relative;
   display: flex;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .pg-sidebar-item.is-active {
   anchor-name: --pg-sidebar-active;
   border-radius: 6px;
-  width: calc(100% + 1rem);
-  margin-left: -0.5rem;
-  padding-left: 0.5rem;
+  inline-size: calc(100% + 1rem);
+  margin-inline-start: -0.5rem;
+  padding-inline-start: 0.5rem;
   position: relative;
 }
 
@@ -77,8 +77,8 @@
   position-anchor: --pg-sidebar-active;
   top: anchor(top);
   left: anchor(left);
-  width: anchor-size(width);
-  height: anchor-size(height);
+  inline-size: anchor-size(width);
+  block-size: anchor-size(height);
   border-radius: 6px;
   background: var(--vp-c-brand-1);
   opacity: 0.08;
@@ -129,14 +129,14 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-right: 1px solid var(--vp-c-divider);
+  border-inline-end: 1px solid var(--vp-c-divider);
 }
 
 .pg-editor-tabs {
   display: flex;
-  border-bottom: 1px solid var(--vp-c-divider);
+  border-block-end: 1px solid var(--vp-c-divider);
   background: var(--vp-c-bg);
-  height: 43px;
+  block-size: 43px;
   flex-shrink: 0;
 }
 
@@ -149,7 +149,7 @@
   color: var(--vp-c-text-2);
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-block-end: 2px solid transparent;
   cursor: pointer;
   transition:
     color 0.15s,
@@ -162,7 +162,7 @@
 
 .pg-editor-tab.active {
   color: var(--vp-c-brand-1);
-  border-bottom-color: var(--vp-c-brand-1);
+  border-block-end-color: var(--vp-c-brand-1);
 }
 
 .pg-editor-container {
@@ -172,7 +172,7 @@
 }
 
 .pg-editor-container .cm-editor {
-  height: 100%;
+  block-size: 100%;
 
   font-smooth: auto;
   -webkit-font-smoothing: auto;
@@ -202,8 +202,8 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   align-items: center;
   justify-content: space-between;
   padding: 0 0.75rem;
-  height: 43px;
-  border-bottom: 1px solid var(--vp-c-divider);
+  block-size: 43px;
+  border-block-end: 1px solid var(--vp-c-divider);
   flex-shrink: 0;
 }
 
@@ -237,7 +237,7 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
 .pg-preview-iframe {
   flex: 1;
   border: none;
-  width: 100%;
+  inline-size: 100%;
   background: white;
 }
 
@@ -268,11 +268,10 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
 
   .pg-sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: calc(100vw - 64px);
-    max-width: 320px;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: calc(100vw - 64px);
+    max-inline-size: 320px;
     padding: 32px 32px 96px;
     z-index: 100;
     transform: translateX(-100%);
@@ -290,10 +289,10 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 43px;
-    height: 43px;
+    inline-size: 43px;
+    block-size: 43px;
     border: none;
-    border-right: 1px solid var(--vp-c-divider);
+    border-inline-end: 1px solid var(--vp-c-divider);
     background: none;
     color: var(--vp-c-text-2);
     cursor: pointer;
@@ -312,7 +311,7 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   }
 
   .pg-editor {
-    border-right: none;
-    border-bottom: 1px solid var(--vp-c-divider);
+    border-inline-end: none;
+    border-block-end: 1px solid var(--vp-c-divider);
   }
 }

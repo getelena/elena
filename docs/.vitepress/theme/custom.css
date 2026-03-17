@@ -1,5 +1,5 @@
 /* ---------------------------------------------
-/ ELENA DOC THEME OVERRIDES
+/ ELENA DOC THEME OVERRIDES (needs cleanup! 🤞🏻)
 / --------------------------------------------- */
 
 :root {
@@ -27,7 +27,7 @@ label:active {
 .VPNavBarTitle .logo {
   inline-size: 28px;
   block-size: 28px;
-  margin-right: 8px;
+  margin-inline-end: 8px;
 }
 
 .VPNavBarTitle .title {
@@ -42,28 +42,28 @@ label:active {
 .VPNavBarTitle.has-sidebar .title {
   border: 0;
   align-items: center;
-  padding-top: 1px;
+  padding-block-start: 1px;
   transition: opacity 0.25s;
   display: flex;
 }
 
 .VPNavBar.has-sidebar .title {
   position: relative !important;
-  width: auto !important;
-  padding-right: 0 !important;
+  inline-size: auto !important;
+  padding-inline-end: 0 !important;
 }
 
 .VPSidebar {
   background: var(--vp-c-bg) !important;
-  border-right: 1px solid var(--vp-c-gutter);
+  border-inline-end: 1px solid var(--vp-c-gutter);
 }
 
 #local-search {
-  min-width: calc(100% - 2rem);
+  min-inline-size: calc(100% - 2rem);
 }
 
 .VPNavBarMenuLink.active {
-  border-bottom: 2px solid var(--vp-c-brand-1);
+  border-block-end: 2px solid var(--vp-c-brand-1);
 }
 
 .VPNavBarMenuGroup.active .text {
@@ -85,12 +85,12 @@ label:active {
 }
 
 .VPNavBar.has-sidebar .divider {
-  padding-left: 0 !important;
+  padding-inline-start: 0 !important;
 }
 
 .VPNavBar.has-sidebar .content {
-  padding-right: 0;
-  padding-left: 0 !important;
+  padding-inline-end: 0;
+  padding-inline-start: 0 !important;
 }
 
 @media (min-width: 768px) {
@@ -104,7 +104,7 @@ label:active {
   }
 
   .container {
-    max-width: var(--vp-screen-max-width);
+    max-inline-size: var(--vp-screen-max-width);
     justify-content: space-between;
     margin: 0 auto;
     display: flex;
@@ -113,13 +113,13 @@ label:active {
 
 @media (max-width: 767px) {
   .VPNavBar.has-sidebar .title {
-    padding-right: 0.5rem !important;
+    padding-inline-end: 0.5rem !important;
   }
 }
 
 @media (min-width: 960px) {
   .VPSidebar {
-    padding-top: calc(var(--vp-nav-height) + 1rem) !important;
+    padding-block-start: calc(var(--vp-nav-height) + 1rem) !important;
   }
 }
 
@@ -132,9 +132,9 @@ label:active {
 .VPSidebarItem.is-active {
   anchor-name: --sidebar-active;
   border-radius: 6px;
-  width: calc(100% + 1rem);
-  margin-left: -0.5rem;
-  padding-left: 0.5rem;
+  inline-size: calc(100% + 1rem);
+  margin-inline-start: -0.5rem;
+  padding-inline-start: 0.5rem;
   position: relative;
 }
 
@@ -144,8 +144,8 @@ label:active {
   position-anchor: --sidebar-active;
   top: anchor(top);
   left: anchor(left);
-  width: anchor-size(width);
-  height: anchor-size(height);
+  inline-size: anchor-size(width);
+  block-size: anchor-size(height);
   border-radius: 6px;
   background: var(--vp-c-brand-1);
   opacity: 0.08;
@@ -169,7 +169,7 @@ label:active {
 }
 
 .mermaid {
-  width: 70%;
+  inline-size: 70%;
 }
 
 .elena-stack {
@@ -185,12 +185,12 @@ label:active {
   padding: 1.5rem;
   border: 1px solid var(--vp-c-divider);
   border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-block-end: 1rem;
 }
 
 .elena-demo p {
-  margin-top: 1rem;
-  margin-bottom: 0;
+  margin-block-start: 1rem;
+  margin-block-end: 0;
 }
 
 .dark-only {
@@ -207,23 +207,34 @@ label:active {
 
 @media (min-width: 960px) {
   .VPDoc:not(.has-sidebar) .container {
-    max-width: calc(100% - 1.9rem) !important;
+    max-inline-size: calc(100% - 1.9rem) !important;
   }
 }
 
 @media (min-width: 960px) {
   .VPDoc:not(.has-sidebar) .content {
-    max-width: 100% !important;
+    max-inline-size: 100% !important;
   }
 }
 
 .VPDoc:not(.has-sidebar).has-aside .content-container {
-  max-width: 100%;
+  max-inline-size: 100%;
 }
 
 .vp-doc table {
   display: table;
-  width: 100%;
+  inline-size: 100%;
+}
+
+.vp-doc .table-container {
+  overflow-x: auto;
+}
+
+@media (max-width: 767px) {
+  .vp-doc .table-container {
+    margin-inline: -24px;
+    padding-inline: 24px;
+  }
 }
 
 @font-face {
@@ -286,8 +297,8 @@ label:active {
 #elena-is-a-simple-tiny-library-for-building-progressive-web-components {
   opacity: 0.001;
   visibility: hidden;
-  height: 0;
-  width: 0;
+  block-size: 0;
+  inline-size: 0;
   overflow: hidden;
   display: block;
   position: absolute;
@@ -309,17 +320,16 @@ sup {
 }
 
 div[class*="language-"][data-folded] > pre {
-  max-height: 500px;
+  max-block-size: 500px;
   overflow: hidden;
 }
 
 div[class*="language-"][data-folded]::after {
   content: "";
   position: absolute;
-  bottom: 42px;
-  left: 0;
-  right: 0;
-  height: 100px;
+  inset-block-end: 42px;
+  inset-inline: 0;
+  block-size: 100px;
   background: linear-gradient(to bottom, transparent, var(--vp-code-block-bg));
   pointer-events: none;
   border-radius: 0 0 8px 8px;
@@ -334,10 +344,10 @@ div[class*="language-"]:has(.codeblock-fold-btn) {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  inline-size: 100%;
   border: none;
-  height: 42px;
-  border-top: 1px solid var(--vp-c-divider);
+  block-size: 42px;
+  border-block-start: 1px solid var(--vp-c-divider);
   background: var(--vp-code-block-bg);
   color: var(--vp-c-text-2);
   font-size: 13px;
