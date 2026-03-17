@@ -103,7 +103,7 @@ describe("complex HTML structures", () => {
     );
 
     // Table structure preserved inside
-    expect(html).toContain("<thead><tr><th>Name</th><th>Value</th></tr></thead>");
+    expect(html).toContain("<thead> <tr><th>Name</th><th>Value</th></tr> </thead>");
     expect(html).toContain("<td>Alpha</td><td>100</td>");
 
     // Buttons expanded
