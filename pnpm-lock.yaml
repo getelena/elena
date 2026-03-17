@@ -152,14 +152,13 @@ importers:
         version: 4.0.18(@types/node@25.2.3)(@vitest/browser-playwright@4.0.18)(happy-dom@20.8.3)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
 
   packages/components:
-    dependencies:
-      '@elenajs/core':
-        specifier: workspace:*
-        version: link:../core
     devDependencies:
       '@elenajs/bundler':
         specifier: workspace:*
         version: link:../bundler
+      '@elenajs/core':
+        specifier: workspace:*
+        version: link:../core
       '@web/dev-server':
         specifier: 0.4.6
         version: 0.4.6
