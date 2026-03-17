@@ -164,14 +164,14 @@ const { Button } = await import("@elenajs/components");
 register(Button);
 
 export default function (eleventyConfig) {
-  eleventyConfig.addShortcode("elena", (html) => ssr(html));
+  eleventyConfig.addShortcode("render", (html) => ssr(html));
 }
 ```
 
 Then in a template:
 
 ```
-{% elena '<elena-button variant="primary">Save</elena-button>' %}
+{% render '<elena-button variant="primary">Save</elena-button>' %}
 ```
 
 ## API

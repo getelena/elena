@@ -163,7 +163,7 @@ export default function (eleventyConfig) {
 }
 ```
 
-> [!NOTE]
+> [!TIP]
 > Use `await import()` for component modules rather than a static `import` statement. Elena components extend `HTMLElement`, which requires a Node.js shim that `@elenajs/ssr` installs when it loads. Dynamic imports guarantee the shim is in place first, regardless of how an import sorter may reorder your static imports.
 
 Then use Elena components directly in any Nunjucks, Liquid, or Markdown template:
@@ -187,14 +187,14 @@ const { Button } = await import("@elenajs/components");
 register(Button);
 
 export default function (eleventyConfig) {
-  eleventyConfig.addShortcode("elena", (html) => ssr(html));
+  eleventyConfig.addShortcode("render", (html) => ssr(html));
 }
 ```
 
 Then in a template:
 
-```
-{% elena '<elena-button variant="primary">Save</elena-button>' %}
+```html
+{% render '<elena-button variant="primary">Save</elena-button>' %}
 ```
 
 ## Declarative Shadow DOM <Badge type="warning" text="experimental" />
