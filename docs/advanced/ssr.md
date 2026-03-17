@@ -56,7 +56,7 @@ Register your components once, then pass any HTML string through `ssr()`:
 
 ```js
 import { ssr, register } from "@elenajs/ssr";
-import Button from "./button.js";
+const { Button } = await import("@elenajs/components");
 
 register(Button);
 
@@ -70,11 +70,9 @@ Nested Elena components are expanded automatically:
 
 ```js
 import { ssr, register } from "@elenajs/ssr";
-import Button from "./button.js";
-import Input from "./input.js";
-import Stack from "./stack.js";
+const { Button, Stack, Input } = await import("@elenajs/components");
 
-register(Button, Input, Stack);
+register(Button, Stack, Input);
 
 const html = ssr(`
   <elena-stack direction="row">
@@ -104,10 +102,9 @@ Register Elena component classes for SSR expansion. Each class must have a `tagN
 
 ```js
 import { register } from "@elenajs/ssr";
-import Button from "./button.js";
-import Input from "./input.js";
+const { Button, Stack } = await import("@elenajs/components");
 
-register(Button, Input);
+register(Button, Stack);
 ```
 
 Throws an error if a component does not have a `tagName`.
@@ -151,18 +148,23 @@ A transform processes every rendered page automatically, expanding any registere
 ```js
 // eleventy.config.js
 import { ssr, register } from "@elenajs/ssr";
-import Button from "@my-lib/components/button/button.js";
-import Input from "@my-lib/components/input/input.js";
-import Stack from "@my-lib/components/stack/stack.js";
+const { Button, Stack, Input } = await import("@elenajs/components");
 
-register(Button, Input, Stack);
+register(Button, Stack, Input);
 
 export default function (eleventyConfig) {
-  eleventyConfig.addTransform("elena-ssr", (content) => {
-    return ssr(content);
+  eleventyConfig.addTransform("elena-ssr", (content, outputPath) => {
+    if (outputPath?.endsWith(".html")) {
+      return ssr(content);
+    } else {
+      return content;
+    }
   });
 }
 ```
+
+> [!NOTE]
+> Use `await import()` for component modules rather than a static `import` statement. Elena components extend `HTMLElement`, which requires a Node.js shim that `@elenajs/ssr` installs when it loads. Dynamic imports guarantee the shim is in place first, regardless of how an import sorter may reorder your static imports.
 
 Then use Elena components directly in any Nunjucks, Liquid, or Markdown template:
 
@@ -180,7 +182,7 @@ If you prefer more control over which parts of a page are processed, use a short
 ```js
 // eleventy.config.js
 import { ssr, register } from "@elenajs/ssr";
-import Button from "@my-lib/components/button/button.js";
+const { Button } = await import("@elenajs/components");
 
 register(Button);
 
