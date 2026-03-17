@@ -13,24 +13,40 @@ const Draggable = superclass =>
       this.style.position = "absolute";
       this.style.cursor = "grab";
 
-      this.addEventListener("mousedown", e => {
-        this.#offsetX = e.offsetX;
-        this.#offsetY = e.offsetY;
+      const pos = e => e.touches?.[0] ?? e;
+
+      const onStart = e => {
+        const { clientX, clientY } = pos(e);
+        const rect = this.getBoundingClientRect();
+
+        this.#offsetX = clientX - rect.left;
+        this.#offsetY = clientY - rect.top;
+
         this.style.cursor = "grabbing";
 
         const onMove = e => {
-          this.style.left = e.clientX - this.#offsetX + "px";
-          this.style.top = e.clientY - this.#offsetY + "px";
+          const { clientX, clientY } = pos(e);
+          this.style.left = clientX - this.#offsetX + "px";
+          this.style.top = clientY - this.#offsetY + "px";
         };
+
         const onUp = () => {
           this.style.cursor = "grab";
+
           document.removeEventListener("mousemove", onMove);
           document.removeEventListener("mouseup", onUp);
+          document.removeEventListener("touchmove", onMove);
+          document.removeEventListener("touchend", onUp);
         };
 
         document.addEventListener("mousemove", onMove);
         document.addEventListener("mouseup", onUp);
-      });
+        document.addEventListener("touchmove", onMove, { passive: true });
+        document.addEventListener("touchend", onUp);
+      };
+
+      this.addEventListener("mousedown", onStart);
+      this.addEventListener("touchstart", onStart, { passive: true });
     }
   };
 
@@ -64,6 +80,7 @@ MyDraggable.define();`,
   .my-draggable {
     -webkit-user-select: none;
     user-select: none;
+    touch-action: none;
     font-family: system-ui, sans-serif;
     font-size: 0.875rem;
     font-weight: 600;
