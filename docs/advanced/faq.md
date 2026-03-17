@@ -90,7 +90,7 @@ See the [contributing guidelines](https://github.com/getelena/elena/blob/main/CO
 
 ## I found a bug. How do I report it?
 
-First, make sure the bug is reproducible. Once confirmed, [create a new issue](https://github.com/getelena/elena/issues/new) on GitHub.
+First, make sure the bug is reproducible. Once confirmed, [create a new issue](https://github.com/getelena/elena/issues/new/choose) on GitHub.
 
 ## I couldn’t find an answer to my question?
 
