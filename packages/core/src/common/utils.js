@@ -18,8 +18,8 @@ export function defineElement(tagName, Element) {
  * @param {string} str
  * @returns {string}
  */
+const Escape = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
 export function escapeHtml(str) {
-  const Escape = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
   return String(str).replace(/[&<>"']/g, c => Escape[c]);
 }
 
