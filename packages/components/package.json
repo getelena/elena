@@ -41,10 +41,8 @@
     "clean": "rm -rf dist/",
     "test": "vitest run"
   },
-  "dependencies": {
-    "@elenajs/core": "^0.15.0"
-  },
   "devDependencies": {
+    "@elenajs/core": "^1.0.0-rc.1",
     "@elenajs/bundler": "^1.0.0-rc.1",
     "@web/dev-server": "0.4.6",
     "concurrently": "9.2.1",
