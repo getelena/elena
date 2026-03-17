@@ -33,7 +33,7 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "@elenajs/core": ">=0.15.0"
+    "@elenajs/core": ">=1.0.0-rc.1"
   },
   "devDependencies": {
     "vitest": "4.0.18"
