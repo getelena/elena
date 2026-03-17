@@ -1,6 +1,6 @@
 {
   "name": "@elenajs/core",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-rc.1",
   "description": "Elena is a simple, tiny library for building Progressive Web Components.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
@@ -41,10 +41,10 @@
     "clean": "rm -rf dist/"
   },
   "devDependencies": {
-    "@vitest/browser": "4.0.18",
-    "@vitest/browser-playwright": "4.0.18",
     "@playwright/test": "^1.58.2",
     "@rollup/plugin-terser": "0.4.4",
+    "@vitest/browser": "4.0.18",
+    "@vitest/browser-playwright": "4.0.18",
     "@vitest/coverage-v8": "4.0.18",
     "happy-dom": "20.8.3",
     "lit": "^3.3.0",
