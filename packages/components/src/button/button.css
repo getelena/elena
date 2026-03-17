@@ -92,8 +92,8 @@
     margin-inline: 0 -0.3rem;
     margin-block: 0.15rem;
     opacity: 0.2;
-    width: var(--_elena-button-font-size);
-    height: var(--_elena-button-font-size);
+    inline-size: var(--_elena-button-font-size);
+    block-size: var(--_elena-button-font-size);
     display: inline-block;
   }
 
