@@ -58,7 +58,7 @@ body:
       description: | 
         A link to a Codepen or similar that includes a minimal reproduction of the problem. In rare cases when not applicable, you can link to a GitHub repository that we can easily run to recreate the issue. If a report is vague and does not have a reproduction, it will be closed without warning. 
 
-        > [!CAUTION]
+        > NOTE:
         > If you skip this step, this issue might be **labeled** with `please add a reproduction` and **closed**.
     validations:
       required: false
