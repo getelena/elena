@@ -18,6 +18,13 @@
   },
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    },
+    "./shim": "./src/shim.js"
+  },
   "type": "module",
   "files": [
     "src"
