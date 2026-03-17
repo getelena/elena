@@ -72,6 +72,16 @@ describe("ssr", () => {
     expect(html).toBe('<br><hr><img src="test.png">');
   });
 
+  it("preserves word boundaries between inline elements", () => {
+    const html = ssr(`<span>hello</span> <span>world</span>`);
+    expect(html).toBe("<span>hello</span> <span>world</span>");
+  });
+
+  it("preserves non-breaking spaces", () => {
+    const html = ssr(`<p>hello\u00A0world</p>`);
+    expect(html).toContain("hello\u00A0world");
+  });
+
   it("renders a Composite Component preserving children", () => {
     const html = ssr(`<elena-stack direction="row"><p>Hello</p></elena-stack>`);
     expect(html).toBe('<elena-stack direction="row"><p>Hello</p></elena-stack>');
@@ -84,7 +94,7 @@ describe("ssr", () => {
       </elena-stack>
     `);
     expect(html).toBe(
-      "<elena-stack><elena-button hydrated><button><span>Send</span></button></elena-button></elena-stack>"
+      "<elena-stack> <elena-button hydrated><button><span>Send</span></button></elena-button> </elena-stack>"
     );
   });
 
@@ -96,11 +106,11 @@ describe("ssr", () => {
       </elena-stack>
     `);
     expect(html).toBe(
-      '<elena-stack direction="row">' +
+      '<elena-stack direction="row"> ' +
         '<elena-input type="email" placeholder="you@example.com" hydrated>' +
         '<input type="email" placeholder="you@example.com" />' +
-        "</elena-input>" +
-        "<elena-button hydrated><button><span>Send</span></button></elena-button>" +
+        "</elena-input> " +
+        "<elena-button hydrated><button><span>Send</span></button></elena-button> " +
         "</elena-stack>"
     );
   });
@@ -115,11 +125,11 @@ describe("ssr", () => {
       </elena-stack>
     `);
     expect(html).toBe(
-      "<elena-stack>" +
-        '<elena-stack direction="row">' +
-        '<elena-button variant="primary" hydrated><button><span>Save</span></button></elena-button>' +
-        "<elena-button hydrated><button><span>Cancel</span></button></elena-button>" +
-        "</elena-stack>" +
+      "<elena-stack> " +
+        '<elena-stack direction="row"> ' +
+        '<elena-button variant="primary" hydrated><button><span>Save</span></button></elena-button> ' +
+        "<elena-button hydrated><button><span>Cancel</span></button></elena-button> " +
+        "</elena-stack> " +
         "</elena-stack>"
     );
   });
@@ -281,6 +291,28 @@ describe("pre block whitespace", () => {
     );
     expect(html).toContain("&lt;elena-button&gt;Click&lt;/elena-button&gt;");
     expect(html).toContain("\n");
+  });
+});
+
+describe("whitespace-sensitive elements", () => {
+  it("preserves whitespace inside textarea", () => {
+    const html = ssr(`<textarea>  line one\n  line two\n  line three</textarea>`);
+    expect(html).toContain("  line one\n  line two\n  line three");
+  });
+
+  it("preserves whitespace inside textarea with attributes", () => {
+    const html = ssr(`<textarea name="body" rows="5">first\nsecond</textarea>`);
+    expect(html).toBe('<textarea name="body" rows="5">first\nsecond</textarea>');
+  });
+
+  it("preserves whitespace inside listing elements", () => {
+    const html = ssr(`<listing>  indented\n  block</listing>`);
+    expect(html).toContain("  indented\n  block");
+  });
+
+  it("preserves whitespace inside xmp elements", () => {
+    const html = ssr(`<xmp>  indented\n  block</xmp>`);
+    expect(html).toContain("  indented\n  block");
   });
 });
 
