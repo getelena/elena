@@ -3,52 +3,51 @@ export default {
   title: "Mixins",
   js: `import { Elena, html } from "@elenajs/core";
 
-const Draggable = superclass =>
-  class extends superclass {
-    #offsetX = 0;
-    #offsetY = 0;
+const Draggable = superclass => class extends superclass {
+  #offsetX = 0;
+  #offsetY = 0;
 
-    connectedCallback() {
-      super.connectedCallback();
-      this.style.position = "absolute";
-      this.style.cursor = "grab";
+  connectedCallback() {
+    super.connectedCallback();
+    this.style.position = "absolute";
+    this.style.cursor = "grab";
 
-      const pos = e => e.touches?.[0] ?? e;
+    const pos = e => e.touches?.[0] ?? e;
 
-      const onStart = e => {
+    const onStart = e => {
+      const { clientX, clientY } = pos(e);
+      const rect = this.getBoundingClientRect();
+
+      this.#offsetX = clientX - rect.left;
+      this.#offsetY = clientY - rect.top;
+
+      this.style.cursor = "grabbing";
+
+      const onMove = e => {
         const { clientX, clientY } = pos(e);
-        const rect = this.getBoundingClientRect();
-
-        this.#offsetX = clientX - rect.left;
-        this.#offsetY = clientY - rect.top;
-
-        this.style.cursor = "grabbing";
-
-        const onMove = e => {
-          const { clientX, clientY } = pos(e);
-          this.style.left = clientX - this.#offsetX + "px";
-          this.style.top = clientY - this.#offsetY + "px";
-        };
-
-        const onUp = () => {
-          this.style.cursor = "grab";
-
-          document.removeEventListener("mousemove", onMove);
-          document.removeEventListener("mouseup", onUp);
-          document.removeEventListener("touchmove", onMove);
-          document.removeEventListener("touchend", onUp);
-        };
-
-        document.addEventListener("mousemove", onMove);
-        document.addEventListener("mouseup", onUp);
-        document.addEventListener("touchmove", onMove, { passive: true });
-        document.addEventListener("touchend", onUp);
+        this.style.left = clientX - this.#offsetX + "px";
+        this.style.top = clientY - this.#offsetY + "px";
       };
 
-      this.addEventListener("mousedown", onStart);
-      this.addEventListener("touchstart", onStart, { passive: true });
-    }
-  };
+      const onUp = () => {
+        this.style.cursor = "grab";
+
+        document.removeEventListener("mousemove", onMove);
+        document.removeEventListener("mouseup", onUp);
+        document.removeEventListener("touchmove", onMove);
+        document.removeEventListener("touchend", onUp);
+      };
+
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("mouseup", onUp);
+      document.addEventListener("touchmove", onMove, { passive: true });
+      document.addEventListener("touchend", onUp);
+    };
+
+    this.addEventListener("mousedown", onStart);
+    this.addEventListener("touchstart", onStart, { passive: true });
+  }
+};
 
 export default class MyDraggable extends Draggable(Elena(HTMLElement)) {
   static tagName = "my-draggable";
