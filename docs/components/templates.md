@@ -104,7 +104,7 @@ When `static element` is set, Elena resolves `this.element` after the first rend
 export default class Button extends Elena(HTMLElement) {
   static element = ".my-button";
 
-  firstUpdated() {
+  updated() {
     this.element.focus();
   }
 }

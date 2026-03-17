@@ -66,7 +66,8 @@ document.querySelector("my-rating").addEventListener("rate", e => {
   }
 
   .star.active,
-  .star:hover {
+  .star:hover,
+  .star:focus {
     color: #ffb300;
   }
 }`,

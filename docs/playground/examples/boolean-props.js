@@ -53,6 +53,8 @@ MyCheckbox.define();`,
   }
 
   label {
+    -webkit-user-select: none;
+    user-select: none;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -67,14 +69,14 @@ MyCheckbox.define();`,
     -webkit-appearance: none;
     width: 1.125rem;
     height: 1.125rem;
-    border: 2px solid #a6a8ab;
+    border: 2px solid #929396;
     border-radius: 4px;
     background: #fff;
     cursor: pointer;
     display: grid;
     place-content: center;
     flex-shrink: 0;
-    transition: background 0.15s, border-color 0.15s;
+    transition: background 0.05s, border-color 0.05s;
   }
 
   input[type="checkbox"]::before {

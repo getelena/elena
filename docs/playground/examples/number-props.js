@@ -62,27 +62,32 @@ MyCounter.define();`,
     align-items: center;
     gap: 0;
     font-family: system-ui, sans-serif;
-    box-shadow: inset 0 0 0 2px #e2e8f0;
+    border: 2px solid #929396;
+    background: #fdfeff;
+    color: #172b4d;
     border-radius: 6px;
   }
 
   .my-counter button {
-    padding: 0.6rem 0.75rem;
+    padding: 0.5rem 0.7rem;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 500;
     cursor: pointer;
-    background: #e2e8f0;
+    color: #75767A;
+    background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .my-counter button:first-of-type {
+    border-right: 1px solid #c2c4c9;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
   }
 
   .my-counter button:last-of-type {
+    border-left: 1px solid #c2c4c9;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
   }
@@ -97,7 +102,6 @@ MyCounter.define();`,
 
   .my-counter button:focus {
     outline: 2px solid #5a44d4;
-    outline-offset: 1px;
   }
 
   .my-counter .value {

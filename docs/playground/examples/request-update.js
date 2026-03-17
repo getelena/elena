@@ -4,6 +4,7 @@ export default {
   js: `import { Elena, html } from "@elenajs/core";
 
 export default class MyTags extends Elena(HTMLElement) {
+  static element = "input"
   static tagName = "my-tags";
   static props = [{ name: "tags", reflect: false }];
 
@@ -24,6 +25,10 @@ export default class MyTags extends Elena(HTMLElement) {
     this.requestUpdate();
   }
 
+  updated() {
+    this.element.focus();
+  }
+
   render() {
     return html\`
       <div class="my-tags">
@@ -40,7 +45,7 @@ export default class MyTags extends Elena(HTMLElement) {
                 <button
                   class="remove"
                   onclick="this.closest('my-tags').removeTag(\${i})">
-                    x
+                    ×
                 </button>
               </span>
             \`
@@ -73,7 +78,7 @@ MyTags.define();`,
   }
 
   .tag {
-    padding: 0.35rem 0.75rem;
+    padding: 0.35rem 0.45rem 0.35rem 0.75rem;
     background: #ede9ff;
     color: #5a44d4;
     border-radius: 4px;
@@ -84,7 +89,8 @@ MyTags.define();`,
 
   .remove {
     cursor: pointer;
-    margin-left: 0.5rem;
+    border-radius: 6px;
+    padding: 0.1rem 0.3rem;
     opacity: 0.6;
   }
 
@@ -94,6 +100,10 @@ MyTags.define();`,
 
   .remove:active {
     transform: translateY(1px);
+  }
+
+  .remove:focus {
+    outline: 2px solid #5a44d4;
   }
 }
 

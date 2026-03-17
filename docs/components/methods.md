@@ -41,7 +41,7 @@ Runs once after the first render. `this.element` is available here. Use it for o
 
 ```js
 firstUpdated() {
-  this.element.focus();
+  console.log("DOM first updated.");
 }
 ```
 

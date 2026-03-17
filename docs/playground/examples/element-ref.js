@@ -18,6 +18,10 @@ export default class MyInput extends Elena(HTMLElement) {
     });
   }
 
+  updated() {
+    this.element.focus();
+  }
+
   render() {
     return html\`
       <div class="my-input">
