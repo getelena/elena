@@ -4,9 +4,21 @@
 
 ## Install
 
-```bash
+::: code-group
+
+```sh [npm]
 npm install --save-dev @elenajs/bundler
 ```
+
+```sh [yarn]
+yarn add --dev @elenajs/bundler
+```
+
+```sh [pnpm]
+pnpm add --save-dev @elenajs/bundler
+```
+
+:::
 
 ## CLI usage
 

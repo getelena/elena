@@ -4,9 +4,21 @@
 
 ## Install
 
-```bash
+::: code-group
+
+```sh [npm]
 npm install --save-dev @elenajs/cli
 ```
+
+```sh [yarn]
+yarn add --dev @elenajs/cli
+```
+
+```sh [pnpm]
+pnpm add --save-dev @elenajs/cli
+```
+
+:::
 
 ## Usage
 

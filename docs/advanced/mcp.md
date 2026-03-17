@@ -7,9 +7,21 @@
 
 ## Install
 
-```bash
+::: code-group
+
+```sh [npm]
 npm install --save-dev @elenajs/mcp
 ```
+
+```sh [yarn]
+yarn add --dev @elenajs/mcp
+```
+
+```sh [pnpm]
+pnpm add --save-dev @elenajs/mcp
+```
+
+:::
 
 ## Configuration
 

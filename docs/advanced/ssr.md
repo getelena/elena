@@ -46,9 +46,21 @@ When you don’t want to handle the pre-hydration state with CSS, you can expand
 
 ### Install
 
-```bash
+::: code-group
+
+```sh [npm]
 npm install @elenajs/ssr
 ```
+
+```sh [yarn]
+yarn add @elenajs/ssr
+```
+
+```sh [pnpm]
+pnpm add @elenajs/ssr
+```
+
+:::
 
 ### Basic usage
 
