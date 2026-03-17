@@ -12,6 +12,7 @@
  * https://elenajs.com
  */
 
+import "./shim.js";
 import { parseDocument, ElementType } from "htmlparser2";
 import { normalizeWhitespace, escapeHtml } from "./common/utils.js";
 
@@ -20,24 +21,10 @@ import { normalizeWhitespace, escapeHtml } from "./common/utils.js";
  *
  * Parses an HTML string, expands registered Elena components
  * by calling their render() methods, and returns the fully
- * rendered HTML. Works in Node.js with no browser DOM APIs
- * required.
+ * rendered HTML.
  *
  * @param {string} html - HTML string containing Elena components.
  * @returns {string} The rendered HTML with components expanded.
- *
- * @example
- * import { ssr, register } from "@elenajs/ssr";
- * import Button from "./button.js";
- * import Stack from "./stack.js";
- *
- * register(Button, Stack);
- *
- * const html = ssr(`
- *   <elena-stack>
- *     <elena-button>Send</elena-button>
- *   </elena-stack>
- * `);
  */
 export function ssr(html) {
   const doc = parseDocument(html.trim());
@@ -47,18 +34,55 @@ export function ssr(html) {
 /** @type {Map<string, Function>} */
 const registry = new Map();
 
+/** Tracks which classes already have SSR prop getters installed. */
+const _initialized = new WeakSet();
+
+/**
+ * Install simplified prop getters on a component prototype so that
+ * renderComponent() can read prop values from the _props Map.
+ *
+ * @param {Function} ComponentClass
+ */
+function installPropGetters(ComponentClass) {
+  if (_initialized.has(ComponentClass)) {
+    return;
+  }
+  _initialized.add(ComponentClass);
+
+  const props = ComponentClass.props;
+  if (!props) {
+    return;
+  }
+
+  for (const p of props) {
+    const name = typeof p === "string" ? p : p.name;
+    const descriptor = Object.getOwnPropertyDescriptor(ComponentClass.prototype, name);
+
+    if (descriptor && typeof descriptor.get === "function") {
+      continue;
+    }
+
+    Object.defineProperty(ComponentClass.prototype, name, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        return this._props ? this._props.get(name) : undefined;
+      },
+      set(value) {
+        if (!this._props) {
+          this._props = new Map();
+        }
+        this._props.set(name, value);
+      },
+    });
+  }
+}
+
 /**
  * Register one or more Elena component classes for SSR.
  * Each class must have `_tagName` set (via Elena options).
  *
  * @param {...Function} components - Elena component classes.
- *
- * @example
- * import { register } from "@elenajs/ssr";
- * import Button from "./button.js";
- * import Stack from "./stack.js";
- *
- * register(Button, Stack);
  */
 export function register(...components) {
   for (const Comp of components) {
@@ -69,9 +93,18 @@ export function register(...components) {
           "Set `static tagName = 'your-tag-name'` as a static field on your component class."
       );
     }
+    installPropGetters(Comp);
     registry.set(tagName, Comp);
   }
 }
+
+/** Tags whose whitespace is significant and must not be collapsed. */
+const WHITESPACE_SENSITIVE = new Set([
+  "pre",
+  "textarea",
+  "listing", // deprecated, behaves like <pre>
+  "xmp", // deprecated, behaves like <pre>
+]);
 
 /** Tags that are self-closing in HTML. */
 const VOID_ELEMENTS = new Set([
@@ -92,24 +125,18 @@ const VOID_ELEMENTS = new Set([
 ]);
 
 /**
- * Convert an HTML attribute string to the right JavaScript value based on
- * what type the prop’s default value is. This makes SSR output match what
- * the component would produce in the browser.
+ * Convert an HTML attribute string to the right JavaScript
+ * value based on what type the prop’s default value is.
+ * This makes SSR output match what the component would
+ * produce in the browser.
  *
- * HTML attributes are always strings, but props can be booleans, numbers,
- * arrays, or objects. Without this conversion, a number prop would receive
- * the string "5" instead of the number 5.
- *
- * @param {string} type - The JavaScript type of the prop’s default value
- *   (from `typeof defaultValue`).
- * @param {string} value - The raw attribute string from the HTML parser.
- *   Bare boolean attributes like `disabled` arrive as an empty string `""`.
+ * @param {string} type - Type of the prop’s default value.
+ * @param {string} value - Raw attribute string from the parser.
  * @returns {boolean | number | string | Array | object | null}
  */
 function convertAttrValue(type, value) {
   switch (type) {
     case "boolean":
-      // A bare attribute with no value (e.g. `disabled`) means true.
       return value === "" || value === true;
     case "number":
       return value === null ? null : +value;
@@ -124,7 +151,6 @@ function convertAttrValue(type, value) {
         return null;
       }
     default:
-      // String (and any other type): use the value as-is.
       return value;
   }
 }
@@ -140,21 +166,30 @@ function convertAttrValue(type, value) {
  */
 function renderComponent(ComponentClass, attrs, textContent) {
   const instance = new ComponentClass();
+  const propDefaultTypes = {};
+
   instance._text = textContent;
 
-  // Read each declared prop’s default value type so we know how to convert
-  // the incoming attribute strings (e.g. "5" to 5 for a number prop).
-  const propDefaultTypes = {};
+  // Read each prop’s default value type so we know how
+  // to convert the incoming attribute strings.
   for (const p of ComponentClass.props || []) {
     const name = typeof p === "string" ? p : p.name;
-    propDefaultTypes[name] = typeof instance[name];
+    const value = instance[name];
+
+    propDefaultTypes[name] = typeof value;
+
     if (Object.prototype.hasOwnProperty.call(instance, name)) {
       delete instance[name];
+
+      if (!instance._props) {
+        instance._props = new Map();
+      }
+
+      instance._props.set(name, value);
     }
   }
 
-  // Write HTML attribute values into the internal props store, converting
-  // each value to the right type based on the prop’s default.
+  // Write HTML attributes into the internal store.
   if (!instance._props) {
     instance._props = new Map();
   }
@@ -216,6 +251,16 @@ function serializeAttrs(attrs) {
 }
 
 /**
+ * HTML whitespace characters: TAB, LF, CR, SPACE.
+ * Intentionally excludes \u00A0 (non-breaking space) and other Unicode
+ * whitespace that JavaScript's \s would match.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Text/Whitespace
+ */
+const WS = /[\t\n\r ]+/g;
+const ALL_WS = /[^\t\n\r ]/;
+
+/**
  * Walk the parsed tree, expand Elena components,
  * and serialize to HTML.
  *
@@ -228,16 +273,18 @@ function walk(nodes, preserveWhitespace = false) {
   for (const node of nodes) {
     if (node.type === ElementType.Text) {
       if (preserveWhitespace) {
-        // Inside <pre>: keep whitespace intact, but re-encode entities
-        // that htmlparser2 decoded during parsing.
+        // Inside <pre>, <textarea>, etc.: keep whitespace intact,
+        // but re-encode entities that htmlparser2 decoded during parsing.
         out += escapeHtml(node.data);
       } else {
-        // Collapse template indentation but preserve word boundaries.
-        // Use replace to turn newlines into spaces, then check if any
-        // non-whitespace content remains before emitting.
-        const collapsed = node.data.replace(/\n\s*/g, " ");
-        if (collapsed.trim()) {
-          out += escapeHtml(collapsed);
+        // Collapse all runs of HTML whitespace into a single space,
+        // matching browser behavior. Whitespace-only text nodes are
+        // preserved as a single space to maintain word boundaries
+        // between inline elements (e.g. <span>a</span> <span>b</span>).
+        if (ALL_WS.test(node.data)) {
+          out += escapeHtml(node.data.replace(WS, " "));
+        } else {
+          out += " ";
         }
       }
       continue;
@@ -245,6 +292,12 @@ function walk(nodes, preserveWhitespace = false) {
 
     if (node.type === ElementType.Comment) {
       out += `<!--${node.data}-->`;
+      continue;
+    }
+
+    if (node.type === ElementType.Script || node.type === ElementType.Style) {
+      const raw = node.children.map(c => c.data).join("");
+      out += `<${node.name}${serializeAttrs(node.attribs)}>${raw}</${node.name}>`;
       continue;
     }
 
@@ -261,7 +314,7 @@ function walk(nodes, preserveWhitespace = false) {
     } else {
       const ComponentClass = tag.includes("-") ? registry.get(tag) : null;
       const hasRender = ComponentClass && Object.hasOwn(ComponentClass.prototype, "render");
-      const pre = preserveWhitespace || tag === "pre";
+      const pre = preserveWhitespace || WHITESPACE_SENSITIVE.has(tag);
       if (hasRender) {
         const innerHTML = renderComponent(ComponentClass, attrs, getTextContent(children));
         // Mark as hydrated so CSS targeting :scope:not([hydrated]) doesn’t
