@@ -77,7 +77,13 @@ export default defineConfig({
     toc: {
       level: [1, 2],
     },
-    config: md => md.use(footnote),
+    config: md => {
+      md.use(footnote);
+
+      // Wrap tables in a scrollable container for small viewports
+      md.renderer.rules.table_open = () => '<div class="table-container"><table>';
+      md.renderer.rules.table_close = () => "</table></div>";
+    },
   },
   vite: {
     plugins: [copyComponentAssets()],
