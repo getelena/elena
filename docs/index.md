@@ -19,7 +19,7 @@ title: Progressive Web Components
 
 ## What is Elena?
 
-**Elena is a simple, tiny library (2.7kB) for building [Progressive Web Components](/components/overview).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity. [^1]
+**Elena is a simple, tiny library (2.6kB) for building [Progressive Web Components](/components/overview).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity. [^1]
 
 [^1]: **Elena supports [multiple component models](/components/overview):** Composite Components that wrap and enhance the HTML composed inside them; Primitive Components that are self-contained and render their own HTML;
 And Declarative Components that are a hybrid of these and utilize [Declarative Shadow DOM](/components/templates#declarative-shadow-dom).
@@ -84,7 +84,7 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 
 ## Elena’s features
 
-- 🔋 **Extremely lightweight:** 2.7kB minified & compressed, simple and tiny by design.
+- 🔋 **Extremely lightweight:** 2.6kB minified & compressed, simple and tiny by design.
 - 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
 - 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
 - 🌍 **Standards based:** Built entirely on native custom elements & web standards.
@@ -103,7 +103,7 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 | | Elena | Lit |
 |---|---|---|
 | **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM |
-| **Size** | 2.7kB | ~5kB |
+| **Size** | 2.6kB | ~5kB |
 | **Templating** | Native tagged template literals with auto-escaping | Custom reactive template engine with directives and binding syntax |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
 | **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires `@lit-labs/ssr` |
