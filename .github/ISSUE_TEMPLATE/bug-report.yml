@@ -3,11 +3,6 @@ description: "Report an issue with Elena"
 title: '[bug]: '
 labels: ["bug"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        ### Thanks for taking the time to create a bug report. Please search open/closed issues before submitting, as the issue may have already been reported/addressed.
-
   - type: textarea
     id: bug-description
     attributes:
@@ -23,17 +18,17 @@ body:
       label: Affected area
       description: Which part of Elena is affected by this bug?
       options:
-        - label: Core library
-        - label: CLI
-        - label: Bundler
-        - label: Component library
-        - label: SSR tools
-        - label: CEM Define plugin
-        - label: CEM Tag plugin
-        - label: CEM TypeScript plugin
-        - label: Rollup CSS plugin
-        - label: Documentation website
-        - label: Other
+        - Core library
+        - CLI
+        - Bundler
+        - Component library
+        - SSR tools
+        - CEM Define plugin
+        - CEM Tag plugin
+        - CEM TypeScript plugin
+        - Rollup CSS plugin
+        - Documentation website
+        - Other
     validations:
       required: true
 
