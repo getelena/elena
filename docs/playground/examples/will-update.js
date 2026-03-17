@@ -58,7 +58,7 @@ MyFilter.define();`,
 
   .my-filter {
     font-family: system-ui, sans-serif;
-    max-width: 250px;
+    max-inline-size: 250px;
   }
 
   ul {
@@ -68,9 +68,9 @@ MyFilter.define();`,
     list-style: none;
     background: #f7fafc;
     border: 1px solid #e9ecee;
-    border-top: 0;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-block-start: 0;
+    border-end-start-radius: 4px;
+    border-end-end-radius: 4px;
   }
 
   li {
@@ -83,7 +83,7 @@ MyFilter.define();`,
   }
 
   small {
-    margin-top: 1rem;
+    margin-block-start: 1rem;
     display: block;
   }
 }
@@ -91,7 +91,7 @@ MyFilter.define();`,
 /* See https://elenajs.com/advanced/gotchas#browser-compatibility */
 my-filter input {
   all: unset;
-  width: 100%;
+  inline-size: 100%;
   padding: 0.5rem 1rem;
   border: 1px solid #a5a9af;
   border-radius: 4px;

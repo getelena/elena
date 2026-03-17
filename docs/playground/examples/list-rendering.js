@@ -55,7 +55,7 @@ MyList.define();`,
 
   .my-list {
     font-family: system-ui, sans-serif;
-    max-width: 300px;
+    max-inline-size: 300px;
   }
 
   .summary {
@@ -77,7 +77,7 @@ MyList.define();`,
     align-items: center;
     gap: 0.5rem;
     padding: 0.375rem 0;
-    border-bottom: 1px solid #edf2f7;
+    border-block-end: 1px solid #edf2f7;
   }
 
   li.done {

@@ -45,7 +45,7 @@ MyInput.define();`,
 
   :scope {
     display: block;
-    margin-bottom: 0.75rem;
+    margin-block-end: 0.75rem;
   }
 
   .my-input {

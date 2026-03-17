@@ -60,15 +60,15 @@ MyCheckbox.define();`,
     gap: 0.5rem;
     font-family: system-ui, sans-serif;
     font-size: 0.9375rem;
-    margin-bottom: 0.5rem;
+    margin-block-end: 0.5rem;
     cursor: pointer;
   }
 
   input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
-    width: 1.125rem;
-    height: 1.125rem;
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
     border: 2px solid #929396;
     border-radius: 4px;
     background: #fff;
@@ -81,8 +81,8 @@ MyCheckbox.define();`,
 
   input[type="checkbox"]::before {
     content: "";
-    width: 0.75rem;
-    height: 0.75rem;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
     clip-path: polygon(10% 50%, 0 63%, 48% 100%, 100% 14%, 88% 0%, 48% 74%);
     background: #fff;
     transform: scale(0);

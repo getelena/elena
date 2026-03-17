@@ -79,8 +79,8 @@ document.querySelectorAll("my-button").forEach(btn => {
   background: #f7fafc;
   padding: 0.75rem;
   border-radius: 4px;
-  margin-top: 1rem;
-  min-height: 3rem;
+  margin-block-start: 1rem;
+  min-block-size: 3rem;
   white-space: pre;
 }`,
   html: `<my-button>Say Hello</my-button>

@@ -82,7 +82,7 @@ MyKeyLogger.define();`,
     display: flex;
     flex-wrap: wrap;
     gap: 0.375rem;
-    min-height: 2rem;
+    min-block-size: 2rem;
     align-items: center;
   }
 
@@ -100,7 +100,7 @@ MyKeyLogger.define();`,
   }
 
   button.clear {
-    margin-top: 0.75rem;
+    margin-block-start: 0.75rem;
     padding: 0.5rem 0.75rem;
     background: #eaecf0;
     color: #172b4d;

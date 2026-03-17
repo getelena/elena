@@ -73,8 +73,8 @@ MyTags.define();`,
     display: flex;
     flex-wrap: wrap;
     gap: 0.375rem;
-    margin-top: 0.5rem;
-    min-height: 1.75rem;
+    margin-block-start: 0.5rem;
+    min-block-size: 1.75rem;
   }
 
   .tag {
@@ -110,7 +110,7 @@ MyTags.define();`,
 /* See https://elenajs.com/advanced/gotchas#browser-compatibility */
 my-tags input {
   all: unset;
-  width: 100%;
+  inline-size: 100%;
   padding: 0.5rem;
   border: 1px solid #a5a9af;
   font-family: system-ui, sans-serif;

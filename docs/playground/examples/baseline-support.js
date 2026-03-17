@@ -96,10 +96,10 @@ export default class BaselineSupport extends Elena(HTMLElement) {
       display: block;
       border: solid 1px var(--baseline-color-outline);
       border-radius: 8px;
-      width: 100%;
+      inline-size: 100%;
       padding: 16px 24px 0 24px;
-      max-width: 800px;
-      margin-bottom: 1rem;
+      max-inline-size: 800px;
+      margin-block-end: 1rem;
       font-family: Roboto, sans-serif;
       font-size: 14px;
       font-style: normal;
@@ -158,7 +158,7 @@ export default class BaselineSupport extends Elena(HTMLElement) {
 
     .baseline-browsers {
       font-size: 0;
-      max-width: 200px;
+      max-inline-size: 200px;
       display: flex;
       gap: 16px;
     }
@@ -185,15 +185,15 @@ export default class BaselineSupport extends Elena(HTMLElement) {
     }
 
     details > summary .open-icon {
-      width: 10px;
-      height: 20px;
-      margin-left: auto;
+      inline-size: 10px;
+      block-size: 20px;
+      margin-inline-start: auto;
       color: inherit;
     }
 
     @media (min-width: 420px) {
       details > summary .open-icon {
-        margin-left: 48px;
+        margin-inline-start: 48px;
       }
     }
 

@@ -47,12 +47,12 @@ MyAlert.define();`,
 
   :scope:not([hydrated]),
   .my-alert {
-    margin-bottom: 0.5rem;
+    margin-block-end: 0.5rem;
     font-family: system-ui, sans-serif;
     font-size: 0.875rem;
     padding: 0.75rem 1rem;
-    min-height: 1.5rem;
-    border-left: 3px solid var(--my-alert-border);
+    min-block-size: 1.5rem;
+    border-inline-start: 3px solid var(--my-alert-border);
     background: var(--my-alert-bg);
     display: flex;
     align-items: center;
@@ -60,12 +60,12 @@ MyAlert.define();`,
   }
 
   :scope:not([hydrated]) {
-    padding-left: 2.5rem;
+    padding-inline-start: 2.5rem;
   }
 
   .icon {
     font-size: 1rem;
-    width: 1rem;
+    inline-size: 1rem;
   }
 
   .message {
