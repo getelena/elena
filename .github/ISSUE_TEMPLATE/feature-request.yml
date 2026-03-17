@@ -1,0 +1,82 @@
+name: "Feature request"
+description: "Create a feature request for Elena"
+title: '[feat]: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thanks for taking the time to create a feature request! Please search open/closed issues before submitting, as the issue may have already been reported/addressed.
+ 
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature description
+      description: Tell us about your feature request
+      placeholder: 'I think this feature would be great because...'
+      value: 'Describe your feature request...'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Affected area
+      description: Which part of Elena would this feature affect?
+      options:
+        - label: Core library
+        - label: CLI
+        - label: Bundler
+        - label: Component library
+        - label: SSR tools
+        - label: CEM Define plugin
+        - label: CEM Tag plugin
+        - label: CEM TypeScript plugin
+        - label: Rollup CSS plugin
+        - label: Documentation website
+        - label: Other
+    validations:
+      required: true
+
+  - type: input
+    id: frameworks-affected
+    attributes:
+      label: Frameworks affected (if applicable)
+      description: Which frameworks would this feature benefit?
+      placeholder: ex. React, Astro, Web Components, All...
+    validations:
+      required: false
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: Describe a specific scenario where this feature would be useful
+      placeholder: |
+        When I’m building a design system, I often need to...
+        This would help me...
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the feature here.
+      placeholder: ex. screenshots, Stack Overflow links, forum links, etc.
+      value: 'Additional details here...'
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Before submitting
+      description: By submitting this issue, you agree to follow our [Contributing Guidelines](https://github.com/getelena/elena/blob/main/CONTRIBUTING.md).
+      options:
+        - label: I’ve searched for existing issues and PRs
+          required: true
+        - label: I’ve checked the documentation
+          required: true
+        - label: This feature aligns with Elena’s principles
+          required: true 

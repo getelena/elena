@@ -1,0 +1,103 @@
+name: "Bug report"
+description: "Report an issue with Elena"
+title: '[bug]: '
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thanks for taking the time to create a bug report. Please search open/closed issues before submitting, as the issue may have already been reported/addressed.
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is. If you intend to submit a PR for this issue, tell us how in the description. Thanks!
+      placeholder: Bug description
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Affected area
+      description: Which part of Elena is affected by this bug?
+      options:
+        - label: Core library
+        - label: CLI
+        - label: Bundler
+        - label: Component library
+        - label: SSR tools
+        - label: CEM Define plugin
+        - label: CEM Tag plugin
+        - label: CEM TypeScript plugin
+        - label: Rollup CSS plugin
+        - label: Documentation website
+        - label: Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: How to reproduce
+      description: A step-by-step description of how to reproduce the bug.
+      placeholder: |
+        1. Run 'npx elena build'
+        2. See error
+    validations:
+      required: true
+
+  - type: input
+    id: config-file
+    attributes:
+      label: Configuration file (if applicable)
+      description: Relevant parts of your elena.config.{mjs|js} or other config files
+    validations:
+      required: false
+
+  - type: input
+    id: codesandbox
+    attributes:
+      label: Codepen link
+      description: | 
+        A link to a Codepen or similar that includes a minimal reproduction of the problem. In rare cases when not applicable, you can link to a GitHub repository that we can easily run to recreate the issue. If a report is vague and does not have a reproduction, it will be closed without warning. 
+
+        > [!CAUTION]
+        > If you skip this step, this issue might be **labeled** with `please add a reproduction` and **closed**.
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: "Please include console logs, terminal output, or build logs around the time this bug occurred. Optional if provided reproduction. Please do not insert an image."
+      render: bash
+
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: Information about your system that’s relevant.
+      render: bash
+      placeholder: |
+        OS: macOS 14.0
+        Node: v18.17.0
+        Package Manager: pnpm 8.6.0
+        Framework: Astro 4.0
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Before submitting
+      description: By submitting this issue, you agree to follow our [Contributing Guidelines](https://github.com/getelena/elena/blob/main/CONTRIBUTING.md).
+      options:
+        - label: I’ve searched for existing issues
+          required: true
+        - label: I’ve checked the documentation
+          required: true
+        - label: I’ve tried the latest version of Elena
+          required: true
