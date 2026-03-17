@@ -134,7 +134,6 @@ function createTemplate(processedStrings, valueCount) {
  * @param {HTMLElement} element - The host element to render into
  * @param {HTMLTemplateElement} template - Cached template with markers
  * @param {Array} values - Raw interpolated values
- * @param {string[]} renderedValues - HTML-escaped rendered values
  * @returns {Array<Text | undefined>} Text node map for fast-path patching
  */
 function cloneAndPatch(element, template, values) {
