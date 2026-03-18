@@ -5,6 +5,7 @@
 :root {
   --vp-c-brand-1: #f95b1f;
   --vp-c-brand-2: #f95b1f;
+  --vp-header-anchor-symbol: "⌗";
   --vp-button-brand-bg: #f95b1f;
   --vp-nav-height: 64px;
   --vp-font-family-base:
@@ -22,6 +23,18 @@ body {
     "liga" 1,
     "cv05" 1,
     "zero" 1;
+}
+
+.vp-doc h1 .header-anchor {
+  top: -0.2rem;
+}
+
+.vp-doc h2 .header-anchor {
+  top: 1.4rem;
+}
+
+.vp-doc .header-anchor {
+  top: -0.1rem;
 }
 
 .vp-doc h2 {

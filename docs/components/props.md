@@ -5,7 +5,7 @@ description: Learn how to declare, type, and use props in Elena components, incl
 
 # Props
 
-Props are values you pass to an Elena component. Declare them in `static props` and Elena will keep them in sync with HTML attributes, and re-render the components whenever they change.
+Props are values you pass to an Elena component. Declare them in `static props` and Elena will keep them in sync with HTML attributes, and re-render the components whenever they&nbsp;change.
 
 ## Declaring props
 
