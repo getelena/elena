@@ -13,6 +13,8 @@
 }
 
 body {
+  -webkit-font-smoothing: auto;
+  text-rendering: auto;
   font-feature-settings:
     "kern" 1,
     "tnum" 1,
@@ -20,6 +22,15 @@ body {
     "liga" 1,
     "cv05" 1,
     "zero" 1;
+}
+
+.vp-doc h2 {
+  letter-spacing: -0.01em;
+}
+
+.vp-doc h3,
+.vp-doc h4 {
+  letter-spacing: -0.005em;
 }
 
 .outline-title,
