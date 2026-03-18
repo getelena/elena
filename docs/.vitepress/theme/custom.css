@@ -12,6 +12,16 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+body {
+  font-feature-settings:
+    "kern" 1,
+    "tnum" 1,
+    "calt" 1,
+    "liga" 1,
+    "cv05" 1,
+    "zero" 1;
+}
+
 .outline-title,
 .tabs,
 .active,
