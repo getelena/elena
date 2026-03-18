@@ -8,7 +8,7 @@
 
 .pg-layout {
   display: grid;
-  grid-template-columns: var(--vp-sidebar-width) 1fr 1fr;
+  grid-template-columns: calc(var(--vp-sidebar-width) - 24px) 1.5fr 1fr;
   block-size: calc(100vh - var(--vp-nav-height));
   overflow: hidden;
 }
@@ -173,7 +173,8 @@
 
 .pg-editor-container .cm-editor {
   block-size: 100%;
-
+  font-size: var(--vp-code-font-size);
+  font-family: var(--vp-font-family-mono);
   font-smooth: auto;
   -webkit-font-smoothing: auto;
 }
@@ -300,7 +301,7 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
     inset-inline-start: 0;
     inline-size: calc(100vw - 64px);
     max-inline-size: 320px;
-    padding: 32px 32px 96px;
+    padding: 32px;
     z-index: 100;
     transform: translateX(-100%);
     transition: transform 0.25s ease;
