@@ -95,10 +95,14 @@ Here’s a full example using these patterns:
   /* Targets the host element (elena-button) */
   :scope {
 
-    /* Public CSS properties */
-    --elena-button-font: sans-serif;
-    --elena-button-text: white;
-    --elena-button-bg: blue;
+    /* Public theming API (with default values set) */
+    --_elena-button-bg: var(--elena-button-bg, blue);
+    --_elena-button-text: var(--elena-button-text, white);
+    --_elena-button-font: var(--elena-button-font, system-ui, sans-serif);
+
+    /* Internal theming API references (usage) */
+    background-color: var(--_elena-button-bg);
+    color: var(--_elena-button-text);
 
     /* Display mode for the host element */
     display: inline-block;
@@ -107,15 +111,16 @@ Here’s a full example using these patterns:
   /* Elena SSR Pattern to avoid layout shift */
   :scope:not([hydrated]),
   .elena-button:is(button) {
-    font-family: var(--elena-button-font);
-    color: var(--elena-button-text);
-    background: var(--elena-button-bg);
+    font-family: var(--_elena-button-font);
+    color: var(--_elena-button-text);
+    background: var(--_elena-button-bg);
+  
     display: inline-block;
   }
 
   /* Rest of your component styles */
   :scope[variant="primary"] {
-    --elena-button-bg: red;
+    --_elena-button-bg: var(--elena-button-bg, red);
   }
 }
 ```
@@ -125,8 +130,8 @@ The `:scope:not([hydrated]), .inner-element` pattern ensures components look the
 Use attribute selectors on `:scope` for variant and state styling:
 
 ```css
-:scope[variant="primary"] { --elena-button-bg: red; }
-:scope[disabled] { opacity: 0.5; }
+:scope[variant="primary"] { color: red }
+:scope[disabled] { opacity: 0.5 }
 ```
 
 ## Pre-hydration state and styles
