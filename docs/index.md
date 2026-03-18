@@ -114,5 +114,6 @@ As a baseline, Elena’s progressive approach supports any web browser that’s 
 - View the [Live examples](/examples/) for demos.
 - Read how [Elena compares](/advanced/faq#how-does-elena-compare-against-other-tools) against other web component libraries.
 - Browse our [FAQ](/advanced/faq) for frequently asked questions.
+- Try Elena in the [Playground](/playground/).
 
 <br/>

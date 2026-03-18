@@ -426,3 +426,4 @@ For more, see the [CLI documentation](/advanced/cli).
 - Read the [Component API](/api/) reference to learn about props, events, and lifecycle hooks.
 - Learn how to build a full [Component Library](/advanced/libraries).
 - Explore [Framework Integration](/advanced/frameworks) examples for React, Vue, Angular, Next.js and more.
+- Try Elena in the [Playground](/playground/).
