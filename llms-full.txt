@@ -2051,6 +2051,7 @@ The source code is in `packages/components/` of the [Elena monorepo](https://git
 * For more details, view [Component Libraries](/advanced/libraries).
 * Explore [Framework Integration](/advanced/frameworks) examples for React, Vue, Angular, Next.js and more.
 * Browse our [FAQ](/advanced/faq) for frequently asked questions.
+* Try Elena in the [Playground](/playground/).
 
 ---
 
@@ -2682,7 +2683,7 @@ description: >-
 
 # Props
 
-Props are values you pass to an Elena component. Declare them in `static props` and Elena will keep them in sync with HTML attributes, and re-render the components whenever they change.
+Props are values you pass to an Elena component. Declare them in `static props` and Elena will keep them in sync with HTML attributes, and re-render the components whenever they change.
 
 ## Declaring props
 
@@ -3263,6 +3264,7 @@ For more, see the [CLI documentation](/advanced/cli).
 * Read the [Component API](/api/) reference to learn about props, events, and lifecycle hooks.
 * Learn how to build a full [Component Library](/advanced/libraries).
 * Explore [Framework Integration](/advanced/frameworks) examples for React, Vue, Angular, Next.js and more.
+* Try Elena in the [Playground](/playground/).
 
 ---
 
@@ -3664,7 +3666,7 @@ description: >-
 
 # Styles
 
-These guidelines cover the approaches we recommend when styling [Progressive Web Components](/components/overview) to make them work reliably across the custom element lifecycle. You can craft the CSS however works best for your project, but the patterns below help avoid some common pitfalls.
+These guidelines cover the approaches we recommend when styling [Progressive Web Components](/components/overview) to make them work reliably across the custom element lifecycle. You can craft the CSS however works best for your project, but the patterns below help avoid some common pitfalls.
 
 ## Writing scoped styles
 

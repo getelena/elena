@@ -149,3 +149,4 @@ The source code is in `packages/components/` of the [Elena monorepo](https://git
 * For more details, view [Component Libraries](/advanced/libraries).
 * Explore [Framework Integration](/advanced/frameworks) examples for React, Vue, Angular, Next.js and more.
 * Browse our [FAQ](/advanced/faq) for frequently asked questions.
+* Try Elena in the [Playground](/playground/).
