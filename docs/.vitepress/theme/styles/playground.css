@@ -8,8 +8,15 @@
 
 .pg-layout {
   display: grid;
-  grid-template-columns: calc(var(--vp-sidebar-width) - 24px) 1.5fr 1fr;
+  grid-template-columns: calc(var(--vp-sidebar-width) - 24px) 1fr;
   block-size: calc(100vh - var(--vp-nav-height));
+  overflow: hidden;
+}
+
+.pg-main {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  position: relative;
   overflow: hidden;
 }
 
@@ -258,11 +265,10 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   pointer-events: none;
 }
 
-/* Overlay that sits on top of the real Playground until the preview iframe is ready */
+/* Overlay that sits on top of the editor + preview until the iframe is ready */
 .pg-loading-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  top: var(--vp-nav-height);
   z-index: 1;
 }
 
@@ -280,6 +286,10 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
 
 @media (max-width: 959px) {
   .pg-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .pg-main {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -334,7 +344,7 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
 }
 
 @media (max-width: 767px) {
-  .pg-layout {
+  .pg-main {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
   }

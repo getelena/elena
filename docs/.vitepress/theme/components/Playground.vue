@@ -1,86 +1,60 @@
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from "vue";
+import { ref, reactive, watch } from "vue";
 import { examples } from "./playground-examples.js";
-import { findExample, getHashId, setHash } from "./playground-utils.js";
-import PlaygroundSidebar from "./PlaygroundSidebar.vue";
+import { findExample } from "./playground-utils.js";
 import PlaygroundEditor from "./PlaygroundEditor.vue";
 import PlaygroundPreview from "./PlaygroundPreview.vue";
 
-const emit = defineEmits(["preview-ready"]);
+const props = defineProps({
+  currentId: { type: String, default: "" },
+});
 
-const sidebarOpen = ref(false);
+const emit = defineEmits(["preview-ready", "toggle-sidebar"]);
+
 const activeTab = ref("js");
 
-// Initialize synchronously so PlaygroundPreview can set srcdoc on first render
-const hashId = getHashId();
-const defaultId = examples[0]?.items[0]?.id || "hello-world";
-const initialExample = findExample(examples, hashId || defaultId) || examples[0]?.items[0];
-
-const editor = reactive({
-  js: initialExample?.js || "",
-  css: initialExample?.css || "",
-  html: initialExample?.html || "",
-});
-
-const currentId = ref(initialExample?.id || "");
-
-function selectExample(id) {
-  const example = findExample(examples, id);
-  if (!example) { return; }
-
-  currentId.value = example.id;
-  editor.js = example.js;
-  editor.css = example.css;
-  editor.html = example.html;
-  activeTab.value = "js";
-  setHash(example.id);
-  sidebarOpen.value = false;
+function getEditorState(id) {
+  const example = findExample(examples, id) || examples[0]?.items[0];
+  return {
+    js: example?.js || "",
+    css: example?.css || "",
+    html: example?.html || "",
+  };
 }
 
-function onHashChange() {
-  const id = getHashId();
-  if (id && id !== currentId.value) {
-    selectExample(id);
-  }
-}
+const editor = reactive(getEditorState(props.currentId));
 
-onMounted(() => {
-  if (!hashId) {
-    setHash(currentId.value);
+watch(
+  () => props.currentId,
+  id => {
+    const example = findExample(examples, id);
+    if (!example) {
+      return;
+    }
+    editor.js = example.js;
+    editor.css = example.css;
+    editor.html = example.html;
+    activeTab.value = "js";
   }
-  window.addEventListener("hashchange", onHashChange);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("hashchange", onHashChange);
-});
+);
 </script>
 
 <template>
-  <div class="pg-layout">
-    <PlaygroundSidebar
-      :examples="examples"
-      :current-id="currentId"
-      :open="sidebarOpen"
-      @select="selectExample"
-      @toggle="sidebarOpen = !sidebarOpen"
-    />
-    <PlaygroundEditor
-      :js="editor.js"
-      :css="editor.css"
-      :html="editor.html"
-      :active-tab="activeTab"
-      @update:js="editor.js = $event"
-      @update:css="editor.css = $event"
-      @update:html="editor.html = $event"
-      @update:active-tab="activeTab = $event"
-      @toggle-sidebar="sidebarOpen = !sidebarOpen"
-    />
-    <PlaygroundPreview
-      :js="editor.js"
-      :css="editor.css"
-      :html="editor.html"
-      @preview-ready="emit('preview-ready')"
-    />
-  </div>
+  <PlaygroundEditor
+    :js="editor.js"
+    :css="editor.css"
+    :html="editor.html"
+    :active-tab="activeTab"
+    @update:js="editor.js = $event"
+    @update:css="editor.css = $event"
+    @update:html="editor.html = $event"
+    @update:active-tab="activeTab = $event"
+    @toggle-sidebar="emit('toggle-sidebar')"
+  />
+  <PlaygroundPreview
+    :js="editor.js"
+    :css="editor.css"
+    :html="editor.html"
+    @preview-ready="emit('preview-ready')"
+  />
 </template>
