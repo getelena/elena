@@ -265,6 +265,12 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   pointer-events: none;
 }
 
+.pg-loading-skeleton {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  grid-column: 1 / -1;
+}
+
 /* Overlay that sits on top of the editor + preview until the iframe is ready */
 .pg-loading-overlay {
   position: absolute;
