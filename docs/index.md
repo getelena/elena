@@ -96,62 +96,23 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 - 🧩 **Zero dependencies:** No runtime dependencies, runs entirely on the web platform.
 - 🔓 **Zero lock-in:** Works with every major framework, or no framework at all.
 
-## Elena vs other libraries
-
-### Elena vs Lit
-
-[Lit](https://lit.dev) is the most widely used web component library and a natural comparison point. Both share a similar foundation, extending native custom elements with tagged template literals for rendering, but differ significantly in approach:
-
-| | Elena | Lit |
-|---|---|---|
-| **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM |
-| **Size** | 2.6kB | ~5kB |
-| **Templating** | Native tagged template literals with auto-escaping | Custom reactive template engine with directives and binding syntax |
-| **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
-| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires `@lit-labs/ssr` |
-| **Style encapsulation** | `@scope` + `all: unset` (Shadow DOM opt-in) | Shadow DOM (`:host`, CSS parts) |
-| **Prop reflection** | Reflects all; disable per-prop | Reflects none; enable per-prop |
-| **Accessibility** | Full Light DOM access | Shadow DOM accessibility limitations |
-| **API** | Static class fields + reactive properties | Decorators + reactive properties |
-
-The biggest philosophical difference is the DOM model. Lit uses Shadow DOM by default for strong encapsulation; Elena uses Light DOM by default for accessibility, SSR, and CSS inheritance, with Shadow DOM available as an opt-in. 
-
-On the templating side, both use `html` tagged template literals, but Lit has a custom reactive template engine. Elena, on the other hand, provides just a thin wrapper around the native template literals.
-
-### Elena vs Stencil
-
-[Stencil](https://stenciljs.com) is a compiler that generates native web components, developed by the Ionic team. Unlike runtime libraries like Elena or Lit, Stencil is primarily a build tool. Components are authored in TypeScript + JSX and compiled to standalone custom elements:
-
-| | Elena | Stencil |
-|---|---|---|
-| **Approach** | Runtime mixin | Compiler |
-| **Language** | Vanilla JavaScript or TypeScript | TypeScript + JSX |
-| **Build step** | Optional | Required |
-| **Templating** | Native tagged template literals with auto-escaping | JSX (compiled via TypeScript) |
-| **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM (default; configurable) |
-| **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
-| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires Stencil’s Hydrate app |
-| **Prop reflection** | Reflects all; disable per-prop | Reflects none; enable per-prop |
-| **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM or scoped CSS |
-| **API** | Static class fields + reactive properties | Decorators + JSX |
-| **Output targets** | Not necessary | Custom elements, React, Angular, Vue wrappers |
-
-Stencil’s standout feature is its output targets: it can generate framework-specific wrappers (React, Angular, Vue) automatically from the same component source. If you need generated bindings for multiple frameworks, Stencil has a clear advantage. Elena, by contrast, works directly with any framework without generated wrappers.
-
 ## Browser support
 
-Elena is tested in the latest two versions of the following browsers. We may address critical bugs in earlier versions based on their severity and impact. If you need to support IE11 or pre-Chromium Edge, this library isn’t for you.
+As a baseline, Elena’s progressive approach supports any web browser that’s capable of rendering Custom Elements. After that, it’s up to you to determine what is appropriate for your project when authoring CSS styles and JavaScript interactivity. Elena, the JavaScript library, is tested in the latest two versions of the following browsers:
 
 <div class="elena-stack">
-  <img src="/chrome.png" width="64" height="64" alt="Chrome" />
-  <img src="/safari.png" width="64" height="64" alt="Safari" />
-  <img src="/edge.png" width="64" height="64" alt="Chrome" />
-  <img src="/firefox.png" width="64" height="64" alt="Chrome" />
-  <img src="/opera.png" width="64" height="64" alt="Chrome" />
+  <img src="/chrome.png" width="56" height="56" alt="Chrome" />
+  <img src="/safari.png" width="56" height="56" alt="Safari" />
+  <img src="/edge.png" width="56" height="56" alt="Chrome" />
+  <img src="/firefox.png" width="56" height="56" alt="Chrome" />
+  <img src="/opera.png" width="56" height="56" alt="Chrome" />
 </div>
 
 ## Next steps
 
 - Start with the [Quick Start](/start/) guide.
 - View the [Live examples](/examples/) for demos.
+- Read how [Elena compares](/advanced/faq#how-does-elena-compare-against-other-tools) against other web component libraries.
 - Browse our [FAQ](/advanced/faq) for frequently asked questions.
+
+<br/>

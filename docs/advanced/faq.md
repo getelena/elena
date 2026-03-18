@@ -31,6 +31,54 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 
 A [Progressive Web Component](/components/overview) is a native Custom Element designed in two layers: a base layer of HTML and CSS that renders immediately, without JavaScript, and an enhancement layer of JavaScript that adds reactivity, event handling, and more advanced templating.
 
+## How does Elena compare against other tools?
+
+### Elena vs Lit
+
+[Lit](https://lit.dev) is the most widely used web component library and a natural comparison point. Both share a similar foundation, extending native custom elements with tagged template literals for rendering, but differ significantly in approach:
+
+| | Elena | Lit |
+|---|---|---|
+| **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM |
+| **Size** | 2.6kB | ~5kB |
+| **Templating** | Native tagged template literals with auto-escaping | Custom reactive template engine with directives and binding syntax |
+| **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires `@lit-labs/ssr` |
+| **Style encapsulation** | `@scope` + `all: unset` (Shadow DOM opt-in) | Shadow DOM (`:host`, CSS parts) |
+| **Prop reflection** | Reflects all; disable per-prop | Reflects none; enable per-prop |
+| **Accessibility** | Full Light DOM access | Shadow DOM accessibility limitations |
+| **API** | Static class fields + reactive properties | Decorators + reactive properties |
+
+The biggest philosophical difference is the DOM model. Lit uses Shadow DOM by default for strong encapsulation; Elena uses Light DOM by default for accessibility, SSR, and CSS inheritance, with Shadow DOM available as an opt-in. 
+
+On the templating side, both use `html` tagged template literals, but Lit has a custom reactive template engine. Elena, on the other hand, provides just a thin wrapper around the native template literals.
+
+### Elena vs Stencil
+
+[Stencil](https://stenciljs.com) is a compiler that generates native web components, developed by the Ionic team. Unlike runtime libraries like Elena or Lit, Stencil is primarily a build tool. Components are authored in TypeScript + JSX and compiled to standalone custom elements:
+
+| | Elena | Stencil |
+|---|---|---|
+| **Approach** | Runtime mixin | Compiler |
+| **Language** | Vanilla JavaScript or TypeScript | TypeScript + JSX |
+| **Build step** | Optional | Required |
+| **Templating** | Native tagged template literals with auto-escaping | JSX (compiled via TypeScript) |
+| **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM (default; configurable) |
+| **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires Stencil’s Hydrate app |
+| **Prop reflection** | Reflects all; disable per-prop | Reflects none; enable per-prop |
+| **Style encapsulation** | `@scope` + `all: unset` | Shadow DOM or scoped CSS |
+| **API** | Static class fields + reactive properties | Decorators + JSX |
+| **Output targets** | Not necessary | Custom elements, React, Angular, Vue wrappers |
+
+Stencil’s standout feature is its output targets: it can generate framework-specific wrappers (React, Angular, Vue) automatically from the same component source. If you need generated bindings for multiple frameworks, Stencil has a clear advantage. Elena, by contrast, works directly with any framework without generated wrappers.
+
+## What is the performance compared to Lit?
+
+At the time of writing, the performance is very similar. According to our benchmark tests, Elena is roughly 1.2x faster than Lit for single element creation and batch creation of up to 1000 components. Lit is roughly 1.2x faster on re-renders via attribute change.
+
+That said, synthetic benchmarks only measure isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
+
 ## How is Elena tested?
 
 Elena has a comprehensive automated test suite with 825+ tests across 47 test files covering unit tests, integration tests, visual diff tests, and benchmark tests.
@@ -82,12 +130,6 @@ Elena’s documentation is built with [VitePress](https://vitepress.dev), a stat
 ## How do you version Elena?
 
 Elena follows [Semantic Versioning](https://semver.org/). Under this scheme, version numbers and the way they change convey meaning about the underlying features and what has been modified from one version to the next.
-
-## How is the performance compared to Lit?
-
-At the time of writing, the performance is very similar. According to our benchmark tests, Elena is roughly 1.2x faster than Lit for single element creation and batch creation of up to 1000 components. Lit is roughly 1.2x faster on re-renders via attribute change.
-
-That said, synthetic benchmarks only measure isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
 
 ## How can I contribute?
 
