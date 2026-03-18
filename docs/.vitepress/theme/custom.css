@@ -13,6 +13,7 @@
 }
 
 body {
+  -webkit-font-smoothing: auto;
   text-rendering: auto;
   font-feature-settings:
     "kern" 1,
