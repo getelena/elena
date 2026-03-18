@@ -1,4 +1,4 @@
-import DefaultTheme from "vitepress/theme";
+import DefaultTheme from "vitepress/theme-without-fonts";
 import { useRoute } from "vitepress";
 import { initCodeblockFold } from "./codeblock-fold.mjs";
 import PlaygroundWrapper from "./components/PlaygroundWrapper.vue";

@@ -7,6 +7,9 @@
   --vp-c-brand-2: #f95b1f;
   --vp-button-brand-bg: #f95b1f;
   --vp-nav-height: 64px;
+  --vp-font-family-base:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .outline-title,
