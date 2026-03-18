@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch } from "vue";
 import { generateSrcdoc, debounce } from "./playground-utils.js";
 
 const props = defineProps({
@@ -8,9 +8,20 @@ const props = defineProps({
   html: { type: String, default: "" },
 });
 
+const emit = defineEmits(["preview-ready"]);
+
 const iframe = ref(null);
-const srcdoc = ref(null);
+const srcdoc = ref(generateSrcdoc(props.js, props.css, props.html));
 const ready = ref(false);
+let firstLoad = true;
+
+function onIframeLoad() {
+  ready.value = true;
+  if (firstLoad) {
+    firstLoad = false;
+    emit("preview-ready");
+  }
+}
 
 function updatePreview() {
   ready.value = false;
@@ -18,9 +29,6 @@ function updatePreview() {
 }
 
 const debouncedUpdate = debounce(updatePreview, 300);
-
-// Immediate update on first mount and when example changes entirely
-onMounted(updatePreview);
 
 watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) => {
   // If all three changed at once, it's likely an example switch: update immediately
@@ -54,6 +62,7 @@ watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) =>
       :srcdoc="srcdoc"
       sandbox="allow-scripts allow-same-origin"
       title="Component preview"
+      @load="onIframeLoad"
     ></iframe>
   </div>
 </template>

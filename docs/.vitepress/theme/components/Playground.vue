@@ -6,16 +6,23 @@ import PlaygroundSidebar from "./PlaygroundSidebar.vue";
 import PlaygroundEditor from "./PlaygroundEditor.vue";
 import PlaygroundPreview from "./PlaygroundPreview.vue";
 
+const emit = defineEmits(["preview-ready"]);
+
 const sidebarOpen = ref(false);
 const activeTab = ref("js");
 
+// Initialize synchronously so PlaygroundPreview can set srcdoc on first render
+const hashId = getHashId();
+const defaultId = examples[0]?.items[0]?.id || "hello-world";
+const initialExample = findExample(examples, hashId || defaultId) || examples[0]?.items[0];
+
 const editor = reactive({
-  js: "",
-  css: "",
-  html: "",
+  js: initialExample?.js || "",
+  css: initialExample?.css || "",
+  html: initialExample?.html || "",
 });
 
-const currentId = ref("");
+const currentId = ref(initialExample?.id || "");
 
 function selectExample(id) {
   const example = findExample(examples, id);
@@ -37,10 +44,10 @@ function onHashChange() {
   }
 }
 
-const defaultId = examples[0]?.items[0]?.id || "hello-world";
-
 onMounted(() => {
-  selectExample(getHashId() || defaultId);
+  if (!hashId) {
+    setHash(currentId.value);
+  }
   window.addEventListener("hashchange", onHashChange);
 });
 
@@ -69,6 +76,11 @@ onUnmounted(() => {
       @update:active-tab="activeTab = $event"
       @toggle-sidebar="sidebarOpen = !sidebarOpen"
     />
-    <PlaygroundPreview :js="editor.js" :css="editor.css" :html="editor.html" />
+    <PlaygroundPreview
+      :js="editor.js"
+      :css="editor.css"
+      :html="editor.html"
+      @preview-ready="emit('preview-ready')"
+    />
   </div>
 </template>

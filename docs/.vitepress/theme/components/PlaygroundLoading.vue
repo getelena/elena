@@ -1,20 +1,3 @@
-<script setup>
-// Lightweight loading shell for the Playground page. Bundled synchronously with
-// the theme so it renders immediately while the real Playground chunk downloads.
-// Shows the playground layout skeleton with a pre-rendered hello-world preview.
-
-const staticSrcdoc = `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<style>body{font-family:system-ui,-apple-system,sans-serif;margin:1rem;color:#1a1a1a;}</style>
-</head>
-<body>
-<my-greeting name="Elena"><p>Hello, Elena!</p></my-greeting>
-</body>
-</html>`;
-</script>
-
 <template>
   <div class="pg-layout">
     <aside class="pg-sidebar pg-sidebar-loading">
@@ -31,12 +14,7 @@ const staticSrcdoc = `<!doctype html>
       <div class="pg-preview-header">
         <span class="pg-preview-title">Preview</span>
       </div>
-      <iframe
-        class="pg-preview-iframe pg-preview-ready"
-        :srcdoc="staticSrcdoc"
-        sandbox="allow-scripts allow-same-origin"
-        title="Component preview"
-      ></iframe>
+      <div class="pg-preview-iframe"></div>
     </div>
   </div>
 </template>

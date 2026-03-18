@@ -257,6 +257,22 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   pointer-events: none;
 }
 
+/* Overlay that sits on top of the real Playground until the preview iframe is ready */
+.pg-loading-overlay {
+  position: fixed;
+  inset: 0;
+  top: var(--vp-nav-height);
+  z-index: 1;
+}
+
+.pg-unload-leave-active {
+  transition: opacity 0.15s ease;
+}
+
+.pg-unload-leave-to {
+  opacity: 0;
+}
+
 /* ---------------------------------------------
 / RESPONSIVENESS
 / --------------------------------------------- */
