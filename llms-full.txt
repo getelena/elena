@@ -2139,14 +2139,7 @@ pnpm add --save-dev @elenajs/mcp
 You can optionally pass a project root path as an argument:
 
 ```json
-{
-  "mcpServers": {
-    "elena": {
-      "command": "npx",
-      "args": ["@elenajs/mcp", "./path/to/component-library"]
-    }
-  }
-}
+"args": ["@elenajs/mcp", "./path/to/component-library"]
 ```
 
 > \[!TIP]
@@ -2227,15 +2220,15 @@ Elena also provices [agent skills](https://github.com/cloudflare/agent-skills-di
 npx skills add https://getelena.github.io/elena
 ```
 
-The CLI fetches the skills index and lets you choose which skills to install. Skills are then written into your agent’s configuration and loaded automatically when relevant.
+The CLI fetches the skills index and lets you choose which skills to install. Skills are then written into your agent’s configuration and loaded automatically when needed.
 
 ### Available skills
 
 | Skill | Description |
 | --- | --- |
-| `elena-authoring` | Component types, props, events, templates, lifecycle, mixins, and framework compatibility rules. |
-| `elena-styles` | `@scope` encapsulation, `all: unset` reset (Primitive Components only), SSR hydration pattern, theming, and browser bug workarounds. |
-| `elena-tooling` | Bundler config, CLI scaffolding, Custom Elements Manifest, SSR with `@elenajs/ssr`, and TypeScript. |
+| `elena-authoring` | Component types, props, events, templates, lifecycle, mixins and framework compatibility rules. |
+| `elena-styles` | CSS encapsulation, reset, SSR hydration patterns, theming and browser bug workarounds. |
+| `elena-tooling` | Bundler config, CLI scaffolding, Custom Elements Manifest, server-side rendering and TypeScript. |
 
 ---
 
