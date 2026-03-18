@@ -1,3 +1,8 @@
+---
+title: Mixins
+description: Learn how to write and compose mixins to share behavior across Elena Progressive Web Components.
+---
+
 # Mixins
 
 Mixins are a standard JavaScript pattern for sharing behavior across [Progressive Web Components](/components/overview). Since Elena’s `Elena()` factory is itself a mixin, custom mixins compose naturally with it.

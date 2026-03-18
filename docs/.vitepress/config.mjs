@@ -3,6 +3,7 @@ import footnote from "markdown-it-footnote";
 import { copyFile, mkdir } from "fs/promises";
 import { fileURLToPath } from "url";
 import path from "path";
+import llmstxt from "vitepress-plugin-llms";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -86,7 +87,7 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [copyComponentAssets()],
+    plugins: [copyComponentAssets(), llmstxt()],
   },
   vue: {
     template: {

@@ -1,3 +1,8 @@
+---
+title: Scoping styles
+description: Learn how to scope Elena’s Progressive Web Component styles using CSS @scope, CSS encapsulation, and CSS cascade layers.
+---
+
 # Scoping styles
 
 Elena recommends the [@scope](https://caniuse.com/css-cascade-scope) at-rule to prevent component styles from leaking out to the rest of the page:

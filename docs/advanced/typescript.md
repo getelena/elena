@@ -1,3 +1,8 @@
+---
+title: Using TypeScript
+description: Learn how to use TypeScript with Elena, including authoring components in TS, generated type declarations, and JSX type support.
+---
+
 # Using TypeScript
 
 Elena is written in vanilla JavaScript with JSDoc annotations. The **`@elenajs/core`** library ships its own type declarations (`dist/elena.d.ts`) which are generated automatically by `tsc` from the JSDoc so that you get full IntelliSense and type checking.

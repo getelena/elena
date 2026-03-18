@@ -1,3 +1,8 @@
+---
+title: Quick start
+description: Get started with Elena. Learn how to install the library, build your first Progressive Web Component, and bundle a library of Progressive Web Components.
+---
+
 # Quick start
 
 The fastest way to get started is to include the following directly into your webpage:

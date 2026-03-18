@@ -1,3 +1,8 @@
+---
+title: Loading components
+description: Learn how to handle async Elena component loading, detect when a component is ready, and safely call methods after hydration.
+---
+
 # Loading components
 
 ## Load event

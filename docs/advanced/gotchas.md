@@ -1,3 +1,8 @@
+---
+title: Known issues
+description: Known browser compatibility issues and workarounds for Elena, including bugs with CSS @scope in Firefox and Safari.
+---
+
 # Known issues
 
 ## Browser compatibility

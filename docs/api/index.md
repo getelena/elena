@@ -1,5 +1,7 @@
 ---
 sidebar: false
+title: API Reference
+description: Full API reference for all Elena packages including @elenajs/core, @elenajs/bundler, @elenajs/ssr, and @elenajs/cli.
 ---
 
 # API Reference

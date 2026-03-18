@@ -1,5 +1,7 @@
 ---
-title: Progressive Web Components
+title: Elena | Progressive Web Components
+titleTemplate: false
+description: Elena is a simple, tiny library for building Progressive Web Components. Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity. 
 ---
 
 <pre class="elena">

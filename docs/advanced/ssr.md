@@ -1,3 +1,8 @@
+---
+title: Server-side rendering (SSR)
+description: Learn how Elena supports server-side rendering (SSR), and how to use @elenajs/ssr for Primitive Components with render().
+---
+
 # Server-side rendering
 
 Elena’s approach to server-side rendering is simple and straightforward. Since [Progressive Web Components](/components/overview) are primarily HTML and CSS, you don’t need any special logic on the server to render them.

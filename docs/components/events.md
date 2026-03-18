@@ -1,3 +1,8 @@
+---
+title: Events
+description: Learn how to use events with Elena, fire custom events with ElenaEvent, and document events in the Custom Elements Manifest.
+---
+
 # Events
 
 ## Delegated events

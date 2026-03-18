@@ -1,5 +1,9 @@
-# Overview
+---
+title: Overview
+description: Learn about Progressive Web Components and the different approaches to building them to help you decide what fits your use case.
+---
 
+# Overview
 
 Elena introduces an approach called **“Progressive Web Components”:**
 

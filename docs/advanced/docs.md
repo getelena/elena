@@ -1,3 +1,8 @@
+---
+title: Creating documentation
+description: Learn how to document Elena’s Progressive Web Components using JSDoc annotations to generate a Custom Elements Manifest and TypeScript declarations.
+---
+
 # Creating documentation
 
 Elena components are documented using [JSDoc](https://jsdoc.app) annotations directly in the source code. When you run `elena build`, Elena reads these annotations and generates a Custom Elements Manifest, per-component TypeScript declarations, and JSX integration types.

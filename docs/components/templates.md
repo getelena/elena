@@ -1,3 +1,8 @@
+---
+title: Templates
+description: Learn how to write component templates using Elena’s html tagged template literal, including conditionals, loops, and XSS-safe interpolation.
+---
+
 # Templates
 
 Elena uses an HTML-based template syntax built on JavaScript [tagged template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals).

@@ -1,3 +1,8 @@
+---
+title: Lifecycle
+description: Understand Elena’s Progressive Web Component lifecycle, from connection and rendering to updates and disconnection.
+---
+
 # Lifecycle
 
 Elena’s component lifecycle has two parts: the standard custom element lifecycle, and a reactive update cycle triggered by property changes.
