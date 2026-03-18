@@ -15,9 +15,53 @@
 
 .pg-main {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.5fr 0px 1fr;
   position: relative;
   overflow: hidden;
+}
+
+.pg-resizing {
+  user-select: none;
+}
+
+.pg-resizing .pg-preview-iframe {
+  pointer-events: none;
+}
+
+/* ---------------------------------------------
+/ RESIZE HANDLE
+/ --------------------------------------------- */
+
+.pg-resize-handle {
+  grid-column: 2;
+  grid-row: 1;
+  position: relative;
+  z-index: 2;
+  cursor: col-resize;
+}
+
+.pg-resize-handle::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -3px;
+  inline-size: 7px;
+}
+
+.pg-resize-handle::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -0.5px;
+  inline-size: 1px;
+  background: var(--vp-c-divider);
+  transition: background 0.15s;
+}
+
+.pg-resize-handle:hover::after,
+.pg-resizing .pg-resize-handle::after {
+  background: var(--vp-c-brand-1);
+  inline-size: 2px;
 }
 
 /* ---------------------------------------------
@@ -136,7 +180,11 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-inline-end: 1px solid var(--vp-c-divider);
+  grid-column: 1;
+}
+
+.pg-loading-skeleton > .pg-editor {
+  grid-column: auto;
 }
 
 .pg-editor-tabs {
@@ -203,6 +251,11 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   flex-direction: column;
   overflow: hidden;
   background: var(--vp-c-bg);
+  grid-column: 3;
+}
+
+.pg-loading-skeleton > .pg-preview {
+  grid-column: auto;
 }
 
 .pg-preview-header {
@@ -276,6 +329,7 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   position: absolute;
   inset: 0;
   z-index: 1;
+  background: var(--vp-c-bg);
 }
 
 .pg-unload-leave-active {
@@ -296,7 +350,7 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   }
 
   .pg-main {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 0px 1fr;
   }
 
   .pg-sidebar-backdrop {
@@ -355,8 +409,16 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
     grid-template-rows: 1fr 1fr;
   }
 
+  .pg-resize-handle {
+    display: none;
+  }
+
   .pg-editor {
-    border-inline-end: none;
     border-block-end: 1px solid var(--vp-c-divider);
+  }
+
+  .pg-editor,
+  .pg-preview {
+    grid-column: auto;
   }
 }
