@@ -246,6 +246,18 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
 }
 
 /* ---------------------------------------------
+/ LOADING
+/ --------------------------------------------- */
+
+.pg-editor-loading .pg-editor-container {
+  background: var(--vp-code-block-bg);
+}
+
+.pg-editor-loading .pg-editor-tab {
+  pointer-events: none;
+}
+
+/* ---------------------------------------------
 / RESPONSIVENESS
 / --------------------------------------------- */
 

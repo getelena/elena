@@ -16,6 +16,20 @@ const editorContainer = ref(null);
 const view = shallowRef(null);
 const tabs = computed(() => (props.css ? ["js", "css", "html"] : ["js", "html"]));
 
+// Start loading CodeMirror immediately when this module is evaluated,
+// rather than waiting for the editor to mount.
+const cmPromise =
+  typeof window !== "undefined"
+    ? Promise.all([
+        import("codemirror"),
+        import("@codemirror/state"),
+        import("@codemirror/lang-javascript"),
+        import("@codemirror/lang-html"),
+        import("@codemirror/lang-css"),
+        import("@codemirror/theme-one-dark"),
+      ])
+    : null;
+
 // Track modules loaded by dynamic import
 let cmModules = null;
 
@@ -48,15 +62,7 @@ async function loadCodeMirror() {
     return cmModules;
   }
 
-  const [cm, cmState, langJs, langHtml, langCss, themeDark] = await Promise.all([
-    import("codemirror"),
-    import("@codemirror/state"),
-    import("@codemirror/lang-javascript"),
-    import("@codemirror/lang-html"),
-    import("@codemirror/lang-css"),
-    import("@codemirror/theme-one-dark"),
-  ]);
-
+  const [cm, cmState, langJs, langHtml, langCss, themeDark] = await cmPromise;
   cmModules = { cm, cmState, langJs, langHtml, langCss, themeDark };
   return cmModules;
 }
