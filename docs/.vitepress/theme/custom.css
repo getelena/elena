@@ -64,37 +64,35 @@ label:active {
 
 .VPNavBarMenuLink.active {
   anchor-name: --nav-active;
-  border-block-end: 2px solid var(--vp-c-brand-1);
+  position: relative;
 }
 
 .VPNavBarMenuGroup.active .text {
   color: var(--vp-c-text-2) !important;
 }
 
-@supports (anchor-name: --nav) {
-  .VPNavBarMenuLink.active {
-    border-block-end: none;
-  }
+.VPNavBarMenu {
+  position: relative;
+}
 
+.VPNavBarMenu::after {
+  content: "";
+  position: absolute;
+  position-anchor: --nav-active;
+  bottom: 0;
+  left: anchor(left);
+  right: anchor(right);
+  height: 2px;
+  background: var(--vp-c-brand-1);
+  pointer-events: none;
+  transition:
+    left 0.2s ease,
+    right 0.2s ease;
+}
+
+@starting-style {
   .VPNavBarMenu::after {
-    content: "";
-    position: fixed;
-    position-anchor: --nav-active;
-    top: anchor(bottom);
-    left: anchor(left);
-    width: anchor-size(width);
-    height: 2px;
-    background: var(--vp-c-brand-1);
-    pointer-events: none;
-    transition:
-      left 0.2s ease,
-      width 0.2s ease;
-  }
-
-  @starting-style {
-    .VPNavBarMenu::after {
-      opacity: 0;
-    }
+    opacity: 0;
   }
 }
 
