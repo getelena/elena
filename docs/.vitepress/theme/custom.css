@@ -359,3 +359,7 @@ div[class*="language-"]:has(.codeblock-fold-btn) {
 .codeblock-fold-btn:hover {
   color: var(--vp-c-brand-1);
 }
+
+.VPNavBarTitle.has-sidebar .title {
+  margin-block-start: -1px;
+}
