@@ -13,24 +13,5 @@ export default {
   },
   enhanceApp({ app }) {
     app.component("Playground", PlaygroundWrapper);
-
-    // Prefetch the Playground chunk when the user hovers over the nav link
-    if (typeof window !== "undefined") {
-      let prefetched = false;
-      document.addEventListener(
-        "pointerenter",
-        e => {
-          if (prefetched) {
-            return;
-          }
-          const link = e.target.closest('a[href*="/playground"]');
-          if (link) {
-            prefetched = true;
-            import("./components/Playground.vue");
-          }
-        },
-        true
-      );
-    }
   },
 };
