@@ -1,8 +1,9 @@
 <template>
   <div class="pg-editor pg-editor-loading">
     <div class="pg-editor-tabs">
-      <button class="pg-editor-tab active">JS</button>
-      <button class="pg-editor-tab">HTML</button>
+      <button class="pg-editor-tab active">HTML</button>
+      <button class="pg-editor-tab">CSS</button>
+      <button class="pg-editor-tab">JS</button>
     </div>
     <div class="pg-editor-container"></div>
   </div>
