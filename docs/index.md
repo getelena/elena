@@ -69,6 +69,10 @@ Stack.define();
 
 :::
 
+[Try it in the playground](/playground/#composite-component)
+
+<br/>
+
 > [!TIP] Prerequisites
 > This documentation assumes familiarity with HTML, CSS, and JavaScript. If you're new to custom elements, the [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) is a good starting point, though prior experience is not required.
 

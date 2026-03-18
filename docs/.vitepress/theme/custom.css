@@ -46,6 +46,28 @@ body {
   letter-spacing: -0.005em;
 }
 
+.vp-doc a[href*="/playground/#composite-component"] {
+  text-decoration: none;
+}
+
+.vp-doc a[href*="/playground/#composite-component"]::before {
+  content: "▶";
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  color: var(--vp-c-brand);
+  border: 2px solid var(--vp-c-brand);
+  border-radius: 10px;
+  margin-left: 4px;
+  margin-right: 8px;
+  padding-left: 4.2px;
+  font-size: 11px;
+  line-height: 16px;
+  display: inline-flex;
+  position: relative;
+  top: -2px;
+}
+
 .outline-title,
 .tabs,
 .active,
