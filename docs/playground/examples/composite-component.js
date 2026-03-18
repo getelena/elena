@@ -25,7 +25,7 @@ MyStack.define();`,
     flex-direction: row;
   }
 }`,
-  html: `<my-stack direction="column">
+  html: `<my-stack>
   <div>First</div>
   <div>Second</div>
   <div>Third</div>

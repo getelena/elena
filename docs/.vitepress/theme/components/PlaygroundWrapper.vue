@@ -29,7 +29,7 @@ function onHashChange() {
 
 onMounted(async () => {
   const hashId = getHashId();
-  const defaultId = examples[0]?.items[0]?.id || "hello-world";
+  const defaultId = examples[0]?.items[0]?.id || "primitive-component";
   const initial = findExample(examples, hashId || defaultId) || examples[0]?.items[0];
   currentId.value = initial?.id || "";
   if (!hashId) {

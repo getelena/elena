@@ -180,7 +180,7 @@
 
 .pg-editor-container .cm-editor {
   block-size: 100%;
-  font-size: var(--vp-code-font-size);
+  font-size: calc(var(--vp-code-font-size) + 1px);
   font-family: var(--vp-font-family-mono);
   font-smooth: auto;
   -webkit-font-smoothing: auto;

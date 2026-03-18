@@ -14,7 +14,7 @@ const emit = defineEmits(["update:js", "update:css", "update:html", "update:acti
 const { isDark } = useData();
 const editorContainer = ref(null);
 const view = shallowRef(null);
-const tabs = computed(() => (props.css ? ["js", "css", "html"] : ["js", "html"]));
+const tabs = computed(() => (props.css ? ["html", "css", "js"] : ["html", "js"]));
 
 // Start loading CodeMirror immediately when this module is evaluated,
 // rather than waiting for the editor to mount.
@@ -111,7 +111,7 @@ async function createEditor() {
       EditorView.theme({
         "&": { height: "100%", fontSize: "13px" },
         ".cm-scroller": { overflow: "auto", fontFamily: "ui-monospace, monospace" },
-        ".cm-content": { padding: "12px 0" },
+        ".cm-content": { padding: "12px 0", lineHeight: "1.6" },
         ".cm-gutters": { border: "none" },
       }),
     ],

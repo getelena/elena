@@ -24,7 +24,7 @@ import shadowDom from "./shadow-dom.js";
 export const examples = [
   {
     category: "Basics",
-    items: [helloWorld, compositeComponent, primitiveComponent, declarativeComponent],
+    items: [primitiveComponent, compositeComponent, declarativeComponent, helloWorld],
   },
   {
     category: "Props",

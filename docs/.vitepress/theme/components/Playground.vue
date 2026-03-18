@@ -11,7 +11,7 @@ const props = defineProps({
 
 const emit = defineEmits(["preview-ready", "toggle-sidebar"]);
 
-const activeTab = ref("js");
+const activeTab = ref("html");
 
 function getEditorState(id) {
   const example = findExample(examples, id) || examples[0]?.items[0];
@@ -34,7 +34,7 @@ watch(
     editor.js = example.js;
     editor.css = example.css;
     editor.html = example.html;
-    activeTab.value = "js";
+    activeTab.value = "html";
   }
 );
 </script>
