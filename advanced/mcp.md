@@ -32,11 +32,10 @@ pnpm add --save-dev @elenajs/mcp
 
 ## Configuration
 
-### Claude Code
+::: code-group
 
-Add to `.mcp.json` in your project root:
-
-```json
+```json [Claude Code]
+// .mcp.json
 {
   "mcpServers": {
     "elena": {
@@ -47,11 +46,8 @@ Add to `.mcp.json` in your project root:
 }
 ```
 
-### Claude Desktop
-
-Add to `claude_desktop_config.json`:
-
-```json
+```json [Claude Desktop]
+// claude_desktop_config.json
 {
   "mcpServers": {
     "elena": {
@@ -61,6 +57,8 @@ Add to `claude_desktop_config.json`:
   }
 }
 ```
+
+:::
 
 You can optionally pass a project root path as an argument:
 
@@ -143,10 +141,22 @@ A guided workflow for creating new Elena components. The AI assistant asks about
 
 A best-practices review checklist for existing Elena components. Pass your component's JavaScript (and optionally CSS) code to get a structured review covering props, JSDoc, CSS isolation, hydration, and framework compatibility.
 
-## Programmatic usage
+## Skills
 
-```js
-import { createServer } from "@elenajs/mcp";
+Elena also provices [agent skills](https://github.com/cloudflare/agent-skills-discovery-rfc) to complement the `@elenajs/mcp`. Once installed, your coding agent automatically has context on Elena component authoring patterns without additional setup. Use skills for general authoring guidance; use MCP when you need dynamic tools like component scaffolding and CEM lookup.
 
-const server = createServer({ projectRoot: "./my-components" });
+### Install
+
+```sh
+npx skills add https://getelena.github.io/elena
 ```
+
+The CLI fetches the skills index and lets you choose which skills to install. Skills are then written into your agent’s configuration and loaded automatically when relevant.
+
+### Available skills
+
+| Skill | Description |
+| --- | --- |
+| `elena-authoring` | Component types, props, events, templates, lifecycle, mixins, and framework compatibility rules. |
+| `elena-styles` | `@scope` encapsulation, `all: unset` reset (Primitive Components only), SSR hydration pattern, theming, and browser bug workarounds. |
+| `elena-tooling` | Bundler config, CLI scaffolding, Custom Elements Manifest, SSR with `@elenajs/ssr`, and TypeScript. |
