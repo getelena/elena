@@ -67,6 +67,10 @@ yarn add @elenajs/ssr
 pnpm add @elenajs/ssr
 ```
 
+```sh [bun]
+bun add @elenajs/ssr
+```
+
 :::
 
 ### Basic usage

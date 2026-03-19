@@ -254,6 +254,10 @@ yarn add --dev @elenajs/cli
 pnpm add --save-dev @elenajs/cli
 ```
 
+```sh [bun]
+bun add --dev @elenajs/cli
+```
+
 :::
 
 ## Usage
@@ -345,6 +349,10 @@ yarn add --dev @elenajs/bundler
 
 ```sh [pnpm]
 pnpm add --save-dev @elenajs/bundler
+```
+
+```sh [bun]
+bun add --dev @elenajs/bundler
 ```
 
 :::
@@ -532,9 +540,25 @@ Runs the CEM analysis and writes `custom-elements.json`, `custom-elements.d.ts`,
 
 **`@elenajs/components`** is a reference component library built with Elena. It demonstrates real-world component patterns and is available as a starting point for your own library.
 
-```bash
+::: code-group
+
+```sh [npm]
 npm install @elenajs/components
 ```
+
+```sh [yarn]
+yarn add @elenajs/components
+```
+
+```sh [pnpm]
+pnpm add @elenajs/components
+```
+
+```sh [bun]
+bun add @elenajs/components
+```
+
+:::
 
 It includes the following components:
 
@@ -2003,9 +2027,25 @@ This page demonstrates Elena’s [Progressive Web Components](/components/overvi
 
 **[@elenajs/components](https://github.com/getelena/elena/tree/main/packages/components)** is a reference component library built with Elena. It demonstrates real-world component patterns and is available as a starting point for your own library.
 
-```bash
+::: code-group
+
+```sh [npm]
 npm install @elenajs/components
 ```
+
+```sh [yarn]
+yarn add @elenajs/components
+```
+
+```sh [pnpm]
+pnpm add @elenajs/components
+```
+
+```sh [bun]
+bun add @elenajs/components
+```
+
+:::
 
 It includes the following components:
 
@@ -2145,6 +2185,10 @@ yarn add --dev @elenajs/mcp
 
 ```sh [pnpm]
 pnpm add --save-dev @elenajs/mcp
+```
+
+```sh [bun]
+bun add --dev @elenajs/mcp
 ```
 
 :::
@@ -2891,6 +2935,10 @@ yarn add @elenajs/core
 pnpm add @elenajs/core
 ```
 
+```sh [bun]
+bun add @elenajs/core
+```
+
 :::
 
 Then import Elena in your component files:
@@ -3171,6 +3219,10 @@ yarn add --dev @elenajs/bundler
 pnpm add --save-dev @elenajs/bundler
 ```
 
+```sh [bun]
+bun add --dev @elenajs/bundler
+```
+
 :::
 
 Run the build:
@@ -3238,6 +3290,10 @@ yarn add --dev @elenajs/cli
 
 ```sh [pnpm]
 pnpm add --save-dev @elenajs/cli
+```
+
+```sh [bun]
+bun add --dev @elenajs/cli
 ```
 
 :::
@@ -3461,6 +3517,10 @@ yarn add @elenajs/ssr
 
 ```sh [pnpm]
 pnpm add @elenajs/ssr
+```
+
+```sh [bun]
+bun add @elenajs/ssr
 ```
 
 :::

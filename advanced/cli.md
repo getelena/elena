@@ -25,6 +25,10 @@ yarn add --dev @elenajs/cli
 pnpm add --save-dev @elenajs/cli
 ```
 
+```sh [bun]
+bun add --dev @elenajs/cli
+```
+
 :::
 
 ## Usage
