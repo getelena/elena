@@ -21,8 +21,23 @@ export default {
 export default class BaselineSupport extends Elena(HTMLElement) {
   static tagName = "baseline-support";
   static props = ["featureid"];
-  static element = "details";
   static shadow = "open";
+
+  /**
+   * The web-features feature ID (e.g. "grid", "dialog").
+   *
+   * @attribute
+   * @type {string}
+   */
+  featureid = "";
+
+  /**
+   * Styles for the baseline support web component.
+   * If you use @elenajs/bundler, you can also import them using:
+   * 
+   * import styles from "./baseline-support.css" with { type: "css" };
+   * static styles = styles;
+   */
   static styles = \`
     :host {
       --baseline-color-limited: light-dark(#ea8600, #f09418);
@@ -189,14 +204,6 @@ export default class BaselineSupport extends Elena(HTMLElement) {
       background: light-dark(#f5f5f5, #333);
     }
   \`;
-
-  /**
-   * The web-features feature ID (e.g. "grid", "dialog").
-   *
-   * @attribute
-   * @type {string}
-   */
-  featureid = "";
 
   /** @internal */
   _data = null;
