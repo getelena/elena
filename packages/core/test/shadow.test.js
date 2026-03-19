@@ -116,7 +116,7 @@ describe("shadow DOM", () => {
   });
 
   describe("event delegation", () => {
-    it("delegates events from inner shadow element to the host", async () => {
+    it("click on inner shadow element reaches the host", async () => {
       const el = await createElement("shadow-element");
       let fired = false;
       el.addEventListener("click", () => {
@@ -126,27 +126,27 @@ describe("shadow DOM", () => {
       expect(fired).toBe(true);
     });
 
-    it("stopPropagation is called on original event", async () => {
-      const el = await createElement("shadow-event-element");
-      const inner = el.element;
+    it("non-composed event in shadow DOM is forwarded to host", async () => {
+      // change is bubbles: true, composed: false — it cannot cross the shadow boundary.
+      // Elena should re-dispatch it on the host.
+      class ShadowChangeElement extends Elena(HTMLElement) {
+        static tagName = "shadow-change-element";
+        static shadow = "open";
+        static events = ["change"];
 
-      const origEvent = new Event("click", { bubbles: true });
-      const spy = vi.spyOn(origEvent, "stopPropagation");
-      inner.dispatchEvent(origEvent);
+        render() {
+          return html`<input />`;
+        }
+      }
+      ShadowChangeElement.define();
 
-      expect(spy).toHaveBeenCalled();
-    });
-
-    it("dispatched event is cancelable", async () => {
-      const el = await createElement("shadow-event-element");
+      const el = await createElement("shadow-change-element");
       const handler = vi.fn();
-      el.addEventListener("click", handler);
+      el.addEventListener("change", handler);
 
-      el.element.click();
+      el.element.dispatchEvent(new Event("change", { bubbles: true }));
 
       expect(handler).toHaveBeenCalledTimes(1);
-      const dispatched = handler.mock.calls[0][0];
-      expect(dispatched.cancelable).toBe(true);
     });
 
     it("focus delegation from shadow inner element to host", async () => {
@@ -154,12 +154,9 @@ describe("shadow DOM", () => {
       const handler = vi.fn();
       el.addEventListener("focus", handler);
 
-      el.element.dispatchEvent(new Event("focus", { bubbles: true }));
+      el.element.dispatchEvent(new Event("focus"));
 
       expect(handler).toHaveBeenCalledTimes(1);
-      const dispatched = handler.mock.calls[0][0];
-      expect(dispatched.bubbles).toBe(true);
-      expect(dispatched.composed).toBe(true);
     });
 
     it("both click and focus proxy methods work", async () => {
@@ -687,7 +684,7 @@ describe("shadow DOM", () => {
 
       const handler = vi.fn();
       el.addEventListener("focus", handler);
-      el.element.dispatchEvent(new Event("focus", { bubbles: true }));
+      el.element.dispatchEvent(new Event("focus"));
 
       expect(handler).toHaveBeenCalledTimes(1);
     });

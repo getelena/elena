@@ -78,9 +78,6 @@ describe("Primitive Components", () => {
       el.element.click();
 
       expect(handler).toHaveBeenCalledTimes(1);
-      const dispatched = handler.mock.calls[0][0];
-      expect(dispatched.bubbles).toBe(true);
-      expect(dispatched.composed).toBe(true);
     });
 
     it("creates proxy methods for delegated events", async () => {

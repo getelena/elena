@@ -13,7 +13,7 @@ describe("API_CONTENT", () => {
     expect(API_CONTENT).toContain("`html`");
     expect(API_CONTENT).toContain("`nothing`");
     expect(API_CONTENT).toContain("`unsafeHTML`");
-    expect(API_CONTENT).toContain("`ElenaEvent`");
+    expect(API_CONTENT).not.toContain("`ElenaEvent`");
   });
 
   it("documents static class fields (not options object)", () => {

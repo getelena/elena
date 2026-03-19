@@ -101,7 +101,7 @@ describe("PATTERNS_CONTENT", () => {
       expect(PATTERNS_CONTENT).toContain("static events");
     });
 
-    it("documents ElenaEvent defaults", () => {
+    it("documents custom event defaults", () => {
       expect(PATTERNS_CONTENT).toContain("bubbles: true");
       expect(PATTERNS_CONTENT).toContain("composed: true");
     });

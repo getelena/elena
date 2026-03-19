@@ -7,13 +7,12 @@ export const API_CONTENT = `# Elena API Reference
 ## \`@elenajs/core\`
 
 \`\`\`js
-import { Elena, html, nothing, unsafeHTML, ElenaEvent } from "@elenajs/core";
+import { Elena, html, nothing, unsafeHTML } from "@elenajs/core";
 \`\`\`
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | \`Elena\` | \`Elena(superClass)\` | Creates an Elena component base class. Pass in \`HTMLElement\` to get started. Configure the component using static [component options](#component-options) on the returned class. |
-| \`ElenaEvent\` | \`new ElenaEvent(type, init?)\` | Extends the native \`Event\` with \`bubbles: true\` and \`composed: true\` already set. Use this to fire custom events from inside a component. |
 
 ### Template Utilities
 

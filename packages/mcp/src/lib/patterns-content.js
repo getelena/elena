@@ -475,11 +475,9 @@ Every Elena component has a built-in reactive \`text\` property:
 
 - List event names in \`static events\` for delegation
 - Document with class-level JSDoc: \`@event click - Description\`
-- \`ElenaEvent\` extends \`Event\` with \`bubbles: true, composed: true\`
-
-### Event Delegation Caveats
-
-Delegated events are re-fired from the host as new \`ElenaEvent\` instances. **Only the event \`type\` and \`cancelable\` flag carry over** — event-specific properties such as \`key\`, \`clientX\`, \`data\`, or \`inputType\` are NOT forwarded. If you need those properties, listen directly on the inner element in \`connectedCallback\` instead of using \`static events\`.
+- Bubbling events (like \`click\`, \`change\`, \`input\`) pass through to the host naturally with all their original properties intact
+- Non-bubbling events (like \`focus\` and \`blur\`) are forwarded to the host as plain \`Event\` instances
+- For custom events, use the standard \`CustomEvent\` constructor with \`bubbles: true\` and \`composed: true\`
 
 Never define your own \`handleEvent\` method on a component that uses \`static events\` — Elena uses \`handleEvent\` internally and overriding it breaks event delegation.
 

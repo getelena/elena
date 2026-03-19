@@ -270,16 +270,14 @@ describe("Button", () => {
       expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it("dispatched events bubble and are composed", () => {
+    it("focus on inner button reaches the host", () => {
       const el = createElement("elena-button");
       const handler = vi.fn();
-      el.addEventListener("click", handler);
+      el.addEventListener("focus", handler);
 
-      el.element.click();
+      el.element.dispatchEvent(new Event("focus"));
 
-      const dispatched = handler.mock.calls[0][0];
-      expect(dispatched.bubbles).toBe(true);
-      expect(dispatched.composed).toBe(true);
+      expect(handler).toHaveBeenCalledTimes(1);
     });
 
     it("cleans up event listeners on disconnect", () => {
