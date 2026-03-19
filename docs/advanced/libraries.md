@@ -23,6 +23,10 @@ yarn add --dev @elenajs/bundler
 pnpm add --save-dev @elenajs/bundler
 ```
 
+```sh [bun]
+bun add --dev @elenajs/bundler
+```
+
 :::
 
 ## CLI usage
@@ -208,9 +212,25 @@ Runs the CEM analysis and writes `custom-elements.json`, `custom-elements.d.ts`,
 
 **`@elenajs/components`** is a reference component library built with Elena. It demonstrates real-world component patterns and is available as a starting point for your own library.
 
-```bash
+::: code-group
+
+```sh [npm]
 npm install @elenajs/components
 ```
+
+```sh [yarn]
+yarn add @elenajs/components
+```
+
+```sh [pnpm]
+pnpm add @elenajs/components
+```
+
+```sh [bun]
+bun add @elenajs/components
+```
+
+:::
 
 It includes the following components:
 

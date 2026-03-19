@@ -51,6 +51,10 @@ yarn add @elenajs/core
 pnpm add @elenajs/core
 ```
 
+```sh [bun]
+bun add @elenajs/core
+```
+
 :::
 
 Then import Elena in your component files:
@@ -333,6 +337,10 @@ yarn add --dev @elenajs/bundler
 pnpm add --save-dev @elenajs/bundler
 ```
 
+```sh [bun]
+bun add --dev @elenajs/bundler
+```
+
 :::
 
 Run the build:
@@ -400,6 +408,10 @@ yarn add --dev @elenajs/cli
 
 ```sh [pnpm]
 pnpm add --save-dev @elenajs/cli
+```
+
+```sh [bun]
+bun add --dev @elenajs/cli
 ```
 
 :::

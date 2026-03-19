@@ -26,6 +26,10 @@ yarn add --dev @elenajs/mcp
 pnpm add --save-dev @elenajs/mcp
 ```
 
+```sh [bun]
+bun add --dev @elenajs/mcp
+```
+
 :::
 
 ## Configuration
