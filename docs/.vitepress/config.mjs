@@ -181,7 +181,7 @@ export default defineConfig({
           },
           {
             text: "Code of Conduct",
-            link: "https://github.com/getelena/elena/blob/main/CODE_OF_CONDUCT.md",
+            link: "/about/code-of-conduct",
           },
           {
             text: "License (MIT)",
