@@ -88,7 +88,7 @@ function fullRender(element, strings, values) {
     const tpl = document.createElement("template");
     tpl.innerHTML = markup;
     morphContent(element, tpl.content.childNodes);
-    element._tplParts = new Array(values.length);
+    element._tplParts = null;
   }
 
   element._tplStrings = strings;
@@ -105,10 +105,7 @@ function fullRender(element, strings, values) {
 function createTemplate(processedStrings, valueCount) {
   const marker = `<!--${markerKey}-->`;
   const markup = processedStrings
-    .reduce((out, str, i) => {
-      const collapsed = str.replace(/>\s+</g, "><");
-      return out + collapsed + (i < valueCount ? marker : "");
-    }, "")
+    .reduce((out, str, i) => out + str + (i < valueCount ? marker : ""), "")
     .trim();
 
   const tpl = document.createElement("template");

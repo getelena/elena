@@ -119,5 +119,6 @@ export function collapseWhitespace(string) {
   return string
     .replace(/>\n\s*/g, ">") // newline after tag close
     .replace(/\n\s*</g, "<") // newline before tag open
-    .replace(/\n\s*/g, " "); // newline in text content, preserve word boundary
+    .replace(/\n\s*/g, " ") // newline in text content, preserve word boundary
+    .replace(/>\s+</g, "><"); // whitespace between tags
 }

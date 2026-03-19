@@ -125,8 +125,7 @@ export function Elena(superClass) {
         return this._observedAttrs;
       }
 
-      const propNames =
-        this._propNames || (this.props || []).map(p => (typeof p === "string" ? p : p.name));
+      const propNames = (this.props || []).map(p => (typeof p === "string" ? p : p.name));
       this._observedAttrs = [...propNames, "text"];
       return this._observedAttrs;
     }
@@ -142,7 +141,6 @@ export function Elena(superClass) {
       this._attachShadow();
       this.willUpdate();
       this._applyRender();
-      this._resolveInnerElement();
       this._syncProps();
       this._delegateEvents();
       if (!this._hydrated) {
@@ -265,9 +263,7 @@ export function Elena(superClass) {
       // A shadow root may already exist if Declarative Shadow DOM was used.
       // In that case skip attachShadow() but still adopt styles below.
       // Store the reference so closed shadow roots remain accessible.
-      const root = this._shadow ?? this.shadowRoot;
-
-      if (!root) {
+      if (!this._shadow && !this.shadowRoot) {
         this._shadow = this.attachShadow({ mode: component.shadow });
       }
 
@@ -297,6 +293,7 @@ export function Elena(superClass) {
 
     /**
      * Calls render() and updates the DOM with the result.
+     * Also resolves the inner element reference.
      *
      * @internal
      */
@@ -307,10 +304,10 @@ export function Elena(superClass) {
         const root = this._renderRoot;
         const rebuilt = renderTemplate(root, result.strings, result.values);
 
-        // Re-resolve element ref only when the DOM was fully rebuilt.
+        // Re-resolve element ref when the DOM was fully rebuilt.
         // Fast-path text node patching leaves the DOM structure intact,
         // so the existing ref is still valid.
-        if (this._hydrated && rebuilt) {
+        if (rebuilt) {
           const oldElement = this.element;
           this.element = this.constructor._resolver(root);
 
@@ -325,14 +322,8 @@ export function Elena(superClass) {
           }
         }
       }
-    }
 
-    /**
-     * Finds and stores a reference to the inner element.
-     *
-     * @internal
-     */
-    _resolveInnerElement() {
+      // Resolve inner element on first render
       if (!this.element) {
         const root = this._renderRoot;
         this.element = this.constructor._resolver(root);
