@@ -11,7 +11,6 @@ description: Full API reference for all Elena packages including @elenajs/core, 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `Elena` | `Elena(superClass)` | Creates an Elena component base class. Pass in `HTMLElement` to get started. Configure the component using static [component options](#component-options) on the returned class. |
-| `ElenaEvent` | `new ElenaEvent(type, init?)` | Extends the native `Event` with `bubbles: true` and `composed: true` already set. Use this to fire custom events from inside a component. |
 
 ### Template utilities
 
