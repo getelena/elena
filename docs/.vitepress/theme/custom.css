@@ -11,6 +11,7 @@
   --vp-font-family-base:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --vp-font-family-mono: Menlo, ui-monospace, SFMono-Regular, Monaco, Consolas, monospace;
 }
 
 body {

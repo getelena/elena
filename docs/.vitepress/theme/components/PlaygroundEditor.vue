@@ -110,7 +110,7 @@ async function createEditor() {
       }),
       EditorView.theme({
         "&": { height: "100%", fontSize: "13px" },
-        ".cm-scroller": { overflow: "auto", fontFamily: "ui-monospace, monospace" },
+        ".cm-scroller": { overflow: "auto", fontFamily: "var(--vp-font-family-mono)" },
         ".cm-content": { padding: "12px 0", lineHeight: "1.6" },
         ".cm-gutters": { border: "none" },
       }),
