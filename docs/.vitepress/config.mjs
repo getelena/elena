@@ -180,7 +180,7 @@ export default defineConfig({
             link: "https://github.com/getelena/elena/blob/main/CONTRIBUTING.md",
           },
           {
-            text: "Code of Conduct",
+            text: "Code of conduct",
             link: "/about/code-of-conduct",
           },
           {
