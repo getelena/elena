@@ -3,7 +3,7 @@ url: /elena/about/code-of-conduct.md
 description: Elena’s code of conduct for contributors and community members.
 ---
 
-# Code of conduct
+# Code of Conduct
 
 ## Our pledge
 
