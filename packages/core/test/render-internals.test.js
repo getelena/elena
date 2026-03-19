@@ -149,6 +149,37 @@ describe("render internals", () => {
     });
   });
 
+  describe("morph with nested elements", () => {
+    it("morphs same-tag child elements in-place (attributes and content)", () => {
+      const container = el();
+      const tpl = Object.assign(['<div class="', '"><span>inner</span></div>'], {
+        raw: ['<div class="', '"><span>inner</span></div>'],
+      });
+      renderTemplate(container, tpl, ["a"]);
+      const div = container.querySelector("div");
+      const span = container.querySelector("span");
+
+      renderTemplate(container, tpl, ["b"]);
+      expect(container.querySelector("div")).toBe(div);
+      expect(container.querySelector("span")).toBe(span);
+      expect(div.getAttribute("class")).toBe("b");
+    });
+
+    it("skips comment nodes that match on both sides", () => {
+      const container = el();
+      const tpl = Object.assign(['<div data-x="', '"><!-- keep --><span>ok</span></div>'], {
+        raw: ['<div data-x="', '"><!-- keep --><span>ok</span></div>'],
+      });
+      renderTemplate(container, tpl, ["1"]);
+      const span = container.querySelector("span");
+
+      renderTemplate(container, tpl, ["2"]);
+
+      expect(container.querySelector("span")).toBe(span);
+      expect(container.querySelector("div").getAttribute("data-x")).toBe("2");
+    });
+  });
+
   describe("mixed attribute and text positions", () => {
     it("renders both attribute and text values correctly", () => {
       const container = el();

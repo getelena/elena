@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { createElement } from "./setup.js";
 import "./fixtures/event-element.js";
+import "./fixtures/custom-event-method-element.js";
 
 describe("event delegation", () => {
   it("click on inner element reaches the host", async () => {
@@ -71,6 +72,22 @@ describe("event delegation", () => {
 
     expect(clickHandler).toHaveBeenCalledTimes(1);
     expect(focusHandler).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("custom event methods", () => {
+  it("preserves a user-defined method instead of creating a proxy", async () => {
+    const el = await createElement("custom-event-method-element");
+    // The custom click() should be preserved, not replaced by Elena's proxy.
+    expect(el.click()).toBe("custom");
+  });
+
+  it("still creates a proxy for events without a custom method", async () => {
+    const el = await createElement("custom-event-method-element");
+    // focus has no custom method, so Elena should create a proxy.
+    const spy = vi.spyOn(el.element, "focus");
+    el.focus();
+    expect(spy).toHaveBeenCalled();
   });
 });
 
