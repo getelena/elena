@@ -83,7 +83,7 @@ That said, synthetic benchmarks only measure isolated operations. Real-world per
 
 ## How is Elena tested?
 
-Elena has a comprehensive automated test suite with 836+ tests across 51 test files covering unit tests, integration tests, visual diff tests, and benchmark tests.
+Elena has a comprehensive automated test suite with 840+ tests across 51 test files covering unit tests, integration tests, visual diff tests, and benchmark tests.
 
 ## What is the browser support?
 
