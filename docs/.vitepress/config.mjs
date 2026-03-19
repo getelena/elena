@@ -184,6 +184,10 @@ export default defineConfig({
             link: "/about/code-of-conduct",
           },
           {
+            text: "Privacy policy",
+            link: "/about/privacy",
+          },
+          {
             text: "License (MIT)",
             link: "https://github.com/getelena/elena/blob/main/LICENSE",
           },
