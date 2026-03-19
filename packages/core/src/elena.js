@@ -193,6 +193,17 @@ export function Elena(superClass) {
       component._propNames = names;
       component._noReflect = noRef;
       component._elenaEvents = component.events || null;
+
+      if (component._elenaEvents) {
+        for (const e of component._elenaEvents) {
+          if (!Object.prototype.hasOwnProperty.call(component.prototype, e)) {
+            component.prototype[e] = function (...args) {
+              return this.element[e](...args);
+            };
+          }
+        }
+      }
+
       component._resolver = elementResolver(component.element);
       setupRegistry.add(component);
     }
@@ -300,7 +311,18 @@ export function Elena(superClass) {
         // Fast-path text node patching leaves the DOM structure intact,
         // so the existing ref is still valid.
         if (this._hydrated && rebuilt) {
+          const oldElement = this.element;
           this.element = this.constructor._resolver(root);
+
+          // Re-bind event listeners when the inner element was replaced.
+          if (this._events && oldElement && this.element !== oldElement) {
+            const events = this.constructor._elenaEvents;
+
+            for (const e of events) {
+              oldElement.removeEventListener(e, this);
+              this.element.addEventListener(e, this);
+            }
+          }
         }
       }
     }
@@ -367,7 +389,6 @@ export function Elena(superClass) {
 
           for (const e of events) {
             this.element.addEventListener(e, this);
-            this[e] = (...args) => this.element[e](...args);
           }
         }
       }
