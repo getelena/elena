@@ -3,6 +3,13 @@ export default {
   title: "Declarative Component",
   js: `import { Elena } from "@elenajs/core";
 
+/**
+ * Button component is used for interface actions.
+ *
+ * @displayName Button
+ * @slot - The button content
+ * @status alpha
+ */
 export default class MyButton extends Elena(HTMLElement) {
   static tagName = "my-button";
   static shadow = "open";

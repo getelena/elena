@@ -3,16 +3,32 @@ export default {
   title: "Composite Component",
   js: `import { Elena } from "@elenajs/core";
 
+/**
+ * Stack component manages layout of immediate children
+ * with optional spacing between each child.
+ *
+ * @displayName Stack
+ * @slot - The stacked content
+ * @status alpha
+ */
 export default class MyStack extends Elena(HTMLElement) {
   static tagName = "my-stack";
   static props = ["direction"];
 
-  /** @attribute @type {"column" | "row"} */
+  /**
+   * The direction of the stack.
+   *
+   * @attribute
+   * @type {"column" | "row"}
+   */
   direction = "column";
 }
 
 MyStack.define();`,
-  css: `@scope (my-stack) {
+  css: `/* Scope makes sure styles don’t leak out */
+@scope (my-stack) {
+
+  /* Targets the host element */
   :scope {
     display: flex;
     justify-content: flex-start;
@@ -21,6 +37,7 @@ MyStack.define();`,
     gap: 0.5rem;
   }
 
+  /* Direction */
   :scope[direction="row"] {
     flex-direction: row;
   }

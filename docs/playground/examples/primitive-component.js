@@ -3,12 +3,26 @@ export default {
   title: "Primitive Component",
   js: `import { Elena, html } from "@elenajs/core";
 
+/**
+ * Button component is used for interface actions.
+ *
+ * @displayName Button
+ * @status alpha
+ *
+ * @cssprop [--my-button-text] - Overrides the default text color.
+ * @cssprop [--my-button-bg] - Overrides the default background color.
+ */
 export default class MyButton extends Elena(HTMLElement) {
   static tagName = "my-button";
   static props = ["variant"];
   static events = ["click"];
 
-  /** @attribute @type {"default" | "primary" | "danger"} */
+  /**
+   * The style variant of the button.
+   *
+   * @attribute
+   * @type {"default" | "primary" | "danger"}
+   */
   variant = "default";
 
   render() {
@@ -21,7 +35,10 @@ export default class MyButton extends Elena(HTMLElement) {
 }
 
 MyButton.define();`,
-  css: `@scope (my-button) {
+  css: `/* Scope makes sure styles don’t leak out */
+@scope (my-button) {
+
+  /* Reset makes sure styles don’t leak in */
   :scope,
   *:where(:not(img, svg):not(svg *)),
   *::before,
@@ -30,14 +47,18 @@ MyButton.define();`,
     display: revert;
   }
 
+  /* Targets the host element */
   :scope {
-    --my-button-bg: #eaecf0;
-    --my-button-text: #172b4d;
+    /* Public theming API (with default values set) */
+    --_my-button-bg: var(--my-button-bg, #eaecf0);
+    --_my-button-text: var(--my-button-text, #172b4d);
+
     display: inline-block;
     border-radius: 6px;
     cursor: pointer;
   }
 
+  /* Elena SSR Pattern to avoid layout shift */
   :scope:not([hydrated]),
   .my-button:is(button) {
     font-family: system-ui, sans-serif;
@@ -45,34 +66,33 @@ MyButton.define();`,
     font-weight: 500;
     padding: 0.5rem 1rem;
     border-radius: 6px;
-    background: var(--my-button-bg);
-    color: var(--my-button-text);
+    background: var(--_my-button-bg);
+    color: var(--_my-button-text);
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 
+  /* States */
   :scope:hover {
     filter: brightness(0.95);
   }
-
   .my-button:active {
     opacity: 0.7;
   }
-
   .my-button:focus {
     outline: 2px solid #5a44d4;
     outline-offset: 1px;
   }
 
+  /* Variants */
   :scope[variant="primary"] {
-    --my-button-bg: #5a44d4;
-    --my-button-text: #fff;
+    --_my-button-bg: var(--my-button-bg, #5a44d4);
+    --_my-button-text: var(--my-button-text, #fff);
   }
-
   :scope[variant="danger"] {
-    --my-button-bg: #d44444;
-    --my-button-text: #fff;
+    --_my-button-bg: var(--my-button-bg, #d44444);
+    --_my-button-text: var(--my-button-text, #fff);
   }
 }`,
   html: `<my-button>Default</my-button>

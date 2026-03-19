@@ -7,7 +7,12 @@ export default class MyGreeting extends Elena(HTMLElement) {
   static tagName = "my-greeting";
   static props = ["name"];
 
-  /** @attribute @type {String} */
+  /**
+   * The name of the person to greet.
+   *
+   * @attribute
+   * @type {String}
+   */
   name = "World";
 
   render() {
