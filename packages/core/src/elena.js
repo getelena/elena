@@ -15,9 +15,8 @@
 import { setProps, getProps, getPropValue, syncAttribute } from "./common/props.js";
 import { defineElement, html, unsafeHTML, nothing } from "./common/utils.js";
 import { renderTemplate } from "./common/render.js";
-import { ElenaEvent } from "./common/events.js";
 
-export { html, unsafeHTML, nothing, ElenaEvent };
+export { html, unsafeHTML, nothing };
 
 /**
  * Returns a function that finds the inner element using the given selector.
@@ -434,17 +433,21 @@ export function Elena(superClass) {
     }
 
     /**
-     * Receives events from the inner element and
-     * re-fires them on the host.
+     * Forwards events that cannot reach the host naturally:
+     * non-bubbling events (focus, blur) and non-composed
+     * events in Shadow DOM (change, submit, reset).
+     * Composed bubbling events (click, input) pass through on their own.
      *
      * @internal
      */
     handleEvent(event) {
-      if (this.constructor._elenaEvents?.includes(event.type)) {
-        event.stopPropagation();
+      if (!this.constructor._elenaEvents?.includes(event.type)) {
+        return;
+      }
 
+      if (!event.bubbles || (!event.composed && this._renderRoot !== this)) {
         /** @internal */
-        this.dispatchEvent(new ElenaEvent(event.type, { cancelable: true }));
+        this.dispatchEvent(new Event(event.type, { bubbles: event.bubbles }));
       }
     }
 
