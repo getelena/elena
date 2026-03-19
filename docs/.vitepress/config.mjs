@@ -73,6 +73,15 @@ export default defineConfig({
     ["link", { rel: "icon", href: "/elena/favicon.svg", sizes: "any", type: "image/svg+xml" }],
     ["link", { rel: "apple-touch-icon", href: "/elena/apple-touch-icon.png" }],
     ["link", { rel: "manifest", href: "/elena/manifest.json" }],
+    [
+      "script",
+      {
+        src: "https://cdn.usefathom.com/script.js",
+        "data-spa": "auto",
+        "data-site": "RRTFEBPA",
+        defer: "",
+      },
+    ],
   ],
   markdown: {
     toc: {
