@@ -7,7 +7,7 @@ description: >-
 
 # API Reference
 
-## `@elenajs/core`
+## `@elenajs/core`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -87,7 +87,7 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 | `Invalid JSON: <value>` | An `Array` or `Object` prop received an attribute value that could not be parsed as JSON. Check that the attribute value is valid JSON. The prop will be set to `null`. |
 | `Cannot sync attrs.` | `syncAttribute()` was called with a null element reference. This usually means the inner element was not found before attribute sync ran. Check your `static element` selector. |
 
-## `@elenajs/bundler`
+## `@elenajs/bundler`&#x20;
 
 ### Commands
 
@@ -130,7 +130,7 @@ elena watch
 | Bundle entry "\<path>" does not exist. | The `bundle` entry point (default `"src/index.js"`) was not found. Create the file, or set `bundle` to `false` to skip bundling. |
 | `Build error:` | Rollup encountered an error during a `watch` rebuild. The underlying error is logged directly after this message. |
 
-## `@elenajs/cli`
+## `@elenajs/cli`&#x20;
 
 ```bash
 npx elena-create
@@ -147,14 +147,14 @@ Starts an interactive prompt that walks you through creating a new Elena compone
 
 The generated files follow all Elena authoring patterns, including JSDoc annotations and `@scope` CSS.
 
-## `@elenajs/ssr`
+## `@elenajs/ssr`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `register` | `register(...components)` | Tell the SSR renderer which component classes to expand. Each class must have `tagName` option set. Call this before `ssr()`. |
 | `ssr` | `ssr(html)` | Takes an HTML string, expands any registered components into full HTML, and returns the result. The rest of the HTML tags are left as-is. |
 
-## `@elenajs/plugin-rollup-css`
+## `@elenajs/plugin-rollup-css`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -164,19 +164,19 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 | `cssStaticStylesPlugin` | `cssStaticStylesPlugin()` | Finds `static styles` class fields with template literal values and minifies the CSS inside them. |
 | `minifyCss` | `minifyCss(css, filename?)` | Minifies a CSS string using Lightning CSS. |
 
-## `@elenajs/plugin-cem-define`
+## `@elenajs/plugin-cem-define`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `elenaDefinePlugin` | `elenaDefinePlugin()` | CEM plugin that reads `tagName` option from each Elena component class and registers it in the Custom Elements Manifest. |
 
-## `@elenajs/plugin-cem-tag`
+## `@elenajs/plugin-cem-tag`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `elenaTagPlugin` | `elenaTagPlugin(jsdocTag)` | CEM plugin that copies a custom JSDoc tag from each component’s documentation comment into the Custom Elements Manifest. `jsdocTag` is the tag name without the `@` (e.g. `"status"` for `@status`, `"displayName"` for `@displayName`). Call it once per tag you want to extract. |
 
-## `@elenajs/plugin-cem-typescript`
+## `@elenajs/plugin-cem-typescript`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -188,7 +188,7 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 |--------|------|---------|-------------|
 | `outdir` | `string` | `"dist"` | Where to write the generated `.d.ts` TypeScript types. |
 
-## `@elenajs/mcp`
+## `@elenajs/mcp`&#x20;
 
 ### Commands
 
@@ -232,7 +232,7 @@ url: /elena/about/code-of-conduct.md
 description: Elena’s code of conduct for contributors and community members.
 ---
 
-# Code of Conduct
+# Code of conduct
 
 ## Our pledge
 
@@ -289,7 +289,7 @@ description: >-
   JS, TS, or single-file HTML output.
 ---
 
-# Command line interface
+# Command line interface&#x20;
 
 `@elenajs/cli` is an interactive command line tool for scaffolding Elena components. It generates JavaScript, TypeScript, or single-file HTML source files and scoped CSS with all Elena [Progressive Web Component](/components/overview) patterns pre-configured.
 
@@ -386,7 +386,7 @@ description: >-
   support.
 ---
 
-# Component libraries
+# Component libraries&#x20;
 
 **`@elenajs/bundler`** is the build tool for publishing Elena component libraries. It bundles JavaScript and TypeScript source files, minifies CSS, generates a [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/), and produces TypeScript declarations for each component.
 
@@ -591,7 +591,7 @@ Returns the Custom Elements Manifest analyzer configuration object.
 
 Runs the CEM analysis and writes `custom-elements.json`, `custom-elements.d.ts`, and per-component `.d.ts` files.
 
-## Example library
+## Example library&#x20;
 
 **`@elenajs/components`** is a reference component library built with Elena. It demonstrates real-world component patterns and is available as a starting point for your own library.
 
@@ -1668,7 +1668,7 @@ description: >-
   support, and common patterns.
 ---
 
-# Frequently Asked Questions (FAQ)
+# Frequently asked questions (FAQ)
 
 ## What is Elena?
 
@@ -1884,10 +1884,10 @@ You can’t pass dynamic text content as children. Use the `text` property inste
 
 > \[!WARNING]
 > Angular inserts text children *after* `connectedCallback` fires, by which point Elena has already replaced the host’s inner DOM. The text ends up as a sibling to the element rather than inside it. Always use `text` as a property binding or attribute in Angular, never as a child node:
->
-> ```html
-> <elena-button [text]="label"></elena-button>
-> ```
+
+```html
+<elena-button [text]="label"></elena-button>
+```
 
 ---
 
@@ -2078,7 +2078,7 @@ This page demonstrates Elena’s [Progressive Web Components](/components/overvi
 </elena-stack>
 ```
 
-## Example library
+## Example library&#x20;
 
 **[@elenajs/components](https://github.com/getelena/elena/tree/main/packages/components)** is a reference component library built with Elena. It demonstrates real-world component patterns and is available as a starting point for your own library.
 
@@ -2219,7 +2219,7 @@ description: >-
   scaffolding tools to AI assistants via the Model Context Protocol.
 ---
 
-# MCP server
+# MCP server&#x20;
 
 `@elenajs/mcp` is a [Model Context Protocol](https://modelcontextprotocol.io) server that exposes Elena component metadata, scaffolding tools, and authoring guidance to AI assistants. It reads the Custom Elements Manifest generated by `elena build` and provides resources, tools, and prompts for web component development.
 
@@ -2287,7 +2287,7 @@ You can optionally pass a project root path as an argument:
 > \[!TIP]
 > Elena MCP server reads `custom-elements.json` from the project’s `dist/` directory. Run `elena build` first to generate it.
 
-## Resources
+## Resources&#x20;
 
 The server exposes the following resources that AI assistants can read for context:
 
@@ -2300,7 +2300,7 @@ The server exposes the following resources that AI assistants can read for conte
 | `elena://ssr`                  | Server-side rendering guide: layout shift avoidance, `@elenajs/ssr` API, and Eleventy patterns. |
 | `elena://api`                  | Full API reference for all Elena packages.                           |
 
-## Tools
+## Tools&#x20;
 
 ### `scaffold-component`
 
@@ -2342,7 +2342,7 @@ Returns the framework integration guide (same content as `elena://frameworks`).
 
 Returns the server-side rendering guide (same content as `elena://ssr`).
 
-## Prompts
+## Prompts&#x20;
 
 ### `create-component`
 
@@ -2352,7 +2352,7 @@ A guided workflow for creating new Elena components. The AI assistant asks about
 
 A best-practices review checklist for existing Elena components. Pass your component's JavaScript (and optionally CSS) code to get a structured review covering props, JSDoc, CSS isolation, hydration, and framework compatibility.
 
-## Skills
+## Skills&#x20;
 
 Elena also provices [agent skills](https://github.com/cloudflare/agent-skills-discovery-rfc) to complement the `@elenajs/mcp`. Once installed, your coding agent automatically has context on Elena component authoring patterns without additional setup. Use skills for general authoring guidance; use MCP when you need dynamic tools like component scaffolding and CEM lookup.
 
@@ -2778,11 +2778,11 @@ url: /elena/about/privacy.md
 description: Elena’s privacy policy and data practices.
 ---
 
-# Privacy Policy
+# Privacy policy
 
 > **Effective date:** March 19, 2026
 
-This Privacy Policy describes how we handle your information across our website (https://elenajs.com), related documentation, and related services. Your privacy matters to us: we do not track individual visitors, use cookies, or collect personal information of any kind.
+This privacy policy describes how we handle your information across our website (https://elenajs.com), related documentation, and related services. Your privacy matters to us: we do not track individual visitors, use cookies, or collect personal information of any kind.
 
 ## Website analytics
 
@@ -3294,7 +3294,7 @@ export class AppComponent {}
 
 For more, see the [Framework Integration](/advanced/frameworks) examples.
 
-## Bundling components
+## Bundling components&#x20;
 
 [@elenajs/bundler](https://github.com/getelena/elena/tree/main/packages/bundler) is the build tool for Elena component libraries. It bundles JavaScript and TypeScript source files, minifies styles, generates a Custom Elements Manifest, and produces TypeScript declarations.
 
@@ -3367,7 +3367,7 @@ export default {
 
 For more, see the [Component Libraries](/advanced/libraries) guide.
 
-## Command Line Interface
+## Command Line Interface&#x20;
 
 [@elenajs/cli](https://github.com/getelena/elena/tree/main/packages/cli) scaffolds new Elena components interactively. It generates JavaScript, TypeScript, or single-file HTML source files with all Elena patterns pre-configured.
 
@@ -3560,36 +3560,7 @@ The “partial support” bit for the latter means that you can render the initi
 
 Elena also supports [Declarative Shadow DOM](#declarative-shadow-dom) for cases where you may need stronger isolation, but still want the component to render server-side.
 
-## Avoiding layout shifts
-
-For **components with `render()`** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC *(Flash Of Unstyled Content, Flash Of Invisible Content).* This can be achieved utilizing the provided `hydrated` attribute in your component styles:
-
-```css
-/* Elena SSR Pattern to avoid layout shift */
-:scope:not([hydrated]),
-.inner-element {
-  color: var(--elena-button-text);
-}
-```
-
-Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
-
-```css
-:scope:not([hydrated])::before {
-  content: attr(label);
-  /* etc */
-}
-
-:scope:not([hydrated])::after {
-  content: attr(placeholder);
-  /* etc */
-}
-```
-
-> \[!TIP]
-> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
-
-## Rendering to HTML strings
+## Rendering to HTML strings&#x20;
 
 When you don’t want to handle the pre-hydration state with CSS, you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
 
@@ -3799,6 +3770,35 @@ Button.define();
 In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application. `@elenajs/ssr` may later get Declarative Shadow DOM support which would eliminate that entirely, but this isn’t currently on our roadmap.
 
 For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
+
+## Avoiding layout shifts
+
+For **components with `render()`** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC *(Flash Of Unstyled Content, Flash Of Invisible Content).* This can be achieved utilizing the provided `hydrated` attribute in your component styles:
+
+```css
+/* Elena SSR Pattern to avoid layout shift */
+:scope:not([hydrated]),
+.inner-element {
+  color: var(--elena-button-text);
+}
+```
+
+Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
+
+```css
+:scope:not([hydrated])::before {
+  content: attr(label);
+  /* etc */
+}
+
+:scope:not([hydrated])::after {
+  content: attr(placeholder);
+  /* etc */
+}
+```
+
+> \[!TIP]
+> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
 ## Framework examples
 
@@ -4426,6 +4426,13 @@ Button.define();
 In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application. `@elenajs/ssr` may later get Declarative Shadow DOM support which would eliminate that entirely, but this isn’t currently on our roadmap.
 
 For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
+
+---
+
+---
+url: /elena/about/team.md
+---
+
 
 ---
 

@@ -5,7 +5,7 @@ description: >-
   support, and common patterns.
 ---
 
-# Frequently Asked Questions (FAQ)
+# Frequently asked questions (FAQ)
 
 ## What is Elena?
 

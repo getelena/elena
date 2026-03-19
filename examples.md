@@ -97,7 +97,7 @@ This page demonstrates Elena’s [Progressive Web Components](/components/overvi
 </elena-stack>
 ```
 
-## Example library
+## Example library&#x20;
 
 **[@elenajs/components](https://github.com/getelena/elena/tree/main/packages/components)** is a reference component library built with Elena. It demonstrates real-world component patterns and is available as a starting point for your own library.
 

@@ -33,11 +33,12 @@
 - [Scoping styles](/elena/advanced/scoping.md): Learn how to scope Elena’s Progressive Web Component styles using CSS @scope, CSS encapsulation, and CSS cascade layers.
 - [Known issues](/elena/advanced/gotchas.md): Known browser compatibility issues and workarounds for Elena, including bugs with CSS @scope in Firefox and Safari.
 - [MCP server](/elena/advanced/mcp.md): Use @elenajs/mcp to connect Elena Progressive Web Component metadata and scaffolding tools to AI assistants via the Model Context Protocol.
-- [Frequently Asked Questions (FAQ)](/elena/advanced/faq.md): Frequently asked questions about Elena, Progressive Web Components, browser support, and common patterns.
+- [Frequently asked questions (FAQ)](/elena/advanced/faq.md): Frequently asked questions about Elena, Progressive Web Components, browser support, and common patterns.
 
 ### Other
 
 - [API Reference](/elena/api.md): Full API reference for all Elena packages including @elenajs/core, @elenajs/bundler, @elenajs/ssr, and @elenajs/cli.
-- [Code of Conduct](/elena/about/code-of-conduct.md): Elena’s code of conduct for contributors and community members.
+- [Code of conduct](/elena/about/code-of-conduct.md): Elena’s code of conduct for contributors and community members.
 - [Playground](/elena/playground.md): Interactive playground for building Elena Progressive Web Components.
-- [Privacy Policy](/elena/about/privacy.md): Elena’s privacy policy and data practices.
+- [Privacy policy](/elena/about/privacy.md): Elena’s privacy policy and data practices.
+- [Untitled](/elena/about/team.md)

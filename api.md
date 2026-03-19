@@ -7,7 +7,7 @@ description: >-
 
 # API Reference
 
-## `@elenajs/core`
+## `@elenajs/core`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -87,7 +87,7 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 | `Invalid JSON: <value>` | An `Array` or `Object` prop received an attribute value that could not be parsed as JSON. Check that the attribute value is valid JSON. The prop will be set to `null`. |
 | `Cannot sync attrs.` | `syncAttribute()` was called with a null element reference. This usually means the inner element was not found before attribute sync ran. Check your `static element` selector. |
 
-## `@elenajs/bundler`
+## `@elenajs/bundler`&#x20;
 
 ### Commands
 
@@ -130,7 +130,7 @@ elena watch
 | Bundle entry "\<path>" does not exist. | The `bundle` entry point (default `"src/index.js"`) was not found. Create the file, or set `bundle` to `false` to skip bundling. |
 | `Build error:` | Rollup encountered an error during a `watch` rebuild. The underlying error is logged directly after this message. |
 
-## `@elenajs/cli`
+## `@elenajs/cli`&#x20;
 
 ```bash
 npx elena-create
@@ -147,14 +147,14 @@ Starts an interactive prompt that walks you through creating a new Elena compone
 
 The generated files follow all Elena authoring patterns, including JSDoc annotations and `@scope` CSS.
 
-## `@elenajs/ssr`
+## `@elenajs/ssr`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `register` | `register(...components)` | Tell the SSR renderer which component classes to expand. Each class must have `tagName` option set. Call this before `ssr()`. |
 | `ssr` | `ssr(html)` | Takes an HTML string, expands any registered components into full HTML, and returns the result. The rest of the HTML tags are left as-is. |
 
-## `@elenajs/plugin-rollup-css`
+## `@elenajs/plugin-rollup-css`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -164,19 +164,19 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 | `cssStaticStylesPlugin` | `cssStaticStylesPlugin()` | Finds `static styles` class fields with template literal values and minifies the CSS inside them. |
 | `minifyCss` | `minifyCss(css, filename?)` | Minifies a CSS string using Lightning CSS. |
 
-## `@elenajs/plugin-cem-define`
+## `@elenajs/plugin-cem-define`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `elenaDefinePlugin` | `elenaDefinePlugin()` | CEM plugin that reads `tagName` option from each Elena component class and registers it in the Custom Elements Manifest. |
 
-## `@elenajs/plugin-cem-tag`
+## `@elenajs/plugin-cem-tag`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `elenaTagPlugin` | `elenaTagPlugin(jsdocTag)` | CEM plugin that copies a custom JSDoc tag from each component’s documentation comment into the Custom Elements Manifest. `jsdocTag` is the tag name without the `@` (e.g. `"status"` for `@status`, `"displayName"` for `@displayName`). Call it once per tag you want to extract. |
 
-## `@elenajs/plugin-cem-typescript`
+## `@elenajs/plugin-cem-typescript`&#x20;
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -188,7 +188,7 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 |--------|------|---------|-------------|
 | `outdir` | `string` | `"dist"` | Where to write the generated `.d.ts` TypeScript types. |
 
-## `@elenajs/mcp`
+## `@elenajs/mcp`&#x20;
 
 ### Commands
 
