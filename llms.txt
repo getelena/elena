@@ -40,3 +40,4 @@
 - [API Reference](/elena/api.md): Full API reference for all Elena packages including @elenajs/core, @elenajs/bundler, @elenajs/ssr, and @elenajs/cli.
 - [Code of conduct](/elena/about/code-of-conduct.md): Elena’s code of conduct for contributors and community members.
 - [Playground](/elena/playground.md): Interactive playground for building Elena Progressive Web Components.
+- [Privacy policy](/elena/about/privacy.md): Elena’s privacy policy and data practices.
