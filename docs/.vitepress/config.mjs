@@ -172,20 +172,24 @@ export default defineConfig({
             link: "/advanced/faq",
           },
           {
-            text: "Changelog",
+            text: "Team",
+            link: "/about/team",
+          },
+          {
+            text: "Releases",
             link: "https://github.com/getelena/elena/releases",
+          },
+          {
+            text: "Code of conduct",
+            link: "/about/code-of-conduct",
+          },
+          {
+            text: "Privacy policy",
+            link: "/about/privacy",
           },
           {
             text: "Contributing",
             link: "https://github.com/getelena/elena/blob/main/CONTRIBUTING.md",
-          },
-          {
-            text: "Code of Conduct",
-            link: "/about/code-of-conduct",
-          },
-          {
-            text: "Privacy Policy",
-            link: "/about/privacy",
           },
           {
             text: "License (MIT)",
