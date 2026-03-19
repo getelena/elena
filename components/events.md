@@ -1,8 +1,8 @@
 ---
 url: /elena/components/events.md
 description: >-
-  Learn how to use events with Elena, fire custom events with ElenaEvent, and
-  document events in the Custom Elements Manifest.
+  Learn how to use events with Elena, fire custom events, and document events in
+  the Custom Elements Manifest.
 ---
 
 # Events
@@ -11,7 +11,7 @@ description: >-
 
 When a web component renders its own inner DOM via `render()`, native events like `click` fire on the inner element (e.g. the `<button>`), not on the host (`<elena-button>`).
 
-`static events` tells Elena to listen for those events on the inner element and re-fire them on the host, so consumers can attach listeners to the custom element directly:
+`static events` tells Elena to forward those events from the inner element to the host, so consumers can attach listeners to the custom element directly:
 
 ```js
 /**
@@ -79,7 +79,7 @@ function App() {
 Elena sets up the listeners automatically and removes them when the element is disconnected from the DOM.
 
 > \[!TIP]
-> Delegated events are re-fired as new `ElenaEvent` instances. Only the event `type` and `cancelable` flag carry over. Event-specific properties like `key`, `clientX`, or `data` are not copied. If you need access to those, listen directly on the inner element in `connectedCallback` instead.
+> Bubbling events (like `click`, `change`, `input`) pass through to the host naturally with all their original properties intact. Non-bubbling events (like `focus` and `blur`) are forwarded to the host as plain `Event` instances.
 
 If you need more control, you can also manage event listeners manually. Add them in `connectedCallback` and remove them in `disconnectedCallback`:
 
@@ -106,18 +106,14 @@ export default class Button extends Elena(HTMLElement) {
 
 ## Custom events
 
-You can use `ElenaEvent` to fire your own events from inside a component. It extends the native `Event` with `bubbles: true` and `composed: true` already set:
+Use the standard `CustomEvent` to fire your own events from inside a component:
 
 ```js
-import { ElenaEvent } from "@elenajs/core";
-
-this.dispatchEvent(new ElenaEvent("my-event", { detail: { value: 42 } }));
-```
-
-You can override either default if needed:
-
-```js
-this.dispatchEvent(new ElenaEvent("my-event", { bubbles: false }));
+this.dispatchEvent(new CustomEvent("my-event", {
+  bubbles: true,
+  composed: true,
+  detail: { value: 42 },
+}));
 ```
 
 ## Documenting events
