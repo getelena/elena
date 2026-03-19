@@ -173,7 +173,7 @@ export default defineConfig({
           },
           {
             text: "Changelog",
-            link: "https://github.com/getelena/elena/blob/main/CHANGELOG.md",
+            link: "https://github.com/getelena/elena/releases",
           },
           {
             text: "Contributing",
