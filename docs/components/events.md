@@ -7,9 +7,9 @@ description: Learn how to use events with Elena, fire custom events, and documen
 
 ## Delegated events
 
-When a web component renders its own inner DOM via `render()`, native events like `click` fire on the inner element (e.g. the `<button>`), not on the host (`<elena-button>`). 
+When a web component renders its own inner DOM via `render()`, native events fire on the inner element (e.g. the `<button>`). Bubbling events like `click` reach the host naturally, but non-bubbling events like `focus` and `blur` do not.
 
-`static events` tells Elena to forward those events from the inner element to the host, so consumers can attach listeners to the custom element directly:
+`static events` tells Elena which events to manage. Non-bubbling events are forwarded from the inner element to the host, so consumers can attach listeners to the custom element directly:
 
 ```js
 /**
@@ -73,7 +73,6 @@ function App() {
 ```
 
 :::
-
 
 Elena sets up the listeners automatically and removes them when the element is disconnected from the DOM.
 
