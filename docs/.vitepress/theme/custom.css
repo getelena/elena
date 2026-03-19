@@ -48,6 +48,8 @@ body {
 
 .vp-doc a[href*="/playground/#composite-component"] {
   text-decoration: none;
+  display: block;
+  margin-block-end: 32px;
 }
 
 .vp-doc a[href*="/playground/#composite-component"]::before {
@@ -342,12 +344,18 @@ label:active {
   line-height: 1.3;
   padding: 0;
   font-weight: 400;
-  margin-block-end: 4rem;
+  margin-block-end: 1rem;
   letter-spacing: -0.01em;
   color: var(--vp-code-block-color);
   font-size: clamp(0.5rem, 2.55vw, 1.12rem);
   font-smooth: never;
   -webkit-font-smoothing: none;
+}
+
+@media (max-width: 767px) {
+  .elena {
+    display: none;
+  }
 }
 
 .elena i {
@@ -356,6 +364,13 @@ label:active {
   transform: translateX(-4px) translateY(-1px);
   display: inline-block;
   animation: 1.2s blink step-end infinite;
+}
+
+.elena span {
+  font-size: 89%;
+  font-weight: 400;
+  font-smooth: auto;
+  -webkit-font-smoothing: auto;
 }
 
 [role="button"] {
@@ -373,25 +388,25 @@ label:active {
   }
 }
 
-.elena span {
-  font-size: 85%;
-  font-weight: 500;
-  font-smooth: auto;
-  -webkit-font-smoothing: auto;
-}
-
 .vp-doc a {
   font-weight: inherit;
 }
 
-#elena-is-a-simple-tiny-library-for-building-progressive-web-components {
-  opacity: 0.001;
-  visibility: hidden;
-  block-size: 0;
-  inline-size: 0;
-  overflow: hidden;
-  display: block;
-  position: absolute;
+.elena-heading {
+  margin-block-end: -1rem;
+}
+
+@media (min-width: 768px) {
+  .elena-heading {
+    opacity: 0.001;
+    visibility: hidden;
+    block-size: 0;
+    inline-size: 0;
+    overflow: hidden;
+    display: block;
+    position: absolute;
+    margin-block-end: 0;
+  }
 }
 
 ::selection {

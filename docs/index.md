@@ -4,7 +4,7 @@ titleTemplate: false
 description: Elena is a simple, tiny library for building Progressive Web Components. Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity. 
 ---
 
-<pre class="elena">
+<pre class="elena" aria-hidden="true">
  ██████████ ████
 ░░███░░░░░█░░███
  ░███  █ ░  ░███   ██████  ████████    ██████
@@ -17,7 +17,7 @@ description: Elena is a simple, tiny library for building Progressive Web Compon
 ░█ <span>Simple, tiny library for building Progressive Web Components.<i>|</i></span>
 </pre>
 
-# Elena is a simple, tiny library for building Progressive Web Components.
+<h1 class="elena-heading">Introduction</h1>
 
 ## What is Elena?
 
@@ -70,8 +70,6 @@ Stack.define();
 :::
 
 [Try it in the playground](/playground/#composite-component)
-
-<br/>
 
 > [!TIP] Prerequisites
 > This documentation assumes familiarity with HTML, CSS, and JavaScript. If you're new to custom elements, the [MDN guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) is a good starting point, though prior experience is not required.
