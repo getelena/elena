@@ -4,6 +4,7 @@ import { Elena } from "../src/elena.js";
 import "./fixtures/basic-element.js";
 import "./fixtures/event-element.js";
 import "./fixtures/content-element.js";
+import "./fixtures/conditional-event-element.js";
 
 describe("Primitive Components", () => {
   describe("hydration", () => {
@@ -87,6 +88,48 @@ describe("Primitive Components", () => {
       const spy = vi.spyOn(el.element, "click");
       el.click();
       expect(spy).toHaveBeenCalled();
+    });
+
+    it("re-binds event listeners after a full DOM rebuild", async () => {
+      const el = await createElement("conditional-event-element");
+      const handler = vi.fn();
+      el.addEventListener("click", handler);
+
+      el.active = false;
+      await el.updateComplete;
+      el.active = true;
+      await el.updateComplete;
+
+      el.element.click();
+      expect(handler).toHaveBeenCalledTimes(1);
+    });
+
+    it("proxy methods work after a full DOM rebuild", async () => {
+      const el = await createElement("conditional-event-element");
+
+      el.active = false;
+      await el.updateComplete;
+      el.active = true;
+      await el.updateComplete;
+
+      const spy = vi.spyOn(el.element, "click");
+      el.click();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it("does not fire events from old detached element after rebuild", async () => {
+      const el = await createElement("conditional-event-element");
+      const oldElement = el.element;
+      const handler = vi.fn();
+      el.addEventListener("click", handler);
+
+      el.active = false;
+      await el.updateComplete;
+      el.active = true;
+      await el.updateComplete;
+
+      oldElement.click();
+      expect(handler).not.toHaveBeenCalled();
     });
   });
 
