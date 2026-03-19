@@ -98,14 +98,14 @@ export default defineConfig({
   },
   themeConfig: {
     logo: "/logo.png",
-    lastUpdated: {
+    /*lastUpdated: {
       text: "Updated at",
       formatOptions: {
         forceLocale: true,
         dateStyle: "full",
         timeStyle: "medium",
       },
-    },
+    },*/
     nav: [
       { text: "Docs", link: "/", activeMatch: "^(?!/api/|/playground/)" },
       { text: "Playground", link: "/playground/", activeMatch: "/playground/" },

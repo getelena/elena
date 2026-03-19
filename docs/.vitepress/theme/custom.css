@@ -117,6 +117,10 @@ label:active {
   border-inline-end: 1px solid var(--vp-c-gutter);
 }
 
+#app .VPSidebar {
+  padding-bottom: 32px;
+}
+
 #local-search {
   min-inline-size: calc(100% - 2rem);
 }
