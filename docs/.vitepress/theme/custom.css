@@ -46,6 +46,11 @@ body {
   letter-spacing: -0.005em;
 }
 
+.VPBadge {
+  vertical-align: middle !important;
+  letter-spacing: 0 !important;
+}
+
 .vp-doc a[href*="/playground/#composite-component"] {
   text-decoration: none;
   display: block;
@@ -500,15 +505,19 @@ footer.VPFooter a[href*="://"]::after {
 }
 
 @media (min-width: 960px) {
-  #app:has(.VPDoc.has-sidebar) footer.VPFooter {
+  #app:has(.VPDoc.has-sidebar, .VPContent.has-sidebar) footer.VPFooter {
     padding-inline-start: calc(var(--vp-sidebar-width) + 32px) !important;
   }
 }
 
 @media (min-width: 1440px) {
-  #app:has(.VPDoc.has-sidebar) footer.VPFooter {
+  #app:has(.VPDoc.has-sidebar, .VPContent.has-sidebar) footer.VPFooter {
     padding-inline-start: calc(
       (100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width) + 32px
     ) !important;
   }
+}
+
+.VPTeamPage {
+  margin-block-start: 0 !important;
 }

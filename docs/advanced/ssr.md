@@ -13,36 +13,7 @@ The “partial support” bit for the latter means that you can render the initi
 
 Elena also supports [Declarative Shadow DOM](#declarative-shadow-dom) for cases where you may need stronger isolation, but still want the component to render server-side.
 
-## Avoiding layout shifts
-
-For **components with `render()`** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
-
-```css
-/* Elena SSR Pattern to avoid layout shift */
-:scope:not([hydrated]),
-.inner-element {
-  color: var(--elena-button-text);
-}
-```
-
-Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
-
-```css
-:scope:not([hydrated])::before {
-  content: attr(label);
-  /* etc */
-}
-
-:scope:not([hydrated])::after {
-  content: attr(placeholder);
-  /* etc */
-}
-```
-
-> [!TIP]
-> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
-
-## Rendering to HTML strings
+## Rendering to HTML strings <Badge type="warning" text="Experimental" />
 
 When you don’t want to handle the pre-hydration state with CSS, you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
 
@@ -252,6 +223,35 @@ Button.define();
 In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application. `@elenajs/ssr` may later get Declarative Shadow DOM support which would eliminate that entirely, but this isn’t currently on our roadmap. 
 
 For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
+
+## Avoiding layout shifts
+
+For **components with `render()`** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
+
+```css
+/* Elena SSR Pattern to avoid layout shift */
+:scope:not([hydrated]),
+.inner-element {
+  color: var(--elena-button-text);
+}
+```
+
+Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
+
+```css
+:scope:not([hydrated])::before {
+  content: attr(label);
+  /* etc */
+}
+
+:scope:not([hydrated])::after {
+  content: attr(placeholder);
+  /* etc */
+}
+```
+
+> [!TIP]
+> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
 ## Framework examples
 

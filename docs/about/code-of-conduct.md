@@ -1,9 +1,9 @@
 ---
-title: Code of Conduct
+title: Code of conduct
 description: Elena’s code of conduct for contributors and community members.
 ---
 
-# Code of Conduct
+# Code of conduct
 
 ## Our pledge
 

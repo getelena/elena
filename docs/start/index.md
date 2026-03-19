@@ -319,7 +319,7 @@ export class AppComponent {}
 
 For more, see the [Framework Integration](/advanced/frameworks) examples.
 
-## Bundling components
+## Bundling components <Badge type="warning" text="Pre-release" />
 
 [@elenajs/bundler](https://github.com/getelena/elena/tree/main/packages/bundler) is the build tool for Elena component libraries. It bundles JavaScript and TypeScript source files, minifies styles, generates a Custom Elements Manifest, and produces TypeScript declarations.
 
@@ -392,7 +392,7 @@ export default {
 
 For more, see the [Component Libraries](/advanced/libraries) guide.
 
-## Command Line Interface
+## Command Line Interface <Badge type="warning" text="Pre-release" />
 
 [@elenajs/cli](https://github.com/getelena/elena/tree/main/packages/cli) scaffolds new Elena components interactively. It generates JavaScript, TypeScript, or single-file HTML source files with all Elena patterns pre-configured.
 

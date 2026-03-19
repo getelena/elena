@@ -1,13 +1,13 @@
 ---
-title: Privacy Policy
+title: Privacy policy
 description: Elena’s privacy policy and data practices.
 ---
 
-# Privacy Policy
+# Privacy policy
 
 > **Effective date:** March 19, 2026
 
-This Privacy Policy describes how we handle your information across our website (https://elenajs.com), related documentation, and related services. Your privacy matters to us: we do not track individual visitors, use cookies, or collect personal information of any kind.
+This privacy policy describes how we handle your information across our website (https://elenajs.com), related documentation, and related services. Your privacy matters to us: we do not track individual visitors, use cookies, or collect personal information of any kind.
 
 ## Website analytics
 

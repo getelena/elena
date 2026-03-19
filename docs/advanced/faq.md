@@ -1,9 +1,9 @@
 ---
-title: Frequently Asked Questions (FAQ)
+title: Frequently asked questions (FAQ)
 description: Frequently asked questions about Elena, Progressive Web Components, browser support, and common patterns.
 ---
 
-# Frequently Asked Questions (FAQ)
+# Frequently asked questions (FAQ)
 
 ## What is Elena?
 

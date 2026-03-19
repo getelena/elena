@@ -70,7 +70,7 @@ You can’t pass dynamic text content as children. Use the `text` property inste
 
 > [!WARNING]
 > Angular inserts text children _after_ `connectedCallback` fires, by which point Elena has already replaced the host’s inner DOM. The text ends up as a sibling to the element rather than inside it. Always use `text` as a property binding or attribute in Angular, never as a child node:
->
-> ```html
-> <elena-button [text]="label"></elena-button>
-> ```
+
+```html
+<elena-button [text]="label"></elena-button>
+```
