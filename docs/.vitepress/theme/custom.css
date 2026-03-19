@@ -468,3 +468,47 @@ div[class*="language-"]:has(.codeblock-fold-btn) {
 .VPNavBarTitle.has-sidebar .title {
   margin-block-start: -1px;
 }
+
+footer .message,
+footer .copyright,
+.VPLastUpdated {
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400 !important;
+}
+
+footer.VPFooter {
+  display: block !important;
+  padding: 24px 32px !important;
+}
+
+:has(.pg-layout) footer.VPFooter {
+  display: none !important;
+}
+
+footer.VPFooter a[href*="://"]::after {
+  content: "";
+  display: inline-block;
+  margin-top: -1px;
+  margin-left: 4px;
+  width: 11px;
+  height: 11px;
+  background: currentColor;
+  color: var(--vp-c-text-3);
+  --icon: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' %3E%3Cpath d='M0 0h24v24H0V0z' fill='none' /%3E%3Cpath d='M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z' /%3E%3C/svg%3E");
+  -webkit-mask-image: var(--icon);
+  mask-image: var(--icon);
+}
+
+@media (min-width: 960px) {
+  #app:has(.VPDoc.has-sidebar) footer.VPFooter {
+    padding-inline-start: calc(var(--vp-sidebar-width) + 32px) !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  #app:has(.VPDoc.has-sidebar) footer.VPFooter {
+    padding-inline-start: calc(
+      (100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width) + 32px
+    ) !important;
+  }
+}

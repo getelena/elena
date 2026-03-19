@@ -107,14 +107,14 @@ export default defineConfig({
   },
   themeConfig: {
     logo: "/logo.png",
-    /*lastUpdated: {
-      text: "Updated at",
+    lastUpdated: {
+      text: "Last updated",
       formatOptions: {
         forceLocale: true,
         dateStyle: "full",
         timeStyle: "medium",
       },
-    },*/
+    },
     nav: [
       { text: "Docs", link: "/", activeMatch: "^(?!/api/|/playground/)" },
       { text: "Playground", link: "/playground/", activeMatch: "/playground/" },
@@ -180,11 +180,11 @@ export default defineConfig({
             link: "https://github.com/getelena/elena/blob/main/CONTRIBUTING.md",
           },
           {
-            text: "Code of conduct",
+            text: "Code of Conduct",
             link: "/about/code-of-conduct",
           },
           {
-            text: "Privacy policy",
+            text: "Privacy Policy",
             link: "/about/privacy",
           },
           {
@@ -261,7 +261,8 @@ export default defineConfig({
 
     footer: {
       message: "Released under the MIT License.",
-      copyright: "Copyright © 2026 Ariel Salminen",
+      copyright:
+        "Copyright © 2025-2026 <a href='https://arielsalminen.com' target='_blank'>Ariel Salminen</a>",
     },
   },
 });

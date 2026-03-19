@@ -13,7 +13,7 @@ description: Full API reference for all Elena packages including @elenajs/core, 
 | `Elena` | `Elena(superClass)` | Creates an Elena component base class. Pass in `HTMLElement` to get started. Configure the component using static [component options](#component-options) on the returned class. |
 | `ElenaEvent` | `new ElenaEvent(type, init?)` | Extends the native `Event` with `bubbles: true` and `composed: true` already set. Use this to fire custom events from inside a component. |
 
-### Template Utilities
+### Template utilities
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -21,7 +21,7 @@ description: Full API reference for all Elena packages including @elenajs/core, 
 | `nothing` | `nothing` | Use this in conditional expressions when you want to render nothing. Safer than `""` or `false`, which can produce unexpected output. |
 | `unsafeHTML` | `unsafeHTML(str)` | Renders a plain string as raw HTML, skipping automatic escaping. Only use this for content you fully control. |
 
-### Component Options
+### Component options
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -32,7 +32,7 @@ description: Full API reference for all Elena packages including @elenajs/core, 
 | `shadow` | `"open" \| "closed"` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host. |
 | `styles` | `CSSStyleSheet \| string \| (CSSStyleSheet \| string)[]` | One or more stylesheets to adopt into the shadow root. Only applies when `shadow` is also set. |
 
-### Host Attributes
+### Host attributes
 
 Attributes that Elena adds to the host element automatically. These are not JS properties, they appear in the DOM and can be targeted in CSS.
 
@@ -40,14 +40,14 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 |-----------|-------------|
 | `hydrated` | Added to the host element after the first render completes. Use `:not([hydrated])` in CSS to style the element before JavaScript runs, and remove those styles once it hydrates. |
 
-### Instance Properties
+### Instance properties
 
 | Property | Type | Description |
 |----------|------|-------------|
 | `text` | `string` | The text content of the element. Elena reads this from the element’s children before the first render. Setting it later triggers a re-render. When you need to dynamically update this, pass text via a property instead of children. |
 | `element` | `HTMLElement \| null` | A reference to the inner element, resolved after the first render using the `element` option. |
 
-### Lifecycle Methods
+### Lifecycle methods
 
 | Method | Description |
 |--------|-------------|
@@ -61,20 +61,20 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 | `adoptedCallback()` | Runs when the element is moved to a new document via `document.adoptNode()`. Override to react to document changes. |
 | `attributeChangedCallback()` | Runs when an observed attribute changes. Updates the matching JS property and triggers a re-render. |
 
-### Instance Promises
+### Instance promises
 
 | Property | Type | Description |
 |----------|------|-------------|
 | `updateComplete` | `Promise<void>` | Resolves after the next pending render finishes. Use it to wait for the DOM to settle before reading it. Resolves immediately if no render is pending. |
 
-### Static Methods
+### Static methods
 
 | Method | Description |
 |--------|-------------|
 | `ClassName.define()` | Registers the component with the browser using `tagName` option. Call this once after defining your class. Does nothing in non-browser environments. |
 | `ClassName.observedAttributes` | The list of attributes the browser should watch for changes, built from `props` option plus the built-in `text` attribute. |
 
-### Error Codes
+### Error codes
 
 | Error | Explanation |
 |---------|-------------|
@@ -95,13 +95,13 @@ elena build
 elena watch
 ```
 
-### CLI Flags
+### CLI flags
 
 | Flag | Description |
 |------|-------------|
 | `--config <path>` | Path to a config file. Defaults to `elena.config.mjs` or `elena.config.js` in the project root. |
 
-### `elena.config.mjs` Options
+### `elena.config.mjs` options
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -116,7 +116,7 @@ elena watch
 | `target` | `string \| string[] \| false` | `false` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via `@babel/preset-env` to widen browser support. Example: `["chrome 71", "firefox 69", "safari 12.1"]`. |
 | `terser` | `object` | `{ ecma: 2020, module: true }` | Custom Terser minifier options, merged with the defaults. |
 
-### Error Codes
+### Error codes
 
 | Error | Explanation |
 |---------|-------------|
