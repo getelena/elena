@@ -100,12 +100,11 @@ describe("render internals", () => {
       expect(span.textContent).toBe("world");
     });
 
-    it("attribute-position values leave _tplParts unmapped", () => {
+    it("attribute-position values leave _tplParts null", () => {
       const container = el();
       renderTemplate(container, attrAndText, ["cls-a", "text"]);
 
-      expect(container._tplParts[0]).toBeUndefined();
-      expect(container._tplParts[1]).toBeUndefined();
+      expect(container._tplParts).toBeNull();
     });
 
     it("handles multiple attributes with interpolations", () => {
