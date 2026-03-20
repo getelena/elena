@@ -14,7 +14,8 @@ export default class MyRating extends Elena(HTMLElement) {
     this.value = stars;
     this.dispatchEvent(new CustomEvent("rate", {
       bubbles: true,
-      detail: { value: stars } 
+      composed: true,
+      detail: { value: stars }
     }));
   }
 
