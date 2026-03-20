@@ -83,7 +83,7 @@ That said, synthetic benchmarks only measure isolated operations and Lit is much
 
 ## How is Elena tested?
 
-Elena has a comprehensive automated test suite with 1000+ tests across 58 test files covering unit tests, integration tests, visual diff tests, and benchmark tests:
+Elena has a comprehensive automated test suite with 1000+ tests across 56 test files covering unit tests, integration tests, visual diff tests, and benchmark tests:
 
 <img src="/tests.png" loading="lazy" width="1440" height="1934" alt="Elena vitest test suite" />
 
