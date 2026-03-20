@@ -15,7 +15,7 @@ Elena also supports [Declarative Shadow DOM](#declarative-shadow-dom) for cases 
 
 ## Rendering to HTML strings <Badge type="warning" text="Experimental" />
 
-When you don’t want to handle the pre-hydration state with CSS, you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
+When you don’t want to [handle the pre-hydration state with CSS](#avoiding-layout-shifts), you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
 
 > [!WARNING]
 > `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.

@@ -14,6 +14,10 @@
   --vp-font-family-mono: Menlo, ui-monospace, SFMono-Regular, Monaco, Consolas, monospace;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   -webkit-font-smoothing: auto;
   text-rendering: auto;
