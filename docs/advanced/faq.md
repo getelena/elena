@@ -75,13 +75,17 @@ Stencil’s standout feature is its output targets: it can generate framework-sp
 
 ## What is the performance compared to Lit?
 
-At the time of writing, the performance is very similar. According to our benchmark tests, Elena is roughly 1.2x faster than Lit for single element creation and batch creation of up to 1000 components. Lit is roughly 1.2x faster on re-renders via attribute change.
+At the time of writing, the performance is very similar in our simulated benchmark tests. According to the benchmarks, Elena is roughly 1.2x faster than Lit for single element creation and batch creation of up to 1000 components. Lit is roughly 1.2x faster on re-renders via attribute change.
 
-That said, synthetic benchmarks only measure isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
+That said, synthetic benchmarks only measure isolated operations and Lit is much more heavily optimized than Elena. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
+
+<img src="/bench.png" loading="lazy" width="2804" height="1390" alt="Elena bench test suite" />
 
 ## How is Elena tested?
 
-Elena has a comprehensive automated test suite with 1014+ tests across 58 test files covering unit tests, integration tests, visual diff tests, and benchmark tests.
+Elena has a comprehensive automated test suite with 1000+ tests across 58 test files covering unit tests, integration tests, visual diff tests, and benchmark tests:
+
+<img src="/tests.png" loading="lazy" width="1440" height="1934" alt="Elena vitest test suite" />
 
 ## What is the browser support?
 
