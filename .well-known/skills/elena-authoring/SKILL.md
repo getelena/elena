@@ -26,10 +26,11 @@ Three types — the type determines whether `render()` is present:
 
 ## Events
 
-- `static events` delegates events from the inner element and re-fires them as new `ElenaEvent` instances.
-- Only `type` and `cancelable` carry over. Event-specific properties (`key`, `clientX`, `data`) are NOT forwarded.
+- `static events` tells Elena which events to manage from the inner element.
+- Bubbling events (like `click`, `change`, `input`) pass through to the host naturally with all their original properties intact.
+- Non-bubbling events (like `focus` and `blur`) are forwarded to the host as plain `Event` instances.
 - Never override `handleEvent()` on a component that uses `static events` — Elena uses it internally for delegation.
-- Dispatch custom events with `new ElenaEvent("my-event", { detail: { value } })` — bubbles and composed by default.
+- Dispatch custom events with `new CustomEvent("my-event", { bubbles: true, composed: true, detail: { value } })`.
 
 ## Templates
 
