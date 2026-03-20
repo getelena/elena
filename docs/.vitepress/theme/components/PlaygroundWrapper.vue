@@ -6,6 +6,7 @@ import { examples } from "./playground-examples.js";
 import { findExample, getHashId, setHash } from "./playground-utils.js";
 
 const Loaded = shallowRef(null);
+const loadError = ref(false);
 const previewReady = ref(false);
 const sidebarOpen = ref(false);
 const currentId = ref("");
@@ -64,6 +65,22 @@ function onWindowResize() {
   editorWidth.value = null;
 }
 
+async function loadPlayground() {
+  loadError.value = false;
+  try {
+    const mod = await import("./Playground.vue");
+    Loaded.value = mod.default;
+  } catch {
+    // Retry once on failure (e.g. network hiccup, stale cache)
+    try {
+      const mod = await import("./Playground.vue");
+      Loaded.value = mod.default;
+    } catch {
+      loadError.value = true;
+    }
+  }
+}
+
 onMounted(async () => {
   window.addEventListener("resize", onWindowResize);
   const hashId = getHashId();
@@ -75,8 +92,7 @@ onMounted(async () => {
   }
   window.addEventListener("hashchange", onHashChange);
 
-  const mod = await import("./Playground.vue");
-  Loaded.value = mod.default;
+  await loadPlayground();
 });
 
 onUnmounted(() => {
@@ -107,6 +123,10 @@ onUnmounted(() => {
       <Transition name="pg-unload">
         <PlaygroundLoading v-if="Loaded && !previewReady" class="pg-loading-overlay" />
       </Transition>
+      <div v-if="loadError" class="pg-load-error">
+        <p>Failed to load the playground.</p>
+        <button @click="loadPlayground">Try again</button>
+      </div>
     </div>
   </div>
 </template>

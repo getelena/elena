@@ -2,8 +2,11 @@ import elenaSource from "../../../../packages/core/dist/bundle.js?raw";
 
 // Strip the sourcemap comment so the browser doesn't try to fetch it from a null base URL.
 const _cleanSource = elenaSource.replace(/\/\/# sourceMappingURL=.*$/m, "").trim();
-const _elenaDataUrl = `data:text/javascript;charset=utf-8,${encodeURIComponent(_cleanSource)}`;
-const _importMap = JSON.stringify({ imports: { "@elenajs/core": _elenaDataUrl } });
+const _elenaUrl =
+  typeof Blob !== "undefined"
+    ? URL.createObjectURL(new Blob([_cleanSource], { type: "text/javascript" }))
+    : `data:text/javascript;charset=utf-8,${encodeURIComponent(_cleanSource)}`;
+const _importMap = JSON.stringify({ imports: { "@elenajs/core": _elenaUrl } });
 
 /**
  * Generate the full srcdoc HTML string for the preview iframe.

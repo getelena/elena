@@ -18,7 +18,7 @@ const tabs = computed(() => (props.css ? ["html", "css", "js"] : ["html", "js"])
 
 // Start loading CodeMirror immediately when this module is evaluated,
 // rather than waiting for the editor to mount.
-const cmPromise =
+let cmPromise =
   typeof window !== "undefined"
     ? Promise.all([
         import("codemirror"),
@@ -62,9 +62,24 @@ async function loadCodeMirror() {
     return cmModules;
   }
 
-  const [cm, cmState, langJs, langHtml, langCss, themeDark] = await cmPromise;
-  cmModules = { cm, cmState, langJs, langHtml, langCss, themeDark };
-  return cmModules;
+  try {
+    const [cm, cmState, langJs, langHtml, langCss, themeDark] = await cmPromise;
+    cmModules = { cm, cmState, langJs, langHtml, langCss, themeDark };
+    return cmModules;
+  } catch {
+    // Retry once: create a fresh Promise.all to avoid a cached rejection
+    cmPromise = Promise.all([
+      import("codemirror"),
+      import("@codemirror/state"),
+      import("@codemirror/lang-javascript"),
+      import("@codemirror/lang-html"),
+      import("@codemirror/lang-css"),
+      import("@codemirror/theme-one-dark"),
+    ]);
+    const [cm, cmState, langJs, langHtml, langCss, themeDark] = await cmPromise;
+    cmModules = { cm, cmState, langJs, langHtml, langCss, themeDark };
+    return cmModules;
+  }
 }
 
 function getLanguageExtension(tab) {

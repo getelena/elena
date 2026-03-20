@@ -331,6 +331,42 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   background: var(--vp-c-bg);
 }
 
+.pg-load-error {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+}
+
+.pg-load-error p {
+  margin: 0;
+}
+
+.pg-load-error button {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.pg-load-error button:hover {
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg-elv);
+}
+
 .pg-unload-leave-active {
   transition: opacity 0.15s ease;
 }
