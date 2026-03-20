@@ -39,6 +39,8 @@
   - **[With Eleventy](#with-eleventy)**
 - **[API](#api)**
   - **[`register(...components)`](#registercomponents)**
+  - **[`unregister(...components)`](#unregistercomponents)**
+  - **[`clear()`](#clear)**
   - **[`ssr(html)`](#ssrhtml)**
 - **[How it works](#how-it-works)**
 - **[Client-side hydration](#client-side-hydration)**
@@ -101,18 +103,18 @@ const { Button } = await import("@elenajs/components");
 
 register(Button);
 
-const page = `
+const page = ssr(`
 <!doctype html>
 <html>
 <head>
   <link rel="stylesheet" href="/components/button.css">
 </head>
 <body>
-  ${ssr(`<elena-button variant="primary">Click me</elena-button>`)}
+  <elena-button variant="primary">Click me</elena-button>
   <script type="module" src="/components/button.js"></script>
 </body>
 </html>
-`;
+`);
 ```
 
 ### With Eleventy
@@ -189,9 +191,32 @@ register(Button, Stack);
 
 Throws an error if a component does not have a `tagName`.
 
+### `unregister(...components)`
+
+Remove previously registered component classes from the SSR registry.
+
+```js
+import { register, unregister } from "@elenajs/ssr";
+const { Button } = await import("@elenajs/components");
+
+register(Button);
+// ... later
+unregister(Button);
+```
+
+### `clear()`
+
+Remove all registered component classes from the SSR registry at once.
+
+```js
+import { clear } from "@elenajs/ssr";
+
+clear();
+```
+
 ### `ssr(html)`
 
-Parse an HTML string, expand registered components with `render()`, and return the rendered HTML.
+Parse an HTML string, expand registered components with `render()`, and return the rendered HTML. Full HTML documents are supported: `<!DOCTYPE>`, `<html>`, `<head>`, and `<body>` tags are preserved as-is alongside component expansion.
 
 | Parameter | Type     | Description                              |
 | --------- | -------- | ---------------------------------------- |
@@ -201,13 +226,15 @@ Parse an HTML string, expand registered components with `render()`, and return t
 
 ## How it works
 
-1. **Parse** the input HTML string into a tree (tags, attributes, children).
-2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
-3. **Expand** components with `render()` by constructing a lightweight instance, converting attribute strings to the correct prop types (boolean, number, array, object), calling `willUpdate()` if defined, and then calling `render()`.
-4. **Recurse** into Composite Component children and non-component tags.
+1. **Parse** the input HTML string into a tree.
+2. **Walk** the tree and look up each custom element tag in the registry.
+3. **Expand** matching custom elements by calling their `render()`.
+4. **Recurse** into composite component children and non-component tags.
 5. **Serialize** the tree back to an HTML string.
 
 The rendered output matches what Elena produces on the client, using the same `html` tagged template escaping and whitespace normalization.
+
+If a component's `render()` throws an error, the SSR renderer logs a warning and falls back to passing the component through without expansion, preserving its original children.
 
 ## Client-side hydration
 
