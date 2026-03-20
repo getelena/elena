@@ -150,7 +150,9 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `register` | `register(...components)` | Tell the SSR renderer which component classes to expand. Each class must have `tagName` option set. Call this before `ssr()`. |
-| `ssr` | `ssr(html)` | Takes an HTML string, expands any registered components into full HTML, and returns the result. The rest of the HTML tags are left as-is. |
+| `unregister` | `unregister(...components)` | Remove previously registered component classes from the SSR registry. |
+| `clear` | `clear()` | Remove all registered component classes from the SSR registry at once. |
+| `ssr` | `ssr(html)` | Takes an HTML string, expands any registered components into full HTML, and returns the result. Full HTML documents (including `<!DOCTYPE>`) are supported. |
 
 ## `@elenajs/plugin-rollup-css` <Badge type="warning" text="Beta" />
 

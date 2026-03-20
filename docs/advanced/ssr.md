@@ -103,7 +103,7 @@ Throws an error if a component does not have a `tagName`.
 
 ### `ssr(html)`
 
-Parse an HTML string, expand registered components with `render()`, and return the rendered HTML.
+Parse an HTML string, expand registered components with `render()`, and return the rendered HTML. Full HTML documents are supported: `<!DOCTYPE>`, `<html>`, `<head>`, and `<body>` tags are preserved as-is alongside Elena component expansion.
 
 | Parameter | Type     | Description                              |
 | --------- | -------- | ---------------------------------------- |
@@ -111,15 +111,41 @@ Parse an HTML string, expand registered components with `render()`, and return t
 
 **Returns:** `string`, the rendered HTML with components expanded.
 
+### `unregister(...components)`
+
+Remove previously registered component classes from the SSR registry.
+
+```js
+import { register, unregister } from "@elenajs/ssr";
+const { Button } = await import("@elenajs/components");
+
+register(Button);
+// ... later
+unregister(Button);
+```
+
+### `clear()`
+
+Remove all registered component classes from the SSR registry at once.
+
+```js
+import { clear } from "@elenajs/ssr";
+
+clear();
+```
+
 ### How it works
 
-1. **Parse** the input HTML string into a tree (tags, attributes, children).
-2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
-3. **Expand** components with `render()` by constructing a lightweight instance, converting attribute strings to the correct prop types (boolean, number, array, object), calling `willUpdate()` if defined, and then calling `render()`.
+1. **Parse** the input HTML string into a tree.
+2. **Walk** the tree and look up each custom element tag in the registry.
+3. **Expand** matching custom elements by calling their `render()`.
 4. **Recurse** into composite component children and non-component tags.
 5. **Serialize** the tree back to an HTML string.
 
 The rendered output matches what Elena produces on the client, using the same `html` tagged template escaping and whitespace normalization.
+
+> [!TIP]
+> If a component’s `render()` throws an error, the SSR renderer logs a warning and falls back to passing the component through without expansion, preserving its original children. This prevents a single broken component from affecting the rest of the page.
 
 ### Client-side hydration
 
