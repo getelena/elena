@@ -10,7 +10,7 @@ description: Critical rules for the Elena build toolchain. Bundler config, CLI s
 
 ## Bundler
 
-- Run `elena build` from the project root. Reads `elena.config.mjs` (or `elena.config.js`).
+- Run `elena build` or `elena watch` from the project root. Reads `elena.config.mjs` (or `elena.config.js`). Use `--config <path>` to specify a custom config file.
 - Set `bundle: false` to disable the single-file bundle. Individual component modules are always built regardless.
 - Set `analyze: false` to skip Custom Elements Manifest and TypeScript declaration generation entirely.
 - The `target` option enables syntax transpilation for older browser support (e.g. `["chrome 71", "safari 12.1"]`). Off by default.
