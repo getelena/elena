@@ -16,6 +16,9 @@ import {
   WillUpdateComponent,
   TypedPropsComponent,
   ReflectFalseComponent,
+  BooleanPropComponent,
+  ErrorComponent,
+  InheritedChild,
 } from "./fixtures.js";
 
 register(
@@ -34,5 +37,8 @@ register(
   NativePropComponent,
   WillUpdateComponent,
   TypedPropsComponent,
-  ReflectFalseComponent
+  ReflectFalseComponent,
+  BooleanPropComponent,
+  ErrorComponent,
+  InheritedChild
 );

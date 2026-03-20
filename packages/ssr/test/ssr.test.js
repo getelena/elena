@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { ssr, register } from "../src/index.js";
+import { ssr, register, unregister } from "../src/index.js";
+import { html } from "../../core/src/common/utils.js";
 
 describe("ssr", () => {
   it("renders a primitive component with text content", () => {
@@ -343,6 +344,97 @@ describe("prop type coercion", () => {
     expect(html).toBe(
       '<elena-reflect-false label="Save" icon="★" hydrated><button>Save<span>★</span></button></elena-reflect-false>'
     );
+  });
+});
+
+describe("boolean attribute coercion", () => {
+  it("coerces bare boolean attributes", () => {
+    const result = ssr(`<elena-bool-prop active label="Go"></elena-bool-prop>`);
+    expect(result).toContain("<button>Go</button>");
+  });
+
+  it('coerces boolean attributes with value "true"', () => {
+    const result = ssr(`<elena-bool-prop active="true" label="Go"></elena-bool-prop>`);
+    expect(result).toContain("<button>Go</button>");
+  });
+
+  it("coerces boolean attributes with name as value", () => {
+    const result = ssr(`<elena-bool-prop active="active" label="Go"></elena-bool-prop>`);
+    expect(result).toContain("<button>Go</button>");
+  });
+});
+
+describe("text attribute", () => {
+  it("uses text attribute when no children are present", () => {
+    const result = ssr(`<elena-button text="Click me"></elena-button>`);
+    expect(result).toBe(
+      '<elena-button text="Click me" hydrated><button><span>Click me</span></button></elena-button>'
+    );
+  });
+
+  it("text attribute overrides text children", () => {
+    const result = ssr(`<elena-button text="Override">Original</elena-button>`);
+    expect(result).toContain("<span>Override</span>");
+    expect(result).not.toContain("Original");
+  });
+});
+
+describe("recursive text content", () => {
+  it("captures text from nested child elements", () => {
+    const result = ssr(`<elena-button><b>Bold</b> text</elena-button>`);
+    expect(result).toContain("<span>Bold text</span>");
+  });
+
+  it("captures text from deeply nested elements", () => {
+    const result = ssr(`<elena-button><span><em>Deep</em></span></elena-button>`);
+    expect(result).toContain("<span>Deep</span>");
+  });
+});
+
+describe("DOCTYPE preservation", () => {
+  it("preserves <!DOCTYPE html> declarations", () => {
+    const result = ssr(`<!DOCTYPE html><html><body><p>Hello</p></body></html>`);
+    expect(result).toMatch(/^<!DOCTYPE html>/);
+    expect(result).toContain("<p>Hello</p>");
+  });
+});
+
+describe("error handling", () => {
+  it("falls back gracefully when render() throws", () => {
+    const result = ssr(`<elena-error>Fallback</elena-error>`);
+    expect(result).toBe("<elena-error>Fallback</elena-error>");
+    expect(result).not.toContain("hydrated");
+  });
+
+  it("continues rendering sibling components after an error", () => {
+    const result = ssr(`<elena-error>Oops</elena-error><elena-button>OK</elena-button>`);
+    expect(result).toContain("<elena-error>Oops</elena-error>");
+    expect(result).toContain("<button><span>OK</span></button>");
+  });
+});
+
+describe("inherited render", () => {
+  it("expands components with inherited render methods", () => {
+    const result = ssr(`<inherited-child label="Hello"></inherited-child>`);
+    expect(result).toBe(
+      '<inherited-child label="Hello" hydrated><span>Hello</span></inherited-child>'
+    );
+  });
+});
+
+describe("registry management", () => {
+  it("unregister removes a specific component", () => {
+    class TempComp {
+      static tagName = "temp-unreg";
+      render() {
+        return html`<span>temp</span>`;
+      }
+    }
+    register(TempComp);
+    expect(ssr("<temp-unreg></temp-unreg>")).toContain("hydrated");
+
+    unregister(TempComp);
+    expect(ssr("<temp-unreg></temp-unreg>")).toBe("<temp-unreg></temp-unreg>");
   });
 });
 

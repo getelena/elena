@@ -14,3 +14,15 @@ export function ssr(html: string): string;
  * @param components - Elena component classes to register.
  */
 export function register(...components: (new (...args: any[]) => any)[]): void;
+
+/**
+ * Remove one or more Elena component classes from the SSR registry.
+ *
+ * @param components - Elena component classes to unregister.
+ */
+export function unregister(...components: (new (...args: any[]) => any)[]): void;
+
+/**
+ * Remove all Elena component classes from the SSR registry.
+ */
+export function clear(): void;

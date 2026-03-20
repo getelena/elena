@@ -80,7 +80,7 @@ function installPropGetters(ComponentClass) {
 
 /**
  * Register one or more Elena component classes for SSR.
- * Each class must have `_tagName` set (via Elena options).
+ * Each class must have `static tagName` defined.
  *
  * @param {...Function} components - Elena component classes.
  */
@@ -96,6 +96,26 @@ export function register(...components) {
     installPropGetters(Comp);
     registry.set(tagName, Comp);
   }
+}
+
+/**
+ * Remove one or more Elena component classes from the SSR registry.
+ *
+ * @param {...Function} components - Elena component classes to unregister.
+ */
+export function unregister(...components) {
+  for (const Comp of components) {
+    if (Comp.tagName) {
+      registry.delete(Comp.tagName);
+    }
+  }
+}
+
+/**
+ * Remove all Elena component classes from the SSR registry.
+ */
+export function clear() {
+  registry.clear();
 }
 
 /** Tags whose whitespace is significant and must not be collapsed. */
@@ -137,7 +157,7 @@ const VOID_ELEMENTS = new Set([
 function convertAttrValue(type, value) {
   switch (type) {
     case "boolean":
-      return value === "" || value === true;
+      return value !== null && value !== false;
     case "number":
       return value === null ? null : +value;
     case "object":
@@ -194,6 +214,12 @@ function renderComponent(ComponentClass, attrs, textContent) {
     instance._props = new Map();
   }
   for (const [key, value] of Object.entries(attrs)) {
+    // text attribute takes priority over text children, matching browser
+    // behavior where attributeChangedCallback fires before connectedCallback.
+    if (key === "text") {
+      instance._text = value;
+      continue;
+    }
     const type = propDefaultTypes[key];
     if (type !== undefined) {
       // Declared prop: convert the attribute string to the right JS type.
@@ -205,16 +231,22 @@ function renderComponent(ComponentClass, attrs, textContent) {
     }
   }
 
-  // Call willUpdate() before render() so components can compute derived
-  // values from their props, same as Elena does in the browser.
-  instance.willUpdate?.();
+  try {
+    // Call willUpdate() before render() so components can compute derived
+    // values from their props, same as Elena does in the browser.
+    instance.willUpdate?.();
 
-  const result = instance.render();
-  if (!result) {
-    return "";
+    const result = instance.render();
+    if (!result) {
+      return "";
+    }
+
+    return normalizeWhitespace(result.toString());
+  } catch (error) {
+    const tag = ComponentClass.tagName ?? "unknown";
+    console.warn(`░█ [ELENA]: SSR render failed for <${tag}>: ${error.message}`);
+    return null;
   }
-
-  return normalizeWhitespace(result.toString());
 }
 
 /**
@@ -225,10 +257,15 @@ function renderComponent(ComponentClass, attrs, textContent) {
  * @returns {string}
  */
 function getTextContent(children) {
-  return children
-    .map(c => (c.type === ElementType.Text ? c.data : ""))
-    .join("")
-    .trim();
+  let text = "";
+  for (const c of children) {
+    if (c.type === ElementType.Text) {
+      text += c.data;
+    } else if (c.children) {
+      text += getTextContent(c.children);
+    }
+  }
+  return text.trim();
 }
 
 /**
@@ -259,6 +296,36 @@ function serializeAttrs(attrs) {
  */
 const WS = /[\t\n\r ]+/g;
 const ALL_WS = /[^\t\n\r ]/;
+
+/**
+ * Check whether a component class has a meaningful render() method,
+ * including inherited ones. Walks the prototype chain and distinguishes
+ * real render methods from Elena's base noop `render() {}`.
+ *
+ * @param {Function} ComponentClass
+ * @returns {boolean}
+ */
+function hasPrimitiveRender(ComponentClass) {
+  // Fast path: component defines its own render method.
+  if (Object.hasOwn(ComponentClass.prototype, "render")) {
+    return true;
+  }
+
+  // Walk the prototype chain for inherited render methods.
+  let proto = Object.getPrototypeOf(ComponentClass.prototype);
+  const stop = (globalThis.HTMLElement ?? Object).prototype;
+  while (proto && proto !== Object.prototype && proto !== stop) {
+    if (Object.hasOwn(proto, "render")) {
+      try {
+        return proto.render.call({}) !== undefined;
+      } catch {
+        return true;
+      }
+    }
+    proto = Object.getPrototypeOf(proto);
+  }
+  return false;
+}
 
 /**
  * Walk the parsed tree, expand Elena components,
@@ -295,6 +362,11 @@ function walk(nodes, preserveWhitespace = false) {
       continue;
     }
 
+    if (node.type === ElementType.Directive) {
+      out += `<${node.data}>`;
+      continue;
+    }
+
     if (node.type === ElementType.Script || node.type === ElementType.Style) {
       const raw = node.children.map(c => c.data).join("");
       out += `<${node.name}${serializeAttrs(node.attribs)}>${raw}</${node.name}>`;
@@ -313,17 +385,21 @@ function walk(nodes, preserveWhitespace = false) {
       out += `<${tag}${serializeAttrs(attrs)}>`;
     } else {
       const ComponentClass = tag.includes("-") ? registry.get(tag) : null;
-      const hasRender = ComponentClass && Object.hasOwn(ComponentClass.prototype, "render");
+      const hasRender = ComponentClass && hasPrimitiveRender(ComponentClass);
       const pre = preserveWhitespace || WHITESPACE_SENSITIVE.has(tag);
+
+      let innerHTML = null;
       if (hasRender) {
-        const innerHTML = renderComponent(ComponentClass, attrs, getTextContent(children));
-        // Mark as hydrated so CSS targeting :scope:not([hydrated]) doesn’t
-        // double-style the host alongside the already-rendered inner element.
-        attrs.hydrated = "";
-        out += `<${tag}${serializeAttrs(attrs)}>${innerHTML}</${tag}>`;
-      } else {
-        out += `<${tag}${serializeAttrs(attrs)}>${walk(children, pre)}</${tag}>`;
+        innerHTML = renderComponent(ComponentClass, attrs, getTextContent(children));
+        if (innerHTML !== null) {
+          // Mark as hydrated so CSS targeting :scope:not([hydrated]) doesn’t
+          // double-style the host alongside the already-rendered inner element.
+          attrs.hydrated = "";
+        }
       }
+
+      const content = innerHTML !== null ? innerHTML : walk(children, pre);
+      out += `<${tag}${serializeAttrs(attrs)}>${content}</${tag}>`;
     }
   }
 

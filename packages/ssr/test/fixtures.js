@@ -280,6 +280,95 @@ export const LinkComponent = createComponent("elena-link", ["href", "target"], f
   return html`<a href="${this.href}" target="${this.target}">${this.text}</a>`;
 });
 
+/**
+ * Component with a boolean prop and static props set, for testing
+ * that SSR correctly coerces boolean attribute strings.
+ */
+export const BooleanPropComponent = (() => {
+  class Component {
+    active = false;
+    label = "";
+    get text() {
+      return this._text ?? "";
+    }
+    set text(value) {
+      this._text = value;
+    }
+    render() {
+      return html`<button>${this.active ? this.label : nothing}</button>`;
+    }
+  }
+  Component.tagName = "elena-bool-prop";
+  Component.props = ["active", "label"];
+  for (const prop of ["active", "label"]) {
+    Object.defineProperty(Component.prototype, prop, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        return this._props ? this._props.get(prop) : undefined;
+      },
+      set(value) {
+        if (!this._props) {
+          this._props = new Map();
+        }
+        this._props.set(prop, value);
+      },
+    });
+  }
+  return Component;
+})();
+
+/**
+ * Component whose render() throws, for testing SSR error handling.
+ */
+export const ErrorComponent = createComponent("elena-error", [], function () {
+  throw new Error("intentional test error");
+});
+
+/**
+ * Base component with a render method. InheritedChild extends this
+ * without overriding render(), to test inherited render detection.
+ */
+export const InheritedBase = (() => {
+  class Base {
+    label = "";
+    _text = "";
+    get text() {
+      return this._text ?? "";
+    }
+    set text(value) {
+      this._text = value;
+    }
+    render() {
+      return html`<span>${this.label}</span>`;
+    }
+  }
+  Base.tagName = "inherited-base";
+  Base.props = ["label"];
+  Object.defineProperty(Base.prototype, "label", {
+    configurable: true,
+    enumerable: true,
+    get() {
+      return this._props ? this._props.get("label") : undefined;
+    },
+    set(value) {
+      if (!this._props) {
+        this._props = new Map();
+      }
+      this._props.set("label", value);
+    },
+  });
+  return Base;
+})();
+
+/**
+ * Child component that inherits render() from InheritedBase.
+ * Tests that SSR correctly detects inherited render methods.
+ */
+export class InheritedChild extends InheritedBase {}
+InheritedChild.tagName = "inherited-child";
+InheritedChild.props = ["label"];
+
 export const ComplexInputComponent = createComponent(
   "elena-complex-input",
   ["identifier", "label", "type", "start", "error"],

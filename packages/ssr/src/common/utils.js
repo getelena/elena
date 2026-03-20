@@ -28,6 +28,5 @@ export function normalizeWhitespace(markup) {
     .replace(/>\n\s*/g, ">")
     .replace(/\n\s*</g, "<")
     .replace(/\n\s*/g, " ")
-    .replace(/>\s+</g, "><")
-    .trim();
+    .replace(/>\s+</g, "><");
 }
