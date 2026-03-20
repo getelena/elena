@@ -144,7 +144,7 @@ Elena also provices [agent skills](https://github.com/cloudflare/agent-skills-di
 ### Install
 
 ```sh
-npx skills add https://getelena.github.io/elena
+npx skills add https://elenajs.com
 ```
 
 The CLI fetches the skills index and lets you choose which skills to install. Skills are then written into your agent’s configuration and loaded automatically when needed.
