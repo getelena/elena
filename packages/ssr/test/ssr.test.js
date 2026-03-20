@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ssr, register, unregister } from "../src/index.js";
 import { html } from "../../core/src/common/utils.js";
 
@@ -400,6 +400,14 @@ describe("DOCTYPE preservation", () => {
 });
 
 describe("error handling", () => {
+  let warnSpy;
+  beforeEach(() => {
+    warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+  });
+  afterEach(() => {
+    warnSpy.mockRestore();
+  });
+
   it("falls back gracefully when render() throws", () => {
     const result = ssr(`<elena-error>Fallback</elena-error>`);
     expect(result).toBe("<elena-error>Fallback</elena-error>");
