@@ -7,6 +7,8 @@ description: Learn how to use @elenajs/cli to interactively scaffold Elena compo
 
 `@elenajs/cli` is an interactive command line tool for scaffolding Elena components. It generates JavaScript, TypeScript, or single-file HTML source files and scoped CSS with all Elena [Progressive Web Component](/components/overview) patterns pre-configured.
 
+<img src="/cli.png"  width="1804" height="1240" alt="Elena command line interface" />
+
 ## Install
 
 ::: code-group
