@@ -68,6 +68,7 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 | \`updated()\` | Runs after every render, including the first. \`this.element\` is available here. Override to react to changes after the DOM is updated. On first connect, \`firstUpdated()\` runs before \`updated()\`. |
 | \`requestUpdate()\` | Manually schedules a re-render. Use when Elena can't detect a change automatically, e.g. when mutating an object or array in place. Returns nothing, use \`updateComplete\` to wait for the render to finish. |
 | \`disconnectedCallback()\` | Runs when the element is removed from the page. Cleans up event listeners. |
+| \`adoptedCallback()\` | Runs when the element is moved to a new document via \`document.adoptNode()\`. Override to react to document changes. |
 | \`attributeChangedCallback()\` | Runs when an observed attribute changes. Updates the matching JS property and triggers a re-render. |
 
 ### Instance Promises
@@ -103,7 +104,14 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 
 \`\`\`bash
 elena build
+elena watch
 \`\`\`
+
+### CLI Flags
+
+| Flag | Description |
+|------|-------------|
+| \`--config <path>\` | Path to a config file. Defaults to \`elena.config.mjs\` or \`elena.config.js\` in the project root. |
 
 ### \`elena.config.mjs\` Options
 
@@ -115,8 +123,23 @@ elena build
 | \`output.sourcemap\` | \`boolean\` | \`true\` | Whether to generate source maps alongside the output. |
 | \`bundle\` | \`string \\| false\` | \`"src/index.js"\` | Entry point for a single combined output file. Elena will look for \`src/index.ts\` automatically if no \`.js\` file is found. Set to \`false\` to skip the bundle entirely. |
 | \`plugins\` | \`Plugin[]\` | \`[]\` | Extra Rollup plugins to include in the build, added after Elena's built-in ones. |
+| \`analyze\` | \`object \\| false\` | \`{ plugins: [] }\` | CEM analysis options. Set to \`false\` to skip Custom Elements Manifest generation, TypeScript declarations, and JSX types entirely. |
 | \`analyze.plugins\` | \`Plugin[]\` | \`[]\` | Extra plugins for the Custom Elements Manifest generation step. |
 | \`target\` | \`string \\| string[] \\| false\` | \`false\` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via \`@babel/preset-env\` to widen browser support. Example: \`["chrome 71", "firefox 69", "safari 12.1"]\`. |
+| \`terser\` | \`object\` | \`{ ecma: 2020, module: true }\` | Custom Terser minifier options, merged with the defaults. |
+
+### Error Codes
+
+| Error | Explanation |
+|-------|-------------|
+| \`Unknown command: <command>.\` | You ran \`elena <command>\` with an unrecognized command. The CLI only accepts \`elena build\` or \`elena watch\`. |
+| \`Config file not found: <path>.\` | The \`--config\` flag points to a file that does not exist. Check the path and try again. |
+| \`Found "elena.config<ext>" but only .mjs and .js are supported.\` | Elena found a config file with an unsupported extension (e.g. \`.ts\`, \`.json\`, \`.cjs\`). Rename it to \`elena.config.mjs\` or \`elena.config.js\`. |
+| \`Unknown config option "<key>".\` | Your config file contains an unrecognized option. Check for typos. Valid options are: \`input\`, \`output\`, \`bundle\`, \`plugins\`, \`analyze\`, \`target\`, \`terser\`. |
+| \`Invalid config: "<option>" must be <type>.\` | A config option has the wrong type. The error message tells you which option and what type it expects. |
+| \`Input directory "<dir>" does not exist.\` | The \`input\` directory (default \`"src"\`) was not found. Make sure it exists, or set the \`input\` option to the correct path. |
+| \`Bundle entry "<path>" does not exist.\` | The \`bundle\` entry point (default \`"src/index.js"\`) was not found. Create the file, or set \`bundle\` to \`false\` to skip bundling. |
+| \`Build error:\` | Rollup encountered an error during a \`watch\` rebuild. The underlying error is logged directly after this message. |
 
 ---
 

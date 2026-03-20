@@ -561,10 +561,14 @@ Full baseline pattern for a **Primitive Component**:
 
   /* Targets the host element (elena-button) */
   :scope {
-    /* Public CSS custom properties for theming */
-    --elena-button-font: sans-serif;
-    --elena-button-text: white;
-    --elena-button-bg: blue;
+    /* Public theming API (with default values set) */
+    --_elena-button-bg: var(--elena-button-bg, blue);
+    --_elena-button-text: var(--elena-button-text, white);
+    --_elena-button-font: var(--elena-button-font, system-ui, sans-serif);
+
+    /* Internal theming API references (usage) */
+    background-color: var(--_elena-button-bg);
+    color: var(--_elena-button-text);
 
     /* Display mode for the host */
     display: inline-block;
@@ -573,15 +577,15 @@ Full baseline pattern for a **Primitive Component**:
   /* Elena SSR Pattern to avoid layout shift */
   :scope:not([hydrated]),
   .elena-button:is(button) {
-    font-family: var(--elena-button-font);
-    color: var(--elena-button-text);
-    background: var(--elena-button-bg);
+    font-family: var(--_elena-button-font);
+    color: var(--_elena-button-text);
+    background: var(--_elena-button-bg);
     display: inline-block;
   }
 
   /* Attribute selectors for variants */
   :scope[variant="primary"] {
-    --elena-button-bg: red;
+    --_elena-button-bg: var(--elena-button-bg, red);
   }
 
   /* Attribute selectors for states */
@@ -595,9 +599,9 @@ Full baseline pattern for a **Primitive Component**:
 Key rules:
 - \`:scope\` targets the host element defined by \`@scope (elena-tag)\`.
 - The encapsulation reset prevents global styles from leaking in. Place it as the first rule inside \`@scope\`.
-- Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles so the component looks the same before and after hydration.
+- Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles so the component looks the same before and after hydration. Use \`:scope:not([hydrated]), .class-name:is(tag)\` to match the rendered inner element precisely.
 - Use attribute selectors on \`:scope\` for variant/state styling.
-- Define public CSS custom properties on \`:scope\` for theming.
+- Define public CSS custom properties on \`:scope\` for theming. Use the public/private pattern: \`--_elena-button-bg: var(--elena-button-bg, default)\` where underscore-prefixed properties are internal references and the non-prefixed ones are the public API consumers override from outside.
 
 ### Composite Component CSS
 
@@ -684,6 +688,7 @@ Methods in order of execution on first connect:
 On subsequent re-renders: \`willUpdate()\` → \`render()\` → \`updated()\`.
 
 On disconnect: \`disconnectedCallback()\` — cleanup.
+On document change: \`adoptedCallback()\` — runs when the element is moved to a new document via \`document.adoptNode()\`.
 On attribute change: \`attributeChangedCallback()\` — syncs attributes to properties, batches re-render.
 
 All lifecycle methods can be extended via \`super\` (except \`willUpdate()\`):
@@ -814,5 +819,8 @@ Rules for **Primitive Components** when used with a framework:
 
 **With \`@scope\` CSS**: Chrome 118+, Firefox 128+, Safari 17.4+, Edge 118+, Opera 104+
 
-**Known issue:** Firefox 148 had a bug with CSS \`@scope\` and \`attr[value]\` selectors. It is fixed in newer Firefox releases. Use the legacy (non-\`@scope\`) pattern as a fallback for older Firefox if needed.
+**Known issues:**
+
+- **Firefox 148:** CSS \`@scope\` with \`attr[value]\` selectors had a bug where styles would not apply correctly. Fixed in Firefox 149+. Use the legacy (non-\`@scope\`) pattern as a fallback for older Firefox if needed.
+- **Safari 26.3:** \`@scope\` rules are not applied to \`<input>\` and \`<textarea>\` elements. Fixed in Safari Technology Preview 237, but not yet in a stable release. Workaround: style form controls outside \`@scope\` using namespaced selectors (e.g. \`my-filter input { ... }\`).
 `;
