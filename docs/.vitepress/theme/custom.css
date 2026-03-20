@@ -526,3 +526,310 @@ footer.VPFooter a[href*="://"]::after {
 .VPTeamPage {
   margin-block-start: 0 !important;
 }
+
+.elena-svg {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f4f0;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6a65;
+  --text-tertiary: #9c9a92;
+  --border-tertiary: rgba(0, 0, 0, 0.15);
+}
+
+.dark .elena-svg {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2c2c2a;
+  --text-primary: #e8e6de;
+  --text-secondary: #9c9a92;
+  --text-tertiary: #6b6a65;
+  --border-tertiary: rgba(255, 255, 255, 0.15);
+}
+
+.elena-svg .t {
+  font-size: 15px;
+  font-weight: 400;
+  fill: var(--text-primary);
+}
+
+.elena-svg .ts {
+  font-size: 13px;
+  font-weight: 400;
+  fill: var(--text-secondary);
+}
+
+.elena-svg .th {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--text-primary);
+}
+
+.elena-svg .c-teal > rect,
+.elena-svg .c-teal > circle,
+.elena-svg .c-teal > ellipse {
+  fill: #e1f5ee;
+  stroke: #0f6e56;
+}
+.elena-svg .c-teal .th {
+  fill: #085041;
+}
+.elena-svg .c-teal .ts {
+  fill: #0f6e56;
+}
+.elena-svg .c-teal .t {
+  fill: #085041;
+}
+
+.elena-svg .c-purple > rect,
+.elena-svg .c-purple > circle,
+.elena-svg .c-purple > ellipse {
+  fill: #eeedfe;
+  stroke: #534ab7;
+}
+.elena-svg .c-purple .th {
+  fill: #3c3489;
+}
+.elena-svg .c-purple .ts {
+  fill: #534ab7;
+}
+.elena-svg .c-purple .t {
+  fill: #3c3489;
+}
+
+.elena-svg .c-coral > rect,
+.elena-svg .c-coral > circle,
+.elena-svg .c-coral > ellipse {
+  fill: #faece7;
+  stroke: #993c1d;
+}
+.elena-svg .c-coral .th {
+  fill: #712b13;
+}
+.elena-svg .c-coral .ts {
+  fill: #993c1d;
+}
+.elena-svg .c-coral .t {
+  fill: #712b13;
+}
+
+.elena-svg .c-amber > rect,
+.elena-svg .c-amber > circle,
+.elena-svg .c-amber > ellipse {
+  fill: #faeeda;
+  stroke: #854f0b;
+}
+.elena-svg .c-amber .th {
+  fill: #633806;
+}
+.elena-svg .c-amber .ts {
+  fill: #854f0b;
+}
+.elena-svg .c-amber .t {
+  fill: #633806;
+}
+
+.elena-svg .c-blue > rect,
+.elena-svg .c-blue > circle,
+.elena-svg .c-blue > ellipse {
+  fill: #e6f1fb;
+  stroke: #185fa5;
+}
+.elena-svg .c-blue .th {
+  fill: #0c447c;
+}
+.elena-svg .c-blue .ts {
+  fill: #185fa5;
+}
+.elena-svg .c-blue .t {
+  fill: #0c447c;
+}
+
+.elena-svg .c-pink > rect,
+.elena-svg .c-pink > circle,
+.elena-svg .c-pink > ellipse {
+  fill: #fbeaf0;
+  stroke: #993556;
+}
+.elena-svg .c-pink .th {
+  fill: #72243e;
+}
+.elena-svg .c-pink .ts {
+  fill: #993556;
+}
+.elena-svg .c-pink .t {
+  fill: #72243e;
+}
+
+.elena-svg .c-gray > rect,
+.elena-svg .c-gray > circle,
+.elena-svg .c-gray > ellipse {
+  fill: #f1efe8;
+  stroke: #5f5e5a;
+}
+.elena-svg .c-gray .th {
+  fill: #444441;
+}
+.elena-svg .c-gray .ts {
+  fill: #5f5e5a;
+}
+.elena-svg .c-gray .t {
+  fill: #444441;
+}
+
+.dark .elena-svg .c-teal > rect,
+.dark .elena-svg .c-teal > circle,
+.dark .elena-svg .c-teal > ellipse {
+  fill: #085041;
+  stroke: #5dcaa5;
+}
+.dark .elena-svg .c-teal .th {
+  fill: #9fe1cb;
+}
+.dark .elena-svg .c-teal .ts {
+  fill: #5dcaa5;
+}
+.dark .elena-svg .c-teal .t {
+  fill: #9fe1cb;
+}
+
+.dark .elena-svg .c-purple > rect,
+.dark .elena-svg .c-purple > circle,
+.dark .elena-svg .c-purple > ellipse {
+  fill: #3c3489;
+  stroke: #afa9ec;
+}
+.dark .elena-svg .c-purple .th {
+  fill: #cecbf6;
+}
+.dark .elena-svg .c-purple .ts {
+  fill: #afa9ec;
+}
+.dark .elena-svg .c-purple .t {
+  fill: #cecbf6;
+}
+
+.dark .elena-svg .c-coral > rect,
+.dark .elena-svg .c-coral > circle,
+.dark .elena-svg .c-coral > ellipse {
+  fill: #712b13;
+  stroke: #f0997b;
+}
+.dark .elena-svg .c-coral .th {
+  fill: #f5c4b3;
+}
+.dark .elena-svg .c-coral .ts {
+  fill: #f0997b;
+}
+.dark .elena-svg .c-coral .t {
+  fill: #f5c4b3;
+}
+
+.dark .elena-svg .c-amber > rect,
+.dark .elena-svg .c-amber > circle,
+.dark .elena-svg .c-amber > ellipse {
+  fill: #633806;
+  stroke: #ef9f27;
+}
+.dark .elena-svg .c-amber .th {
+  fill: #fac775;
+}
+.dark .elena-svg .c-amber .ts {
+  fill: #ef9f27;
+}
+.dark .elena-svg .c-amber .t {
+  fill: #fac775;
+}
+
+.dark .elena-svg .c-blue > rect,
+.dark .elena-svg .c-blue > circle,
+.dark .elena-svg .c-blue > ellipse {
+  fill: #0c447c;
+  stroke: #85b7eb;
+}
+.dark .elena-svg .c-blue .th {
+  fill: #b5d4f4;
+}
+.dark .elena-svg .c-blue .ts {
+  fill: #85b7eb;
+}
+.dark .elena-svg .c-blue .t {
+  fill: #b5d4f4;
+}
+
+.dark .elena-svg .c-pink > rect,
+.dark .elena-svg .c-pink > circle,
+.dark .elena-svg .c-pink > ellipse {
+  fill: #72243e;
+  stroke: #ed93b1;
+}
+.dark .elena-svg .c-pink .th {
+  fill: #f4c0d1;
+}
+.dark .elena-svg .c-pink .ts {
+  fill: #ed93b1;
+}
+.dark .elena-svg .c-pink .t {
+  fill: #f4c0d1;
+}
+
+.dark .elena-svg .c-gray > rect,
+.dark .elena-svg .c-gray > circle,
+.dark .elena-svg .c-gray > ellipse {
+  fill: #444441;
+  stroke: #b4b2a9;
+}
+.dark .elena-svg .c-gray .th {
+  fill: #d3d1c7;
+}
+.dark .elena-svg .c-gray .ts {
+  fill: #b4b2a9;
+}
+.dark .elena-svg .c-gray .t {
+  fill: #d3d1c7;
+}
+
+.dark .elena-svg .swatch-teal {
+  fill: #085041;
+  stroke: #5dcaa5;
+}
+.dark .elena-svg .swatch-purple {
+  fill: #3c3489;
+  stroke: #afa9ec;
+}
+.dark .elena-svg .swatch-blue {
+  fill: #0c447c;
+  stroke: #85b7eb;
+}
+.dark .elena-svg .swatch-amber {
+  fill: #633806;
+  stroke: #ef9f27;
+}
+.dark .elena-svg .swatch-pink {
+  fill: #72243e;
+  stroke: #ed93b1;
+}
+.dark .elena-svg .swatch-gray {
+  fill: #444441;
+  stroke: #b4b2a9;
+}
+
+.elena-svg .column {
+  cursor: default;
+}
+
+.elena-svg .legend-item {
+  cursor: default;
+}
+
+.elena-svg.legend-active [data-layer].active > rect,
+.elena-svg.legend-active [class*="legend-layer-"].active > rect {
+  stroke-width: 1.5;
+}
+
+.elena-svg.legend-active [data-layer].active > text,
+.elena-svg.legend-active [class*="legend-layer-"].active > text {
+  font-weight: 700;
+}
+
+.elena-svg.legend-active .legend-item.active > text {
+  font-weight: 700;
+}
