@@ -27,6 +27,7 @@ function copyComponentAssets() {
 }
 
 export default defineConfig({
+  scrollOffset: 86,
   title: "Elena",
   lang: "en-GB",
   base: "/elena/",
