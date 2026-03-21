@@ -30,7 +30,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@inquirer/prompts": "7.0.0"
+    "@inquirer/prompts": "8.3.0"
   },
   "devDependencies": {
     "vitest": "4.1.0"
