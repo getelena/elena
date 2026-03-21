@@ -123,7 +123,7 @@ function buildPlugins({
  * Returns the Rollup config array for the given Elena config. Useful for
  * users who want to call `rollup -c` with a thin wrapper config file.
  *
- * @param {import("./utils/load-config.js").ElenaConfig} [options]
+ * @param {import("./common/load-config.js").ElenaConfig} [options]
  * @returns {import("rollup").RollupOptions[]}
  */
 export function createRollupConfig(options = {}) {
@@ -215,7 +215,7 @@ export function createRollupConfig(options = {}) {
  * Runs Rollup build targets programmatically using the Rollup Node.js API.
  * Reuses `createRollupConfig` to avoid duplicating config resolution logic.
  *
- * @param {import("./utils/load-config.js").ElenaConfig} config
+ * @param {import("./common/load-config.js").ElenaConfig} config
  * @returns {Promise<void>}
  */
 export async function runRollupBuild(config) {
