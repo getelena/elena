@@ -1,0 +1,52 @@
+#
+#    ██████████ ████
+#   ░░███░░░░░█░░███
+#    ░███  █ ░  ░███   ██████. ████████    ██████
+#    ░██████    ░███  ███░░███░░███░░███  ░░░░░███
+#    ░███░░█    ░███ ░███████  ░███ ░███   ███████
+#    ░███ ░   █ ░███ ░███░░░   ░███ ░███  ███░░███
+#    ██████████ █████░░██████  ████ █████░░████████
+#   ░░░░░░░░░░ ░░░░░  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░
+#
+#   ░█ [ELENA]: Progressive Web Component Publish
+
+name: publish
+on:
+  push:
+    tags:
+      - "@elenajs/*@*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061
+
+      - name: Install Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
+      - name: Install and Build
+        run: |
+          pnpm install
+          pnpm build
+
+      - name: Publish
+        run: lerna publish from-package --yes --no-private --provenance
