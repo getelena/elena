@@ -1,6 +1,6 @@
 {
   "name": "@elenajs/prettier-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shared Prettier config for Elena projects.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
