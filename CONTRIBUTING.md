@@ -66,9 +66,14 @@ pnpm build                          # Build all packages
 pnpm test                           # Run all tests
 pnpm lint                           # Lint with ESLint
 pnpm format                         # Prettier on all files
-pnpm docs:dev                       # VitePress dev server
-pnpm docs:build                     # VitePress build
-pnpm docs:preview                   # VitePress preview
+```
+
+Docs commands (from `docs/`):
+
+```bash
+pnpm dev                            # VitePress dev server
+pnpm build                          # VitePress build
+pnpm preview                        # VitePress preview
 ```
 
 Core package commands (from `packages/core/`):
