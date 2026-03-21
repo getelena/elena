@@ -14,11 +14,12 @@ name: publish
 on:
   workflow_dispatch:
   push:
-    tags:
-      - "@elenajs/**"
+    branches:
+      - main
 
 jobs:
   publish:
+    if: "github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, '[publish]')"
     runs-on: ubuntu-latest
 
     permissions:

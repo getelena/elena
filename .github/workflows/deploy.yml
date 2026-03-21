@@ -19,6 +19,7 @@ on:
 
 jobs:
   build-and-deploy:
+    if: "github.event_name == 'workflow_dispatch' || !startsWith(github.event.head_commit.message, '[publish]')"
     runs-on: ubuntu-latest
 
     steps:

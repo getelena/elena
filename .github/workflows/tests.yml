@@ -20,6 +20,7 @@ on:
       - main
 jobs:
   build-and-test:
+    if: "!startsWith(github.event.head_commit.message, '[publish]')"
     runs-on: ubuntu-latest
 
     steps:
