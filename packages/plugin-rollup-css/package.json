@@ -33,9 +33,9 @@
     "rollup": ">=4.0.0"
   },
   "dependencies": {
-    "lightningcss": "^1.31.1"
+    "lightningcss": "1.32.0"
   },
   "devDependencies": {
-    "vitest": "4.0.18"
+    "vitest": "4.1.0"
   }
 }

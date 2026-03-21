@@ -30,10 +30,10 @@
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
-    "happy-dom": "20.8.3",
-    "lerna": "9.0.5",
+    "happy-dom": "20.8.4",
+    "lerna": "9.0.7",
     "prettier": "3.8.1",
-    "vitest": "4.0.18"
+    "vitest": "4.1.0"
   },
   "scripts": {
     "build": "NX_TASKS_RUNNER_DYNAMIC_OUTPUT=false lerna run build",

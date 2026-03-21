@@ -41,17 +41,17 @@
     "clean": "rm -rf dist/"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
-    "@rollup/plugin-terser": "0.4.4",
-    "@vitest/browser": "4.0.18",
-    "@vitest/browser-playwright": "4.0.18",
-    "@vitest/coverage-v8": "4.0.18",
-    "happy-dom": "20.8.3",
-    "lit": "^3.3.0",
+    "@playwright/test": "1.58.2",
+    "@rollup/plugin-terser": "1.0.0",
+    "@vitest/browser": "4.1.0",
+    "@vitest/browser-playwright": "4.1.0",
+    "@vitest/coverage-v8": "4.1.0",
+    "happy-dom": "20.8.4",
+    "lit": "3.3.2",
     "rollup": "4.59.0",
     "rollup-plugin-summary": "3.0.1",
-    "serve": "^14.2.6",
+    "serve": "14.2.6",
     "typescript": "5.9.3",
-    "vitest": "4.0.18"
+    "vitest": "4.1.0"
   }
 }

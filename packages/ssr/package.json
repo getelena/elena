@@ -36,9 +36,9 @@
     "@elenajs/core": ">=1.0.0-rc.1"
   },
   "devDependencies": {
-    "vitest": "4.0.18"
+    "vitest": "4.1.0"
   },
   "dependencies": {
-    "htmlparser2": "^10.1.0"
+    "htmlparser2": "10.1.0"
   }
 }
