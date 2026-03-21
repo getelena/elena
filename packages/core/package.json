@@ -16,6 +16,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "source": "./src/elena.js",
   "main": "./dist/elena.js",
   "types": "./dist/elena.d.ts",
   "type": "module",
@@ -27,7 +28,8 @@
     "./bundle": "./dist/bundle.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "prebuild": "npm run -s clean",
