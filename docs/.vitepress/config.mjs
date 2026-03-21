@@ -244,7 +244,10 @@ export default defineConfig({
       },
     ],
 
-    socialLinks: [{ icon: "github", link: "https://github.com/getelena/elena" }],
+    socialLinks: [
+      { icon: "github", link: "https://github.com/getelena/elena" },
+      { icon: "discord", link: "https://discord.gg/s2E3GtekuT" },
+    ],
 
     search: {
       provider: "local",
