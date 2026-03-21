@@ -87,6 +87,10 @@ Elena has a comprehensive automated test suite with 1000+ tests across 56 test f
 
 <img src="/tests.png" loading="lazy" width="1440" height="1934" alt="Elena vitest test suite" />
 
+Additionally, the `@elenajs/core` library is proud to ship with 100% test coverage across all of its source code:
+
+<img src="/coverage.png" loading="lazy" width="1764" height="1040" alt="Elena vitest coverage report for @elenajs/core" />
+
 ## What is the browser support?
 
 As a baseline, Elena’s progressive approach supports any web browser that’s capable of rendering Custom Elements. After that, it’s up to you to determine what is appropriate for your project when authoring CSS styles and JavaScript interactivity. Elena, the JavaScript library, supports the following browser versions:
@@ -134,6 +138,10 @@ Elena’s documentation is built with [VitePress](https://vitepress.dev), a stat
 ## How do you version Elena?
 
 Elena follows [Semantic Versioning](https://semver.org/). Under this scheme, version numbers and the way they change convey meaning about the underlying features and what has been modified from one version to the next.
+
+## Can I sponsor Elena?
+
+Elena is an MIT-licensed open source project and completely free to use. However, we understand that the project won’t remain sustainable forever without financial backing. We’re planning to set up sponsorship at [Open Collective](https://opencollective.com/elenajs) later.
 
 ## How can I contribute?
 
