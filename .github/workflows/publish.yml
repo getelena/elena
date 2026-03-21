@@ -50,4 +50,6 @@ jobs:
           pnpm build
 
       - name: Publish
-        run: lerna publish from-package --yes --no-private --provenance
+        run: lerna publish from-package --yes --no-private
+        env:
+          NPM_CONFIG_PROVENANCE: true
