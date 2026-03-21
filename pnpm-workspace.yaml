@@ -1,21 +1,32 @@
+# Workspace package locations
 packages:
   - packages/**
   - docs
 
+# Block install scripts for these packages (they work without)
 ignoredBuiltDependencies:
   - esbuild
   - nx
   - sharp
 
+# Allow install scripts only for explicitly trusted packages
+onlyBuiltDependencies:
+  - rs-module-lexer # Native Rust binary used by CEM analyzer
+
+# Use local workspace packages instead of fetching from the registry
 linkWorkspacePackages: true
 preferWorkspacePackages: true
 
-minimumReleaseAge: 10080
+# Wait one week after a package is published before installing it
+minimumReleaseAge: 10080 # minutes (7 days)
+
+# Exclude ELena’s own packages from the above rule
 minimumReleaseAgeExclude:
   - "@elenajs/*"
 
-onlyBuiltDependencies:
-  - rs-module-lexer
+# Fail if a package’s trust level has decreased
+trustPolicy: no-downgrade
 
-overrides:
-  glob@>=10.2.0 <10.5.0: ">=10.5.0"
+# Ignore the check for packages published more than 30 days ago (pnpm 10.27+)
+# Useful for older packages that pre-date provenance support
+trustPolicyIgnoreAfter: 43200 # minutes (30 days)
