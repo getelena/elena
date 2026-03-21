@@ -23,8 +23,7 @@ import { elenaTypeScriptPlugin } from "@elenajs/plugin-cem-typescript";
 import { color } from "./common/color.js";
 
 /**
- * Returns the CEM config object for the given Elena config. Useful for advanced
- * users who still call the CEM CLI with a thin `elena.config.js` wrapper.
+ * Return the CEM config object for the given Elena config.
  *
  * @param {import("./common/load-config.js").ElenaConfig} [options]
  * @returns {object} CEM config object

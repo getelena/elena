@@ -34,7 +34,7 @@ const TREESHAKE = {
 };
 
 /**
- * Suppresses noisy Rollup warnings.
+ * Suppress noisy Rollup warnings.
  *
  * @param {import("rollup").RollupWarning} warning
  * @param {function} warn
@@ -47,7 +47,7 @@ function onwarn(warning, warn) {
 }
 
 /**
- * Builds the plugin list for a single Rollup build target.
+ * Build the plugin list for a single Rollup build target.
  *
  * @param {{ src: string; outdir: string; hasSummary: boolean; includeCssBundle: boolean; extraPlugins?: import("rollup").Plugin[]; hasTs?: boolean; target?: string | string[] | false }} opts
  * @returns {import("rollup").Plugin[]}
@@ -91,7 +91,6 @@ function buildPlugins({
     cssStaticStylesPlugin(),
     minifyHtmlLiterals({
       options: {
-        // Minify tagged html/svg templates and any untagged template containing HTML
         shouldMinify: template => {
           const tag = template.tag && template.tag.toLowerCase();
           return (
@@ -109,7 +108,6 @@ function buildPlugins({
     plugins.push(cssBundlePlugin(src, "bundle.css"));
   }
 
-  // User-provided plugins are appended after built-ins, before summary.
   plugins.push(...extraPlugins);
 
   if (hasSummary) {
@@ -120,8 +118,7 @@ function buildPlugins({
 }
 
 /**
- * Returns the Rollup config array for the given Elena config. Useful for
- * users who want to call `rollup -c` with a thin wrapper config file.
+ * Return the Rollup config array for the given Elena config.
  *
  * @param {import("./common/load-config.js").ElenaConfig} [options]
  * @returns {import("rollup").RollupOptions[]}
@@ -212,8 +209,8 @@ export function createRollupConfig(options = {}) {
 }
 
 /**
- * Runs Rollup build targets programmatically using the Rollup Node.js API.
- * Reuses `createRollupConfig` to avoid duplicating config resolution logic.
+ * Run Rollup build targets programmatically using the Rollup Node.js API.
+ * Reuse `createRollupConfig` to avoid duplicating config resolution logic.
  *
  * @param {import("./common/load-config.js").ElenaConfig} config
  * @returns {Promise<void>}
@@ -244,8 +241,8 @@ export async function runRollupBuild(config) {
 }
 
 /**
- * Starts a Rollup watch session using the Rollup Node.js watch API.
- * Rebuilds on file changes and optionally re-runs a callback after each build.
+ * Start a Rollup watch session using the Rollup Node.js watch API.
+ * Rebuild on changes and optionally re-run a callback after build.
  *
  * @param {import("./common/load-config.js").ElenaConfig} config
  * @param {{ onRebuild?: (config: import("./common/load-config.js").ElenaConfig) => Promise<void> }} [opts]
