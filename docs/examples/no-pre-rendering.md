@@ -45,7 +45,7 @@ onMounted(() => {
 
 # Live examples (without pre-rendering)
 
-This is the same examples page without `@elenajs/ssr` pre-rendering. Components rely on CSS pre-hydration styles and render their inner template with JavaScript. Compare the initial load experience with the [pre-rendered version](/examples/).
+This is the same examples page, but without `@elenajs/ssr` pre-rendering. Components rely on CSS pre-hydration styles and render their inner template with JavaScript. Compare the initial load experience with the [pre-rendered version](/examples/).
 
 ## Basic example
 
