@@ -2908,11 +2908,7 @@ description: >-
 
 # Overview
 
-Elena introduces an approach called **“Progressive Web Components”:**
-
-A [Progressive Web Component](https://arielsalminen.com/2026/progressive-web-components/) is a native Custom Element designed in two layers: a base layer of HTML and CSS that renders immediately, without JavaScript, and an enhancement layer of JavaScript that adds reactivity, event handling, and more advanced templating.
-
-There are three types of Progressive Web Components:
+A [Progressive Web Component](https://arielsalminen.com/2026/progressive-web-components/) is a native Custom Element designed in two layers: a base layer of HTML and CSS that renders immediately, without JavaScript, and an enhancement layer of JavaScript that adds reactivity, event handling, and more advanced templating. There are three types of Progressive Web Components:
 
 ## 1. Composite
 
