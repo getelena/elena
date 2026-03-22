@@ -30,9 +30,9 @@ Elena components are configured using static class fields on the class body:
 - **\`static tagName\`** — Custom element tag name (e.g. \`"elena-button"\`)
 - **\`static props\`** — Array of prop names to observe and sync as attributes
 - **\`static events\`** — Array of event names to delegate from the inner element
-- **\`static element\`** — CSS selector for the inner element ref (\`this.element\`). When omitted, Elena uses \`firstElementChild\` instead, which is more performant when you have many components on a page
-- **\`static shadow\`** — Set to \`"open"\` or \`"closed"\` to opt into Shadow DOM. Elena renders into the shadow root instead of the host. Only applies to components with \`render()\`.
-- **\`static styles\`** — One or more stylesheets to adopt into the shadow root. Only applies when \`shadow\` is also set. Pass a \`CSSStyleSheet\` (via CSS Module Scripts) or a raw CSS string.
+- **\`static element\`** — CSS selector for the inner element ref (\`this.element\`). When omitted, Elena uses \`firstElementChild\` instead, if available. \`this.element\` is available in \`render()\`, lifecycle methods, and custom methods.
+- **\`static shadow\`** — Set to \`"open"\` or \`"closed"\` to opt into Shadow DOM. Elena renders into the shadow root instead of the host, fully isolating styles and DOM from the rest of the page.
+- **\`static styles\`** — One or more stylesheets to adopt into the shadow root. Only applies when \`shadow\` is also set. Pass a \`CSSStyleSheet\` (via CSS Module Scripts), a raw CSS string, or an array of either.
 
 All static fields are optional.
 
@@ -240,19 +240,19 @@ render() {
 
 ### Element Ref
 
-When \`static element\` is set, Elena resolves \`this.element\` after the first render, giving you direct access to the inner DOM element. Use it in \`firstUpdated()\`, \`updated()\`, or any custom method:
+When \`static element\` is set, Elena resolves \`this.element\` after the first render, giving you direct access to the inner DOM element. Use it in \`render()\`, \`firstUpdated()\`, \`updated()\`, or any custom method:
 
 \`\`\`js
 export default class Button extends Elena(HTMLElement) {
   static element = ".my-button";
 
-  firstUpdated() {
+  updated() {
     this.element.focus();
   }
 }
 \`\`\`
 
-When \`static element\` is omitted, Elena falls back to \`firstElementChild\`, which is more performant for simple templates with many component instances on a page.
+When \`static element\` is omitted, Elena falls back to \`firstElementChild\`, if available.
 
 ### Advanced Examples
 
