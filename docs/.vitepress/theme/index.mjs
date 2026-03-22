@@ -1,10 +1,12 @@
+import { defineAsyncComponent } from "vue";
 import DefaultTheme from "vitepress/theme-without-fonts";
 import { useRoute } from "vitepress";
 import { initCodeblockFold } from "./codeblock-fold.mjs";
-import PlaygroundWrapper from "./components/PlaygroundWrapper.vue";
 import "./custom.css";
 import "./styles/playground.css";
 import "../../public/components/bundle.css";
+
+const PlaygroundWrapper = defineAsyncComponent(() => import("./components/PlaygroundWrapper.vue"));
 
 export default {
   extends: DefaultTheme,
