@@ -7,11 +7,13 @@ const props = defineProps({
   js: { type: String, default: "" },
   css: { type: String, default: "" },
   html: { type: String, default: "" },
+  autosave: { type: Boolean, default: true },
 });
 
-const emit = defineEmits(["preview-ready"]);
+const emit = defineEmits(["preview-ready", "toggle-autosave"]);
 
 const iframe = ref(null);
+const reloading = ref(false);
 const srcdoc = ref(generateSrcdoc(props.js, props.css, props.html));
 const ready = ref(false);
 let firstLoad = true;
@@ -27,6 +29,18 @@ function onIframeLoad() {
 function updatePreview() {
   ready.value = false;
   srcdoc.value = generateSrcdoc(props.js, props.css, props.html);
+}
+
+function reloadPreview() {
+  ready.value = false;
+  reloading.value = true;
+  srcdoc.value = "";
+  setTimeout(() => {
+    srcdoc.value = generateSrcdoc(props.js, props.css, props.html);
+    setTimeout(() => {
+      reloading.value = false;
+    }, 500);
+  }, 200);
 }
 
 function downloadFiles() {
@@ -68,6 +82,19 @@ watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) =>
     <div class="pg-preview-header">
       <span class="pg-preview-title">Preview</span>
       <div class="pg-preview-actions">
+        <div class="pg-autosave">
+          <span class="pg-autosave-label">Autosave</span>
+          <button
+            class="pg-autosave-toggle"
+            :class="{ on: autosave }"
+            role="switch"
+            :aria-checked="autosave"
+            aria-label="Toggle autosave"
+            @click="emit('toggle-autosave')"
+          >
+            <span class="pg-autosave-knob"></span>
+          </button>
+        </div>
         <button class="pg-preview-action" @click="downloadFiles" title="Download as HTML">
           <svg
             width="17"
@@ -102,7 +129,12 @@ watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) =>
             <line x1="12" y1="2" x2="12" y2="8.5" />
           </svg>
         </button>
-        <button class="pg-preview-action" @click="updatePreview" title="Reload preview">
+        <button
+          class="pg-preview-action"
+          :class="{ 'pg-preview-reloading': reloading }"
+          @click="reloadPreview"
+          title="Reload preview"
+        >
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <path
               d="M13.65 2.35A7.96 7.96 0 0 0 8 0C3.58 0 0 3.58 0 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 8 14 6 6 0 1 1 8 2c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z"

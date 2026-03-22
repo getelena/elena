@@ -1,5 +1,5 @@
 <script setup>
-import { ref, shallowRef, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, shallowRef, onMounted, onUnmounted, watch } from "vue";
 import { useData } from "vitepress";
 
 const props = defineProps({
@@ -7,14 +7,24 @@ const props = defineProps({
   css: { type: String, default: "" },
   html: { type: String, default: "" },
   activeTab: { type: String, default: "js" },
+  dirty: { type: Boolean, default: false },
+  hasSaved: { type: Boolean, default: false },
+  saveStatus: { type: String, default: null },
 });
 
-const emit = defineEmits(["update:js", "update:css", "update:html", "update:activeTab", "toggle-sidebar"]);
+const emit = defineEmits([
+  "update:js",
+  "update:css",
+  "update:html",
+  "update:activeTab",
+  "toggle-sidebar",
+  "reset",
+]);
 
 const { isDark } = useData();
 const editorContainer = ref(null);
 const view = shallowRef(null);
-const tabs = computed(() => (props.css ? ["html", "css", "js"] : ["html", "js"]));
+const tabs = ["html", "css", "js"];
 
 // Start loading CodeMirror immediately when this module is evaluated,
 // rather than waiting for the editor to mount.
@@ -224,6 +234,23 @@ onUnmounted(() => {
       >
         {{ tab.toUpperCase() }}
       </button>
+      <div class="pg-editor-actions">
+        <span v-if="saveStatus === 'saving'" class="pg-save-indicator">
+          <svg class="pg-save-spinner" width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" opacity="0.25" />
+            <path
+              d="M14 8a6 6 0 0 0-6-6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          Saving
+        </span>
+        <button v-else-if="dirty && hasSaved" class="pg-editor-reset" @click="emit('reset')">
+          Reset
+        </button>
+      </div>
     </div>
     <div ref="editorContainer" class="pg-editor-container"></div>
   </div>

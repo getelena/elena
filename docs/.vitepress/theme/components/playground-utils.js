@@ -140,6 +140,70 @@ ${rewrittenJs}
 }
 
 /**
+ * Save editor state for an example to localStorage.
+ */
+export function saveState(id, { js, css, html }) {
+  try {
+    localStorage.setItem(`elena-pg:${id}`, JSON.stringify({ js, css, html }));
+  } catch {
+    // Ignore quota or access errors (e.g. private browsing)
+  }
+}
+
+/**
+ * Load saved editor state for an example from localStorage.
+ * Returns null if nothing is saved or the data is invalid.
+ */
+export function loadState(id) {
+  try {
+    const raw = localStorage.getItem(`elena-pg:${id}`);
+    if (!raw) {
+      return null;
+    }
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed.js === "string" && typeof parsed.html === "string") {
+      return { js: parsed.js, css: parsed.css || "", html: parsed.html };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Remove saved editor state for an example from localStorage.
+ */
+export function clearState(id) {
+  try {
+    localStorage.removeItem(`elena-pg:${id}`);
+  } catch {
+    // Ignore access errors
+  }
+}
+
+/**
+ * Load the autosave preference from localStorage. Defaults to true.
+ */
+export function loadAutosave() {
+  try {
+    return localStorage.getItem("elena-pg:autosave") !== "false";
+  } catch {
+    return true;
+  }
+}
+
+/**
+ * Save the autosave preference to localStorage.
+ */
+export function saveAutosave(enabled) {
+  try {
+    localStorage.setItem("elena-pg:autosave", String(enabled));
+  } catch {
+    // Ignore access errors
+  }
+}
+
+/**
  * Build the JSON data string for CodePen's prefill API.
  *
  * Rewrites bare `@elenajs/core` imports to the unpkg CDN URL so the code

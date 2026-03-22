@@ -1,6 +1,5 @@
 <script setup>
 import { shallowRef, ref, onMounted, onUnmounted, computed } from "vue";
-import { useRouter } from "vitepress";
 import PlaygroundLoading from "./PlaygroundLoading.vue";
 import PlaygroundSidebar from "./PlaygroundSidebar.vue";
 import { examples } from "./playground-examples.js";
@@ -14,7 +13,6 @@ const currentId = ref("");
 const mainRef = ref(null);
 const editorWidth = ref(null);
 const isDragging = ref(false);
-const editorDirty = ref(false);
 
 const mainStyle = computed(() => {
   if (editorWidth.value == null) {
@@ -35,8 +33,8 @@ function onResizeMove(e) {
     return;
   }
   const rect = mainRef.value.getBoundingClientRect();
-  const min = 200;
-  const max = rect.width - 200;
+  const min = 320;
+  const max = rect.width - 320;
   editorWidth.value = Math.min(max, Math.max(min, e.clientX - rect.left));
 }
 
@@ -49,9 +47,6 @@ function onResizeEnd() {
 function selectExample(id) {
   const example = findExample(examples, id);
   if (!example) {
-    return;
-  }
-  if (editorDirty.value && !confirm("You have unsaved changes. Leave this example?")) {
     return;
   }
   currentId.value = example.id;
@@ -86,15 +81,6 @@ async function loadPlayground() {
   }
 }
 
-const router = useRouter();
-const prevRouteGuard = router.onBeforeRouteChange;
-router.onBeforeRouteChange = () => {
-  if (editorDirty.value && !confirm("You have unsaved changes. Leave this page?")) {
-    return false;
-  }
-  return prevRouteGuard?.();
-};
-
 onMounted(async () => {
   window.addEventListener("resize", onWindowResize);
   const hashId = getHashId();
@@ -110,7 +96,6 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  router.onBeforeRouteChange = prevRouteGuard;
   window.removeEventListener("resize", onWindowResize);
   window.removeEventListener("hashchange", onHashChange);
   document.removeEventListener("pointermove", onResizeMove);
@@ -133,7 +118,6 @@ onUnmounted(() => {
         :current-id="currentId"
         @preview-ready="previewReady = true"
         @toggle-sidebar="sidebarOpen = !sidebarOpen"
-        @update:dirty="editorDirty = $event"
       />
       <div v-if="previewReady" class="pg-resize-handle" @pointerdown="onResizeStart"></div>
       <Transition name="pg-unload">
