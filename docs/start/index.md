@@ -191,7 +191,7 @@ Button.define();
 <my-button>Cancel</my-button>
 ```
 
-### 3. Declarative Components <Badge type="warning" text="experimental" />
+### 3. Declarative Components <Badge type="warning" text="Pre-release" />
 
 A Declarative Component utilizes Declarative Shadow DOM which lets you define a shadow root directly in HTML using a `<template shadowrootmode="open">` element. The browser attaches the shadow root during parsing, so the content is visible before JavaScript loads.
 

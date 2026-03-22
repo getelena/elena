@@ -145,7 +145,7 @@ Starts an interactive prompt that walks you through creating a new Elena compone
 
 The generated files follow all Elena authoring patterns, including JSDoc annotations and `@scope` CSS.
 
-## `@elenajs/ssr` <Badge type="warning" text="Experimental" />
+## `@elenajs/ssr` <Badge type="danger" text="Experimental" />
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -188,7 +188,7 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 |--------|------|---------|-------------|
 | `outdir` | `string` | `"dist"` | Where to write the generated `.d.ts` TypeScript types. |
 
-## `@elenajs/mcp` <Badge type="warning" text="Experimental" />
+## `@elenajs/mcp` <Badge type="danger" text="Experimental" />
 
 ### Commands
 

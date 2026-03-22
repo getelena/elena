@@ -13,7 +13,7 @@ The “partial support” bit for the latter means that you can render the initi
 
 Elena also supports [Declarative Shadow DOM](#declarative-shadow-dom) for cases where you may need stronger isolation, but still want the component to render server-side.
 
-## Rendering to HTML strings <Badge type="warning" text="Experimental" />
+## Rendering to HTML strings <Badge type="danger" text="Experimental" />
 
 When you don’t want to [handle the pre-hydration state with CSS](#avoiding-layout-shifts), you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
 
@@ -215,7 +215,7 @@ Then in a template:
 {% render '<elena-button variant="primary">Save</elena-button>' %}
 ```
 
-## Declarative Shadow DOM <Badge type="warning" text="experimental" />
+## Declarative Shadow DOM <Badge type="warning" text="Pre-release" />
 
 Declarative Shadow DOM lets you define a shadow root directly in HTML using a `<template shadowrootmode="open">` element. The browser attaches the shadow root during parsing, so the shadow content is visible before JavaScript loads.
 
