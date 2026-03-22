@@ -96,16 +96,57 @@ export function debounce(fn, delay) {
 }
 
 /**
+ * Rewrite bare `@elenajs/core` imports to the unpkg CDN URL.
+ */
+function rewriteImports(js) {
+  const cdnUrl = "https://unpkg.com/@elenajs/core";
+  return js
+    .replace(/from\s+["']@elenajs\/core["']/g, `from "${cdnUrl}"`)
+    .replace(/import\s*\(\s*["']@elenajs\/core["']\s*\)/g, `import("${cdnUrl}")`);
+}
+
+/**
+ * Download the current playground state as a standalone HTML file.
+ */
+export function downloadProject(title, js, css, html) {
+  const rewrittenJs = rewriteImports(js);
+  const cssBlock = css ? `<style>\n${css}\n</style>\n` : "";
+  const file = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${title || "Elena Component"}</title>
+${cssBlock}</head>
+<body>
+${html}
+<script type="module">
+${rewrittenJs}
+</script>
+</body>
+</html>`;
+
+  const slug = (title || "component")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+  const blob = new Blob([file], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `elena-${slug}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/**
  * Build the JSON data string for CodePen's prefill API.
  *
  * Rewrites bare `@elenajs/core` imports to the unpkg CDN URL so the code
  * works standalone in CodePen. JS goes in its own panel with module mode.
  */
 export function buildCodePenData(title, js, css, html) {
-  const cdnUrl = "https://unpkg.com/@elenajs/core";
-  const rewrittenJs = js
-    .replace(/from\s+["']@elenajs\/core["']/g, `from "${cdnUrl}"`)
-    .replace(/import\s*\(\s*["']@elenajs\/core["']\s*\)/g, `import("${cdnUrl}")`);
+  const rewrittenJs = rewriteImports(js);
 
   return JSON.stringify({
     title: `Elena | ${title || "Component"}`,

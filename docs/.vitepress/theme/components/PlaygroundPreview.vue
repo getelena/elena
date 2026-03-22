@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
-import { generateSrcdoc, debounce, buildCodePenData } from "./playground-utils.js";
+import { generateSrcdoc, debounce, buildCodePenData, downloadProject } from "./playground-utils.js";
 
 const props = defineProps({
   title: { type: String, default: "Elena Component" },
@@ -27,6 +27,10 @@ function onIframeLoad() {
 function updatePreview() {
   ready.value = false;
   srcdoc.value = generateSrcdoc(props.js, props.css, props.html);
+}
+
+function downloadFiles() {
+  downloadProject(props.title, props.js, props.css, props.html);
 }
 
 function editInCodePen() {
@@ -64,6 +68,22 @@ watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) =>
     <div class="pg-preview-header">
       <span class="pg-preview-title">Preview</span>
       <div class="pg-preview-actions">
+        <button class="pg-preview-action" @click="downloadFiles" title="Download as HTML">
+          <svg
+            width="17"
+            height="17"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </button>
         <button class="pg-preview-action" @click="editInCodePen" title="Edit in CodePen">
           <svg
             width="17"

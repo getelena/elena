@@ -277,7 +277,7 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
 .pg-preview-actions {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .pg-preview-action {
@@ -287,7 +287,7 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   padding: 0.25rem;
   background: none;
   border: none;
-  color: var(--vp-c-text-3);
+  color: var(--vp-c-text-2);
   cursor: pointer;
   border-radius: 4px;
   transition:
