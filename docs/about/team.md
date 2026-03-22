@@ -7,7 +7,7 @@ import {
   VPTeamPage,
   VPTeamPageTitle,
   VPTeamMembers
-} from 'vitepress/theme'
+} from 'vitepress/theme-without-fonts'
 
 const members = [
   {
