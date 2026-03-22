@@ -154,7 +154,7 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 | `clear` | `clear()` | Remove all registered component classes from the SSR registry at once. |
 | `ssr` | `ssr(html)` | Takes an HTML string, expands any registered components into full HTML, and returns the result. Full HTML documents (including `<!DOCTYPE>`) are supported. |
 
-## `@elenajs/plugin-rollup-css` <Badge type="warning" text="Beta" />
+## `@elenajs/plugin-rollup-css` <Badge type="warning" text="Pre-release" />
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -164,19 +164,19 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 | `cssStaticStylesPlugin` | `cssStaticStylesPlugin()` | Finds `static styles` class fields with template literal values and minifies the CSS inside them. |
 | `minifyCss` | `minifyCss(css, filename?)` | Minifies a CSS string using Lightning CSS. |
 
-## `@elenajs/plugin-cem-define` <Badge type="warning" text="Beta" />
+## `@elenajs/plugin-cem-define` <Badge type="warning" text="Pre-release" />
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `elenaDefinePlugin` | `elenaDefinePlugin()` | CEM plugin that reads `tagName` option from each Elena component class and registers it in the Custom Elements Manifest. |
 
-## `@elenajs/plugin-cem-tag` <Badge type="warning" text="Beta" />
+## `@elenajs/plugin-cem-tag` <Badge type="warning" text="Pre-release" />
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `elenaTagPlugin` | `elenaTagPlugin(jsdocTag)` | CEM plugin that copies a custom JSDoc tag from each component’s documentation comment into the Custom Elements Manifest. `jsdocTag` is the tag name without the `@` (e.g. `"status"` for `@status`, `"displayName"` for `@displayName`). Call it once per tag you want to extract. |
 
-## `@elenajs/plugin-cem-typescript` <Badge type="warning" text="Beta" />
+## `@elenajs/plugin-cem-typescript` <Badge type="warning" text="Pre-release" />
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
