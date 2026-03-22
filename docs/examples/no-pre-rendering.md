@@ -25,22 +25,6 @@ const cycleButtonText = computed(() => `Click to cycle (${currentVariant.value})
 function cycleVariant() {
   variantIndex.value = (variantIndex.value + 1) % variants.length;
 }
-
-// Firefox workaround: force attribute style recalculation for @scope + attr[value] bug
-onMounted(() => {
-  if (navigator.userAgent.includes("Firefox")) {
-    customElements.whenDefined("elena-button").then(() => {
-      for (const el of document.querySelectorAll("elena-button[variant]")) {
-        const v = el.getAttribute("variant");
-        const s = el.getAttribute("size");
-        el.removeAttribute("variant");
-        el.removeAttribute("size");
-        requestAnimationFrame(() => el.setAttribute("variant", v));
-        requestAnimationFrame(() => el.setAttribute("size", s));
-      }
-    });
-  }
-});
 </script>
 
 # Live examples (without pre-rendering)
