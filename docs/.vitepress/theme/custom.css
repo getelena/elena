@@ -290,6 +290,25 @@ label:active {
   margin-block-end: 1rem;
 }
 
+/* Highlight "Live examples" sidebar item on /examples/no-pre-rendering */
+#app:has(.vp-doc[class*="no-pre-rendering"])
+  .VPSidebarItem.level-1.is-link:has(a[href$="/examples/"]) {
+  anchor-name: --sidebar-active;
+  border-radius: 6px;
+  inline-size: calc(100% + 1rem);
+  margin-inline-start: -0.5rem;
+  padding-inline-start: 0.5rem;
+  position: relative;
+}
+
+#app:has(.vp-doc[class*="no-pre-rendering"])
+  .VPSidebarItem.level-1.is-link:has(a[href$="/examples/"])
+  > .item
+  .link
+  > .text {
+  color: var(--vp-c-brand-1);
+}
+
 .elena-demo p {
   margin-block-start: 1rem;
   margin-block-end: 0;

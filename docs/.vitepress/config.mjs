@@ -4,6 +4,7 @@ import { copyFile, mkdir } from "fs/promises";
 import { fileURLToPath } from "url";
 import path from "path";
 import llmstxt from "vitepress-plugin-llms";
+import { elenaSSRPlugin } from "./plugins/elena-ssr.js";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -97,7 +98,7 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [copyComponentAssets(), llmstxt()],
+    plugins: [elenaSSRPlugin(), copyComponentAssets(), llmstxt()],
   },
   vue: {
     template: {
