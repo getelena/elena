@@ -10,7 +10,7 @@ description: Critical CSS rules for Elena components. @scope encapsulation, all:
 
 ## @scope
 
-Use `@scope (tag-name)` to prevent component styles from leaking out to the page.
+Use `@scope (tag-name)` to prevent component styles from leaking out to the page. As an alternative, you can use CSS cascade layers (`@layer`) to control style precedence instead of `all: unset`.
 
 ## Encapsulation reset
 
@@ -46,7 +46,21 @@ Style both the host before hydration AND the rendered inner element with the sam
 }
 ```
 
-The `:scope:not([hydrated])` rule applies before JavaScript runs; the inner element selector applies after Elena renders and adds the `[hydrated]` attribute.
+The `:scope:not([hydrated])` rule applies before JavaScript runs; the inner element selector applies after Elena renders and adds the `[hydrated]` attribute. This pattern only applies to Primitive Components (those with `render()`).
+
+### Pre-hydration pseudo-elements
+
+Use CSS pseudo-elements with `attr()` to surface additional content before hydration:
+
+```css
+:scope:not([hydrated])::before {
+  content: attr(label);
+}
+
+:scope:not([hydrated])::after {
+  content: attr(placeholder);
+}
+```
 
 ## Theming
 
@@ -103,12 +117,32 @@ elena-button[variant="primary"] {
 ```
 
 
+## Composite Component CSS
+
+Composite Components do NOT include the encapsulation reset. Style the host element and provide attribute-based customization:
+
+```css
+@scope (elena-stack) {
+  :scope {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  :scope[direction="row"] {
+    flex-direction: row;
+  }
+}
+```
+
 ## Browser bugs
 
-**Firefox 148**: `@scope` combined with `attr()` value functions (e.g. `content: attr(label)`) fails to apply until a hover or repaint. Fixed in Firefox 149+. For broader Firefox support, use namespaced selectors instead of `@scope`.
+**Firefox 148**: `@scope` combined with `attr[value]` selectors can be buggy. Fixed in Firefox 149+. For broader Firefox support, use namespaced selectors instead of `@scope`.
 
-**Safari (pre-TP 237)**: `@scope` rules do not apply to `<input>` and `<textarea>`. Fixed in Safari Technology Preview 237. Workaround: style form controls outside `@scope` using namespaced selectors, e.g. `elena-input input { ... }`.
+**Safari 26.3**: `@scope` rules do not apply to `<input>` and `<textarea>`. Fixed in Safari Technology Preview 237 but not yet in a stable release. Workaround: style form controls outside `@scope` using namespaced selectors, e.g. `elena-input input { ... }`.
 
 ## Shadow DOM
 
 Opt in with `static shadow = "open"` and `static styles`. Elena renders into the shadow root. `@scope` is not needed inside Shadow DOM. CSS custom properties still pierce the shadow boundary for theming.
+
+**Warning:** Shadow DOM breaks progressive enhancement: nothing is visible until JavaScript runs. See Declarative Shadow DOM (`<template shadowrootmode="open">`) for a standards-based alternative.

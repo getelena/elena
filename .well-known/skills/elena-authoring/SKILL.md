@@ -65,3 +65,5 @@ Three types — the type determines whether `render()` is present:
 - Never render a framework component inside a Primitive Component. Elena calls `replaceChildren()` on render, destroying the framework tree.
 - For dynamic text content in frameworks, use the `text` property: `<elena-button text={label} />`. Children won't update after hydration.
 - Avoid letting the framework and Elena both mutate the same attribute — the framework's reconciler will win on next render.
+- **Angular:** Text children are inserted after `connectedCallback` fires, so Elena has already replaced the host's inner DOM by then. Always use `text` as a property binding, never as a child node: `<elena-button [text]="label"></elena-button>`.
+- **React 17:** Does not pass `Array` or `Object` type props or event handlers to custom elements correctly. Use React 18+ or pass all props as string attributes.
