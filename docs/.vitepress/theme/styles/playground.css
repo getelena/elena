@@ -274,7 +274,13 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
   letter-spacing: 0.025em;
 }
 
-.pg-preview-reload {
+.pg-preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pg-preview-action {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -289,7 +295,7 @@ html:not(.dark) .pg-editor-container .cm-selectionBackground {
     background 0.15s;
 }
 
-.pg-preview-reload:hover {
+.pg-preview-action:hover {
   color: var(--vp-c-text-1);
   background: var(--vp-c-bg-soft);
 }

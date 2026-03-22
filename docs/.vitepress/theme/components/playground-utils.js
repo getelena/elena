@@ -94,3 +94,25 @@ export function debounce(fn, delay) {
     timer = setTimeout(() => fn.apply(this, args), delay);
   };
 }
+
+/**
+ * Build the JSON data string for CodePen's prefill API.
+ *
+ * Rewrites bare `@elenajs/core` imports to the unpkg CDN URL so the code
+ * works standalone in CodePen. JS goes in its own panel with module mode.
+ */
+export function buildCodePenData(title, js, css, html) {
+  const cdnUrl = "https://unpkg.com/@elenajs/core";
+  const rewrittenJs = js
+    .replace(/from\s+["']@elenajs\/core["']/g, `from "${cdnUrl}"`)
+    .replace(/import\s*\(\s*["']@elenajs\/core["']\s*\)/g, `import("${cdnUrl}")`);
+
+  return JSON.stringify({
+    title: `Elena | ${title || "Component"}`,
+    html: html || "",
+    css: css || "",
+    js: rewrittenJs || "",
+    js_module: true,
+    editors: "111",
+  });
+}
