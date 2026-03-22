@@ -40,7 +40,7 @@ export function registerReviewPrompt(server) {
               "- [ ] Internal/private methods are annotated with @internal",
               "- [ ] Correct component type (Primitive Components own their DOM via render(); Composite Components wrap children with no render(); Declarative Components use Declarative Shadow DOM)",
               "- [ ] Primitive Components: render() returns html tagged template",
-              "- [ ] Primitive Components: static element points to inner element selector",
+              "- [ ] Primitive Components: if static element is set, it points to a valid inner element selector (optional, defaults to firstElementChild)",
               "- [ ] Composite Components: no render(), no static events, no static element",
               "- [ ] If willUpdate() is defined: it runs before render() for derived state and does NOT call super",
               "- [ ] If static events is used: handleEvent() is NOT overridden on the class",

@@ -413,8 +413,8 @@ Elena syncs props and attributes on the host element. Props declared in \`static
 When naming Custom Element attributes, follow these rules:
 
 - **Valid characters:** Lowercase ASCII letters (a-z) and hyphens (-) only.
-- **Short:** Maximum of 2 words. Prefer 1 word when possible.
-- **Reserved names:** Property names must not conflict with existing standardized HTMLElement prototype members (e.g. \`title\`, \`hidden\`, \`id\`, \`type\`, \`href\`, \`value\`, \`style\`, \`className\`, \`innerHTML\`, \`textContent\`). Note: \`text\` is also reserved — it is Elena's built-in reactive text property.
+- **Short:** Keep prop names short and single-word where possible.
+- **Reserved names:** Property names must not conflict with existing standardized HTMLElement prototype members (e.g. \`title\`, \`hidden\`, \`id\`, \`style\`, \`className\`, \`innerHTML\`, \`textContent\`). Note: \`text\` is also reserved — it is Elena's built-in reactive text property.
 
 ## Props
 
@@ -511,7 +511,7 @@ Elena recommends the \`@scope\` at-rule for component styles. It prevents styles
 /* Scope makes sure styles don't leak out */
 @scope (elena-button) {
 
-  /* Unset makes sure styles don't leak in */
+  /* Reset makes sure styles don't leak in */
   :scope,
   *:where(:not(img, svg):not(svg *)),
   *::before,
@@ -550,7 +550,7 @@ Full baseline pattern for a **Primitive Component**:
 /* Scope makes sure styles don't leak out */
 @scope (elena-button) {
 
-  /* Unset makes sure styles don't leak in */
+  /* Reset makes sure styles don't leak in */
   :scope,
   *:where(:not(img, svg):not(svg *)),
   *::before,
@@ -631,7 +631,7 @@ Composite Components style the host element and can pass styles down to their co
 For older browsers, use namespaced selectors and the \`:is()\` pattern:
 
 \`\`\`css
-/* Unset makes sure styles don't leak in */
+/* Reset makes sure styles don't leak in */
 elena-button,
 elena-button *:where(:not(img, svg):not(svg *)),
 elena-button *::before,
@@ -679,7 +679,7 @@ Button.define();
 
 Methods in order of execution on first connect:
 
-1. \`connectedCallback()\` — Captures textContent, batches re-render
+1. \`connectedCallback()\` — Sets up props, captures text content, renders, and wires up events
 2. \`willUpdate()\` — Runs before every render; use for derived/computed state. Do not call \`super\`.
 3. \`render()\` — Must return an \`html\` tagged template literal (only for components that own their markup)
 4. \`firstUpdated()\` — Runs once after the first render, before \`updated()\`
@@ -730,6 +730,95 @@ await element.updateComplete;
 ## Registration
 
 Always call \`ClassName.define()\` after the class body to register the element.
+
+---
+
+## Mixins
+
+Mixins are a standard JavaScript pattern for sharing behavior across components. Since \`Elena()\` is itself a mixin, custom mixins compose naturally with it.
+
+### Writing and using a mixin
+
+A mixin is a function that takes a base class and returns an extended class. Always apply mixins **after** \`Elena()\`:
+
+\\\`\\\`\\\`js
+const Draggable = (superClass) => class extends superClass {
+  connectedCallback() {
+    super.connectedCallback();
+    this.setAttribute("draggable", "true");
+    this.addEventListener("dragstart", this._onDragStart);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener("dragstart", this._onDragStart);
+  }
+
+  _onDragStart(e) {
+    e.dataTransfer.setData("text/plain", this.text);
+  }
+};
+\\\`\\\`\\\`
+
+\\\`\\\`\\\`js
+class DraggableCard extends Draggable(Elena(HTMLElement)) {
+  static tagName = "draggable-card";
+
+  render() {
+    return html\\\\\\\`<div class="card">\\\\\\\${this.text}</div>\\\\\\\`;
+  }
+}
+DraggableCard.define();
+\\\`\\\`\\\`
+
+### Lifecycle rules
+
+Mixins that override lifecycle methods **must call \`super\`** to preserve Elena's behavior:
+
+| Method | Must call \`super\`? |
+|---|---|
+| \`connectedCallback()\` | Yes |
+| \`disconnectedCallback()\` | Yes |
+| \`adoptedCallback()\` | Yes |
+| \`attributeChangedCallback()\` | Yes |
+| \`firstUpdated()\` | Yes |
+| \`updated()\` | Yes |
+| \`willUpdate()\` | No (base is a no-op) |
+
+### Multiple mixins
+
+Mixins stack left to right, with each wrapping the previous:
+
+\\\`\\\`\\\`js
+class FancyButton extends Loggable(Tooltipped(Elena(HTMLElement))) {
+  static tagName = "fancy-button";
+}
+FancyButton.define();
+\\\`\\\`\\\`
+
+### Adding props
+
+Mixins can introduce their own props. List them in \`static props\` on the final component class so Elena can observe them:
+
+\\\`\\\`\\\`js
+const Sizeable = (superClass) => class extends superClass {
+  /** @attribute @type {"sm" | "md" | "lg"} */
+  size = "md";
+};
+
+class SizeableButton extends Sizeable(Elena(HTMLElement)) {
+  static tagName = "sizeable-button";
+  static props = ["size", "variant"];
+
+  /** @attribute @type {"default" | "primary"} */
+  variant = "default";
+
+  render() {
+    return html\\\\\\\`<button>\\\\\\\${this.text}</button>\\\\\\\`;
+  }
+}
+SizeableButton.define();
+\\\`\\\`\\\`
 
 ---
 
@@ -823,4 +912,12 @@ Rules for **Primitive Components** when used with a framework:
 
 - **Firefox 148:** CSS \`@scope\` with \`attr[value]\` selectors had a bug where styles would not apply correctly. Fixed in Firefox 149+. Use the legacy (non-\`@scope\`) pattern as a fallback for older Firefox if needed.
 - **Safari 26.3:** \`@scope\` rules are not applied to \`<input>\` and \`<textarea>\` elements. Fixed in Safari Technology Preview 237, but not yet in a stable release. Workaround: style form controls outside \`@scope\` using namespaced selectors (e.g. \`my-filter input { ... }\`).
+
+**URIs in templates:**
+
+Elena's \`html\` tagged template auto-escapes interpolated values to prevent XSS, but it does not block JavaScript URIs. If you interpolate user input into an \`href\` or other URL attribute, a value like \`javascript:alert(1)\` will pass through escaping unchanged. Always validate or sanitize URLs before interpolating them:
+
+\`\`\`js
+const safeUrl = /^https?:\\/\\//.test(this.url) ? this.url : "#";
+\`\`\`
 `;

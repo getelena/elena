@@ -115,7 +115,7 @@ Button.define();
 ## Attribute Naming Rules
 
 - **Valid characters:** Lowercase ASCII letters (a-z) and hyphens (-) only.
-- **Short:** Maximum of 2 words. Prefer 1 word when possible.
+- **Short:** Keep prop names short and single-word where possible.
 - **Reserved names:** Property names must not conflict with existing standardized HTMLElement prototype members.
 
 ## Available Tools & Resources

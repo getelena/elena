@@ -40,7 +40,7 @@ export function registerCreatePrompt(server) {
               "",
               "Key Elena rules to follow:",
               "- Primitive Components own their internal DOM via render(). Composite Components wrap children with no render(). Declarative Components use Declarative Shadow DOM.",
-              "- Configure components with static class fields: static tagName, static props, static events, static element.",
+              "- Configure components with static class fields: static tagName, static props, static events, static element, static shadow, static styles.",
               "- Props must be listed in static props AND given default class field values.",
               "- Use JSDoc @attribute, @type, @cssprop, @event, @status, @displayName annotations.",
               "- CSS must use @scope for style isolation. Primitive Components need the encapsulation reset (:scope, *:where(:not(img, svg):not(svg *)), *::before, *::after { all: unset; display: revert; }) and must style both :scope:not([hydrated]) and the inner element. Composite Components must NOT include the reset.",

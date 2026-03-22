@@ -14,7 +14,7 @@ import { Elena, html, nothing, unsafeHTML } from "@elenajs/core";
 |--------|-----------|-------------|
 | \`Elena\` | \`Elena(superClass)\` | Creates an Elena component base class. Pass in \`HTMLElement\` to get started. Configure the component using static [component options](#component-options) on the returned class. |
 
-### Template Utilities
+### Template utilities
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -22,7 +22,7 @@ import { Elena, html, nothing, unsafeHTML } from "@elenajs/core";
 | \`nothing\` | \`nothing\` | Use this in conditional expressions when you want to render nothing. Safer than \`""\` or \`false\`, which can produce unexpected output. |
 | \`unsafeHTML\` | \`unsafeHTML(str)\` | Renders a plain string as raw HTML, skipping automatic escaping. Only use this for content you fully control. |
 
-### Component Options
+### Component options
 
 \`\`\`js
 export default class Button extends Elena(HTMLElement) {
@@ -42,7 +42,7 @@ export default class Button extends Elena(HTMLElement) {
 | \`shadow\` | \`"open" \\| "closed"\` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host. |
 | \`styles\` | \`CSSStyleSheet \\| string \\| (CSSStyleSheet \\| string)[]\` | One or more stylesheets to adopt into the shadow root. Only applies when \`shadow\` is also set. |
 
-### Host Attributes
+### Host attributes
 
 Attributes that Elena adds to the host element automatically. These are not JS properties, they appear in the DOM and can be targeted in CSS.
 
@@ -50,14 +50,14 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 |-----------|-------------|
 | \`hydrated\` | Added to the host element after the first render completes. Use \`:not([hydrated])\` in CSS to style the element before JavaScript runs, and remove those styles once it hydrates. |
 
-### Instance Properties
+### Instance properties
 
 | Property | Type | Description |
 |----------|------|-------------|
 | \`text\` | \`string\` | The text content of the element. Elena reads this from the element's children before the first render. Setting it later triggers a re-render. When you need to dynamically update this, pass text via a property instead of children. |
 | \`element\` | \`HTMLElement \\| null\` | A reference to the inner element, resolved after the first render using the \`element\` option. |
 
-### Lifecycle Methods
+### Lifecycle methods
 
 | Method | Description |
 |--------|-------------|
@@ -71,20 +71,20 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 | \`adoptedCallback()\` | Runs when the element is moved to a new document via \`document.adoptNode()\`. Override to react to document changes. |
 | \`attributeChangedCallback()\` | Runs when an observed attribute changes. Updates the matching JS property and triggers a re-render. |
 
-### Instance Promises
+### Instance promises
 
 | Property | Type | Description |
 |----------|------|-------------|
 | \`updateComplete\` | \`Promise<void>\` | Resolves after the next pending render finishes. Use it to wait for the DOM to settle before reading it. Resolves immediately if no render is pending. |
 
-### Static Methods
+### Static methods
 
 | Method | Description |
 |--------|-------------|
 | \`ClassName.define()\` | Registers the component with the browser using \`tagName\` option. Call this once after defining your class. Does nothing in non-browser environments. |
 | \`ClassName.observedAttributes\` | The list of attributes the browser should watch for changes, built from \`props\` option plus the built-in \`text\` attribute. |
 
-### Error Codes
+### Error codes
 
 | Error | Explanation |
 |-------|-------------|
@@ -107,7 +107,7 @@ elena build
 elena watch
 \`\`\`
 
-### CLI Flags
+### CLI flags
 
 | Flag | Description |
 |------|-------------|
@@ -128,7 +128,7 @@ elena watch
 | \`target\` | \`string \\| string[] \\| false\` | \`false\` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via \`@babel/preset-env\` to widen browser support. Example: \`["chrome 71", "firefox 69", "safari 12.1"]\`. |
 | \`terser\` | \`object\` | \`{ ecma: 2020, module: true }\` | Custom Terser minifier options, merged with the defaults. |
 
-### Error Codes
+### Error codes
 
 | Error | Explanation |
 |-------|-------------|
@@ -167,13 +167,15 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 > **Warning:** \`@elenajs/ssr\` is an experimental package, not yet ready for production use. APIs may change without notice.
 
 \`\`\`js
-import { ssr, register } from "@elenajs/ssr";
+import { ssr, register, unregister, clear } from "@elenajs/ssr";
 \`\`\`
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | \`register\` | \`register(...components)\` | Tell the SSR renderer which component classes to expand. Each class must have \`tagName\` option set. Call this before \`ssr()\`. |
-| \`ssr\` | \`ssr(html)\` | Takes an HTML string, expands any registered components into full HTML, and returns the result. The rest of the HTML tags are left as-is. |
+| \`unregister\` | \`unregister(...components)\` | Remove previously registered component classes from the SSR registry. |
+| \`clear\` | \`clear()\` | Remove all registered component classes from the SSR registry at once. |
+| \`ssr\` | \`ssr(html)\` | Takes an HTML string, expands any registered components into full HTML, and returns the result. Full HTML documents (including \`<!DOCTYPE>\`) are supported. |
 
 ---
 

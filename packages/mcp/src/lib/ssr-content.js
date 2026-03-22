@@ -2,7 +2,7 @@
  * Static markdown content for SSR patterns.
  * Used by the elena://docs/ssr resource.
  */
-export const SSR_CONTENT = `# Server-Side Rendering
+export const SSR_CONTENT = `# Server-side rendering
 
 Elena's approach to server-side rendering is simple and straightforward. Since Progressive Web Components are primarily HTML and CSS, you don't need any special logic on the server to render them.
 
@@ -11,34 +11,6 @@ Components without a \`render()\` method are fully SSR-compatible by default, wh
 The "partial support" bit for the latter means that you can render the initial state without JavaScript, but JS is needed for the interactivity (unless you also use the provided \`@elenajs/ssr\` tool).
 
 Elena also supports Declarative Shadow DOM for cases where you may need stronger isolation, but still want the component to render server-side.
-
-## Avoiding layout shifts
-
-For **components with \`render()\`** specifically, our recommendation is to ship them with CSS styles that visually match the \`loading\` and \`hydrated\` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided \`hydrated\` attribute in your component styles:
-
-\`\`\`css
-/* Elena SSR Pattern to avoid layout shift */
-:scope:not([hydrated]),
-.inner-element {
-  color: var(--elena-button-text);
-}
-\`\`\`
-
-Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
-
-\`\`\`css
-:scope:not([hydrated])::before {
-  content: attr(label);
-  /* etc */
-}
-
-:scope:not([hydrated])::after {
-  content: attr(placeholder);
-  /* etc */
-}
-\`\`\`
-
-> **Tip:** You can skip this section entirely for components without \`render()\`, when you plan to hide components until loaded, or when the rest of your app renders client side only.
 
 ## Rendering to HTML strings
 
@@ -113,7 +85,7 @@ Throws an error if a component does not have a \`tagName\`.
 
 ### \`ssr(html)\`
 
-Parse an HTML string, expand registered components with \`render()\`, and return the rendered HTML.
+Parse an HTML string, expand registered components with \`render()\`, and return the rendered HTML. Full HTML documents are supported: \`<!DOCTYPE>\`, \`<html>\`, \`<head>\`, and \`<body>\` tags are preserved as-is alongside Elena component expansion.
 
 | Parameter | Type     | Description                              |
 | --------- | -------- | ---------------------------------------- |
@@ -121,15 +93,40 @@ Parse an HTML string, expand registered components with \`render()\`, and return
 
 **Returns:** \`string\`, the rendered HTML with components expanded.
 
+### \`unregister(...components)\`
+
+Remove previously registered component classes from the SSR registry.
+
+\`\`\`js
+import { register, unregister } from "@elenajs/ssr";
+const { Button } = await import("@elenajs/components");
+
+register(Button);
+// ... later
+unregister(Button);
+\`\`\`
+
+### \`clear()\`
+
+Remove all registered component classes from the SSR registry at once.
+
+\`\`\`js
+import { clear } from "@elenajs/ssr";
+
+clear();
+\`\`\`
+
 ### How it works
 
-1. **Parse** the input HTML string into a tree (tags, attributes, children).
-2. **Walk** the tree depth-first. For each custom element tag, look it up in the registry.
-3. **Expand** components with \`render()\` by constructing a lightweight instance, converting attribute strings to the correct prop types (boolean, number, array, object), calling \`willUpdate()\` if defined, and then calling \`render()\`.
+1. **Parse** the input HTML string into a tree.
+2. **Walk** the tree and look up each custom element tag in the registry.
+3. **Expand** matching custom elements by calling their \`render()\`.
 4. **Recurse** into composite component children and non-component tags.
 5. **Serialize** the tree back to an HTML string.
 
 The rendered output matches what Elena produces on the client, using the same \`html\` tagged template escaping and whitespace normalization.
+
+> **Tip:** If a component's \`render()\` throws an error, the SSR renderer logs a warning and falls back to passing the component through without expansion, preserving its original children. This prevents a single broken component from affecting the rest of the page.
 
 ### Client-side hydration
 
@@ -228,6 +225,34 @@ Button.define();
 In practice, you have to write the \`<template>\` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application. \`@elenajs/ssr\` may later get Declarative Shadow DOM support which would eliminate that entirely, but this isn't currently on our roadmap.
 
 For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
+
+## Avoiding layout shifts
+
+For **components with \`render()\`** specifically, our recommendation is to ship them with CSS styles that visually match the \`loading\` and \`hydrated\` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided \`hydrated\` attribute in your component styles:
+
+\`\`\`css
+/* Elena SSR Pattern to avoid layout shift */
+:scope:not([hydrated]),
+.inner-element {
+  color: var(--elena-button-text);
+}
+\`\`\`
+
+Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
+
+\`\`\`css
+:scope:not([hydrated])::before {
+  content: attr(label);
+  /* etc */
+}
+
+:scope:not([hydrated])::after {
+  content: attr(placeholder);
+  /* etc */
+}
+\`\`\`
+
+> **Tip:** You can skip this section entirely for components without \`render()\`, when you plan to hide components until loaded, or when the rest of your app renders client side only.
 
 ## Framework examples
 

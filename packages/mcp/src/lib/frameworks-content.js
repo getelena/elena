@@ -2,7 +2,7 @@
  * Static markdown content for framework integration patterns.
  * Used by the elena://docs/frameworks resource.
  */
-export const FRAMEWORKS_CONTENT = `# Framework Integrations
+export const FRAMEWORKS_CONTENT = `# Framework integrations
 
 Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers.
 

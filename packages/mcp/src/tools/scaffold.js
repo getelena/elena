@@ -153,7 +153,7 @@ export function generateCSS(params) {
   ];
 
   if (cssEncapsulation) {
-    lines.push("  /* Unset makes sure styles don't leak in */");
+    lines.push("  /* Reset makes sure styles don't leak in */");
     lines.push("  :scope,");
     lines.push("  *:where(:not(img, svg):not(svg *)),");
     lines.push("  *::before,");
