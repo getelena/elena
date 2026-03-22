@@ -13,6 +13,7 @@ const currentId = ref("");
 const mainRef = ref(null);
 const editorWidth = ref(null);
 const isDragging = ref(false);
+const editorDirty = ref(false);
 
 const mainStyle = computed(() => {
   if (editorWidth.value == null) {
@@ -47,6 +48,9 @@ function onResizeEnd() {
 function selectExample(id) {
   const example = findExample(examples, id);
   if (!example) {
+    return;
+  }
+  if (editorDirty.value && !confirm("You have unsaved changes. Leave this example?")) {
     return;
   }
   currentId.value = example.id;
@@ -118,6 +122,7 @@ onUnmounted(() => {
         :current-id="currentId"
         @preview-ready="previewReady = true"
         @toggle-sidebar="sidebarOpen = !sidebarOpen"
+        @update:dirty="editorDirty = $event"
       />
       <div v-if="previewReady" class="pg-resize-handle" @pointerdown="onResizeStart"></div>
       <Transition name="pg-unload">
