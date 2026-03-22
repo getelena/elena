@@ -149,4 +149,4 @@ First, make sure the bug is reproducible. Once confirmed, [create a new issue](h
 
 ## I couldn’t find an answer to my question?
 
-If you couldn’t find an answer to your question, please don’t hesitate to [reach out](mailto:hi@elenajs.com).
+If you couldn’t find an answer to your question, please don’t hesitate to [join Elena’s Discord server](https://discord.gg/E4RgTYk4cu) to get support.

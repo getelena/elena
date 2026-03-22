@@ -73,7 +73,7 @@ You can optionally pass a project root path as an argument:
 > \[!TIP]
 > Elena MCP server reads `custom-elements.json` from the project’s `dist/` directory. Run `elena build` first to generate it.
 
-## Resources&#x20;
+## Resources
 
 The server exposes the following resources that AI assistants can read for context:
 
@@ -86,7 +86,7 @@ The server exposes the following resources that AI assistants can read for conte
 | `elena://ssr`                  | Server-side rendering guide: layout shift avoidance, `@elenajs/ssr` API, and Eleventy patterns. |
 | `elena://api`                  | Full API reference for all Elena packages.                           |
 
-## Tools&#x20;
+## Tools
 
 ### `scaffold-component`
 
@@ -128,7 +128,7 @@ Returns the framework integration guide (same content as `elena://frameworks`).
 
 Returns the server-side rendering guide (same content as `elena://ssr`).
 
-## Prompts&#x20;
+## Prompts
 
 ### `create-component`
 
