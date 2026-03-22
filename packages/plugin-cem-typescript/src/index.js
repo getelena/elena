@@ -17,9 +17,7 @@ import { join } from "path";
 
 /**
  * CEM analyzer plugin that generates a per-component `.d.ts` file for each
- * custom element in the manifest.
- *
- * This lets TypeScript resolve sub-path imports like
+ * custom element in the manifest. This lets TypeScript resolve imports like
  * `@elenajs/components/dist/button.js` without manual declaration files.
  *
  * @param {{ outdir?: string }} options
@@ -41,9 +39,11 @@ export function elenaTypeScriptPlugin({ outdir = "dist" } = {}) {
         const members = (declaration.members ??= []);
         const attrs = (declaration.attributes ??= []);
         const hasText = members.some(m => m.name === "text");
+
         if (!hasText) {
           const desc =
             "The text content of the element, captured from light DOM before the first render.";
+
           members.push({
             kind: "field",
             name: "text",

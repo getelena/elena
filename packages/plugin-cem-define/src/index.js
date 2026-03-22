@@ -32,7 +32,7 @@ export function elenaDefinePlugin() {
         return;
       }
 
-      // Skip classes that don't extend Elena(...)
+      // Skip classes that don't extend Elena
       const heritageClause = node.heritageClauses?.[0];
       if (
         !heritageClause?.types.some(

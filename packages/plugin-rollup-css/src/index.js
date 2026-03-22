@@ -29,6 +29,7 @@ export function minifyCss(css, filename = "style.css") {
     code: Buffer.from(css),
     minify: true,
   });
+
   return code.toString();
 }
 
@@ -49,14 +50,17 @@ export function cssModuleScriptPlugin() {
       if (!source.endsWith(".css") || options?.attributes?.type !== "css") {
         return null;
       }
+
       return { id: PREFIX + resolve(dirname(importer), source) };
     },
     load(id) {
       if (!id.startsWith(PREFIX)) {
         return null;
       }
+
       const filePath = id.slice(PREFIX.length);
       const css = minifyCss(readFileSync(filePath, "utf8"), basename(filePath));
+
       return `const sheet = new CSSStyleSheet();\nsheet.replaceSync(${JSON.stringify(css)});\nexport default sheet;`;
     },
   };
@@ -74,12 +78,15 @@ export function cssStaticStylesPlugin() {
       if (!id.endsWith(".js") && !id.endsWith(".ts")) {
         return null;
       }
+
       if (!code.includes("static styles")) {
         return null;
       }
+
       const newCode = code.replace(/static\s+styles\s*=\s*`([\s\S]*?)`/g, (_match, css) => {
         return `static styles = \`${minifyCss(css)}\``;
       });
+
       return newCode !== code ? { code: newCode } : null;
     },
   };
@@ -104,7 +111,9 @@ export function cssPlugin(srcDir) {
         if (this.addWatchFile) {
           this.addWatchFile(resolve(file));
         }
+
         const source = minifyCss(readFileSync(file, "utf8"), basename(file));
+
         this.emitFile({ type: "asset", fileName: basename(file), source });
       }
     },
