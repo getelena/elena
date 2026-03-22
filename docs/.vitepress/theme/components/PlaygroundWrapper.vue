@@ -1,5 +1,6 @@
 <script setup>
 import { shallowRef, ref, onMounted, onUnmounted, computed } from "vue";
+import { useRouter } from "vitepress";
 import PlaygroundLoading from "./PlaygroundLoading.vue";
 import PlaygroundSidebar from "./PlaygroundSidebar.vue";
 import { examples } from "./playground-examples.js";
@@ -85,6 +86,15 @@ async function loadPlayground() {
   }
 }
 
+const router = useRouter();
+const prevRouteGuard = router.onBeforeRouteChange;
+router.onBeforeRouteChange = () => {
+  if (editorDirty.value && !confirm("You have unsaved changes. Leave this page?")) {
+    return false;
+  }
+  return prevRouteGuard?.();
+};
+
 onMounted(async () => {
   window.addEventListener("resize", onWindowResize);
   const hashId = getHashId();
@@ -100,6 +110,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  router.onBeforeRouteChange = prevRouteGuard;
   window.removeEventListener("resize", onWindowResize);
   window.removeEventListener("hashchange", onHashChange);
   document.removeEventListener("pointermove", onResizeMove);
