@@ -6,6 +6,8 @@ import path from "path";
 import llmstxt from "vitepress-plugin-llms";
 import { elenaSSRPlugin } from "./plugins/elena-ssr.js";
 
+const __themedir = fileURLToPath(new URL("./theme/components", import.meta.url));
+
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 function copyComponentAssets() {
@@ -76,6 +78,7 @@ export default defineConfig({
     ],
   ],
   markdown: {
+    headers: true,
     toc: {
       level: [1, 2],
     },
@@ -89,6 +92,11 @@ export default defineConfig({
   },
   vite: {
     plugins: [elenaSSRPlugin(), copyComponentAssets(), llmstxt()],
+    resolve: {
+      alias: {
+        "./VPDocAsideOutline.vue": path.join(__themedir, "VPDocAsideOutline.vue"),
+      },
+    },
   },
   vue: {
     template: {
