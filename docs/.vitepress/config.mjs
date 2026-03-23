@@ -40,6 +40,20 @@ export default defineConfig({
   },
   description: "Simple, tiny library for building Progressive Web Components.",
   cleanUrls: true,
+  transformHtml(html, id, { pageData }) {
+    const pagePath = pageData.relativePath.replace(/index\.md$/, "").replace(/\.md$/, "");
+    const href = `/elena/${pagePath}`;
+
+    return html.replace(
+      new RegExp(
+        `(VPSidebarItem level-\\d+ is-link"[^>]*>` +
+          `<div class="item"[^>]*>` +
+          `<div class="indicator"[^>]*></div>` +
+          `<a [^>]*href="${href}")`
+      ),
+      match => match.replace("VPSidebarItem level-", "VPSidebarItem is-active level-")
+    );
+  },
   transformPageData(pageData) {
     const title = pageData.title
       ? `${pageData.title} | Elena`
