@@ -10,6 +10,7 @@ overrides:
   '@elenajs/bundler': workspace:*
   '@elenajs/cli': workspace:*
   '@elenajs/eslint-config': workspace:*
+  '@elenajs/plugin-cem-prop': workspace:*
   '@elenajs/plugin-cem-define': workspace:*
   '@elenajs/plugin-cem-tag': workspace:*
   '@elenajs/plugin-cem-typescript': workspace:*
@@ -97,6 +98,9 @@ importers:
       '@elenajs/plugin-cem-define':
         specifier: workspace:*
         version: link:../plugin-cem-define
+      '@elenajs/plugin-cem-prop':
+        specifier: workspace:*
+        version: link:../plugin-cem-prop
       '@elenajs/plugin-cem-tag':
         specifier: workspace:*
         version: link:../plugin-cem-tag
@@ -238,6 +242,18 @@ importers:
       '@custom-elements-manifest/analyzer':
         specifier: 0.11.0
         version: 0.11.0
+      vitest:
+        specifier: 4.1.0
+        version: 4.1.0(@types/node@25.2.3)(@vitest/browser-playwright@4.1.0)(happy-dom@20.8.4)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+
+  packages/plugin-cem-prop:
+    devDependencies:
+      '@custom-elements-manifest/analyzer':
+        specifier: 0.11.0
+        version: 0.11.0
+      '@elenajs/plugin-cem-define':
+        specifier: workspace:*
+        version: link:../plugin-cem-define
       vitest:
         specifier: 4.1.0
         version: 4.1.0(@types/node@25.2.3)(@vitest/browser-playwright@4.1.0)(happy-dom@20.8.4)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
