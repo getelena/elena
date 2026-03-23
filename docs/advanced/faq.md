@@ -85,9 +85,9 @@ When you look at the above screenshot, keep in mind that Elena defaults to Light
 
 ## How is Elena tested?
 
-Elena has a comprehensive automated test suite with 1000+ tests across 56 test files covering unit tests, integration tests, visual diff tests, and benchmark tests:
+Elena has a comprehensive automated test suite with 1000+ tests across 57 test files covering unit tests, integration tests, visual diff tests, and benchmark tests:
 
-<img src="/tests.png" loading="lazy" width="1440" height="1934" alt="Elena vitest test suite" />
+<img src="/tests.png" loading="lazy" width="1636" height="2212" alt="Elena vitest test suite" />
 
 Additionally, the `@elenajs/core` library is proud to ship with 100% test coverage across all of its source code:
 
