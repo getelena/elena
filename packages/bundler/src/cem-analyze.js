@@ -18,6 +18,7 @@ import { create, ts } from "@custom-elements-manifest/analyzer";
 import { globby } from "globby";
 import { customElementJsxPlugin as elenaJsxPlugin } from "custom-element-jsx-integration";
 import { elenaDefinePlugin } from "@elenajs/plugin-cem-define";
+import { elenaPropPlugin } from "@elenajs/plugin-cem-prop";
 import { elenaTagPlugin } from "@elenajs/plugin-cem-tag";
 import { elenaTypeScriptPlugin } from "@elenajs/plugin-cem-typescript";
 import { color } from "./common/color.js";
@@ -41,6 +42,7 @@ export function createCemConfig(options = {}) {
     exclude: ["**/*.test.js", "**/*.test.ts", "node_modules"],
     plugins: [
       elenaDefinePlugin(),
+      elenaPropPlugin(),
       elenaTagPlugin("status"),
       elenaTagPlugin("displayName"),
       elenaJsxPlugin({ outdir, fileName: "custom-elements.d.ts" }),
@@ -94,6 +96,7 @@ export async function runCemAnalyze(config, cwd = process.cwd()) {
 
   const plugins = [
     elenaDefinePlugin(),
+    elenaPropPlugin(),
     elenaTagPlugin("status"),
     elenaTagPlugin("displayName"),
     elenaJsxPlugin({ outdir, fileName: "custom-elements.d.ts" }),
