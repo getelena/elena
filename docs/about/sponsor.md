@@ -11,8 +11,6 @@ If you have questions regarding the sponsorship, please reach out to [hi@elenajs
 
 ## Current sponsors
 
-### Platinum
-
 <div class="sponsors">
 <a href="https://arielsalminen.com" target="_blank" rel="sponsored noopener"><img src="/sponsors/ariel-s-design.png" alt="Ariel S. Design"/></a>
 </div>
