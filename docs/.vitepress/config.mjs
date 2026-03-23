@@ -120,7 +120,6 @@ export default defineConfig({
     },
   },
   themeConfig: {
-    logo: "/logo.png",
     lastUpdated: {
       text: "Last updated",
       formatOptions: {

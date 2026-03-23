@@ -14,6 +14,16 @@
   --vp-font-family-mono: Menlo, ui-monospace, SFMono-Regular, Monaco, Consolas, monospace;
 }
 
+.vp-logo {
+  display: flex;
+  margin-inline-end: 0.5rem;
+}
+
+.vp-logo svg {
+  block-size: 28px;
+  inline-size: 28px;
+}
+
 html {
   scroll-margin-top: 86px;
   scroll-behavior: smooth;
@@ -93,12 +103,6 @@ button:active,
 label:active {
   opacity: 0.7;
   transform: translateY(0.5px);
-}
-
-.VPNavBarTitle .logo {
-  inline-size: 28px;
-  block-size: 28px;
-  margin-inline-end: 8px;
 }
 
 .VPNavBarTitle .title {
