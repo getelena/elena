@@ -12,8 +12,8 @@ Re-renders are batched. If multiple props change at once, Elena waits until the 
 <br/>
 
 <div class="lifecycle">
-<img src="/lifecycle.png" class="light-only" alt="Elena" width="672" height="659">
-<img src="/lifecycle-dark.png" class="dark-only" alt="Elena" width="672" height="659">
+<img src="/lifecycle.webp" class="light-only" alt="Elena" width="672" height="659">
+<img src="/lifecycle-dark.webp" class="dark-only" alt="Elena" width="672" height="659">
 </div>
 
 ## `connectedCallback()`

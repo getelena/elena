@@ -79,7 +79,7 @@ At the time of writing, the performance is very similar in our simulated benchma
 
 That said, synthetic benchmarks only measure isolated operations and Lit is much more heavily optimized than Elena. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
 
-<img src="/bench.png" loading="lazy" width="2804" height="1390" alt="Elena bench test suite" />
+<img src="/bench.webp" loading="lazy" width="2804" height="1390" alt="Elena bench test suite" />
 
 When you look at the above screenshot, keep in mind that Elena defaults to Light DOM, Lit to Shadow DOM. Enabling Shadow DOM narrows the gap to only a `1.06×` performance gain over Lit for single element creation, and batch creation performs identically at a consistent `1.00×`.
 
@@ -87,11 +87,11 @@ When you look at the above screenshot, keep in mind that Elena defaults to Light
 
 Elena has a comprehensive automated test suite with 1000+ tests across 57 test files covering unit tests, integration tests, visual diff tests, and benchmark tests:
 
-<img src="/tests.png" loading="lazy" width="1636" height="2212" alt="Elena vitest test suite" />
+<img src="/tests.webp" loading="lazy" width="1636" height="2212" alt="Elena vitest test suite" />
 
 Additionally, the `@elenajs/core` library is proud to ship with 100% test coverage across all of its source code:
 
-<img src="/coverage.png" loading="lazy" width="1764" height="1040" alt="Elena vitest coverage report for @elenajs/core" />
+<img src="/coverage.webp" loading="lazy" width="1764" height="1040" alt="Elena vitest coverage report for @elenajs/core" />
 
 ## What is the browser support?
 

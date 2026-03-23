@@ -7,7 +7,7 @@ description: Learn how to build and publish an Elena Progressive Web Component l
 
 **`@elenajs/bundler`** is the build tool for publishing Elena component libraries. It bundles JavaScript and TypeScript source files, minifies CSS, generates a [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org/), and produces TypeScript declarations for each component.
 
-<img src="/bundler.png"  width="1844" height="1280" alt="Elena bundler" />
+<img src="/bundler.webp"  width="1844" height="1280" alt="Elena bundler" />
 
 ## Install
 
