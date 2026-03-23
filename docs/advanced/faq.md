@@ -141,7 +141,9 @@ Elena follows [Semantic Versioning](https://semver.org/). Under this scheme, ver
 
 ## Can I sponsor Elena?
 
-Elena is an MIT-licensed open source project and completely free to use. However, we understand that the project won’t remain sustainable forever without financial backing. We’re planning to set up sponsorship at [Open Collective](https://opencollective.com/elenajs) later.
+Elena is an MIT-licensed open source project and completely free to use. However, we understand that the project won’t remain sustainable forever without financial backing. Hence, we’re planning to set up sponsorship at [Open Collective](https://opencollective.com/elenajs) later.
+
+If you have questions regarding the [sponsorship](/about/sponsor), please reach out to [hi@elenajs.com](mailto:hi@elenajs.com).
 
 ## How can I contribute?
 

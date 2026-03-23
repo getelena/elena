@@ -545,3 +545,19 @@ footer.VPFooter a[href*="://"]::after {
 .VPTeamPage {
   margin-block-start: 0 !important;
 }
+
+.sponsors {
+  margin-block-start: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.sponsors a {
+  background: #f6f6f7;
+}
+
+._elena_about_sponsor h3 {
+  border-bottom: 1px solid var(--vp-c-divider);
+  padding-block-end: 1rem;
+}

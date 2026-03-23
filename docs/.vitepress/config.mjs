@@ -182,6 +182,10 @@ export default defineConfig({
             link: "/about/team",
           },
           {
+            text: "Sponsor",
+            link: "/about/sponsor",
+          },
+          {
             text: "Releases",
             link: "https://github.com/getelena/elena/releases",
           },
