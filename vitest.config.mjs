@@ -7,6 +7,7 @@ export default defineConfig({
       "packages/cli",
       "packages/core",
       "packages/ssr",
+      "packages/plugin-cem-prop",
       "packages/plugin-cem-define",
       "packages/plugin-cem-tag",
       "packages/plugin-cem-typescript",
