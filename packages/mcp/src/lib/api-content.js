@@ -238,6 +238,14 @@ elena-mcp <project-root>
 
 ---
 
+## \`@elenajs/plugin-cem-prop\`
+
+| Export | Signature | Description |
+|--------|-----------|-------------|
+| \`elenaPropPlugin\` | \`elenaPropPlugin()\` | CEM plugin that reads \`@property\` or \`@prop\` JSDoc tags from component class fields and creates corresponding \`attributes\` entries in the Custom Elements Manifest. |
+
+---
+
 ## \`@elenajs/plugin-cem-tag\`
 
 | Export | Signature | Description |
