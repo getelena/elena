@@ -1,6 +1,6 @@
 {
   "name": "@elenajs/bundler",
-  "version": "1.0.0-rc.5",
+  "version": "1.0.0-rc.6",
   "description": "Bundler for Progressive Web Component libraries built with Elena.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
