@@ -1,6 +1,6 @@
 {
   "name": "@elenajs/components",
-  "version": "1.0.0-rc.9",
+  "version": "1.0.0-rc.10",
   "description": "Elena component library demonstrating how to build Progressive Web Components.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
@@ -42,7 +42,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@elenajs/bundler": "^1.0.0-rc.4",
+    "@elenajs/bundler": "^1.0.0-rc.5",
     "@elenajs/core": "^1.0.0-rc.6",
     "@web/dev-server": "0.4.6",
     "concurrently": "9.2.1",

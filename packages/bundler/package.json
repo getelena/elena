@@ -1,6 +1,6 @@
 {
   "name": "@elenajs/bundler",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.5",
   "description": "Bundler for Progressive Web Component libraries built with Elena.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
@@ -39,7 +39,7 @@
     "@babel/preset-env": "7.29.0",
     "@custom-elements-manifest/analyzer": "0.11.0",
     "@elenajs/plugin-cem-define": "^1.0.0-rc.3",
-    "@elenajs/plugin-cem-prop": "^1.0.0-rc.2",
+    "@elenajs/plugin-cem-prop": "^1.0.0-rc.3",
     "@elenajs/plugin-cem-tag": "^1.0.0-rc.3",
     "@elenajs/plugin-cem-typescript": "^1.0.0-rc.4",
     "@elenajs/plugin-rollup-css": "^1.0.0-rc.3",
