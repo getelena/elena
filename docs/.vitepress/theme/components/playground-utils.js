@@ -182,28 +182,6 @@ export function clearState(id) {
 }
 
 /**
- * Load the autosave preference from localStorage. Defaults to true.
- */
-export function loadAutosave() {
-  try {
-    return localStorage.getItem("elena-pg:autosave") !== "false";
-  } catch {
-    return true;
-  }
-}
-
-/**
- * Save the autosave preference to localStorage.
- */
-export function saveAutosave(enabled) {
-  try {
-    localStorage.setItem("elena-pg:autosave", String(enabled));
-  } catch {
-    // Ignore access errors
-  }
-}
-
-/**
  * Build the JSON data string for CodePen's prefill API.
  *
  * Rewrites bare `@elenajs/core` imports to the unpkg CDN URL so the code

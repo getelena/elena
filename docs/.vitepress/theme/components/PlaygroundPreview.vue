@@ -7,10 +7,9 @@ const props = defineProps({
   js: { type: String, default: "" },
   css: { type: String, default: "" },
   html: { type: String, default: "" },
-  autosave: { type: Boolean, default: true },
 });
 
-const emit = defineEmits(["preview-ready", "toggle-autosave"]);
+const emit = defineEmits(["preview-ready"]);
 
 const iframe = ref(null);
 const reloading = ref(false);
@@ -82,20 +81,7 @@ watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) =>
     <div class="pg-preview-header">
       <span class="pg-preview-title">Preview</span>
       <div class="pg-preview-actions">
-        <div class="pg-autosave">
-          <span class="pg-autosave-label">Autosave</span>
-          <button
-            class="pg-autosave-toggle"
-            :class="{ on: autosave }"
-            role="switch"
-            :aria-checked="autosave"
-            aria-label="Toggle autosave"
-            @click="emit('toggle-autosave')"
-          >
-            <span class="pg-autosave-knob"></span>
-          </button>
-        </div>
-        <button class="pg-preview-action" @click="downloadFiles" title="Download as HTML">
+        <button class="pg-preview-action" @click="downloadFiles" data-tooltip="Download">
           <svg
             width="17"
             height="17"
@@ -111,7 +97,7 @@ watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) =>
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
         </button>
-        <button class="pg-preview-action" @click="editInCodePen" title="Edit in CodePen">
+        <button class="pg-preview-action" @click="editInCodePen" data-tooltip="Edit in CodePen">
           <svg
             width="17"
             height="17"
@@ -133,7 +119,7 @@ watch([() => props.js, () => props.css, () => props.html], (newVals, oldVals) =>
           class="pg-preview-action"
           :class="{ 'pg-preview-reloading': reloading }"
           @click="reloadPreview"
-          title="Reload preview"
+          data-tooltip="Reload"
         >
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <path

@@ -7,8 +7,6 @@ import {
   loadState,
   saveState,
   clearState,
-  loadAutosave,
-  saveAutosave,
 } from "./playground-utils.js";
 import PlaygroundEditor from "./PlaygroundEditor.vue";
 import PlaygroundPreview from "./PlaygroundPreview.vue";
@@ -39,8 +37,7 @@ function getEditorState(id, useAutosave) {
 }
 
 const title = ref(getExample(props.currentId)?.title || "Elena Component");
-const autosave = ref(loadAutosave());
-const editor = reactive(getEditorState(props.currentId, autosave.value));
+const editor = reactive(getEditorState(props.currentId, true));
 const original = reactive(getOriginalState(props.currentId));
 
 const isDirty = computed(
@@ -57,20 +54,9 @@ function resetExample() {
   clearState(props.currentId);
 }
 const saveStatus = ref(null);
-const hasSaved = ref(autosave.value && !!loadState(props.currentId));
+const hasSaved = ref(!!loadState(props.currentId));
 let saveTimers = [];
 let skipNextSave = false;
-
-function toggleAutosave() {
-  autosave.value = !autosave.value;
-  saveAutosave(autosave.value);
-  if (autosave.value && isDirty.value) {
-    debouncedSave(props.currentId, { js: editor.js, css: editor.css, html: editor.html });
-  } else if (!autosave.value) {
-    clearSaveTimers();
-    saveStatus.value = null;
-  }
-}
 
 function clearSaveTimers() {
   saveTimers.forEach(t => clearTimeout(t));
@@ -97,9 +83,6 @@ watch(
       skipNextSave = false;
       return;
     }
-    if (!autosave.value) {
-      return;
-    }
     if (isDirty.value) {
       debouncedSave(props.currentId, state);
     } else {
@@ -120,11 +103,11 @@ watch(
     title.value = example.title || "Elena Component";
     clearSaveTimers();
     saveStatus.value = null;
-    hasSaved.value = autosave.value && !!loadState(id);
+    hasSaved.value = !!loadState(id);
     original.js = example.js || "";
     original.css = example.css || "";
     original.html = example.html || "";
-    const saved = autosave.value ? loadState(id) : null;
+    const saved = loadState(id);
     skipNextSave = true;
     editor.js = saved?.js ?? original.js;
     editor.css = saved?.css ?? original.css;
@@ -157,8 +140,6 @@ onUnmounted(clearSaveTimers);
     :js="editor.js"
     :css="editor.css"
     :html="editor.html"
-    :autosave="autosave"
     @preview-ready="emit('preview-ready')"
-    @toggle-autosave="toggleAutosave"
   />
 </template>
