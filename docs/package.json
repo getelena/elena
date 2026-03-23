@@ -2,7 +2,7 @@
   "name": "@elenajs/docs",
   "private": true,
   "scripts": {
-    "dev": "vitepress dev",
+    "start": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },

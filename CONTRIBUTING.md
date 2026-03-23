@@ -71,7 +71,7 @@ pnpm format                         # Prettier on all files
 Docs commands (from `docs/`):
 
 ```bash
-pnpm dev                            # VitePress dev server
+pnpm start                          # VitePress dev server
 pnpm build                          # VitePress build
 pnpm preview                        # VitePress preview
 ```
