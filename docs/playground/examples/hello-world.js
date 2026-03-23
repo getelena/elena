@@ -10,7 +10,7 @@ export default class MyGreeting extends Elena(HTMLElement) {
   /**
    * The name of the person to greet.
    *
-   * @attribute
+   * @property
    * @type {String}
    */
   name = "World";

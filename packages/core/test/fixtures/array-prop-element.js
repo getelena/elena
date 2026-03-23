@@ -4,16 +4,16 @@ export default class ArrayPropElement extends Elena(HTMLElement) {
   static tagName = "array-prop-element";
   static props = ["links", "label", "href", "disabled"];
 
-  /** @attribute @type {Array} */
+  /** @property @type {Array} */
   links = [];
 
-  /** @attribute @type {string} */
+  /** @property @type {string} */
   label = "";
 
-  /** @attribute @type {string} */
+  /** @property @type {string} */
   href = "";
 
-  /** @attribute @type {boolean} */
+  /** @property @type {boolean} */
   disabled = false;
 
   render() {

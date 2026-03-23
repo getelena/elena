@@ -84,7 +84,7 @@ describe("PATTERNS_CONTENT", () => {
     });
 
     it("documents JSDoc annotations", () => {
-      expect(PATTERNS_CONTENT).toContain("@attribute");
+      expect(PATTERNS_CONTENT).toContain("@property");
       expect(PATTERNS_CONTENT).toContain("@type");
     });
   });

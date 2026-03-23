@@ -69,13 +69,13 @@ export default class Button extends Elena(HTMLElement) {
 
   /**
    * The style variant of the button.
-   * @attribute
+   * @property
    */
   variant: "default" | "primary" | "danger" = "default";
 
   /**
    * Makes the component disabled.
-   * @attribute
+   * @property
    */
   disabled: boolean = false;
 
@@ -108,7 +108,7 @@ export default class Stack extends Elena(HTMLElement) {
 
   /**
    * The direction of the stack.
-   * @attribute
+   * @property
    */
   direction: "column" | "row" = "column";
 }

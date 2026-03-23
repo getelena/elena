@@ -95,7 +95,7 @@ describe("review-component prompt", () => {
     });
 
     it("checks JSDoc annotations", () => {
-      expect(text).toContain("@attribute and @type annotations on every prop");
+      expect(text).toContain("@property and @type annotations on every prop");
       expect(text).toContain("@displayName, @status, @event, @cssprop");
     });
 

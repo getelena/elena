@@ -140,7 +140,7 @@ describe("mixins", () => {
   describe("mixin with props", () => {
     const Sizeable = superClass =>
       class extends superClass {
-        /** @attribute @type {"sm" | "md" | "lg"} */
+        /** @property @type {"sm" | "md" | "lg"} */
         size = "md";
       };
 
@@ -349,7 +349,7 @@ describe("mixins", () => {
       static tagName = "test-collapsible-mixin";
       static props = ["collapsed"];
 
-      /** @attribute @type {Boolean} */
+      /** @property @type {Boolean} */
       collapsed = false;
     }
     CollapsiblePanelEl.define();

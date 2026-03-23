@@ -20,7 +20,7 @@ export default class MyButton extends Elena(HTMLElement) {
   /**
    * The style variant of the button.
    *
-   * @attribute
+   * @property
    * @type {"default" | "primary" | "danger"}
    */
   variant = "default";

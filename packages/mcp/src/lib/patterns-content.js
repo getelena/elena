@@ -61,14 +61,14 @@ export default class Button extends Elena(HTMLElement) {
 
   /**
    * The style variant of the button.
-   * @attribute
+   * @property
    * @type {"default" | "primary" | "danger"}
    */
   variant = "default";
 
   /**
    * Makes the component disabled.
-   * @attribute
+   * @property
    * @type {Boolean}
    */
   disabled = false;
@@ -103,7 +103,7 @@ export default class Stack extends Elena(HTMLElement) {
 
   /**
    * The direction of the stack.
-   * @attribute
+   * @property
    * @type {"column" | "row"}
    */
   direction = "column";
@@ -491,7 +491,7 @@ Class-level:
 - \`@slot [name] - description\` — Slot documentation
 
 Property-level:
-- \`@attribute\` — Marks as an observed attribute
+- \`@property\` — Marks as an observed attribute
 - \`@type {Type}\` — Type annotation
 
 Method-level:
@@ -802,7 +802,7 @@ Mixins can introduce their own props. List them in \`static props\` on the final
 
 \\\`\\\`\\\`js
 const Sizeable = (superClass) => class extends superClass {
-  /** @attribute @type {"sm" | "md" | "lg"} */
+  /** @property @type {"sm" | "md" | "lg"} */
   size = "md";
 };
 
@@ -810,7 +810,7 @@ class SizeableButton extends Sizeable(Elena(HTMLElement)) {
   static tagName = "sizeable-button";
   static props = ["size", "variant"];
 
-  /** @attribute @type {"default" | "primary"} */
+  /** @property @type {"default" | "primary"} */
   variant = "default";
 
   render() {

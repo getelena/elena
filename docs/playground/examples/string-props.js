@@ -7,7 +7,7 @@ export default class MyBadge extends Elena(HTMLElement) {
   static tagName = "my-badge";
   static props = ["variant"];
 
-  /** @attribute @type {"info" | "success" | "warning" | "error"} */
+  /** @property @type {"info" | "success" | "warning" | "error"} */
   variant = "info";
 
   render() {

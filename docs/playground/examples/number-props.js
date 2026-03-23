@@ -7,13 +7,13 @@ export default class MyCounter extends Elena(HTMLElement) {
   static tagName = "my-counter";
   static props = ["count", "step", "max"];
 
-  /** @attribute @type {Number} */
+  /** @property @type {Number} */
   count = 0;
 
-  /** @attribute @type {Number} */
+  /** @property @type {Number} */
   step = 1;
 
-  /** @attribute @type {Number} */
+  /** @property @type {Number} */
   max = Infinity;
 
   increment() {

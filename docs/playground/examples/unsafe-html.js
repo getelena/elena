@@ -7,7 +7,7 @@ export default class MyIcon extends Elena(HTMLElement) {
   static tagName = "my-icon";
   static props = ["name"];
 
-  /** @attribute @type {String} */
+  /** @property @type {String} */
   name = "star";
 
   get icons() {

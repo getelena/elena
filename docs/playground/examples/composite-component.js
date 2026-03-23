@@ -18,7 +18,7 @@ export default class MyStack extends Elena(HTMLElement) {
   /**
    * The direction of the stack.
    *
-   * @attribute
+   * @property
    * @type {"column" | "row"}
    */
   direction = "column";

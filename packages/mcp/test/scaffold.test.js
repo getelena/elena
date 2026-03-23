@@ -106,7 +106,7 @@ describe("generateJS", () => {
     const js = generateJS(params);
     expect(js).toContain('variant = "default";');
     expect(js).toContain("disabled = false;");
-    expect(js).toContain("@attribute");
+    expect(js).toContain("@property");
     expect(js).toContain('@type {"default" | "primary"}');
     expect(js).toContain("@type {Boolean}");
   });

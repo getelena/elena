@@ -32,7 +32,7 @@ export default class MyBadge extends Elena(HTMLElement) {
     }
   \`;
 
-  /** @attribute @type {"default" | "success" | "error"} */
+  /** @property @type {"default" | "success" | "error"} */
   variant = "default";
 
   render() {

@@ -71,7 +71,7 @@ When using TypeScript to author Elena components, you can add inline type annota
 ```ts
 /**
  * The style variant of the component.
- * @attribute
+ * @property
  */
 variant: "default" | "primary" | "danger" = "default";
 ```

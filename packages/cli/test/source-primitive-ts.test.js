@@ -45,7 +45,7 @@ describe("generateSource, TS", () => {
 
     expect(out).toContain('static props = ["variant"]');
     expect(out).toContain('variant: "default" | "primary" | "danger" = "default"');
-    expect(out).toContain("@attribute");
+    expect(out).toContain("@property");
 
     expect(out).not.toContain("static events");
     expect(out).not.toContain("@event");

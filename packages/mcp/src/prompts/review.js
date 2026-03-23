@@ -35,7 +35,7 @@ export function registerReviewPrompt(server) {
               "Check for:",
               "- [ ] Props listed in static props match class field defaults",
               "- [ ] Non-reflected props use { name, reflect: false } object form in static props",
-              "- [ ] JSDoc @attribute and @type annotations on every prop",
+              "- [ ] JSDoc @property and @type annotations on every prop",
               "- [ ] Class-level @displayName, @status, @event, @cssprop JSDoc where appropriate",
               "- [ ] Internal/private methods are annotated with @internal",
               "- [ ] Correct component type (Primitive Components own their DOM via render(); Composite Components wrap children with no render(); Declarative Components use Declarative Shadow DOM)",

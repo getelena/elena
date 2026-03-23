@@ -8,7 +8,7 @@ export default class MyInput extends Elena(HTMLElement) {
   static props = ["label"];
   static element = "input";
 
-  /** @attribute @type {String} */
+  /** @property @type {String} */
   label = "";
 
   firstUpdated() {

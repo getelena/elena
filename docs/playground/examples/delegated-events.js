@@ -8,7 +8,7 @@ export default class MyButton extends Elena(HTMLElement) {
   static props = ["variant"];
   static events = ["click", "focus", "blur"];
 
-  /** @attribute @type {"default" | "primary"} */
+  /** @property @type {"default" | "primary"} */
   variant = "default";
 
   render() {

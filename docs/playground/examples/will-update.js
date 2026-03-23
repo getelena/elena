@@ -14,7 +14,7 @@ export default class MyFilter extends Elena(HTMLElement) {
   /** @type {Array} */
   items = ["Apple", "Banana", "Cherry", "Date", "Fig", "Grape", "Tomato"];
 
-  /** @attribute @type {String} */
+  /** @property @type {String} */
   search = "";
 
   willUpdate() {

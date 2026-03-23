@@ -7,10 +7,10 @@ export default class MyList extends Elena(HTMLElement) {
   static tagName = "my-list";
   static props = ["items", "heading"];
 
-  /** @attribute @type {Array} */
+  /** @property @type {Array} */
   items = [];
 
-  /** @attribute @type {String} */
+  /** @property @type {String} */
   heading = "List";
 
   render() {

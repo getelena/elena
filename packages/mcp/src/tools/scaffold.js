@@ -95,7 +95,7 @@ export function generateJS(params) {
       propFieldLines.push(`   * The ${prop.name} of the component.`);
     }
     propFieldLines.push("   *");
-    propFieldLines.push("   * @attribute");
+    propFieldLines.push("   * @property");
     propFieldLines.push(`   * @type {${prop.type || "string"}}`);
     propFieldLines.push("   */");
     propFieldLines.push(`  ${prop.name} = ${formatDefault(prop.type, prop.default)};`);

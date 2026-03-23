@@ -42,7 +42,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * The style variant of the button.
    *
-   * @attribute
+   * @property
    * @type {"default" | "primary" | "danger" | "outline"}
    */
   variant = "default";
@@ -50,7 +50,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * The size of the button.
    *
-   * @attribute
+   * @property
    * @type {"sm" | "md" | "lg"}
    */
   size = "md";
@@ -58,7 +58,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * Makes the button fit its container.
    *
-   * @attribute
+   * @property
    * @type {boolean}
    */
   expand = false;
@@ -66,7 +66,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * Makes the component disabled.
    *
-   * @attribute
+   * @property
    * @type {boolean}
    */
   disabled = false;
@@ -74,7 +74,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * Sets aria-label for the inner button.
    *
-   * @attribute
+   * @property
    * @type {string}
    */
   label = "";
@@ -82,7 +82,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * Renders the button as a link and sets a href for it.
    *
-   * @attribute
+   * @property
    * @type {string}
    */
   href = "";
@@ -90,7 +90,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * Defines where to open the linked URL.
    *
-   * @attribute
+   * @property
    * @type {"_self" | "_blank" | "_parent" | "_top"}
    */
   target = "_self";
@@ -98,7 +98,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * Trigger a file download instead of a page visit.
    *
-   * @attribute
+   * @property
    * @type {boolean}
    */
   download = false;
@@ -106,7 +106,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * Show loading state
    *
-   * @attribute
+   * @property
    * @type {boolean}
    */
   loading = false;
@@ -114,7 +114,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * The name used to identify the button in forms.
    *
-   * @attribute
+   * @property
    * @type {string}
    */
   name = "";
@@ -122,7 +122,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * The value used to identify the button in forms.
    *
-   * @attribute
+   * @property
    * @type {string}
    */
   value = "";
@@ -130,7 +130,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * The type of the button.
    *
-   * @attribute
+   * @property
    * @type {"submit" | "reset" | "button"}
    */
   type = "button";
@@ -138,7 +138,7 @@ export default class Button extends Elena(HTMLElement) {
   /**
    * An SVG icon to display inside the button.
    *
-   * @attribute
+   * @property
    * @type {string}
    */
   icon = "";

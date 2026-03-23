@@ -26,7 +26,7 @@ export default class BaselineSupport extends Elena(HTMLElement) {
   /**
    * The web-features feature ID (e.g. "grid", "dialog").
    *
-   * @attribute
+   * @property
    * @type {string}
    */
   featureid = "";

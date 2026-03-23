@@ -18,7 +18,7 @@ description: Critical rules for the Elena build toolchain. Bundler config, CLI s
 
 ## Custom Elements Manifest
 
-- Props without a `@attribute` JSDoc annotation won't appear in `custom-elements.json`.
+- Props without a `@property` JSDoc annotation won't appear in `custom-elements.json`.
 - Run `elena build` before using `@elenajs/mcp` — the server reads `dist/custom-elements.json`. Without it, component lookup returns errors.
 
 ## CLI scaffolding
@@ -38,4 +38,4 @@ description: Critical rules for the Elena build toolchain. Bundler config, CLI s
 ## TypeScript
 
 - In `.ts` files, use inline types instead of `@type` JSDoc: `variant: "default" | "primary" = "default"`.
-- Keep the `@attribute` JSDoc annotation on each prop — it's still required for the CEM analyzer.
+- Keep the `@property` JSDoc annotation on each prop — it's still required for the CEM analyzer.

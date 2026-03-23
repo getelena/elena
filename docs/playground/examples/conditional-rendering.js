@@ -7,10 +7,10 @@ export default class MyAlert extends Elena(HTMLElement) {
   static tagName = "my-alert";
   static props = ["variant", "dismissible"];
 
-  /** @attribute @type {"info" | "warning" | "error"} */
+  /** @property @type {"info" | "warning" | "error"} */
   variant = "info";
 
-  /** @attribute @type {Boolean} */
+  /** @property @type {Boolean} */
   dismissible = false;
 
   render() {

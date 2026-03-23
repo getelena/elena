@@ -43,7 +43,7 @@ describe("moduleLinkPhase", () => {
         static props = ["variant"];
         constructor() {
           super();
-          /** @attribute @type {string} */
+          /** @property @type {string} */
           this.variant = "default";
         }
       }
@@ -64,7 +64,7 @@ describe("moduleLinkPhase", () => {
         static tagName = "elena-button";
         constructor() {
           super();
-          /** @attribute @type {string} */
+          /** @property @type {string} */
           this.text = "";
         }
       }
@@ -90,7 +90,7 @@ describe("packageLinkPhase", () => {
           super();
           /**
            * The style variant.
-           * @attribute
+           * @property
            * @type {"default" | "primary"}
            */
           this.variant = "default";
@@ -117,7 +117,7 @@ describe("packageLinkPhase", () => {
         static props = ["direction"];
         constructor() {
           super();
-          /** @attribute @type {"column" | "row"} */
+          /** @property @type {"column" | "row"} */
           this.direction = "column";
         }
       }

@@ -105,12 +105,12 @@ function generateJS(name, features) {
       bodyLines.push(
         `  /**`,
         `   * The style variant of the component.`,
-        `   * @attribute`,
+        `   * @property`,
         `   * @type {"default" | "primary" | "danger"}`,
         `   */`
       );
     } else {
-      bodyLines.push(`  /** @attribute @type {"default" | "primary" | "danger"} */`);
+      bodyLines.push(`  /** @property @type {"default" | "primary" | "danger"} */`);
     }
     bodyLines.push(`  variant = "default";`);
   }
@@ -173,11 +173,11 @@ function generateTS(name, features) {
       bodyLines.push(
         `  /**`,
         `   * The style variant of the component.`,
-        `   * @attribute`,
+        `   * @property`,
         `   */`
       );
     } else {
-      bodyLines.push(`  /** @attribute */`);
+      bodyLines.push(`  /** @property */`);
     }
     bodyLines.push(`  variant: "default" | "primary" | "danger" = "default";`);
   }

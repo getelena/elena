@@ -55,7 +55,7 @@ export default class Stack extends Elena(HTMLElement) {
   static tagName = "elena-stack";
   static props = ["direction"];
 
-  /** @attribute @type {"column" | "row"} */
+  /** @property @type {"column" | "row"} */
   direction = "column";
 }
 Stack.define();
@@ -72,9 +72,9 @@ export default class Button extends Elena(HTMLElement) {
   static props = ["variant", "disabled"];
   static events = ["click", "focus", "blur"];
 
-  /** @attribute @type {"default" | "primary" | "danger"} */
+  /** @property @type {"default" | "primary" | "danger"} */
   variant = "default";
-  /** @attribute @type {Boolean} */
+  /** @property @type {Boolean} */
   disabled = false;
 
   render() {
@@ -101,7 +101,7 @@ Button.define();
 
 1. **Always import from \`@elenajs/core\`** — use \`Elena\`, \`html\`, and \`nothing\` from this package.
 2. **Static class fields** — configure components with \`static tagName\`, \`static props\`, \`static events\`, \`static element\`, \`static shadow\`, \`static styles\` (all optional).
-3. **Props** must be listed in \`static props\` AND given default class field values with JSDoc \`@attribute\` and \`@type\` annotations. Use \`{ name: "prop", reflect: false }\` in \`static props\` to suppress attribute reflection.
+3. **Props** must be listed in \`static props\` AND given default class field values with JSDoc \`@property\` and \`@type\` annotations. Use \`{ name: "prop", reflect: false }\` in \`static props\` to suppress attribute reflection.
 4. **Text content** — Every Elena component has a built-in reactive \`this.text\` property. Use it in \`render()\` instead of \`this.textContent\`.
 5. **Templates** — \`render()\` must return an \`html\` tagged template literal. Use \`nothing\` (not empty strings) in conditional expressions.
 6. **Registration** — Always call \`ClassName.define()\` after the class body.

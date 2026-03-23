@@ -8,13 +8,13 @@ export default class MyCheckbox extends Elena(HTMLElement) {
   static props = ["checked", "disabled", "label"];
   static events = ["change"];
 
-  /** @attribute @type {Boolean} */
+  /** @property @type {Boolean} */
   checked = false;
 
-  /** @attribute @type {Boolean} */
+  /** @property @type {Boolean} */
   disabled = false;
 
-  /** @attribute @type {String} */
+  /** @property @type {String} */
   label = "";
 
   connectedCallback() {
