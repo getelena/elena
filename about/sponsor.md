@@ -10,5 +10,3 @@ Elena is an MIT-licensed open source project and completely free to use. However
 If you have questions regarding the sponsorship, please reach out to <hi@elenajs.com>.
 
 ## Current sponsors
-
-### Platinum
