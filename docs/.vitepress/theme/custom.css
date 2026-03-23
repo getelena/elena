@@ -565,18 +565,6 @@ footer.VPFooter a[href*="://"]::after {
   padding-block-end: 1rem;
 }
 
-.DocSearch-Button-Keys {
-  background: var(--vp-c-bg);
-  box-shadow: var(--vp-shadow-1);
-  border-radius: 4px;
-  height: 22px;
-}
-
-.vp-doc [class*="language-"] > button.copy {
-  background-color: var(--vp-c-bg);
-  box-shadow: var(--vp-shadow-1);
-}
-
 .elena-features {
   display: flex;
   flex-wrap: wrap;
