@@ -1,0 +1,40 @@
+{
+  "name": "@elenajs/plugin-cem-prop",
+  "version": "0.0.1",
+  "description": "CEM analyzer plugin that creates attribute entries from @property/@prop JSDoc tags.",
+  "author": "Elena <hi@elenajs.com>",
+  "homepage": "https://elenajs.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getelena/elena.git",
+    "directory": "packages/plugin-cem-prop"
+  },
+  "bugs": {
+    "url": "https://github.com/getelena/elena/issues"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">= 20"
+  },
+  "peerDependencies": {
+    "@custom-elements-manifest/analyzer": ">=0.10.0"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "0.11.0",
+    "@elenajs/plugin-cem-define": "workspace:*",
+    "vitest": "4.1.0"
+  }
+}
