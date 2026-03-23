@@ -22,7 +22,7 @@ Three types — the type determines whether `render()` is present:
 - The type is inferred from the default value: `false` → Boolean, `0` → Number, `[]` → Array, `{}` → Object, `"..."` → String.
 - `"text"` is a reserved built-in prop. Never include it in `static props` — Elena throws: `"text" is reserved.`
 - Use `{ name: "icon", reflect: false }` in `static props` to suppress attribute reflection for a specific prop.
-- Annotate every prop with JSDoc `@attribute` and `@type` on the class field.
+- Annotate every prop with JSDoc `@property` and `@type` on the class field.
 
 ## Events
 

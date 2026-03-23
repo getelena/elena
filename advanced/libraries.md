@@ -140,7 +140,7 @@ export default class Button extends Elena(HTMLElement, {
 }) {
   /**
    * The style variant of the component.
-   * @attribute
+   * @property
    */
   variant: "default" | "primary" | "danger" = "default";
 

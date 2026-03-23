@@ -67,7 +67,7 @@ You can toggle features to include in the generated code:
 
 | Option                | Description                                                             |
 | --------------------- | ----------------------------------------------------------------------- |
-| **Props**             | Adds example props with `@attribute` / `@type` JSDoc annotations.       |
+| **Props**             | Adds example props with `@property` / `@type` JSDoc annotations.        |
 | **Events**            | Adds `events` option and `@event` JSDoc annotations.                    |
 | **Methods**           | Adds an example method stub.                                            |
 | **CSS Variables**     | Adds `@cssprop` JSDoc annotations and CSS custom property declarations. |

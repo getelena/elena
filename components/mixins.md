@@ -121,7 +121,7 @@ Mixins can introduce their own props. List them in `static props` on the final c
 
 ```js
 const Sizeable = (superClass) => class extends superClass {
-  /** @attribute @type {"sm" | "md" | "lg"} */
+  /** @property @type {"sm" | "md" | "lg"} */
   size = "md";
 };
 ```
@@ -131,7 +131,7 @@ class SizeableButton extends Sizeable(Elena(HTMLElement)) {
   static tagName = "sizeable-button";
   static props = ["size", "variant"];
 
-  /** @attribute @type {"default" | "primary"} */
+  /** @property @type {"default" | "primary"} */
   variant = "default";
 
   render() {

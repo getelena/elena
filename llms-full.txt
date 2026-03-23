@@ -2,7 +2,7 @@
 url: /elena/api.md
 description: >-
   Full API reference for all Elena packages including @elenajs/core,
-  @elenajs/bundler, @elenajs/ssr, and @elenajs/cli.
+  @elenajs/bundler, @elenajs/cli, @elenajs/ssr, and CEM plugins.
 ---
 
 # API Reference
@@ -170,6 +170,12 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `elenaDefinePlugin` | `elenaDefinePlugin()` | CEM plugin that reads `tagName` option from each Elena component class and registers it in the Custom Elements Manifest. |
+
+## `@elenajs/plugin-cem-prop`&#x20;
+
+| Export | Signature | Description |
+|--------|-----------|-------------|
+| `elenaPropPlugin` | `elenaPropPlugin()` | CEM plugin that reads `@property` or `@prop` JSDoc tags from component class fields and creates corresponding `attributes` entries in the Custom Elements Manifest. |
 
 ## `@elenajs/plugin-cem-tag`&#x20;
 
@@ -352,7 +358,7 @@ You can toggle features to include in the generated code:
 
 | Option                | Description                                                             |
 | --------------------- | ----------------------------------------------------------------------- |
-| **Props**             | Adds example props with `@attribute` / `@type` JSDoc annotations.       |
+| **Props**             | Adds example props with `@property` / `@type` JSDoc annotations.        |
 | **Events**            | Adds `events` option and `@event` JSDoc annotations.                    |
 | **Methods**           | Adds an example method stub.                                            |
 | **CSS Variables**     | Adds `@cssprop` JSDoc annotations and CSS custom property declarations. |
@@ -521,7 +527,7 @@ export default class Button extends Elena(HTMLElement, {
 }) {
   /**
    * The style variant of the component.
-   * @attribute
+   * @property
    */
   variant: "default" | "primary" | "danger" = "default";
 
@@ -738,28 +744,28 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 ## Prop annotations
 
-Document each prop with JSDoc directly above its instance field declaration. `@attribute` marks the field as a reflected HTML attribute. `@type` describes the expected value.
+Document each prop with JSDoc directly above its instance field declaration. `@property` marks the field as a component prop. `@type` describes the expected value.
 
 ::: code-group
 
 ```js [JavaScript]
 /**
  * The style variant of the button.
- * @attribute
+ * @property
  * @type {"default" | "primary" | "danger"}
  */
 variant = "default";
 
 /**
  * Makes the component disabled.
- * @attribute
+ * @property
  * @type {Boolean}
  */
 disabled = false;
 
 /**
  * The value used to identify the button in forms.
- * @attribute
+ * @property
  * @type {string}
  */
 value = "";
@@ -768,19 +774,19 @@ value = "";
 ```ts [TypeScript]
 /**
  * The style variant of the button.
- * @attribute
+ * @property
  */
 variant: "default" | "primary" | "danger" = "default";
 
 /**
  * Makes the component disabled.
- * @attribute
+ * @property
  */
 disabled: boolean = false;
 
 /**
  * The value used to identify the button in forms.
- * @attribute
+ * @property
  */
 value: string = "";
 ```
@@ -848,14 +854,14 @@ export default class Button extends Elena(HTMLElement) {
 
   /**
    * The style variant of the button.
-   * @attribute
+   * @property
    * @type {"default" | "primary" | "danger" | "outline"}
    */
   variant = "default";
 
   /**
    * Makes the component disabled.
-   * @attribute
+   * @property
    * @type {boolean}
    */
   disabled = false;
@@ -904,13 +910,13 @@ export default class Button extends Elena(HTMLElement) {
 
   /**
    * The style variant of the button.
-   * @attribute
+   * @property
    */
   variant: "default" | "primary" | "danger" | "outline" = "default";
 
   /**
    * Makes the component disabled.
-   * @attribute
+   * @property
    */
   disabled: boolean = false;
 
@@ -2807,7 +2813,7 @@ Mixins can introduce their own props. List them in `static props` on the final c
 
 ```js
 const Sizeable = (superClass) => class extends superClass {
-  /** @attribute @type {"sm" | "md" | "lg"} */
+  /** @property @type {"sm" | "md" | "lg"} */
   size = "md";
 };
 ```
@@ -2817,7 +2823,7 @@ class SizeableButton extends Sizeable(Elena(HTMLElement)) {
   static tagName = "sizeable-button";
   static props = ["size", "variant"];
 
-  /** @attribute @type {"default" | "primary"} */
+  /** @property @type {"default" | "primary"} */
   variant = "default";
 
   render() {
@@ -3055,28 +3061,28 @@ export default class Button extends Elena(HTMLElement) {
 
 ## Documenting props
 
-Document each prop with JSDoc annotations. `@attribute` marks the field as a reflected HTML attribute, and `@type` describes the expected value.
+Document each prop with JSDoc annotations. `@property` marks the field as a component prop, and `@type` describes the expected value.
 
 ::: code-group
 
 ```js [JavaScript]
 /**
  * The style variant of the button.
- * @attribute
+ * @property
  * @type {"default" | "primary" | "danger"}
  */
 variant = "default";
 
 /**
  * Makes the component disabled.
- * @attribute
+ * @property
  * @type {Boolean}
  */
 disabled = false;
 
 /**
  * The value used to identify the button in forms.
- * @attribute
+ * @property
  * @type {string}
  */
 value = "";
@@ -3085,19 +3091,19 @@ value = "";
 ```ts [TypeScript]
 /**
  * The style variant of the button.
- * @attribute
+ * @property
  */
 variant: "default" | "primary" | "danger" = "default";
 
 /**
  * Makes the component disabled.
- * @attribute
+ * @property
  */
 disabled: boolean = false;
 
 /**
  * The value used to identify the button in forms.
- * @attribute
+ * @property
  */
 value: string = "";
 ```
@@ -4705,7 +4711,7 @@ When using TypeScript to author Elena components, you can add inline type annota
 ```ts
 /**
  * The style variant of the component.
- * @attribute
+ * @property
  */
 variant: "default" | "primary" | "danger" = "default";
 ```

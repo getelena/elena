@@ -75,28 +75,28 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 
 ## Prop annotations
 
-Document each prop with JSDoc directly above its instance field declaration. `@attribute` marks the field as a reflected HTML attribute. `@type` describes the expected value.
+Document each prop with JSDoc directly above its instance field declaration. `@property` marks the field as a component prop. `@type` describes the expected value.
 
 ::: code-group
 
 ```js [JavaScript]
 /**
  * The style variant of the button.
- * @attribute
+ * @property
  * @type {"default" | "primary" | "danger"}
  */
 variant = "default";
 
 /**
  * Makes the component disabled.
- * @attribute
+ * @property
  * @type {Boolean}
  */
 disabled = false;
 
 /**
  * The value used to identify the button in forms.
- * @attribute
+ * @property
  * @type {string}
  */
 value = "";
@@ -105,19 +105,19 @@ value = "";
 ```ts [TypeScript]
 /**
  * The style variant of the button.
- * @attribute
+ * @property
  */
 variant: "default" | "primary" | "danger" = "default";
 
 /**
  * Makes the component disabled.
- * @attribute
+ * @property
  */
 disabled: boolean = false;
 
 /**
  * The value used to identify the button in forms.
- * @attribute
+ * @property
  */
 value: string = "";
 ```
@@ -185,14 +185,14 @@ export default class Button extends Elena(HTMLElement) {
 
   /**
    * The style variant of the button.
-   * @attribute
+   * @property
    * @type {"default" | "primary" | "danger" | "outline"}
    */
   variant = "default";
 
   /**
    * Makes the component disabled.
-   * @attribute
+   * @property
    * @type {boolean}
    */
   disabled = false;
@@ -241,13 +241,13 @@ export default class Button extends Elena(HTMLElement) {
 
   /**
    * The style variant of the button.
-   * @attribute
+   * @property
    */
   variant: "default" | "primary" | "danger" | "outline" = "default";
 
   /**
    * Makes the component disabled.
-   * @attribute
+   * @property
    */
   disabled: boolean = false;
 
