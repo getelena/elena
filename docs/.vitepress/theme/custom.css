@@ -576,3 +576,63 @@ footer.VPFooter a[href*="://"]::after {
   background-color: var(--vp-c-bg);
   box-shadow: var(--vp-shadow-1);
 }
+
+.elena-features {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -12px;
+  padding-block-start: 8px;
+}
+
+.elena-features .feature {
+  flex: 0 1 calc(50% - 24px);
+  margin: 12px;
+  padding: 24px;
+  border-start-start-radius: 12px;
+  border-start-end-radius: 12px;
+  border-end-start-radius: 12px;
+  border-end-end-radius: 12px;
+  background-color: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-bg-soft);
+  transition: border-color 0.25s;
+}
+
+.elena-features .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block-end: 20px;
+  border-start-start-radius: 6px;
+  border-start-end-radius: 6px;
+  border-end-start-radius: 6px;
+  border-end-end-radius: 6px;
+  background-color: var(--vp-c-default-soft);
+  inline-size: 48px;
+  block-size: 48px;
+  font-size: 24px;
+}
+
+.elena-features h3 {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 24px;
+  margin: 0;
+  border-block-start: none;
+  letter-spacing: 0;
+}
+
+.elena-features p {
+  padding-block-start: 8px;
+  line-height: 22px;
+  font-size: 14px;
+  font-weight: 400;
+  text-wrap: balance;
+  color: var(--vp-c-text-2);
+  margin: 0;
+}
+
+@media (max-width: 639px) {
+  .elena-features .feature {
+    flex: 1 1 100%;
+  }
+}

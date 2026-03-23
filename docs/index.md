@@ -89,15 +89,53 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 
 ## Elena’s features
 
-- 🔋 **Extremely lightweight:** 2.6kB minified & compressed, simple and tiny by design.
-- 📈 **Progressively enhanced:** Renders HTML & CSS first, then hydrates with JavaScript.
-- 🫶 **Accessible by default:** Semantic HTML foundation with no Shadow DOM barriers.
-- 🌍 **Standards based:** Built entirely on native custom elements & web standards.
-- ⚡ **Reactive updates:** Prop and state changes trigger efficient, batched re-renders.
-- 🎨 **Scoped styles:** Simple & clean CSS encapsulation without complex workarounds.
-- 🖥️ **SSR friendly:** Works out of the box, with optional server-side utilities if needed.
-- 🧩 **Zero dependencies:** No runtime dependencies, runs entirely on the web platform.
-- 🔓 **Zero lock-in:** Works with every major framework, or no framework at all.
+<div class="elena-features">
+  <div class="feature">
+    <div class="icon">🔋</div>
+    <h3>Extremely lightweight</h3>
+    <p>2.6kB minified & compressed, simple and tiny by design.</p>
+  </div>
+  <div class="feature">
+    <div class="icon">📈</div>
+    <h3>Progressively enhanced</h3>
+    <p>Renders HTML & CSS first, then hydrates with JavaScript.</p>
+  </div>
+  <div class="feature">
+    <div class="icon">🫶</div>
+    <h3>Accessible by default</h3>
+    <p>Semantic HTML foundation with no Shadow DOM barriers.</p>
+  </div>
+  <div class="feature">
+    <div class="icon">🌍</div>
+    <h3>Standards based</h3>
+    <p>Built entirely on native custom elements & web standards.</p>
+  </div>
+  <div class="feature">
+    <div class="icon">⚡</div>
+    <h3>Reactive updates</h3>
+    <p>Prop and state changes trigger efficient, batched re-renders.</p>
+  </div>
+  <div class="feature">
+    <div class="icon">🎨</div>
+    <h3>Scoped styles</h3>
+    <p>Simple & clean CSS encapsulation without complex workarounds.</p>
+  </div>
+  <div class="feature">
+    <div class="icon">🖥️</div>
+    <h3>SSR friendly</h3>
+    <p>Works out of the box, with optional server-side utilities if needed.</p>
+  </div>
+  <div class="feature">
+    <div class="icon">🧩</div>
+    <h3>Zero dependencies</h3>
+    <p>No runtime dependencies, runs entirely on the web platform.</p>
+  </div>
+  <div class="feature">
+    <div class="icon">🔓</div>
+    <h3>Zero lock-in</h3>
+    <p>Works with every major framework, or no framework at all.</p>
+  </div>
+</div>
 
 ## Browser support
 
@@ -106,9 +144,9 @@ As a baseline, Elena’s progressive approach supports any web browser that’s 
 <div class="elena-stack">
   <img src="/chrome.png" loading="lazy" width="56" height="56" alt="Chrome" />
   <img src="/safari.png" loading="lazy" width="56" height="56" alt="Safari" />
-  <img src="/edge.png" loading="lazy" width="56" height="56" alt="Chrome" />
-  <img src="/firefox.png" loading="lazy" width="56" height="56" alt="Chrome" />
-  <img src="/opera.png" loading="lazy" width="56" height="56" alt="Chrome" />
+  <img src="/edge.png" loading="lazy" width="56" height="56" alt="Edge" />
+  <img src="/firefox.png" loading="lazy" width="56" height="56" alt="Firefox" />
+  <img src="/opera.png" loading="lazy" width="56" height="56" alt="Opera" />
 </div>
 
 ## Next steps
