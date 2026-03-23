@@ -38,9 +38,20 @@ export default defineConfig({
   },
   description: "Simple, tiny library for building Progressive Web Components.",
   cleanUrls: true,
+  transformPageData(pageData) {
+    const title = pageData.title
+      ? `${pageData.title} | Elena`
+      : "Elena | Progressive Web Components";
+
+    pageData.frontmatter.head ??= [];
+    pageData.frontmatter.head.push(
+      ["meta", { property: "og:title", content: title }],
+      ["meta", { property: "og:description", content: pageData.description }],
+      ["meta", { name: "twitter:description", content: pageData.description }]
+    );
+  },
   head: [
-    ["meta", { property: "og:site_name", content: "Elena | Progressive Web Components" }],
-    ["meta", { property: "og:title", content: "Elena | Progressive Web Components" }],
+    ["meta", { property: "og:site_name", content: "Elena" }],
     ["meta", { property: "og:type", content: "website" }],
     ["meta", { property: "og:url", content: "https://getelena.github.io/elena/" }],
     ["meta", { name: "twitter:card", content: "summary_large_image" }],
@@ -48,27 +59,6 @@ export default defineConfig({
     ["meta", { name: "twitter:image", content: "https://getelena.github.io/elena/social.png" }],
     ["meta", { property: "og:image:alt", content: "Page image for Elenajs.com" }],
     ["meta", { name: "twitter:image:alt", content: "Page image for Elenajs.com" }],
-    [
-      "meta",
-      {
-        name: "description",
-        content: "Elena is a simple, tiny library for building Progressive Web Components.",
-      },
-    ],
-    [
-      "meta",
-      {
-        name: "twitter:description",
-        content: "Elena is a simple, tiny library for building Progressive Web Components.",
-      },
-    ],
-    [
-      "meta",
-      {
-        property: "og:description",
-        content: "Elena is a simple, tiny library for building Progressive Web Components.",
-      },
-    ],
     ["meta", { name: "fediverse:creator", content: "@ariel@front-end.social" }],
 
     ["link", { rel: "icon", href: "/elena/favicon.ico", sizes: "48x48" }],
