@@ -257,9 +257,7 @@ label:active {
   opacity: 0.08;
   transform: translateZ(0);
   pointer-events: none;
-  transition:
-    top 0.17s ease,
-    height 0.17s ease;
+  transition: top 0.14s ease;
 }
 
 @starting-style {
@@ -565,4 +563,16 @@ footer.VPFooter a[href*="://"]::after {
 ._elena_about_sponsor h3 {
   border-bottom: 1px solid var(--vp-c-divider);
   padding-block-end: 1rem;
+}
+
+.DocSearch-Button-Keys {
+  background: var(--vp-c-bg);
+  box-shadow: var(--vp-shadow-1);
+  border-radius: 4px;
+  height: 22px;
+}
+
+.vp-doc [class*="language-"] > button.copy {
+  background-color: var(--vp-c-bg);
+  box-shadow: var(--vp-shadow-1);
 }

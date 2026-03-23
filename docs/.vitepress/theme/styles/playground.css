@@ -278,6 +278,10 @@
   transition: transform 0.25s;
 }
 
+.dark .pg-autosave-knob {
+  background-color: var(--vp-c-text-1);
+}
+
 .pg-autosave-toggle.on {
   border-color: var(--vp-c-green-1);
   background-color: var(--vp-c-green-1);
