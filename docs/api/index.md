@@ -1,7 +1,7 @@
 ---
 sidebar: false
 title: API Reference
-description: Full API reference for all Elena packages including @elenajs/core, @elenajs/bundler, @elenajs/ssr, and @elenajs/cli.
+description: Full API reference for all Elena packages including @elenajs/core, @elenajs/bundler, @elenajs/cli, @elenajs/ssr, and CEM plugins.
 ---
 
 # API Reference
@@ -169,6 +169,12 @@ The generated files follow all Elena authoring patterns, including JSDoc annotat
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `elenaDefinePlugin` | `elenaDefinePlugin()` | CEM plugin that reads `tagName` option from each Elena component class and registers it in the Custom Elements Manifest. |
+
+## `@elenajs/plugin-cem-prop` <Badge type="warning" text="Pre-release" />
+
+| Export | Signature | Description |
+|--------|-----------|-------------|
+| `elenaPropPlugin` | `elenaPropPlugin()` | CEM plugin that reads `@property` or `@prop` JSDoc tags from component class fields and creates corresponding `attributes` entries in the Custom Elements Manifest. |
 
 ## `@elenajs/plugin-cem-tag` <Badge type="warning" text="Pre-release" />
 

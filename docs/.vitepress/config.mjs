@@ -149,6 +149,10 @@ export default defineConfig({
             link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-define",
           },
           {
+            text: "@elenajs/plugin-cem-prop",
+            link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-prop",
+          },
+          {
             text: "@elenajs/plugin-cem-tag",
             link: "https://github.com/getelena/elena/tree/main/packages/plugin-cem-tag",
           },
