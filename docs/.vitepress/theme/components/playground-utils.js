@@ -99,7 +99,7 @@ export function debounce(fn, delay) {
  * Rewrite bare `@elenajs/core` imports to the unpkg CDN URL.
  */
 function rewriteImports(js) {
-  const cdnUrl = "https://unpkg.com/@elenajs/core";
+  const cdnUrl = "https://unpkg.com/@elenajs/core/bundle";
   return js
     .replace(/from\s+["']@elenajs\/core["']/g, `from "${cdnUrl}"`)
     .replace(/import\s*\(\s*["']@elenajs\/core["']\s*\)/g, `import("${cdnUrl}")`);

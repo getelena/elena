@@ -9,7 +9,7 @@ The fastest way to get started is to include the following directly into your we
 
 ```html
 <script type="module">
-  import { Elena, html } from "https://unpkg.com/@elenajs/core";
+  import { Elena, html } from "https://unpkg.com/@elenajs/core/bundle";
 
   /** ░█ [ELENA]: Hello world example */
   export default class MyGreeting extends Elena(HTMLElement) {
