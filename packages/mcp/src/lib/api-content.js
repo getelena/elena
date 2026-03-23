@@ -127,6 +127,7 @@ elena watch
 | \`analyze.plugins\` | \`Plugin[]\` | \`[]\` | Extra plugins for the Custom Elements Manifest generation step. |
 | \`target\` | \`string \\| string[] \\| false\` | \`false\` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via \`@babel/preset-env\` to widen browser support. Example: \`["chrome 71", "firefox 69", "safari 12.1"]\`. |
 | \`terser\` | \`object\` | \`{ ecma: 2020, module: true }\` | Custom Terser minifier options, merged with the defaults. |
+| \`banner\` | \`string \\| false\` | \`false\` | Banner comment prepended to \`index.js\` and \`bundle.js\` output files. Use a \`@license\` JSDoc tag so minifiers preserve it. |
 
 ### Error codes
 
@@ -135,7 +136,7 @@ elena watch
 | \`Unknown command: <command>.\` | You ran \`elena <command>\` with an unrecognized command. The CLI only accepts \`elena build\` or \`elena watch\`. |
 | \`Config file not found: <path>.\` | The \`--config\` flag points to a file that does not exist. Check the path and try again. |
 | \`Found "elena.config<ext>" but only .mjs and .js are supported.\` | Elena found a config file with an unsupported extension (e.g. \`.ts\`, \`.json\`, \`.cjs\`). Rename it to \`elena.config.mjs\` or \`elena.config.js\`. |
-| \`Unknown config option "<key>".\` | Your config file contains an unrecognized option. Check for typos. Valid options are: \`input\`, \`output\`, \`bundle\`, \`plugins\`, \`analyze\`, \`target\`, \`terser\`. |
+| \`Unknown config option "<key>".\` | Your config file contains an unrecognized option. Check for typos. Valid options are: \`input\`, \`output\`, \`bundle\`, \`plugins\`, \`analyze\`, \`target\`, \`terser\`, \`banner\`. |
 | \`Invalid config: "<option>" must be <type>.\` | A config option has the wrong type. The error message tells you which option and what type it expects. |
 | \`Input directory "<dir>" does not exist.\` | The \`input\` directory (default \`"src"\`) was not found. Make sure it exists, or set the \`input\` option to the correct path. |
 | \`Bundle entry "<path>" does not exist.\` | The \`bundle\` entry point (default \`"src/index.js"\`) was not found. Create the file, or set \`bundle\` to \`false\` to skip bundling. |

@@ -109,6 +109,10 @@ export default {
 
   // Custom Terser minifier options, merged with the defaults.
   // terser: { ecma: 2020, module: true },
+
+  // Banner comment prepended to bundle output files.
+  // Use a @license tag so minifiers preserve it.
+  // banner: `/** @license MIT */`,
 };
 ```
 
@@ -126,6 +130,7 @@ export default {
 | `analyze.plugins`  | `Plugin[]`        | `[]`             | Additional CEM analyzer plugins.                                                                                         |
 | `target`           | `string \| string[] \| false` | `false` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via `@babel/preset-env` to widen browser support. Example: `["chrome 71", "firefox 69", "safari 12.1"]`. |
 | `terser`           | `object`          | `{ ecma: 2020, module: true }` | Custom Terser minifier options, merged with the defaults. See the [Terser API docs](https://terser.org/docs/api-reference/) for available options. |
+| `banner`           | `string \| false` | `false`          | Banner comment prepended to `index.js` and `bundle.js` output files. Use a `@license` JSDoc tag so minifiers preserve it. |
 
 ## Build output
 
