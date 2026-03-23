@@ -132,6 +132,7 @@ export function createRollupConfig(options = {}) {
   const extraPlugins = options.plugins ?? [];
   const target = options.target ?? false;
   const terserOpts = options.terser ?? { ecma: 2020, module: true };
+  const banner = options.banner || undefined;
 
   if (!existsSync(src)) {
     throw new Error(
@@ -174,6 +175,9 @@ export function createRollupConfig(options = {}) {
         terserOpts,
       }),
       output: {
+        ...(banner && {
+          banner: chunk => (chunk.fileName === "index.js" ? banner : ""),
+        }),
         format,
         sourcemap,
         dir: outdir,
@@ -198,7 +202,7 @@ export function createRollupConfig(options = {}) {
         target,
         terserOpts,
       }),
-      output: { format, sourcemap, file: `${outdir}/bundle.js` },
+      output: { banner, format, sourcemap, file: `${outdir}/bundle.js` },
       preserveEntrySignatures: "strict",
       treeshake: TREESHAKE,
       onwarn,

@@ -1,6 +1,15 @@
 import { color } from "./color.js";
 
-const KNOWN_KEYS = new Set(["input", "output", "bundle", "plugins", "analyze", "target", "terser"]);
+const KNOWN_KEYS = new Set([
+  "input",
+  "output",
+  "bundle",
+  "plugins",
+  "analyze",
+  "target",
+  "terser",
+  "banner",
+]);
 
 /**
  * Validates a raw user config and throws on invalid values.
@@ -66,5 +75,9 @@ export function validateConfig(config) {
     (typeof config.terser !== "object" || config.terser === null)
   ) {
     throw new Error(`░█ [ELENA]: Invalid config: "terser" must be an object.`);
+  }
+
+  if (config.banner !== undefined && typeof config.banner !== "string" && config.banner !== false) {
+    throw new Error(`░█ [ELENA]: Invalid config: "banner" must be a string or false.`);
   }
 }

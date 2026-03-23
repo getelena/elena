@@ -30,6 +30,8 @@ import { validateConfig } from "./validate-config.js";
  *   Example: `["chrome 71", "firefox 69", "safari 12.1"]`
  * @property {object} [terser] Custom Terser minifier options, merged with the defaults
  *   `{ ecma: 2020, module: true }`.
+ * @property {string|false} [banner] Banner comment prepended to every output file. Use a
+ *   `@license` JSDoc tag so minifiers preserve it. Set to `false` (default) to omit.
  */
 
 /** @type {Required<ElenaConfig>} */
@@ -41,6 +43,7 @@ const DEFAULTS = {
   analyze: { plugins: [] },
   target: false,
   terser: { ecma: 2020, module: true },
+  banner: false,
 };
 
 /**

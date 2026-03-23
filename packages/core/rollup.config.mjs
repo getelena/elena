@@ -21,6 +21,12 @@ console.log(
 
 console.log(color(`░█ [ELENA]: Found the following JavaScript modules:`));
 
+const banner = `/**
+ * ${pkg.name} v${pkg.version}
+ * (c) 2025-present Ariel Salminen and Elena contributors
+ * @license MIT
+ */`;
+
 /**
  * Creates a Elena Rollup config for a single build target.
  *
@@ -68,7 +74,7 @@ function createConfig({ input, output, hasSummary = false, mangleProperties = fa
     plugins,
     output: {
       format: "esm",
-      sourcemap: true,
+      sourcemap: false,
       ...output,
     },
     preserveEntrySignatures: "strict",
@@ -94,14 +100,14 @@ export default [
   // Individual modules: preserves the public package entry points.
   createConfig({
     input: [...entries],
-    output: { dir: "dist" },
+    output: { dir: "dist", banner: chunk => (chunk.fileName === "elena.js" ? banner : "") },
     hasSummary: true,
   }),
   // Single-file bundle for consumers who prefer one import.
   // Property mangling is safe here because Terser sees all code at once.
   createConfig({
     input: "src/elena.js",
-    output: { file: "dist/bundle.js" },
+    output: { file: "dist/bundle.js", banner },
     hasSummary: true,
     mangleProperties: true,
   }),
