@@ -38,6 +38,7 @@
 ### Other
 
 - [API Reference](/elena/api.md): Full API reference for all Elena packages including @elenajs/core, @elenajs/bundler, @elenajs/cli, @elenajs/ssr, and CEM plugins.
+- [Become an Elena sponsor](/elena/about/sponsor.md): Elena’s privacy policy and data practices.
 - [Code of conduct](/elena/about/code-of-conduct.md): Elena’s code of conduct for contributors and community members.
 - [Live examples (without pre-rendering)](/elena/examples/no-pre-rendering.md): Live demo of Elena’s Progressive Web Components without server-side pre-rendering, for comparison.
 - [Playground](/elena/playground.md): Interactive playground for building Elena Progressive Web Components.
