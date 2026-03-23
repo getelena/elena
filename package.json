@@ -16,6 +16,7 @@
     "@elenajs/bundler": "workspace:*",
     "@elenajs/cli": "workspace:*",
     "@elenajs/eslint-config": "workspace:*",
+    "@elenajs/plugin-cem-prop": "workspace:*",
     "@elenajs/plugin-cem-define": "workspace:*",
     "@elenajs/plugin-cem-tag": "workspace:*",
     "@elenajs/plugin-cem-typescript": "workspace:*",
