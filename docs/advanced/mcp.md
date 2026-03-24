@@ -100,7 +100,7 @@ Generates JavaScript and CSS boilerplate for a new Elena component. Returns file
 | `description`      | `string`                                         | No       | Component description for JSDoc.                                                  |
 | `status`           | `"alpha" \| "beta" \| "stable"`                  | No       | Component status (default: `"alpha"`).                                            |
 | `cssEncapsulation` | `boolean`                                        | No       | Include the `all:unset` encapsulation reset in CSS (default: `true`).             |
-| `ssr`              | `boolean`                                        | No       | Include `:scope:not([hydrated])` SSR pattern (default: `false`).                  |
+| `ssr`              | `boolean`                                        | No       | Include `:scope:not([hydrated])` pre-hydration styles to avoid layout shift (default: `false`).                  |
 
 ### `lookup-component`
 

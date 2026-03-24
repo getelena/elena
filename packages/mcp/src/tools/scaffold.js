@@ -243,7 +243,7 @@ export function registerScaffoldTool(server) {
           .boolean()
           .default(false)
           .describe(
-            "Include :scope:not([hydrated]) SSR pattern in CSS to avoid layout shift (default: false)"
+            "Include :scope:not([hydrated]) pre-hydration styles in CSS to avoid layout shift (default: false)"
           ),
       },
     },

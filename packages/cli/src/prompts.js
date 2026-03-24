@@ -82,7 +82,7 @@ export async function runPrompts(nameArg) {
       { name: "Methods", value: "methods" },
       { name: "CSS Variables", value: "cssprops" },
       { name: "CSS Encapsulation", value: "cssencap" },
-      { name: "CSS SSR Pattern", value: "ssr" },
+      { name: "CSS Pre-hydration", value: "ssr" },
       { name: "Code Comments", value: "comments" },
     ],
     theme,

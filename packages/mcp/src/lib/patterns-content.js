@@ -574,7 +574,7 @@ Full baseline pattern for a **Primitive Component**:
     display: inline-block;
   }
 
-  /* Elena SSR Pattern to avoid layout shift */
+  /* CSS pre-hydration styles */
   :scope:not([hydrated]),
   .elena-button:is(button) {
     font-family: var(--_elena-button-font);

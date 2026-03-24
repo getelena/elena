@@ -72,7 +72,7 @@ You can toggle features to include in the generated code:
 | **Methods**           | Adds an example method stub.                                            |
 | **CSS Variables**     | Adds `@cssprop` JSDoc annotations and CSS custom property declarations. |
 | **CSS Encapsulation** | Adds the `all: unset` reset to prevent global styles from leaking in.   |
-| **CSS SSR Pattern**   | Adds `:scope:not([hydrated])` styles for pre-hydration rendering.       |
+| **CSS Pre-hydration** | Adds `:scope:not([hydrated])` styles for pre-hydration rendering.       |
 | **Code Comments**     | Includes JSDoc annotations and CSS comments in the generated code.      |
 
 ## Generated files

@@ -58,7 +58,7 @@ MyButton.define();`,
     cursor: pointer;
   }
 
-  /* Elena SSR Pattern to avoid layout shift */
+  /* CSS pre-hydration styles */
   :scope:not([hydrated]),
   .my-button:is(button) {
     font-family: system-ui, sans-serif;

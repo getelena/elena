@@ -265,7 +265,7 @@ function generateCSSSrc(name, features) {
 
   if (hasSsr) {
     if (hasComments) {
-      lines.push(``, `  /* Elena SSR Pattern to avoid layout shift */`);
+      lines.push(``, `  /* CSS pre-hydration styles */`);
     }
     lines.push(`  :scope:not([hydrated]),`);
   }
