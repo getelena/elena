@@ -1,7 +1,6 @@
 ---
-title: Live examples (without pre-rendering)
-description: Live demo of Elena’s Progressive Web Components without server-side pre-rendering, for comparison.
-ssr: false
+title: Live examples with @elenajs/ssr
+description: Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr and progressively enhanced with JavaScript.
 head:
   - - link
     - rel: preload
@@ -27,9 +26,9 @@ function cycleVariant() {
 }
 </script>
 
-# Live examples (without pre-rendering)
+# Live examples with `@elenajs/ssr`
 
-This is the same examples page, but without `@elenajs/ssr` pre-rendering. Components rely on CSS pre-hydration styles and render their inner template with JavaScript. Compare the initial load experience with the [pre-rendered version](/examples/).
+This page demonstrates Elena’s Progressive Web Components pre-rendered with the experimental `@elenajs/ssr` and progressively enhanced with JavaScript. You can compare this with a&nbsp;[version without pre-rendering](/examples/) to see the difference.
 
 ## Basic example
 

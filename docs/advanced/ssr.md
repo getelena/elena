@@ -13,9 +13,21 @@ The “partial support” bit for the latter means that you can render the initi
 
 Elena also supports [Declarative Shadow DOM](#declarative-shadow-dom) for cases where you may need stronger isolation, but still want the component to render server-side.
 
+## Avoiding layout shifts
+
+For components with `render()` specifically, our recommendation is to ship them with CSS styles that visually match the loading and `hydrated` states. This can be achieved utilizing the provided `hydrated` attribute in your web component’s styles:
+
+```css
+/* Elena CSS pre-hydration styles */
+:scope:not([hydrated]),
+.element { ... }
+```
+
+Since both selectors now share the same baseline styles, there are no visible layout shifts, FOUC, or FOIC (Flash Of Unstyled Content, Flash Of Invisible Content). For more details, see the [CSS pre-hydration styles](/components/styles#css-pre-hydration-styles) section.
+
 ## Rendering to HTML strings <Badge type="danger" text="Experimental" />
 
-When you don’t want to [handle the pre-hydration state with CSS](#avoiding-layout-shifts), you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
+When you don’t want to handle the pre-hydration state with CSS, you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr). Please note that this is an experimental package and we do not recommend it for production just yet.
 
 > [!WARNING]
 > `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
@@ -215,6 +227,59 @@ Then in a template:
 {% render '<elena-button variant="primary">Save</elena-button>' %}
 ```
 
+## Pre-rendering without a framework
+
+If you’re working with plain HTML files and no framework or static site generator, you can use `@elenajs/ssr` directly in a Node.js build script. Place your HTML files in a `src/` directory and the script will expand all registered Elena components into `dist/`:
+
+```js
+// build.mjs
+import { readFileSync, writeFileSync, readdirSync, mkdirSync } from "node:fs";
+import { ssr, register } from "@elenajs/ssr";
+const { Button, Stack } = await import("@elenajs/components");
+
+register(Button, Stack);
+
+mkdirSync("dist", { recursive: true });
+
+for (const file of readdirSync("src").filter(f => f.endsWith(".html"))) {
+  const html = readFileSync(`src/${file}`, "utf-8");
+  writeFileSync(`dist/${file}`, ssr(html));
+}
+```
+
+Given a source file `src/index.html`:
+
+```html
+<elena-stack direction="row">
+  <elena-button variant="primary">Save</elena-button>
+  <elena-button>Cancel</elena-button>
+</elena-stack>
+```
+
+The script produces `dist/index.html`:
+
+```html
+<elena-stack direction="row">
+  <elena-button variant="primary" hydrated><button>Save</button></elena-button>
+  <elena-button hydrated><button>Cancel</button></elena-button>
+</elena-stack>
+```
+
+You can add this as an npm script in your `package.json` for convenience:
+
+```json
+{
+  "scripts": {
+    "build": "node build.mjs"
+  }
+}
+```
+
+Running `pnpm build` will generate the pre-rendered output.
+
+> [!TIP]
+> Use `await import()` for component modules rather than a static `import` statement. Elena components extend `HTMLElement`, which requires a Node.js shim that `@elenajs/ssr` installs when it loads. Dynamic imports guarantee the shim is in place first, regardless of how an import sorter may reorder your static imports.
+
 ## Declarative Shadow DOM <Badge type="warning" text="Pre-release" />
 
 Declarative Shadow DOM lets you define a shadow root directly in HTML using a `<template shadowrootmode="open">` element. The browser attaches the shadow root during parsing, so the shadow content is visible before JavaScript loads.
@@ -249,35 +314,6 @@ Button.define();
 In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application. `@elenajs/ssr` may later get Declarative Shadow DOM support which would eliminate that entirely, but this isn’t currently on our roadmap. 
 
 For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
-
-## Avoiding layout shifts
-
-For **components with `render()`** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC _(Flash Of Unstyled Content, Flash Of Invisible Content)._ This can be achieved utilizing the provided `hydrated` attribute in your component styles:
-
-```css
-/* Elena SSR Pattern to avoid layout shift */
-:scope:not([hydrated]),
-.inner-element {
-  color: var(--elena-button-text);
-}
-```
-
-Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
-
-```css
-:scope:not([hydrated])::before {
-  content: attr(label);
-  /* etc */
-}
-
-:scope:not([hydrated])::after {
-  content: attr(placeholder);
-  /* etc */
-}
-```
-
-> [!TIP]
-> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
 ## Framework examples
 
