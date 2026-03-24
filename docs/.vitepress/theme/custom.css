@@ -131,6 +131,9 @@ label:active {
 .VPSidebar {
   background: var(--vp-c-bg) !important;
   border-inline-end: 1px solid var(--vp-c-gutter);
+
+  /* Safari 26.4 fix */
+  transition: none !important;
 }
 
 #app .VPSidebar {
