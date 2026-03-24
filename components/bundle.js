@@ -1,5 +1,5 @@
 /**
- * @elenajs/components v1.0.0-rc.11
+ * @elenajs/components v1.0.0-rc.12
  * (c) 2025-present Ariel Salminen and Elena contributors
  * @license MIT
  */

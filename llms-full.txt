@@ -1859,9 +1859,9 @@ As a baseline, Elena’s progressive approach supports any web browser that’s 
 
 Elena, the JavaScript library, supports the following browser versions: Chrome 71+, Firefox 69+, Safari 12.1+, Edge 79+, and Opera 58+.
 
-**Firefox 148:** When using CSS `@scope` together with `attr[value]` selectors, the resulting behaviour can be buggy. This is fixed in Firefox 149+. When necessary, you can [omit `@scope`](/components/styles#styles-without-scope) and use class based approach instead to go around this issue.
+**Firefox 148:** When using CSS `@scope` together with `attr[value]` selectors, the resulting behaviour can be buggy. This is fixed in [Firefox 149](https://www.firefox.com/en-US/firefox/149.0/releasenotes/) and newer. When necessary, you can [omit `@scope`](/components/styles#styles-without-scope) and use class based approach instead to go around this issue.
 
-**Safari 26.3:** `@scope` rules are not applied to `<input>` and `<textarea>` elements. This is fixed in [Safari Technology Preview 237](https://webkit.org/blog/17842/release-notes-for-safari-technology-preview-237/), but not yet in a stable release.
+**Safari 26.3:** `@scope` rules are not applied to `<input>` and `<textarea>` elements. This is fixed in [Safari 26.4](https://webkit.org/blog/17862/webkit-features-for-safari-26-4/) and newer. When necessary, you can [omit `@scope`](/components/styles#styles-without-scope) and use class based approach instead to go around this issue.
 
 ## URIs in templates
 
