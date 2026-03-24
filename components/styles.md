@@ -77,6 +77,44 @@ For projects that use [CSS cascade layers](https://developer.mozilla.org/en-US/d
 }
 ```
 
+## CSS pre-hydration styles
+
+For components with `render()` specifically, our recommendation is to ship them with CSS styles that visually match the loading and `hydrated` states. This can be achieved utilizing the provided `hydrated` attribute in your web component’s styles:
+
+```css
+/* Elena CSS pre-hydration styles */
+:scope:not([hydrated]),
+.element { ... }
+```
+
+Since both selectors now share the same baseline styles, there are no visible layout shifts, FOUC, or FOIC (Flash Of Unstyled Content, Flash Of Invisible Content).
+
+Sometimes you may need access to more than just the initial text content pre-hydration to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the host:
+
+```css
+:scope:not([hydrated])::before {
+  content: attr(label);
+}
+
+:scope:not([hydrated])::after {
+  content: attr(placeholder);
+}
+```
+
+For more details, see the [Server Side Rendering](/advanced/ssr) section.
+
+> \[!TIP]
+> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), when using `elenajs/ssr`, or when the rest of your app renders client side only.
+
+## Styling variants and states
+
+Use attribute selectors on `:scope` for variant and state styling:
+
+```css
+:scope[variant="primary"] { color: red }
+:scope[disabled] { opacity: 0.5 }
+```
+
 ## Full example
 
 Here’s a full example using these patterns:
@@ -110,9 +148,9 @@ Here’s a full example using these patterns:
     display: inline-block;
   }
 
-  /* Elena SSR Pattern to avoid layout shift */
+  /* CSS pre-hydration styles */
   :scope:not([hydrated]),
-  .elena-button:is(button) {
+  .elena-button {
     font-family: var(--_elena-button-font);
     color: var(--_elena-button-text);
     background: var(--_elena-button-bg);
@@ -126,36 +164,6 @@ Here’s a full example using these patterns:
   }
 }
 ```
-
-The `:scope:not([hydrated]), .inner-element` pattern ensures components look the same before and after hydration. Elena adds the `hydrated` attribute to the host element after its first render. By applying the same baseline styles to both the unhydrated host and the rendered inner element, the component avoids any layout shift.
-
-Use attribute selectors on `:scope` for variant and state styling:
-
-```css
-:scope[variant="primary"] { color: red }
-:scope[disabled] { opacity: 0.5 }
-```
-
-## Pre-hydration state and styles
-
-Since components with `render()` control their own internal markup, you may sometimes need to surface additional content before hydration. This can be done with CSS pseudo-elements and `attr()`:
-
-```css
-:scope:not([hydrated])::before {
-  content: attr(label);
-  /* etc */
-}
-
-:scope:not([hydrated])::after {
-  content: attr(placeholder);
-  /* etc */
-}
-```
-
-For more detailed guidelines, see the [Server Side Rendering](/advanced/ssr) section.
-
-> \[!TIP]
-> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
 ## Composite Components
 

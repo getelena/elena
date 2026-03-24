@@ -7,7 +7,7 @@
 ### Getting started
 
 - [Quick start](/elena/start.md): Get started with Elena. Learn how to install the library, build your first Progressive Web Component, and bundle a library of Progressive Web Components.
-- [Live examples](/elena/examples.md): Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr and progressively enhanced with JavaScript.
+- [Live examples](/elena/examples.md): Live demo of Elena’s Progressive Web Components on a regular page without any server-side configuration.
 
 ### Components
 
@@ -40,7 +40,7 @@
 - [API Reference](/elena/api.md): Full API reference for all Elena packages including @elenajs/core, @elenajs/bundler, @elenajs/cli, @elenajs/ssr, and CEM plugins.
 - [Become an Elena sponsor](/elena/about/sponsor.md): Elena’s privacy policy and data practices.
 - [Code of conduct](/elena/about/code-of-conduct.md): Elena’s code of conduct for contributors and community members.
-- [Live examples (without pre-rendering)](/elena/examples/no-pre-rendering.md): Live demo of Elena’s Progressive Web Components without server-side pre-rendering, for comparison.
+- [Live examples with @elenajs/ssr](/elena/examples/pre-rendered.md): Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr and progressively enhanced with JavaScript.
 - [Playground](/elena/playground.md): Interactive playground for building Elena Progressive Web Components.
 - [Privacy policy](/elena/about/privacy.md): Elena’s privacy policy and data practices.
 - [Untitled](/elena/about/team.md)

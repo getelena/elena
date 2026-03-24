@@ -379,7 +379,7 @@ You can toggle features to include in the generated code:
 | **Methods**           | Adds an example method stub.                                            |
 | **CSS Variables**     | Adds `@cssprop` JSDoc annotations and CSS custom property declarations. |
 | **CSS Encapsulation** | Adds the `all: unset` reset to prevent global styles from leaking in.   |
-| **CSS SSR Pattern**   | Adds `:scope:not([hydrated])` styles for pre-hydration rendering.       |
+| **CSS Pre-hydration** | Adds `:scope:not([hydrated])` styles for pre-hydration rendering.       |
 | **Code Comments**     | Includes JSDoc annotations and CSS comments in the generated code.      |
 
 ## Generated files
@@ -2016,13 +2016,13 @@ attributeChangedCallback(prop, oldValue, newValue) {
 ---
 url: /elena/examples.md
 description: >-
-  Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr
-  and progressively enhanced with JavaScript.
+  Live demo of Elena’s Progressive Web Components on a regular page without any
+  server-side configuration.
 ---
 
 # Live examples
 
-This page demonstrates Elena’s Progressive Web Components pre-rendered with `@elenajs/ssr` and progressively enhanced with JavaScript. You can compare this with a [version without pre-rendering](/examples/no-pre-rendering) to see the difference.
+This page demonstrates Elena’s [Progressive Web Components](/components/overview) on a regular page without any server-side configuration. This is the recommended way to consume them. It  gives you almost identical loading experience compared to using the experimental `@elenajs/ssr` tool. You can compare with a [version that has pre-rendering](/examples/pre-rendered) to see the difference.
 
 ## Basic example
 
@@ -2184,15 +2184,15 @@ The source code is in `packages/components/` of the [Elena monorepo](https://git
 ---
 
 ---
-url: /elena/examples/no-pre-rendering.md
+url: /elena/examples/pre-rendered.md
 description: >-
-  Live demo of Elena’s Progressive Web Components without server-side
-  pre-rendering, for comparison.
+  Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr
+  and progressively enhanced with JavaScript.
 ---
 
-# Live examples (without pre-rendering)
+# Live examples with `@elenajs/ssr`
 
-This is the same examples page, but without `@elenajs/ssr` pre-rendering. Components rely on CSS pre-hydration styles and render their inner template with JavaScript. Compare the initial load experience with the [pre-rendered version](/examples/).
+This page demonstrates Elena’s Progressive Web Components pre-rendered with the experimental `@elenajs/ssr` and progressively enhanced with JavaScript. You can compare this with a [version without pre-rendering](/examples/) to see the difference.
 
 ## Basic example
 
@@ -2519,7 +2519,7 @@ Generates JavaScript and CSS boilerplate for a new Elena component. Returns file
 | `description`      | `string`                                         | No       | Component description for JSDoc.                                                  |
 | `status`           | `"alpha" \| "beta" \| "stable"`                  | No       | Component status (default: `"alpha"`).                                            |
 | `cssEncapsulation` | `boolean`                                        | No       | Include the `all:unset` encapsulation reset in CSS (default: `true`).             |
-| `ssr`              | `boolean`                                        | No       | Include `:scope:not([hydrated])` SSR pattern (default: `false`).                  |
+| `ssr`              | `boolean`                                        | No       | Include `:scope:not([hydrated])` pre-hydration styles to avoid layout shift (default: `false`).                  |
 
 ### `lookup-component`
 
@@ -3759,9 +3759,21 @@ The “partial support” bit for the latter means that you can render the initi
 
 Elena also supports [Declarative Shadow DOM](#declarative-shadow-dom) for cases where you may need stronger isolation, but still want the component to render server-side.
 
+## Avoiding layout shifts
+
+For components with `render()` specifically, our recommendation is to ship them with CSS styles that visually match the loading and `hydrated` states. This can be achieved utilizing the provided `hydrated` attribute in your web component’s styles:
+
+```css
+/* Elena CSS pre-hydration styles */
+:scope:not([hydrated]),
+.element { ... }
+```
+
+Since both selectors now share the same baseline styles, there are no visible layout shifts, FOUC, or FOIC (Flash Of Unstyled Content, Flash Of Invisible Content). For more details, see the [CSS pre-hydration styles](/components/styles#css-pre-hydration-styles) section.
+
 ## Rendering to HTML strings&#x20;
 
-When you don’t want to [handle the pre-hydration state with CSS](#avoiding-layout-shifts), you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr).
+When you don’t want to handle the pre-hydration state with CSS, you can expand component templates inline using [@elenajs/ssr](https://github.com/getelena/elena/tree/main/packages/ssr). Please note that this is an experimental package and we do not recommend it for production just yet.
 
 > \[!WARNING]
 > `@elenajs/ssr` is an experimental package and not yet ready for production use. APIs may change without notice.
@@ -3961,6 +3973,59 @@ Then in a template:
 {% render '<elena-button variant="primary">Save</elena-button>' %}
 ```
 
+## Pre-rendering without a framework
+
+If you’re working with plain HTML files and no framework or static site generator, you can use `@elenajs/ssr` directly in a Node.js build script. Place your HTML files in a `src/` directory and the script will expand all registered Elena components into `dist/`:
+
+```js
+// build.mjs
+import { readFileSync, writeFileSync, readdirSync, mkdirSync } from "node:fs";
+import { ssr, register } from "@elenajs/ssr";
+const { Button, Stack } = await import("@elenajs/components");
+
+register(Button, Stack);
+
+mkdirSync("dist", { recursive: true });
+
+for (const file of readdirSync("src").filter(f => f.endsWith(".html"))) {
+  const html = readFileSync(`src/${file}`, "utf-8");
+  writeFileSync(`dist/${file}`, ssr(html));
+}
+```
+
+Given a source file `src/index.html`:
+
+```html
+<elena-stack direction="row">
+  <elena-button variant="primary">Save</elena-button>
+  <elena-button>Cancel</elena-button>
+</elena-stack>
+```
+
+The script produces `dist/index.html`:
+
+```html
+<elena-stack direction="row">
+  <elena-button variant="primary" hydrated><button>Save</button></elena-button>
+  <elena-button hydrated><button>Cancel</button></elena-button>
+</elena-stack>
+```
+
+You can add this as an npm script in your `package.json` for convenience:
+
+```json
+{
+  "scripts": {
+    "build": "node build.mjs"
+  }
+}
+```
+
+Running `pnpm build` will generate the pre-rendered output.
+
+> \[!TIP]
+> Use `await import()` for component modules rather than a static `import` statement. Elena components extend `HTMLElement`, which requires a Node.js shim that `@elenajs/ssr` installs when it loads. Dynamic imports guarantee the shim is in place first, regardless of how an import sorter may reorder your static imports.
+
 ## Declarative Shadow DOM&#x20;
 
 Declarative Shadow DOM lets you define a shadow root directly in HTML using a `<template shadowrootmode="open">` element. The browser attaches the shadow root during parsing, so the shadow content is visible before JavaScript loads.
@@ -3995,35 +4060,6 @@ Button.define();
 In practice, you have to write the `<template>` block by hand every time you use the component, which gets repetitive quickly unless you abstract this duplication away in your own application. `@elenajs/ssr` may later get Declarative Shadow DOM support which would eliminate that entirely, but this isn’t currently on our roadmap.
 
 For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style isolation and want the component to be visible before JavaScript loads.
-
-## Avoiding layout shifts
-
-For **components with `render()`** specifically, our recommendation is to ship them with CSS styles that visually match the `loading` and `hydrated` states without causing layout shift, FOUC, or FOIC *(Flash Of Unstyled Content, Flash Of Invisible Content).* This can be achieved utilizing the provided `hydrated` attribute in your component styles:
-
-```css
-/* Elena SSR Pattern to avoid layout shift */
-:scope:not([hydrated]),
-.inner-element {
-  color: var(--elena-button-text);
-}
-```
-
-Sometimes you may need access to more than just the initial text content pre-hydration for better SSR support to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the element itself:
-
-```css
-:scope:not([hydrated])::before {
-  content: attr(label);
-  /* etc */
-}
-
-:scope:not([hydrated])::after {
-  content: attr(placeholder);
-  /* etc */
-}
-```
-
-> \[!TIP]
-> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
 ## Framework examples
 
@@ -4114,6 +4150,44 @@ For projects that use [CSS cascade layers](https://developer.mozilla.org/en-US/d
 }
 ```
 
+## CSS pre-hydration styles
+
+For components with `render()` specifically, our recommendation is to ship them with CSS styles that visually match the loading and `hydrated` states. This can be achieved utilizing the provided `hydrated` attribute in your web component’s styles:
+
+```css
+/* Elena CSS pre-hydration styles */
+:scope:not([hydrated]),
+.element { ... }
+```
+
+Since both selectors now share the same baseline styles, there are no visible layout shifts, FOUC, or FOIC (Flash Of Unstyled Content, Flash Of Invisible Content).
+
+Sometimes you may need access to more than just the initial text content pre-hydration to avoid layout shifts. This can be achieved with pseudo elements in CSS by referencing the attributes set on the host:
+
+```css
+:scope:not([hydrated])::before {
+  content: attr(label);
+}
+
+:scope:not([hydrated])::after {
+  content: attr(placeholder);
+}
+```
+
+For more details, see the [Server Side Rendering](/advanced/ssr) section.
+
+> \[!TIP]
+> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), when using `elenajs/ssr`, or when the rest of your app renders client side only.
+
+## Styling variants and states
+
+Use attribute selectors on `:scope` for variant and state styling:
+
+```css
+:scope[variant="primary"] { color: red }
+:scope[disabled] { opacity: 0.5 }
+```
+
 ## Full example
 
 Here’s a full example using these patterns:
@@ -4147,9 +4221,9 @@ Here’s a full example using these patterns:
     display: inline-block;
   }
 
-  /* Elena SSR Pattern to avoid layout shift */
+  /* CSS pre-hydration styles */
   :scope:not([hydrated]),
-  .elena-button:is(button) {
+  .elena-button {
     font-family: var(--_elena-button-font);
     color: var(--_elena-button-text);
     background: var(--_elena-button-bg);
@@ -4163,36 +4237,6 @@ Here’s a full example using these patterns:
   }
 }
 ```
-
-The `:scope:not([hydrated]), .inner-element` pattern ensures components look the same before and after hydration. Elena adds the `hydrated` attribute to the host element after its first render. By applying the same baseline styles to both the unhydrated host and the rendered inner element, the component avoids any layout shift.
-
-Use attribute selectors on `:scope` for variant and state styling:
-
-```css
-:scope[variant="primary"] { color: red }
-:scope[disabled] { opacity: 0.5 }
-```
-
-## Pre-hydration state and styles
-
-Since components with `render()` control their own internal markup, you may sometimes need to surface additional content before hydration. This can be done with CSS pseudo-elements and `attr()`:
-
-```css
-:scope:not([hydrated])::before {
-  content: attr(label);
-  /* etc */
-}
-
-:scope:not([hydrated])::after {
-  content: attr(placeholder);
-  /* etc */
-}
-```
-
-For more detailed guidelines, see the [Server Side Rendering](/advanced/ssr) section.
-
-> \[!TIP]
-> You can skip this section entirely for components without `render()`, when you plan to [hide components until loaded](/advanced/loading#hide-until-loaded), or when the rest of your app renders client side only.
 
 ## Composite Components
 
