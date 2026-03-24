@@ -33,6 +33,11 @@ describe("SSR_CONTENT", () => {
     expect(SSR_CONTENT).toContain("connectedCallback");
   });
 
+  it("documents pre-rendering without a framework", () => {
+    expect(SSR_CONTENT).toContain("Pre-rendering without a framework");
+    expect(SSR_CONTENT).toContain("build.mjs");
+  });
+
   it("includes framework example project links", () => {
     expect(SSR_CONTENT).toContain("github.com/getelena/eleventy-example-project");
     expect(SSR_CONTENT).toContain("github.com/getelena/html-example-project");

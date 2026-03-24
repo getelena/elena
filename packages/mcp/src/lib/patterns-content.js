@@ -576,7 +576,7 @@ Full baseline pattern for a **Primitive Component**:
 
   /* CSS pre-hydration styles */
   :scope:not([hydrated]),
-  .elena-button:is(button) {
+  .elena-button {
     font-family: var(--_elena-button-font);
     color: var(--_elena-button-text);
     background: var(--_elena-button-bg);
@@ -599,7 +599,7 @@ Full baseline pattern for a **Primitive Component**:
 Key rules:
 - \`:scope\` targets the host element defined by \`@scope (elena-tag)\`.
 - The encapsulation reset prevents global styles from leaking in. Place it as the first rule inside \`@scope\`.
-- Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles so the component looks the same before and after hydration. Use \`:scope:not([hydrated]), .class-name:is(tag)\` to match the rendered inner element precisely.
+- Style both \`:scope:not([hydrated])\` and the inner element with the same baseline styles so the component looks the same before and after hydration.
 - Use attribute selectors on \`:scope\` for variant/state styling.
 - Define public CSS custom properties on \`:scope\` for theming. Use the public/private pattern: \`--_elena-button-bg: var(--elena-button-bg, default)\` where underscore-prefixed properties are internal references and the non-prefixed ones are the public API consumers override from outside.
 
@@ -830,14 +830,15 @@ Elena's approach to SSR:
 - **Primitive Components** provide partial SSR support: base HTML and CSS renders server-side, then JavaScript progressively enhances the markup once the element is registered.
 - **Declarative Components** use Declarative Shadow DOM for cases where you need stronger isolation but still want the component to render server-side.
 
-For Primitive Components, ship CSS styles that visually match both loading and hydrated states to avoid FOUC/FOIC. Use the \`hydrated\` attribute:
+For Primitive Components, ship CSS styles that visually match both the loading and \`hydrated\` states. This can be achieved utilizing the provided \`hydrated\` attribute in your web component's styles:
 
 \`\`\`css
+/* Elena CSS pre-hydration styles */
 :scope:not([hydrated]),
-.inner-element {
-  color: var(--elena-button-text);
-}
+.element { ... }
 \`\`\`
+
+Since both selectors now share the same baseline styles, there are no visible layout shifts, FOUC, or FOIC (Flash Of Unstyled Content, Flash Of Invisible Content).
 
 For better SSR in Primitive Components, use CSS pseudo-elements referencing host attributes:
 
