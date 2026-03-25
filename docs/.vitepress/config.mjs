@@ -55,9 +55,12 @@ export default defineConfig({
     );
   },
   transformPageData(pageData) {
-    const title = pageData.title
-      ? `${pageData.title} | Elena`
-      : "Elena | Progressive Web Components";
+    const isHome = pageData.relativePath === "index.md";
+    const title = isHome
+      ? "Elena | Progressive Web Components"
+      : pageData.title
+        ? `${pageData.title} | Elena`
+        : "Elena | Progressive Web Components";
 
     pageData.frontmatter.head ??= [];
     pageData.frontmatter.head.push(
