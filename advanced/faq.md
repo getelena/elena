@@ -150,3 +150,7 @@ See the [contributing guidelines](https://github.com/getelena/elena/blob/main/CO
 ## I found a bug. How do I report it?
 
 First, make sure the bug is reproducible. Once confirmed, [create a new issue](https://github.com/getelena/elena/issues/new/choose) on GitHub.
+
+## I couldn’t find an answer to my question?
+
+If you couldn’t find an answer to your question, please don’t hesitate to join [Elena’s Discord server](https://discord.gg/7WGcdngTD7) to ask questions from the community.
