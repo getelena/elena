@@ -266,7 +266,7 @@ export default defineConfig({
 
     socialLinks: [
       { icon: "github", link: "https://github.com/getelena/elena" },
-      { icon: "discord", link: "https://discord.gg/7WGcdngTD7" },
+      /*{ icon: "discord", link: "https://discord.gg/7WGcdngTD7" },*/
     ],
 
     search: {
