@@ -4,12 +4,12 @@ description: Live demo of Elena’s Progressive Web Components pre-rendered with
 head:
   - - link
     - rel: preload
-      href: /elena/components/bundle.js
+      href: /components/bundle.js
       as: script
       crossOrigin: anonymous
   - - script
     - type: module
-      src: /elena/components/bundle.js
+      src: /components/bundle.js
 ---
 
 <script setup>

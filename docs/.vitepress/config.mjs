@@ -33,16 +33,16 @@ export default defineConfig({
   scrollOffset: 86,
   title: "Elena",
   lang: "en-GB",
-  base: "/elena/",
+  base: "/",
   ignoreDeadLinks: false,
   sitemap: {
-    hostname: "https://getelena.github.io/",
+    hostname: "https://elenajs.com",
   },
   description: "Simple, tiny library for building Progressive Web Components.",
   cleanUrls: true,
   transformHtml(html, id, { pageData }) {
     const pagePath = pageData.relativePath.replace(/index\.md$/, "").replace(/\.md$/, "");
-    const href = `/elena/${pagePath}`;
+    const href = `/${pagePath}`;
 
     return html.replace(
       new RegExp(
@@ -69,18 +69,18 @@ export default defineConfig({
   head: [
     ["meta", { property: "og:site_name", content: "Elena" }],
     ["meta", { property: "og:type", content: "website" }],
-    ["meta", { property: "og:url", content: "https://getelena.github.io/elena/" }],
+    ["meta", { property: "og:url", content: "https://elenajs.com/" }],
     ["meta", { name: "twitter:card", content: "summary_large_image" }],
-    ["meta", { property: "og:image", content: "https://getelena.github.io/elena/social.png" }],
-    ["meta", { name: "twitter:image", content: "https://getelena.github.io/elena/social.png" }],
+    ["meta", { property: "og:image", content: "https://elenajs.com/social.png" }],
+    ["meta", { name: "twitter:image", content: "https://elenajs.com/social.png" }],
     ["meta", { property: "og:image:alt", content: "Page image for Elenajs.com" }],
     ["meta", { name: "twitter:image:alt", content: "Page image for Elenajs.com" }],
     ["meta", { name: "fediverse:creator", content: "@ariel@front-end.social" }],
 
-    ["link", { rel: "icon", href: "/elena/favicon.ico", sizes: "48x48" }],
-    ["link", { rel: "icon", href: "/elena/favicon.svg", sizes: "any", type: "image/svg+xml" }],
-    ["link", { rel: "apple-touch-icon", href: "/elena/apple-touch-icon.png" }],
-    ["link", { rel: "manifest", href: "/elena/manifest.json" }],
+    ["link", { rel: "icon", href: "/favicon.ico", sizes: "48x48" }],
+    ["link", { rel: "icon", href: "/favicon.svg", sizes: "any", type: "image/svg+xml" }],
+    ["link", { rel: "apple-touch-icon", href: "/apple-touch-icon.png" }],
+    ["link", { rel: "manifest", href: "/manifest.json" }],
     [
       "script",
       {
