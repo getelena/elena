@@ -1,6 +1,6 @@
 ---
 title: Elena | Progressive Web Components
-titleTemplate: false
+titleTemplate: :title
 lastUpdated: false
 description: Elena is a simple, tiny library for building Progressive Web Components.
 ---
