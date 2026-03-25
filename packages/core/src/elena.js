@@ -148,6 +148,7 @@ export function Elena(superClass) {
         this.firstUpdated();
       }
       this.updated();
+      this._observeChildren();
     }
 
     /**
@@ -385,6 +386,43 @@ export function Elena(superClass) {
     }
 
     /**
+     * Watch for external mutations, re-capture
+     * text contents, and restore the <template>.
+     *
+     * @internal
+     */
+    _observeChildren() {
+      if (
+        !this.constructor.observe ||
+        this.constructor.shadow ||
+        !this._tplStrings ||
+        typeof MutationObserver === "undefined"
+      ) {
+        return;
+      }
+
+      if (!this._observer) {
+        this._observer = new MutationObserver(() => {
+          if (this.element?.isConnected) {
+            return;
+          }
+
+          this._tplStrings = null;
+          this._tplParts = null;
+
+          const newText = this.textContent.trim();
+          if (newText !== this._text) {
+            this._text = newText;
+          }
+
+          this._safeRender();
+        });
+      }
+
+      this._observer.observe(this, { childList: true });
+    }
+
+    /**
      * Define the element’s HTML here. Return an `html`
      * tagged template. If not overridden, the element connects
      * to the page without rendering anything.
@@ -423,6 +461,7 @@ export function Elena(superClass) {
      */
     disconnectedCallback() {
       super.disconnectedCallback?.();
+      this._observer?.disconnect();
       if (this._events) {
         this._events = false;
 
