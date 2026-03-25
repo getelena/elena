@@ -1,5 +1,5 @@
 ---
-url: /elena/components/lifecycle.md
+url: /components/lifecycle.md
 description: >-
   Understand Elena’s Progressive Web Component lifecycle, from connection and
   rendering to updates and disconnection.

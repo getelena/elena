@@ -1,5 +1,5 @@
 ---
-url: /elena/about/sponsor.md
+url: /about/sponsor.md
 description: Elena’s privacy policy and data practices.
 ---
 

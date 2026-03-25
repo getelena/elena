@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/typescript.md
+url: /advanced/typescript.md
 description: >-
   Learn how to use TypeScript with Elena, including authoring components in TS,
   generated type declarations, and JSX type support.

@@ -1,5 +1,5 @@
 ---
-url: /elena/examples/pre-rendered.md
+url: /examples/pre-rendered.md
 description: >-
   Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr
   and progressively enhanced with JavaScript.

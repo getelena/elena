@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/mcp.md
+url: /advanced/mcp.md
 description: >-
   Use @elenajs/mcp to connect Elena Progressive Web Component metadata and
   scaffolding tools to AI assistants via the Model Context Protocol.

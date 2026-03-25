@@ -1,4 +1,4 @@
 ---
-url: /elena/about/team.md
+url: /about/team.md
 ---
 

@@ -1,5 +1,5 @@
 ---
-url: /elena/components/templates.md
+url: /components/templates.md
 description: >-
   Learn how to write component templates using Elena’s html tagged template
   literal, including conditionals, loops, and XSS-safe interpolation.

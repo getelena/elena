@@ -1,5 +1,5 @@
 ---
-url: /elena/components/props.md
+url: /components/props.md
 description: >-
   Learn how to declare, type, and use props in Elena components, including
   attribute syncing, reflection, and supported types.

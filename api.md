@@ -1,5 +1,5 @@
 ---
-url: /elena/api.md
+url: /api.md
 description: >-
   Full API reference for all Elena packages including @elenajs/core,
   @elenajs/bundler, @elenajs/cli, @elenajs/ssr, and CEM plugins.

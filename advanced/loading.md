@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/loading.md
+url: /advanced/loading.md
 description: >-
   Learn how to handle async Elena component loading, detect when a component is
   ready, and safely call methods after hydration.

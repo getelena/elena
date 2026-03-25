@@ -1,5 +1,5 @@
 ---
-url: /elena/playground.md
+url: /playground.md
 description: Interactive playground for building Elena Progressive Web Components.
 ---
 

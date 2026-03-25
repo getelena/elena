@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/frameworks.md
+url: /advanced/frameworks.md
 description: >-
   Elena works with any JavaScript framework. It uses standard web platform APIs,
   so framework compatibility comes for free without any special adapters or

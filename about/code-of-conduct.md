@@ -1,5 +1,5 @@
 ---
-url: /elena/about/code-of-conduct.md
+url: /about/code-of-conduct.md
 description: Elena’s code of conduct for contributors and community members.
 ---
 

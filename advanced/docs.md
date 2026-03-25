@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/docs.md
+url: /advanced/docs.md
 description: >-
   Learn how to document Elena’s Progressive Web Components using JSDoc
   annotations to generate a Custom Elements Manifest and TypeScript

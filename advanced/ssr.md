@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/ssr.md
+url: /advanced/ssr.md
 description: >-
   Learn how Elena supports server-side rendering (SSR), and how to use
   @elenajs/ssr for Primitive Components with render().

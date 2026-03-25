@@ -6,41 +6,41 @@
 
 ### Getting started
 
-- [Quick start](/elena/start.md): Get started with Elena. Learn how to install the library, build your first Progressive Web Component, and bundle a library of Progressive Web Components.
-- [Live examples](/elena/examples.md): Live demo of Elena’s Progressive Web Components on a regular page without any server-side configuration.
+- [Quick start](/start.md): Get started with Elena. Learn how to install the library, build your first Progressive Web Component, and bundle a library of Progressive Web Components.
+- [Live examples](/examples.md): Live demo of Elena’s Progressive Web Components on a regular page without any server-side configuration.
 
 ### Components
 
-- [Overview](/elena/components/overview.md): Learn about Progressive Web Components and the different approaches to building them to help you decide what fits your use case.
-- [Lifecycle](/elena/components/lifecycle.md): Understand Elena’s Progressive Web Component lifecycle, from connection and rendering to updates and disconnection.
-- [Options](/elena/components/options.md): Reference for all Elena static class field options including tagName, props, events, element, shadow, and styles.
-- [Props](/elena/components/props.md): Learn how to declare, type, and use props in Elena components, including attribute syncing, reflection, and supported types.
-- [Events](/elena/components/events.md): Learn how to use events with Elena, fire custom events, and document events in the Custom Elements Manifest.
-- [Methods](/elena/components/methods.md): Learn about Elena’s lifecycle methods, utility methods, and how to define custom methods on your Progressive Web Components.
-- [Mixins](/elena/components/mixins.md): Learn how to write and compose mixins to share behavior across Elena Progressive Web Components.
-- [Templates](/elena/components/templates.md): Learn how to write component templates using Elena’s html tagged template literal, including conditionals, loops, and XSS-safe interpolation.
-- [Styles](/elena/components/styles.md): These guidelines cover the approaches we recommend when styling Progressive Web Components to make them work reliably across the custom element lifecycle.
+- [Overview](/components/overview.md): Learn about Progressive Web Components and the different approaches to building them to help you decide what fits your use case.
+- [Lifecycle](/components/lifecycle.md): Understand Elena’s Progressive Web Component lifecycle, from connection and rendering to updates and disconnection.
+- [Options](/components/options.md): Reference for all Elena static class field options including tagName, props, events, element, shadow, and styles.
+- [Props](/components/props.md): Learn how to declare, type, and use props in Elena components, including attribute syncing, reflection, and supported types.
+- [Events](/components/events.md): Learn how to use events with Elena, fire custom events, and document events in the Custom Elements Manifest.
+- [Methods](/components/methods.md): Learn about Elena’s lifecycle methods, utility methods, and how to define custom methods on your Progressive Web Components.
+- [Mixins](/components/mixins.md): Learn how to write and compose mixins to share behavior across Elena Progressive Web Components.
+- [Templates](/components/templates.md): Learn how to write component templates using Elena’s html tagged template literal, including conditionals, loops, and XSS-safe interpolation.
+- [Styles](/components/styles.md): These guidelines cover the approaches we recommend when styling Progressive Web Components to make them work reliably across the custom element lifecycle.
 
 ### Digging deeper
 
-- [Creating documentation](/elena/advanced/docs.md): Learn how to document Elena’s Progressive Web Components using JSDoc annotations to generate a Custom Elements Manifest and TypeScript declarations.
-- [Loading components](/elena/advanced/loading.md): Learn how to handle async Elena component loading, detect when a component is ready, and safely call methods after hydration.
-- [Component libraries](/elena/advanced/libraries.md): Learn how to build and publish an Elena Progressive Web Component library using @elenajs/bundler, including configuration, bundling, and TypeScript support.
-- [Server-side rendering (SSR)](/elena/advanced/ssr.md): Learn how Elena supports server-side rendering (SSR), and how to use @elenajs/ssr for Primitive Components with render().
-- [Framework integrations](/elena/advanced/frameworks.md): Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers.
-- [Command line interface](/elena/advanced/cli.md): Learn how to use @elenajs/cli to interactively scaffold Elena components with JS, TS, or single-file HTML output.
-- [Using TypeScript](/elena/advanced/typescript.md): Learn how to use TypeScript with Elena, including authoring components in TS, generated type declarations, and JSX type support.
-- [Scoping styles](/elena/advanced/scoping.md): Learn how to scope Elena’s Progressive Web Component styles using CSS @scope, CSS encapsulation, and CSS cascade layers.
-- [Known issues](/elena/advanced/gotchas.md): Known browser compatibility issues and workarounds for Elena, including bugs with CSS @scope in Firefox and Safari.
-- [MCP server](/elena/advanced/mcp.md): Use @elenajs/mcp to connect Elena Progressive Web Component metadata and scaffolding tools to AI assistants via the Model Context Protocol.
-- [Frequently asked questions (FAQ)](/elena/advanced/faq.md): Frequently asked questions about Elena, Progressive Web Components, browser support, and common patterns.
+- [Creating documentation](/advanced/docs.md): Learn how to document Elena’s Progressive Web Components using JSDoc annotations to generate a Custom Elements Manifest and TypeScript declarations.
+- [Loading components](/advanced/loading.md): Learn how to handle async Elena component loading, detect when a component is ready, and safely call methods after hydration.
+- [Component libraries](/advanced/libraries.md): Learn how to build and publish an Elena Progressive Web Component library using @elenajs/bundler, including configuration, bundling, and TypeScript support.
+- [Server-side rendering (SSR)](/advanced/ssr.md): Learn how Elena supports server-side rendering (SSR), and how to use @elenajs/ssr for Primitive Components with render().
+- [Framework integrations](/advanced/frameworks.md): Elena works with any JavaScript framework. It uses standard web platform APIs, so framework compatibility comes for free without any special adapters or wrappers.
+- [Command line interface](/advanced/cli.md): Learn how to use @elenajs/cli to interactively scaffold Elena components with JS, TS, or single-file HTML output.
+- [Using TypeScript](/advanced/typescript.md): Learn how to use TypeScript with Elena, including authoring components in TS, generated type declarations, and JSX type support.
+- [Scoping styles](/advanced/scoping.md): Learn how to scope Elena’s Progressive Web Component styles using CSS @scope, CSS encapsulation, and CSS cascade layers.
+- [Known issues](/advanced/gotchas.md): Known browser compatibility issues and workarounds for Elena, including bugs with CSS @scope in Firefox and Safari.
+- [MCP server](/advanced/mcp.md): Use @elenajs/mcp to connect Elena Progressive Web Component metadata and scaffolding tools to AI assistants via the Model Context Protocol.
+- [Frequently asked questions (FAQ)](/advanced/faq.md): Frequently asked questions about Elena, Progressive Web Components, browser support, and common patterns.
 
 ### Other
 
-- [API Reference](/elena/api.md): Full API reference for all Elena packages including @elenajs/core, @elenajs/bundler, @elenajs/cli, @elenajs/ssr, and CEM plugins.
-- [Become an Elena sponsor](/elena/about/sponsor.md): Elena’s privacy policy and data practices.
-- [Code of conduct](/elena/about/code-of-conduct.md): Elena’s code of conduct for contributors and community members.
-- [Live examples with @elenajs/ssr](/elena/examples/pre-rendered.md): Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr and progressively enhanced with JavaScript.
-- [Playground](/elena/playground.md): Interactive playground for building Elena Progressive Web Components.
-- [Privacy policy](/elena/about/privacy.md): Elena’s privacy policy and data practices.
-- [Untitled](/elena/about/team.md)
+- [API Reference](/api.md): Full API reference for all Elena packages including @elenajs/core, @elenajs/bundler, @elenajs/cli, @elenajs/ssr, and CEM plugins.
+- [Become an Elena sponsor](/about/sponsor.md): Elena’s privacy policy and data practices.
+- [Code of conduct](/about/code-of-conduct.md): Elena’s code of conduct for contributors and community members.
+- [Live examples with @elenajs/ssr](/examples/pre-rendered.md): Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr and progressively enhanced with JavaScript.
+- [Playground](/playground.md): Interactive playground for building Elena Progressive Web Components.
+- [Privacy policy](/about/privacy.md): Elena’s privacy policy and data practices.
+- [Untitled](/about/team.md)

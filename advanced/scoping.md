@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/scoping.md
+url: /advanced/scoping.md
 description: >-
   Learn how to scope Elena’s Progressive Web Component styles using CSS @scope,
   CSS encapsulation, and CSS cascade layers.

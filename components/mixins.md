@@ -1,5 +1,5 @@
 ---
-url: /elena/components/mixins.md
+url: /components/mixins.md
 description: >-
   Learn how to write and compose mixins to share behavior across Elena
   Progressive Web Components.

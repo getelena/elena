@@ -1,5 +1,5 @@
 ---
-url: /elena/components/events.md
+url: /components/events.md
 description: >-
   Learn how to use events with Elena, fire custom events, and document events in
   the Custom Elements Manifest.

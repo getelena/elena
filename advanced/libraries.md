@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/libraries.md
+url: /advanced/libraries.md
 description: >-
   Learn how to build and publish an Elena Progressive Web Component library
   using @elenajs/bundler, including configuration, bundling, and TypeScript

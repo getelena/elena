@@ -1,5 +1,5 @@
 ---
-url: /elena/api.md
+url: /api.md
 description: >-
   Full API reference for all Elena packages including @elenajs/core,
   @elenajs/bundler, @elenajs/cli, @elenajs/ssr, and CEM plugins.
@@ -236,7 +236,7 @@ elena-mcp <project-root>
 ---
 
 ---
-url: /elena/about/sponsor.md
+url: /about/sponsor.md
 description: Elena’s privacy policy and data practices.
 ---
 
@@ -251,7 +251,7 @@ If you have questions regarding the sponsorship, please reach out to <hi@elenajs
 ---
 
 ---
-url: /elena/about/code-of-conduct.md
+url: /about/code-of-conduct.md
 description: Elena’s code of conduct for contributors and community members.
 ---
 
@@ -306,7 +306,7 @@ For answers to common questions about this code of conduct, see <https://www.con
 ---
 
 ---
-url: /elena/advanced/cli.md
+url: /advanced/cli.md
 description: >-
   Learn how to use @elenajs/cli to interactively scaffold Elena components with
   JS, TS, or single-file HTML output.
@@ -402,7 +402,7 @@ src/components/my-button/
 ---
 
 ---
-url: /elena/advanced/libraries.md
+url: /advanced/libraries.md
 description: >-
   Learn how to build and publish an Elena Progressive Web Component library
   using @elenajs/bundler, including configuration, bundling, and TypeScript
@@ -689,7 +689,7 @@ The source code is in `packages/components/` of the [Elena monorepo](https://git
 ---
 
 ---
-url: /elena/advanced/docs.md
+url: /advanced/docs.md
 description: >-
   Learn how to document Elena’s Progressive Web Components using JSDoc
   annotations to generate a Custom Elements Manifest and TypeScript
@@ -1289,7 +1289,7 @@ For framework-specific TypeScript examples, see [Using TypeScript](/advanced/typ
 ---
 
 ---
-url: /elena/components/events.md
+url: /components/events.md
 description: >-
   Learn how to use events with Elena, fire custom events, and document events in
   the Custom Elements Manifest.
@@ -1422,7 +1422,7 @@ export default class Button extends Elena(HTMLElement) { /*...*/ }
 ---
 
 ---
-url: /elena/advanced/frameworks.md
+url: /advanced/frameworks.md
 description: >-
   Elena works with any JavaScript framework. It uses standard web platform APIs,
   so framework compatibility comes for free without any special adapters or
@@ -1686,7 +1686,7 @@ export class AppComponent {
 ---
 
 ---
-url: /elena/advanced/faq.md
+url: /advanced/faq.md
 description: >-
   Frequently asked questions about Elena, Progressive Web Components, browser
   support, and common patterns.
@@ -1845,7 +1845,7 @@ If you couldn’t find an answer to your question, please don’t hesitate to jo
 ---
 
 ---
-url: /elena/advanced/gotchas.md
+url: /advanced/gotchas.md
 description: >-
   Known browser compatibility issues and workarounds for Elena, including bugs
   with CSS @scope in Firefox and Safari.
@@ -1926,7 +1926,7 @@ You can’t pass dynamic text content as children. Use the `text` property inste
 ---
 
 ---
-url: /elena/components/lifecycle.md
+url: /components/lifecycle.md
 description: >-
   Understand Elena’s Progressive Web Component lifecycle, from connection and
   rendering to updates and disconnection.
@@ -2014,7 +2014,7 @@ attributeChangedCallback(prop, oldValue, newValue) {
 ---
 
 ---
-url: /elena/examples.md
+url: /examples.md
 description: >-
   Live demo of Elena’s Progressive Web Components on a regular page without any
   server-side configuration.
@@ -2184,7 +2184,7 @@ The source code is in `packages/components/` of the [Elena monorepo](https://git
 ---
 
 ---
-url: /elena/examples/pre-rendered.md
+url: /examples/pre-rendered.md
 description: >-
   Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr
   and progressively enhanced with JavaScript.
@@ -2354,7 +2354,7 @@ The source code is in `packages/components/` of the [Elena monorepo](https://git
 ---
 
 ---
-url: /elena/advanced/loading.md
+url: /advanced/loading.md
 description: >-
   Learn how to handle async Elena component loading, detect when a component is
   ready, and safely call methods after hydration.
@@ -2416,7 +2416,7 @@ For a broader solution that covers all undefined elements, you can use this CSS 
 ---
 
 ---
-url: /elena/advanced/mcp.md
+url: /advanced/mcp.md
 description: >-
   Use @elenajs/mcp to connect Elena Progressive Web Component metadata and
   scaffolding tools to AI assistants via the Model Context Protocol.
@@ -2578,7 +2578,7 @@ The CLI fetches the skills index and lets you choose which skills to install. Sk
 ---
 
 ---
-url: /elena/components/methods.md
+url: /components/methods.md
 description: >-
   Learn about Elena’s lifecycle methods, utility methods, and how to define
   custom methods on your Progressive Web Components.
@@ -2716,7 +2716,7 @@ _buildLabel() {
 ---
 
 ---
-url: /elena/components/mixins.md
+url: /components/mixins.md
 description: >-
   Learn how to write and compose mixins to share behavior across Elena
   Progressive Web Components.
@@ -2864,7 +2864,7 @@ SizeableButton.define();
 ---
 
 ---
-url: /elena/components/options.md
+url: /components/options.md
 description: >-
   Reference for all Elena static class field options including tagName, props,
   events, element, shadow, and styles.
@@ -2931,7 +2931,7 @@ For more on declaring props, default values, and reflection, see [Props](./props
 ---
 
 ---
-url: /elena/components/overview.md
+url: /components/overview.md
 description: >-
   Learn about Progressive Web Components and the different approaches to
   building them to help you decide what fits your use case.
@@ -2965,7 +2965,7 @@ Declarative Components are a hybrid of these and utilize [Declarative Shadow DOM
 ---
 
 ---
-url: /elena/playground.md
+url: /playground.md
 description: Interactive playground for building Elena Progressive Web Components.
 ---
 
@@ -2973,7 +2973,7 @@ description: Interactive playground for building Elena Progressive Web Component
 ---
 
 ---
-url: /elena/about/privacy.md
+url: /about/privacy.md
 description: Elena’s privacy policy and data practices.
 ---
 
@@ -3011,7 +3011,7 @@ If you have questions about this privacy policy, you can reach us at <hi@elenajs
 ---
 
 ---
-url: /elena/components/props.md
+url: /components/props.md
 description: >-
   Learn how to declare, type, and use props in Elena components, including
   attribute syncing, reflection, and supported types.
@@ -3173,7 +3173,7 @@ Keep prop names short and single-word where possible (e.g. `variant`). Avoid nam
 ---
 
 ---
-url: /elena/start.md
+url: /start.md
 description: >-
   Get started with Elena. Learn how to install the library, build your first
   Progressive Web Component, and bundle a library of Progressive Web Components.
@@ -3617,7 +3617,7 @@ For more, see the [CLI documentation](/advanced/cli).
 ---
 
 ---
-url: /elena/advanced/scoping.md
+url: /advanced/scoping.md
 description: >-
   Learn how to scope Elena’s Progressive Web Component styles using CSS @scope,
   CSS encapsulation, and CSS cascade layers.
@@ -3743,7 +3743,7 @@ elena-button[variant="primary"] {
 ---
 
 ---
-url: /elena/advanced/ssr.md
+url: /advanced/ssr.md
 description: >-
   Learn how Elena supports server-side rendering (SSR), and how to use
   @elenajs/ssr for Primitive Components with render().
@@ -4072,7 +4072,7 @@ Elena currently provides SSR examples for the following frameworks:
 ---
 
 ---
-url: /elena/components/styles.md
+url: /components/styles.md
 description: >-
   These guidelines cover the approaches we recommend when styling Progressive
   Web Components to make them work reliably across the custom element lifecycle.
@@ -4384,7 +4384,7 @@ elena-button[variant="primary"] {
 ---
 
 ---
-url: /elena/components/templates.md
+url: /components/templates.md
 description: >-
   Learn how to write component templates using Elena’s html tagged template
   literal, including conditionals, loops, and XSS-safe interpolation.
@@ -4699,14 +4699,14 @@ For now, Declarative Shadow DOM is mainly useful when you need Shadow DOM style 
 ---
 
 ---
-url: /elena/about/team.md
+url: /about/team.md
 ---
 
 
 ---
 
 ---
-url: /elena/advanced/typescript.md
+url: /advanced/typescript.md
 description: >-
   Learn how to use TypeScript with Elena, including authoring components in TS,
   generated type declarations, and JSX type support.

@@ -1,5 +1,5 @@
 ---
-url: /elena/about/privacy.md
+url: /about/privacy.md
 description: Elena’s privacy policy and data practices.
 ---
 

@@ -1,5 +1,5 @@
 ---
-url: /elena/examples.md
+url: /examples.md
 description: >-
   Live demo of Elena’s Progressive Web Components on a regular page without any
   server-side configuration.

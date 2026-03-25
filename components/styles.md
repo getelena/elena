@@ -1,5 +1,5 @@
 ---
-url: /elena/components/styles.md
+url: /components/styles.md
 description: >-
   These guidelines cover the approaches we recommend when styling Progressive
   Web Components to make them work reliably across the custom element lifecycle.

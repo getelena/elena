@@ -1,5 +1,5 @@
 ---
-url: /elena/components/options.md
+url: /components/options.md
 description: >-
   Reference for all Elena static class field options including tagName, props,
   events, element, shadow, and styles.

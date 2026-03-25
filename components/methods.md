@@ -1,5 +1,5 @@
 ---
-url: /elena/components/methods.md
+url: /components/methods.md
 description: >-
   Learn about Elena’s lifecycle methods, utility methods, and how to define
   custom methods on your Progressive Web Components.

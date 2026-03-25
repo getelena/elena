@@ -1,5 +1,5 @@
 ---
-url: /elena/start.md
+url: /start.md
 description: >-
   Get started with Elena. Learn how to install the library, build your first
   Progressive Web Component, and bundle a library of Progressive Web Components.

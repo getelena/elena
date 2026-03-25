@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/faq.md
+url: /advanced/faq.md
 description: >-
   Frequently asked questions about Elena, Progressive Web Components, browser
   support, and common patterns.

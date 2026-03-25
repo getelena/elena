@@ -1,5 +1,5 @@
 ---
-url: /elena/advanced/cli.md
+url: /advanced/cli.md
 description: >-
   Learn how to use @elenajs/cli to interactively scaffold Elena components with
   JS, TS, or single-file HTML output.
