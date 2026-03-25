@@ -142,7 +142,7 @@ It handles the cross-framework complexity (prop/attribute syncing, event delegat
 As a baseline, Elena’s progressive approach supports any web browser that’s capable of rendering Custom Elements. After that, it’s up to you to determine what is appropriate for your project when authoring CSS styles and JavaScript interactivity. Elena, the JavaScript library, is tested in the latest two versions of the following browsers:
 
 <div class="elena-stack">
-  <img src="/chrome.png" loading="lazy" width="56" height="56" alt="Chrome" />
+  <img src="/chrome.svg" loading="lazy" width="56" height="56" alt="Chrome" />
   <img src="/safari.png" loading="lazy" width="56" height="56" alt="Safari" />
   <img src="/edge.png" loading="lazy" width="56" height="56" alt="Edge" />
   <img src="/firefox.png" loading="lazy" width="56" height="56" alt="Firefox" />
