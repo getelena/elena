@@ -1,7 +1,12 @@
-import { collapseWhitespace, isRaw, resolveValue, toPlainText } from "./utils.js";
+import { collapseWhitespace, isArray, isRaw, resolveValue, toPlainText } from "./utils.js";
 
 const stringsCache = new WeakMap();
-const markerKey = "e" + Math.random().toString(36).slice(2, 6);
+const markerKey = "e" + ((Math.random() * 1e5) | 0);
+const SHOW_COMMENT = 128; // NodeFilter.SHOW_COMMENT
+const ELEMENT_NODE = 1; // Node.ELEMENT_NODE
+const TEXT_NODE = 3; // Node.TEXT_NODE
+const newTpl = () => document.createElement("template");
+const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
 
 /**
  * Render a tagged template into an Elena Element with DOM diffing.
@@ -37,7 +42,7 @@ function patchTextNodes(element, strings, values) {
 
   for (let i = 0; i < values.length; i++) {
     const v = values[i];
-    const comparable = Array.isArray(v) ? toPlainText(v) : v;
+    const comparable = isArray(v) ? toPlainText(v) : v;
 
     if (comparable === element._tplValues[i]) {
       continue;
@@ -65,54 +70,54 @@ function fullRender(element, strings, values) {
   let entry = stringsCache.get(strings);
 
   if (!entry) {
-    const processedStrings = Array.from(strings, collapseWhitespace);
+    const _strings = strings.map(collapseWhitespace);
     entry = {
-      processedStrings,
-      template: values.length > 0 ? createTemplate(processedStrings, values.length) : null,
+      _strings,
+      _tpl: values.length > 0 ? createTemplate(_strings, values.length) : null,
     };
     stringsCache.set(strings, entry);
   }
 
-  if (entry.template) {
-    element._tplParts = cloneAndPatch(element, entry.template, values);
+  if (entry._tpl) {
+    element._tplParts = cloneAndPatch(element, entry._tpl, values);
   } else {
     // Fallback for attribute-position values or static templates.
     // White space collapsing here protects against Vue SSR mismatches.
-    const renderedValues = values.map(value => resolveValue(value));
-    const markup = entry.processedStrings
+    const renderedValues = values.map(resolveValue);
+    const markup = entry._strings
       .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
       .replace(/>\s+</g, "><")
       .trim();
 
     // Morph existing DOM to match new markup instead of replacing it.
-    const tpl = document.createElement("template");
+    const tpl = newTpl();
     tpl.innerHTML = markup;
     morphContent(element, tpl.content.childNodes);
     element._tplParts = null;
   }
 
   element._tplStrings = strings;
-  element._tplValues = values.map(v => (Array.isArray(v) ? toPlainText(v) : v));
+  element._tplValues = values.map(v => (isArray(v) ? toPlainText(v) : v));
 }
 
 /**
  * Build a <template> element with comment markers.
  *
- * @param {string[]} processedStrings - Whitespace-collapsed static parts
+ * @param {string[]} _strings - Whitespace-collapsed static parts
  * @param {number} valueCount - Number of dynamic values
  * @returns {HTMLTemplateElement | null}
  */
-function createTemplate(processedStrings, valueCount) {
+function createTemplate(_strings, valueCount) {
   const marker = `<!--${markerKey}-->`;
-  const markup = processedStrings
+  const markup = _strings
     .reduce((out, str, i) => out + str + (i < valueCount ? marker : ""), "")
     .trim();
 
-  const tpl = document.createElement("template");
+  const tpl = newTpl();
   tpl.innerHTML = markup;
 
   // Mismatch means this template shape cannot use the clone path.
-  const walker = document.createTreeWalker(tpl.content, NodeFilter.SHOW_COMMENT);
+  const walker = treeWalker(tpl.content);
   let count = 0;
 
   while (walker.nextNode()) {
@@ -135,8 +140,8 @@ function createTemplate(processedStrings, valueCount) {
  */
 function cloneAndPatch(element, template, values) {
   const clone = template.content.cloneNode(true);
-  const walker = document.createTreeWalker(clone, NodeFilter.SHOW_COMMENT);
-  const parts = new Array(values.length);
+  const walker = treeWalker(clone);
+  const parts = Array(values.length);
   const markers = [];
   let node;
 
@@ -152,7 +157,7 @@ function cloneAndPatch(element, template, values) {
 
     if (isRaw(value)) {
       // Raw HTML: parse and insert as fragment
-      const tmp = document.createElement("template");
+      const tmp = newTpl();
       tmp.innerHTML = resolveValue(value);
       markers[i].parentNode.replaceChild(tmp.content, markers[i]);
 
@@ -191,14 +196,14 @@ function morphContent(parent, nextNodes) {
       parent.removeChild(cur);
     } else if (
       cur.nodeType !== nxt.nodeType ||
-      (cur.nodeType === Node.ELEMENT_NODE && cur.tagName !== nxt.tagName)
+      (cur.nodeType === ELEMENT_NODE && cur.tagName !== nxt.tagName)
     ) {
       parent.replaceChild(nxt, cur);
-    } else if (cur.nodeType === Node.TEXT_NODE) {
+    } else if (cur.nodeType === TEXT_NODE) {
       if (cur.textContent !== nxt.textContent) {
         cur.textContent = nxt.textContent;
       }
-    } else if (cur.nodeType === Node.ELEMENT_NODE) {
+    } else if (cur.nodeType === ELEMENT_NODE) {
       morphAttributes(cur, nxt);
       morphContent(cur, nxt.childNodes);
     }
