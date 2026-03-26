@@ -205,7 +205,7 @@ declare module "vue" {
 }
 ```
 
-The [Vue Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension is required for template type checking.
+The [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension is required for template type checking.
 
 **[View Vue example project →](https://github.com/getelena/vue-example-project)**
 
@@ -254,5 +254,5 @@ export class AppComponent {
 
 ## Next steps
 
-- For integration rules and framework-specific notes, see [known issues](/advanced/gotchas#javascript-frameworks).
-- For SSR-specific notes, see [server-side rendering](/advanced/ssr).
+- For integration rules and framework-specific notes, see [Known issues](/advanced/gotchas#javascript-frameworks).
+- For SSR-specific notes, see [Server-side rendering](/advanced/ssr).
