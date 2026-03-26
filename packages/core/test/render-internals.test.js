@@ -41,16 +41,16 @@ describe("render internals", () => {
       expect(c1.querySelector("span").textContent).toBe("first");
       expect(c2.querySelector("span").textContent).toBe("second");
 
-      expect(c1._tplParts).not.toBe(c2._tplParts);
-      expect(c1._tplParts[0]).not.toBe(c2._tplParts[0]);
+      expect(c1._templateParts).not.toBe(c2._templateParts);
+      expect(c1._templateParts[0]).not.toBe(c2._templateParts[0]);
     });
 
     it("handles static template with zero interpolations", () => {
       const container = el();
-      const tpl = Object.assign(["<div><b>static</b></div>"], {
+      const template = Object.assign(["<div><b>static</b></div>"], {
         raw: ["<div><b>static</b></div>"],
       });
-      renderTemplate(container, tpl, []);
+      renderTemplate(container, template, []);
       expect(container.querySelector("b").textContent).toBe("static");
     });
 
@@ -100,19 +100,19 @@ describe("render internals", () => {
       expect(span.textContent).toBe("world");
     });
 
-    it("attribute-position values leave _tplParts null", () => {
+    it("attribute-position values leave _templateParts null", () => {
       const container = el();
       renderTemplate(container, attrAndText, ["cls-a", "text"]);
 
-      expect(container._tplParts).toBeNull();
+      expect(container._templateParts).toBeNull();
     });
 
     it("handles multiple attributes with interpolations", () => {
       const container = el();
-      const tpl = Object.assign(['<input type="', '" name="', '">'], {
+      const template = Object.assign(['<input type="', '" name="', '">'], {
         raw: ['<input type="', '" name="', '">'],
       });
-      renderTemplate(container, tpl, ["email", "user-email"]);
+      renderTemplate(container, template, ["email", "user-email"]);
       const input = container.querySelector("input");
       expect(input.getAttribute("type")).toBe("email");
       expect(input.getAttribute("name")).toBe("user-email");
@@ -121,29 +121,29 @@ describe("render internals", () => {
     it("removes attributes that disappear on re-render", () => {
       const container = el();
       // Template with a conditional boolean attribute: `${disabled ? "disabled" : ""}`
-      const tpl = Object.assign(["<button ", ">click</button>"], {
+      const template = Object.assign(["<button ", ">click</button>"], {
         raw: ["<button ", ">click</button>"],
       });
-      renderTemplate(container, tpl, ["disabled"]);
+      renderTemplate(container, template, ["disabled"]);
       expect(container.querySelector("button").hasAttribute("disabled")).toBe(true);
 
-      renderTemplate(container, tpl, [""]);
+      renderTemplate(container, template, [""]);
       expect(container.querySelector("button").hasAttribute("disabled")).toBe(false);
     });
 
     it("preserves element identity when conditional attribute is toggled", () => {
       const container = el();
-      const tpl = Object.assign(["<button ", ">click</button>"], {
+      const template = Object.assign(["<button ", ">click</button>"], {
         raw: ["<button ", ">click</button>"],
       });
-      renderTemplate(container, tpl, [""]);
+      renderTemplate(container, template, [""]);
       const button = container.querySelector("button");
 
-      renderTemplate(container, tpl, ["disabled"]);
+      renderTemplate(container, template, ["disabled"]);
       expect(container.querySelector("button")).toBe(button);
       expect(button.hasAttribute("disabled")).toBe(true);
 
-      renderTemplate(container, tpl, [""]);
+      renderTemplate(container, template, [""]);
       expect(container.querySelector("button")).toBe(button);
       expect(button.hasAttribute("disabled")).toBe(false);
     });
@@ -152,14 +152,14 @@ describe("render internals", () => {
   describe("morph with nested elements", () => {
     it("morphs same-tag child elements in-place (attributes and content)", () => {
       const container = el();
-      const tpl = Object.assign(['<div class="', '"><span>inner</span></div>'], {
+      const template = Object.assign(['<div class="', '"><span>inner</span></div>'], {
         raw: ['<div class="', '"><span>inner</span></div>'],
       });
-      renderTemplate(container, tpl, ["a"]);
+      renderTemplate(container, template, ["a"]);
       const div = container.querySelector("div");
       const span = container.querySelector("span");
 
-      renderTemplate(container, tpl, ["b"]);
+      renderTemplate(container, template, ["b"]);
       expect(container.querySelector("div")).toBe(div);
       expect(container.querySelector("span")).toBe(span);
       expect(div.getAttribute("class")).toBe("b");
@@ -167,13 +167,13 @@ describe("render internals", () => {
 
     it("skips comment nodes that match on both sides", () => {
       const container = el();
-      const tpl = Object.assign(['<div data-x="', '"><!-- keep --><span>ok</span></div>'], {
+      const template = Object.assign(['<div data-x="', '"><!-- keep --><span>ok</span></div>'], {
         raw: ['<div data-x="', '"><!-- keep --><span>ok</span></div>'],
       });
-      renderTemplate(container, tpl, ["1"]);
+      renderTemplate(container, template, ["1"]);
       const span = container.querySelector("span");
 
-      renderTemplate(container, tpl, ["2"]);
+      renderTemplate(container, template, ["2"]);
 
       expect(container.querySelector("span")).toBe(span);
       expect(container.querySelector("div").getAttribute("data-x")).toBe("2");
@@ -191,10 +191,10 @@ describe("render internals", () => {
 
     it("multiple text values with one attribute value", () => {
       const container = el();
-      const tpl = Object.assign(['<div class="', '"><b>', "</b><i>", "</i></div>"], {
+      const template = Object.assign(['<div class="', '"><b>', "</b><i>", "</i></div>"], {
         raw: ['<div class="', '"><b>', "</b><i>", "</i></div>"],
       });
-      renderTemplate(container, tpl, ["cls", "bold", "italic"]);
+      renderTemplate(container, template, ["cls", "bold", "italic"]);
       expect(container.querySelector("div").getAttribute("class")).toBe("cls");
       expect(container.querySelector("b").textContent).toBe("bold");
       expect(container.querySelector("i").textContent).toBe("italic");
@@ -223,12 +223,12 @@ describe("render internals", () => {
       expect(container.querySelector("div").textContent).toBe("");
     });
 
-    it("raw HTML value has no fast-patch text node (undefined in _tplParts)", () => {
+    it("raw HTML value has no fast-patch text node (undefined in _templateParts)", () => {
       const container = el();
-      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
-      renderTemplate(container, tpl, [html`<b>raw</b>`]);
+      const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+      renderTemplate(container, template, [html`<b>raw</b>`]);
       // Raw values can't be fast-patched
-      expect(container._tplParts[0]).toBeUndefined();
+      expect(container._templateParts[0]).toBeUndefined();
     });
 
     it("mix of raw and plain values in same template", () => {
@@ -244,12 +244,12 @@ describe("render internals", () => {
     it("clone path → fast path on re-render with changed text", () => {
       const container = el();
       renderTemplate(container, singleText, ["hello"]);
-      const textNode = container._tplParts[0];
+      const textNode = container._templateParts[0];
 
       const result = renderTemplate(container, singleText, ["world"]);
       expect(result).toBe(false); // patched, no full render
       expect(container.querySelector("span").textContent).toBe("world");
-      expect(container._tplParts[0]).toBe(textNode);
+      expect(container._templateParts[0]).toBe(textNode);
     });
 
     it("fast path → full render when template shape changes", () => {
@@ -267,44 +267,44 @@ describe("render internals", () => {
 
     it("plain text → raw HTML → plain text transitions", () => {
       const container = el();
-      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+      const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
 
       // 1. Plain text
-      renderTemplate(container, tpl, ["hello"]);
+      renderTemplate(container, template, ["hello"]);
       expect(container.querySelector("div").textContent).toBe("hello");
 
       // 2. Switch to raw HTML: forces full render
-      renderTemplate(container, tpl, [html`<b>bold</b>`]);
+      renderTemplate(container, template, [html`<b>bold</b>`]);
       expect(container.querySelector("b").textContent).toBe("bold");
 
       // 3. Back to plain text: forces full render (raw → non-raw change)
-      renderTemplate(container, tpl, ["plain again"]);
+      renderTemplate(container, template, ["plain again"]);
       expect(container.querySelector("div").textContent).toBe("plain again");
       expect(container.querySelector("b")).toBeNull();
     });
 
     it("nothing → text → nothing transitions", () => {
       const container = el();
-      const tpl = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
+      const template = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
 
-      renderTemplate(container, tpl, [nothing]);
+      renderTemplate(container, template, [nothing]);
       expect(container.querySelector("span").textContent).toBe("");
 
-      renderTemplate(container, tpl, ["visible"]);
+      renderTemplate(container, template, ["visible"]);
       expect(container.querySelector("span").textContent).toBe("visible");
 
-      renderTemplate(container, tpl, [nothing]);
+      renderTemplate(container, template, [nothing]);
       expect(container.querySelector("span").textContent).toBe("");
     });
 
     it("unsafeHTML content change triggers full re-render", () => {
       const container = el();
-      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+      const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
 
-      renderTemplate(container, tpl, [unsafeHTML("<b>first</b>")]);
+      renderTemplate(container, template, [unsafeHTML("<b>first</b>")]);
       expect(container.querySelector("b").textContent).toBe("first");
 
-      renderTemplate(container, tpl, [unsafeHTML("<i>second</i>")]);
+      renderTemplate(container, template, [unsafeHTML("<i>second</i>")]);
       expect(container.querySelector("b")).toBeNull();
       expect(container.querySelector("i").textContent).toBe("second");
     });
@@ -313,15 +313,15 @@ describe("render internals", () => {
   describe("edge cases", () => {
     it("empty template (no tags, no values)", () => {
       const container = el();
-      const tpl = Object.assign([""], { raw: [""] });
-      renderTemplate(container, tpl, []);
+      const template = Object.assign([""], { raw: [""] });
+      renderTemplate(container, template, []);
       expect(container.innerHTML).toBe("");
     });
 
     it("template with only whitespace", () => {
       const container = el();
-      const tpl = Object.assign(["   \n   "], { raw: ["   \n   "] });
-      renderTemplate(container, tpl, []);
+      const template = Object.assign(["   \n   "], { raw: ["   \n   "] });
+      renderTemplate(container, template, []);
       expect(container.innerHTML.trim()).toBe("");
     });
 
@@ -384,9 +384,9 @@ describe("render internals", () => {
       for (let i = 0; i < count; i++) {
         statics.push(i < count - 1 ? " " : "</div>");
       }
-      const tpl = Object.assign(statics, { raw: [...statics] });
+      const template = Object.assign(statics, { raw: [...statics] });
       const values = Array.from({ length: count }, (_, i) => String(i));
-      renderTemplate(container, tpl, values);
+      renderTemplate(container, template, values);
 
       const text = container.querySelector("div").textContent;
       expect(text).toBe(values.join(" "));
@@ -395,13 +395,13 @@ describe("render internals", () => {
     it("re-rendering with same values is a no-op", () => {
       const container = el();
       renderTemplate(container, twoTexts, ["A", "B"]);
-      const node0 = container._tplParts[0];
-      const node1 = container._tplParts[1];
+      const node0 = container._templateParts[0];
+      const node1 = container._templateParts[1];
 
       const result = renderTemplate(container, twoTexts, ["A", "B"]);
       expect(result).toBe(false);
-      expect(container._tplParts[0]).toBe(node0);
-      expect(container._tplParts[1]).toBe(node1);
+      expect(container._templateParts[0]).toBe(node0);
+      expect(container._templateParts[1]).toBe(node1);
     });
 
     it("HTML comment in template does not interfere with markers", () => {
@@ -500,73 +500,73 @@ describe("render internals", () => {
   describe("value type transitions", () => {
     it("switches from template result to plain string", () => {
       const container = el();
-      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+      const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
 
-      renderTemplate(container, tpl, [html`<b>bold</b>`]);
+      renderTemplate(container, template, [html`<b>bold</b>`]);
       expect(container.querySelector("b")).not.toBeNull();
 
-      renderTemplate(container, tpl, ["just text"]);
+      renderTemplate(container, template, ["just text"]);
       expect(container.querySelector("b")).toBeNull();
       expect(container.querySelector("div").textContent).toBe("just text");
     });
 
     it("switches from plain string to template result", () => {
       const container = el();
-      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+      const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
 
-      renderTemplate(container, tpl, ["just text"]);
+      renderTemplate(container, template, ["just text"]);
       expect(container.querySelector("div").textContent).toBe("just text");
 
-      renderTemplate(container, tpl, [html`<em>emphasis</em>`]);
+      renderTemplate(container, template, [html`<em>emphasis</em>`]);
       expect(container.querySelector("em").textContent).toBe("emphasis");
     });
 
     it("switches from template result to null", () => {
       const container = el();
-      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+      const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
 
-      renderTemplate(container, tpl, [html`<b>content</b>`]);
+      renderTemplate(container, template, [html`<b>content</b>`]);
       expect(container.querySelector("b")).not.toBeNull();
 
-      renderTemplate(container, tpl, [null]);
+      renderTemplate(container, template, [null]);
       expect(container.querySelector("b")).toBeNull();
       expect(container.querySelector("div").textContent).toBe("");
     });
 
     it("switches from template result to undefined", () => {
       const container = el();
-      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+      const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
 
-      renderTemplate(container, tpl, [html`<b>content</b>`]);
+      renderTemplate(container, template, [html`<b>content</b>`]);
       expect(container.querySelector("b")).not.toBeNull();
 
-      renderTemplate(container, tpl, [undefined]);
+      renderTemplate(container, template, [undefined]);
       expect(container.querySelector("b")).toBeNull();
       expect(container.querySelector("div").textContent).toBe("");
     });
 
     it("switches from number to string to template result", () => {
       const container = el();
-      const tpl = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
+      const template = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
 
-      renderTemplate(container, tpl, [42]);
+      renderTemplate(container, template, [42]);
       expect(container.querySelector("span").textContent).toBe("42");
 
-      renderTemplate(container, tpl, ["hello"]);
+      renderTemplate(container, template, ["hello"]);
       expect(container.querySelector("span").textContent).toBe("hello");
 
-      renderTemplate(container, tpl, [html`<i>styled</i>`]);
+      renderTemplate(container, template, [html`<i>styled</i>`]);
       expect(container.querySelector("i").textContent).toBe("styled");
     });
 
     it("switches between different template results", () => {
       const container = el();
-      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+      const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
 
-      renderTemplate(container, tpl, [html`<b>bold</b>`]);
+      renderTemplate(container, template, [html`<b>bold</b>`]);
       expect(container.querySelector("b")).not.toBeNull();
 
-      renderTemplate(container, tpl, [html`<em>emphasis</em>`]);
+      renderTemplate(container, template, [html`<em>emphasis</em>`]);
       expect(container.querySelector("b")).toBeNull();
       expect(container.querySelector("em").textContent).toBe("emphasis");
     });
@@ -593,7 +593,7 @@ describe("render internals", () => {
       }
 
       expect(container.querySelector("span").textContent).toBe("value-99");
-      expect(container._tplParts[0].textContent).toBe("value-99");
+      expect(container._templateParts[0].textContent).toBe("value-99");
     });
 
     it("alternating full and fast renders stay consistent", () => {
@@ -602,8 +602,8 @@ describe("render internals", () => {
       const tplB = Object.assign(["<i>", "</i>"], { raw: ["<i>", "</i>"] });
 
       for (let i = 0; i < 10; i++) {
-        const tpl = i % 2 === 0 ? tplA : tplB;
-        renderTemplate(container, tpl, [`round-${i}`]);
+        const template = i % 2 === 0 ? tplA : tplB;
+        renderTemplate(container, template, [`round-${i}`]);
       }
 
       expect(container.querySelector("i").textContent).toBe("round-9");
@@ -643,9 +643,9 @@ describe("render internals", () => {
 
     it("returns true when raw HTML value changes on fast path", () => {
       const container = el();
-      const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
-      renderTemplate(container, tpl, ["text"]);
-      const result = renderTemplate(container, tpl, [html`<b>raw</b>`]);
+      const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+      renderTemplate(container, template, ["text"]);
+      const result = renderTemplate(container, template, [html`<b>raw</b>`]);
       expect(result).toBe(true);
     });
   });
