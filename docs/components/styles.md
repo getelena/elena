@@ -54,7 +54,7 @@ To style the host element itself, use `:scope`:
 }
 ```
 
-For projects that use [CSS cascade layers](https://developer.mozilla.org/en-US/docs/Learn_web/CSS/Building_blocks/Cascade_layers), you can also control which styles win by declaring a layer order. Wrap your component styles in a named layer, then declare it after your base layer so it takes precedence:
+For projects that use [CSS cascade layers](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers), you can also control which styles win by declaring a layer order. Wrap your component styles in a named layer, then declare it after your base layer so it takes precedence:
 
 ```css
 /* Global CSS layer order */
