@@ -2,10 +2,11 @@ import { collapseWhitespace, isArray, isRaw, resolveValue, toPlainText } from ".
 
 const stringsCache = new WeakMap();
 const markerKey = "e" + ((Math.random() * 1e5) | 0);
-const SHOW_COMMENT = 128; // NodeFilter.SHOW_COMMENT
-const ELEMENT_NODE = 1; // Node.ELEMENT_NODE
-const TEXT_NODE = 3; // Node.TEXT_NODE
-const newTpl = () => document.createElement("template");
+const SHOW_COMMENT = 128;
+const ELEMENT_NODE = 1;
+const TEXT_NODE = 3;
+
+const newTemplate = () => document.createElement("template");
 const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
 
 /**
@@ -36,7 +37,7 @@ export function renderTemplate(element, strings, values) {
  */
 function patchTextNodes(element, strings, values) {
   // Only works when re-rendering the same template shape
-  if (element._tplStrings !== strings || !element._tplParts) {
+  if (element._templateStrings !== strings || !element._templateParts) {
     return false;
   }
 
@@ -44,16 +45,16 @@ function patchTextNodes(element, strings, values) {
     const v = values[i];
     const comparable = isArray(v) ? toPlainText(v) : v;
 
-    if (comparable === element._tplValues[i]) {
+    if (comparable === element._templateValues[i]) {
       continue;
     }
 
-    if (isRaw(v) || !element._tplParts[i]) {
+    if (isRaw(v) || !element._templateParts[i]) {
       return false;
     }
 
-    element._tplValues[i] = comparable;
-    element._tplParts[i].textContent = toPlainText(v);
+    element._templateValues[i] = comparable;
+    element._templateParts[i].textContent = toPlainText(v);
   }
 
   return true;
@@ -73,13 +74,13 @@ function fullRender(element, strings, values) {
     const _strings = strings.map(collapseWhitespace);
     entry = {
       _strings,
-      _tpl: values.length > 0 ? createTemplate(_strings, values.length) : null,
+      _template: values.length > 0 ? createTemplate(_strings, values.length) : null,
     };
     stringsCache.set(strings, entry);
   }
 
-  if (entry._tpl) {
-    element._tplParts = cloneAndPatch(element, entry._tpl, values);
+  if (entry._template) {
+    element._templateParts = cloneAndPatch(element, entry._template, values);
   } else {
     // Fallback for attribute-position values or static templates.
     // White space collapsing here protects against Vue SSR mismatches.
@@ -90,14 +91,14 @@ function fullRender(element, strings, values) {
       .trim();
 
     // Morph existing DOM to match new markup instead of replacing it.
-    const tpl = newTpl();
-    tpl.innerHTML = markup;
-    morphContent(element, tpl.content.childNodes);
-    element._tplParts = null;
+    const template = newTemplate();
+    template.innerHTML = markup;
+    morphContent(element, template.content.childNodes);
+    element._templateParts = null;
   }
 
-  element._tplStrings = strings;
-  element._tplValues = values.map(v => (isArray(v) ? toPlainText(v) : v));
+  element._templateStrings = strings;
+  element._templateValues = values.map(v => (isArray(v) ? toPlainText(v) : v));
 }
 
 /**
@@ -113,11 +114,11 @@ function createTemplate(_strings, valueCount) {
     .reduce((out, str, i) => out + str + (i < valueCount ? marker : ""), "")
     .trim();
 
-  const tpl = newTpl();
-  tpl.innerHTML = markup;
+  const template = newTemplate();
+  template.innerHTML = markup;
 
   // Mismatch means this template shape cannot use the clone path.
-  const walker = treeWalker(tpl.content);
+  const walker = treeWalker(template.content);
   let count = 0;
 
   while (walker.nextNode()) {
@@ -126,7 +127,7 @@ function createTemplate(_strings, valueCount) {
     }
   }
 
-  return count === valueCount ? tpl : null;
+  return count === valueCount ? template : null;
 }
 
 /**
@@ -157,7 +158,7 @@ function cloneAndPatch(element, template, values) {
 
     if (isRaw(value)) {
       // Raw HTML: parse and insert as fragment
-      const tmp = newTpl();
+      const tmp = newTemplate();
       tmp.innerHTML = resolveValue(value);
       markers[i].parentNode.replaceChild(tmp.content, markers[i]);
 

@@ -13,7 +13,7 @@
  */
 
 import { setProps, getProps, getPropValue, syncAttribute } from "./common/props.js";
-import { html, unsafeHTML, nothing, warn, PREFIX } from "./common/utils.js";
+import { html, unsafeHTML, nothing, warn, prefix } from "./common/utils.js";
 import { renderTemplate } from "./common/render.js";
 
 export { html, unsafeHTML, nothing };
@@ -289,7 +289,7 @@ export function Elena(superClass) {
      * @internal
      */
     _applyRender() {
-      const ctor = this.constructor;
+      const constructor = this.constructor;
       const root = this._renderRoot;
       const result = this.render();
 
@@ -301,11 +301,11 @@ export function Elena(superClass) {
         // so the existing ref is still valid.
         if (rebuilt) {
           const oldElement = this.element;
-          this.element = ctor._resolver(root);
+          this.element = constructor._resolver(root);
 
           // Re-bind event listeners when the inner element was replaced.
           if (this._events && oldElement && this.element !== oldElement) {
-            const events = ctor._elenaEvents;
+            const events = constructor._elenaEvents;
 
             for (const e of events) {
               oldElement.removeEventListener(e, this);
@@ -317,10 +317,10 @@ export function Elena(superClass) {
 
       // Resolve inner element on first render
       if (!this.element) {
-        this.element = ctor._resolver(root);
+        this.element = constructor._resolver(root);
 
         if (!this.element) {
-          if (ctor.element) {
+          if (constructor.element) {
             warn("Element not found.");
           }
           this.element = root.firstElementChild;
@@ -471,8 +471,8 @@ export function Elena(superClass) {
     static define() {
       const tag = this.tagName;
       if (tag) {
-        const ce = globalThis.customElements;
-        ce?.get(tag) || ce?.define(tag, this);
+        const customElements = globalThis.customElements;
+        customElements?.get(tag) || customElements?.define(tag, this);
       } else {
         warn("define() without a tagName.");
       }
@@ -497,7 +497,7 @@ export function Elena(superClass) {
           try {
             this._performUpdate();
           } catch (e) {
-            console.error(PREFIX, e);
+            console.error(prefix, e);
           }
         });
       }

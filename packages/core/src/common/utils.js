@@ -1,13 +1,12 @@
-const PREFIX = "░█ [ELENA]: ";
+const prefix = "░█ [ELENA]: ";
 const isArray = Array.isArray;
 
 /**
  * @param {string} msg
  * @internal
  */
-export const warn = msg => console.warn(PREFIX + msg);
-
-export { PREFIX, isArray };
+export const warn = msg => console.warn(prefix + msg);
+export { prefix, isArray };
 
 /**
  * Register the Elena Element if the browser supports it.
@@ -16,8 +15,8 @@ export { PREFIX, isArray };
  * @param {Function} Element
  */
 export function defineElement(tagName, Element) {
-  const ce = globalThis.customElements;
-  ce?.get(tagName) || ce?.define(tagName, Element);
+  const customElements = globalThis.customElements;
+  customElements?.get(tagName) || customElements?.define(tagName, Element);
 }
 
 /**
