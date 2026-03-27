@@ -18,7 +18,8 @@
       </svg>
       <strong>Star Elena on GitHub!</strong>
     </span>
-    This is the easiest way to support our open source project and help boost our rank for free.
+    This is the easiest way to support our open source work and help boost Elena’s ranking on
+    GitHub.
   </a>
 </template>
 
