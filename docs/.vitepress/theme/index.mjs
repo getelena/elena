@@ -2,6 +2,7 @@ import { defineAsyncComponent, h } from "vue";
 import DefaultTheme from "vitepress/theme-without-fonts";
 import { useRoute } from "vitepress";
 import { initCodeblockFold } from "./codeblock-fold.mjs";
+import GitHubStar from "./components/GitHubStar.vue";
 import "./custom.css";
 import "./styles/playground.css";
 import "../../public/components/bundle.css";
@@ -15,6 +16,7 @@ export default {
   Layout() {
     return h(DefaultTheme.Layout, null, {
       "nav-bar-title-before": () => h("div", { class: "vp-logo", innerHTML: logoSvg }),
+      "doc-footer-before": () => h(GitHubStar),
     });
   },
   setup() {

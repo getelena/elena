@@ -627,3 +627,75 @@ footer.VPFooter a[href*="://"]::after {
     flex: 1 1 100%;
   }
 }
+
+.VPDoc .VPDocFooter {
+  margin-top: 36px;
+}
+
+.elena-star {
+  margin-block-end: 2.5rem;
+  padding: 24px;
+  border-radius: 12px;
+  background-color: #e8f4fd;
+  border: 1px solid #c6e3f7;
+  transition: border-color 0.25s;
+}
+
+.dark .elena-star {
+  background-color: rgba(56, 139, 203, 0.12);
+  border-color: rgba(56, 139, 203, 0.2);
+}
+
+.elena-star:hover {
+  border-color: #7abce4;
+}
+
+.dark .elena-star:hover {
+  border-color: rgba(56, 139, 203, 0.45);
+}
+
+a.elena-star {
+  display: block;
+  text-decoration: none;
+  color: var(--vp-c-text-1);
+  font-size: 16px;
+  line-height: 28px;
+}
+
+a.elena-star:hover {
+  color: var(--vp-c-text-1);
+}
+
+.elena-star-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--vp-c-text-1);
+}
+
+.elena-star-heading strong {
+  text-decoration: underline;
+}
+
+.elena-star-heading svg {
+  flex-shrink: 0;
+}
+
+.elena-star-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-end: 4px;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  box-shadow: var(--vp-shadow-1);
+}
+
+.elena-star-badge svg {
+  flex-shrink: 0;
+}
