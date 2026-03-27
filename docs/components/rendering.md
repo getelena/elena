@@ -7,6 +7,13 @@ description: Learn how Elena detects changes, batches updates, and efficiently r
 
 Elena renders a web component once when it connects to the page. After that, any change to a [reactive property](/components/props) triggers an update. Elena performs updates asynchronously so property changes are batched: if there are multiple changes, they are combined into a single render.
 
+## How the DOM is updated
+
+When Elena updates, it calls `render()` and compares the result to what is currently in the DOM. It uses two strategies depending on what changed:
+
+- **Patch:** if the template shape is the same, Elena patches only the text nodes that changed. The DOM structure stays intact, preserving element identity, focus state, and scroll position.
+- **Morph:** if the template shape changed, Elena rebuilds the affected portion of the DOM and morphs it into place, updating attributes and text in existing nodes where possible.
+
 ## What triggers an update
 
 Elena schedules an update when any of these change:
@@ -74,13 +81,6 @@ this.items = [...this.items, "new item"];
 
 > [!TIP]
 > For simple cases, `requestUpdate()` is fine. For components that update lists or nested data frequently, replacing the value with a new reference is more predictable because it works the same as any other prop change.
-
-## How the DOM is updated
-
-When Elena re-renders, it calls `render()` and compares the result to what is currently in the DOM. It uses two strategies depending on what changed:
-
-- **Patch:** if the template shape is the same, Elena patches only the text nodes that changed. The DOM structure stays intact, preserving element identity, focus state, and scroll position.
-- **Morph:** if the template shape changed, Elena rebuilds the affected portion of the DOM and morphs it into place, updating attributes and text in existing nodes where possible.
 
 ## The update cycle
 
