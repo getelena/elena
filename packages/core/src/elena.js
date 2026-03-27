@@ -57,6 +57,7 @@ function elementResolver(selector) {
  *   element?: string,
  *   shadow?: "open" | "closed",
  *   styles?: CSSStyleSheet | string | (CSSStyleSheet | string)[],
+ *   observe?: boolean,
  * }} ElenaElementConstructor
  */
 
