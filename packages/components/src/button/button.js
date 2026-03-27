@@ -23,6 +23,7 @@ import "../spinner/spinner.js";
 export default class Button extends Elena(HTMLElement) {
   static tagName = "elena-button";
   static events = ["click", "focus", "blur"];
+  static observe = true;
   static props = [
     "variant",
     "size",
