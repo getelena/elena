@@ -1,3 +1,5 @@
+import { warn } from "./utils.js";
+
 /**
  * Get the value of the Elena Element property.
  *
@@ -14,11 +16,10 @@ export function getPropValue(type, value, transform) {
     switch (type) {
       case "object":
       case "array":
-        return value === null ? null : JSON.stringify(value);
+        return value && JSON.stringify(value);
       case "boolean":
         return value ? "" : null;
-      case "number":
-        return value === null ? null : value;
+      // number, string:
       default:
         return value === "" ? null : value;
     }
@@ -32,11 +33,9 @@ export function getPropValue(type, value, transform) {
         try {
           return JSON.parse(value);
         } catch {
-          console.warn("░█ [ELENA]: Invalid JSON: " + value);
+          warn("Invalid JSON: " + value);
           return null;
         }
-      case "boolean":
-        return value; // conversion already handled above
       case "number":
         return value !== null ? +value : value;
       default:
@@ -54,7 +53,7 @@ export function getPropValue(type, value, transform) {
  */
 export function syncAttribute(element, name, value) {
   if (!element) {
-    console.warn("░█ [ELENA]: Cannot sync attrs.");
+    warn("Cannot sync attrs.");
     return;
   }
   if (value === null) {
@@ -80,7 +79,7 @@ export function setProps(proto, propNames, noReflect) {
       configurable: true,
       enumerable: true,
       get() {
-        return this._props ? this._props.get(prop) : undefined;
+        return this._props?.get(prop);
       },
       set(value) {
         if (!this._props) {
@@ -124,7 +123,7 @@ export function getProps(context, name, oldValue, newValue) {
   if (oldValue !== newValue) {
     const type = typeof context[name];
     if (type === "undefined") {
-      console.warn(`░█ [ELENA]: Prop "${name}" has no default.`);
+      warn(`Prop "${name}" has no default.`);
     }
     const newAttr = getPropValue(type, newValue, "toProp");
     context[name] = newAttr;

@@ -13,7 +13,7 @@
  */
 
 import { setProps, getProps, getPropValue, syncAttribute } from "./common/props.js";
-import { defineElement, html, unsafeHTML, nothing } from "./common/utils.js";
+import { defineElement, html, unsafeHTML, nothing, warn, prefix } from "./common/utils.js";
 import { renderTemplate } from "./common/render.js";
 
 export { html, unsafeHTML, nothing };
@@ -62,6 +62,7 @@ function elementResolver(selector) {
 
 // Tracks which component classes have already been set up.
 const setupRegistry = new WeakSet();
+const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
 /**
  * Creates an Elena component class by extending `superClass`.
@@ -136,7 +137,9 @@ export function Elena(superClass) {
       super.connectedCallback?.();
       this._setupStaticProps();
       this._captureClassFieldDefaults();
-      this._captureText();
+      if (!this._hydrated && this._text === undefined) {
+        this.text = this.textContent.trim();
+      }
       this._attachShadow();
       this.willUpdate();
       this._applyRender();
@@ -181,7 +184,7 @@ export function Elena(superClass) {
         }
 
         if (names.includes("text")) {
-          console.warn('░█ [ELENA]: "text" is reserved.');
+          warn('"text" is reserved.');
         }
 
         setProps(component.prototype, names, noRef);
@@ -193,7 +196,7 @@ export function Elena(superClass) {
 
       if (component._elenaEvents) {
         for (const e of component._elenaEvents) {
-          if (!Object.prototype.hasOwnProperty.call(component.prototype, e)) {
+          if (!hasOwn(component.prototype, e)) {
             component.prototype[e] = function (...args) {
               return this.element[e](...args);
             };
@@ -215,7 +218,7 @@ export function Elena(superClass) {
       this._syncing = true;
 
       for (const name of this.constructor._propNames) {
-        if (Object.prototype.hasOwnProperty.call(this, name)) {
+        if (hasOwn(this, name)) {
           const value = this[name];
           delete this[name];
           this[name] = value;
@@ -223,17 +226,6 @@ export function Elena(superClass) {
       }
 
       this._syncing = false;
-    }
-
-    /**
-     * Saves any text inside the element before the first render.
-     *
-     * @internal
-     */
-    _captureText() {
-      if (!this._hydrated && this._text === undefined) {
-        this.text = this.textContent.trim();
-      }
     }
 
     /**
@@ -275,7 +267,7 @@ export function Elena(superClass) {
       // Normalize to array and cache converted CSSStyleSheet instances on the class.
       // Avoids re-parsing CSS strings on every element instance.
       if (!component._adoptedSheets) {
-        const stylesList = Array.isArray(component.styles) ? component.styles : [component.styles];
+        const stylesList = [component.styles].flat();
 
         component._adoptedSheets = stylesList.map(s => {
           if (typeof s === "string") {
@@ -297,10 +289,11 @@ export function Elena(superClass) {
      * @internal
      */
     _applyRender() {
+      const constructor = this.constructor;
+      const root = this._renderRoot;
       const result = this.render();
 
       if (result && result.strings) {
-        const root = this._renderRoot;
         const rebuilt = renderTemplate(root, result.strings, result.values);
 
         // Re-resolve element ref when the DOM was fully rebuilt.
@@ -308,11 +301,11 @@ export function Elena(superClass) {
         // so the existing ref is still valid.
         if (rebuilt) {
           const oldElement = this.element;
-          this.element = this.constructor._resolver(root);
+          this.element = constructor._resolver(root);
 
           // Re-bind event listeners when the inner element was replaced.
           if (this._events && oldElement && this.element !== oldElement) {
-            const events = this.constructor._elenaEvents;
+            const events = constructor._elenaEvents;
 
             for (const e of events) {
               oldElement.removeEventListener(e, this);
@@ -324,12 +317,11 @@ export function Elena(superClass) {
 
       // Resolve inner element on first render
       if (!this.element) {
-        const root = this._renderRoot;
-        this.element = this.constructor._resolver(root);
+        this.element = constructor._resolver(root);
 
         if (!this.element) {
-          if (this.constructor.element) {
-            console.warn("░█ [ELENA]: Element not found.");
+          if (constructor.element) {
+            warn("Element not found.");
           }
           this.element = root.firstElementChild;
         }
@@ -373,7 +365,7 @@ export function Elena(superClass) {
 
       if (!this._events && events?.length) {
         if (!this.element) {
-          console.warn("░█ [ELENA]: Cannot add events.");
+          warn("Cannot add events.");
         } else {
           this._events = true;
 
@@ -477,10 +469,11 @@ export function Elena(superClass) {
      * not on the Elena mixin itself.
      */
     static define() {
-      if (this.tagName) {
-        defineElement(this.tagName, this);
+      const tag = this.tagName;
+      if (tag) {
+        defineElement(tag, this);
       } else {
-        console.warn("░█ [ELENA]: define() without a tagName.");
+        warn("define() without a tagName.");
       }
     }
 
@@ -503,7 +496,7 @@ export function Elena(superClass) {
           try {
             this._performUpdate();
           } catch (e) {
-            console.error("░█ [ELENA]:", e);
+            console.error(prefix, e);
           }
         });
       }
@@ -541,10 +534,7 @@ export function Elena(superClass) {
      * @type {Promise<void>}
      */
     get updateComplete() {
-      if (this._updateComplete) {
-        return this._updateComplete;
-      }
-      return Promise.resolve();
+      return this._updateComplete || Promise.resolve();
     }
 
     /**
