@@ -387,7 +387,7 @@ export function Elena(superClass) {
       if (
         !this.constructor.observe ||
         this.constructor.shadow ||
-        !this._tplStrings ||
+        !this._templateStrings ||
         typeof MutationObserver === "undefined"
       ) {
         return;
@@ -399,8 +399,8 @@ export function Elena(superClass) {
             return;
           }
 
-          this._tplStrings = null;
-          this._tplParts = null;
+          this._templateStrings = null;
+          this._templateParts = null;
 
           const newText = this.textContent.trim();
           if (newText !== this._text) {
