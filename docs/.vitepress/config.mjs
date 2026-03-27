@@ -239,6 +239,7 @@ export default defineConfig({
         items: [
           { text: "Overview", link: "/components/overview" },
           { text: "Lifecycle", link: "/components/lifecycle" },
+          { text: "Rendering", link: "/components/rendering" },
           { text: "Options", link: "/components/options" },
           { text: "Props", link: "/components/props" },
           { text: "Events", link: "/components/events" },
