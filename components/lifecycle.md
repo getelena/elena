@@ -9,7 +9,7 @@ description: >-
 
 Elena’s component lifecycle has two parts: the standard custom element lifecycle, and a reactive update cycle triggered by property changes.
 
-Re-renders are batched. If multiple props change at once, Elena waits until the current task finishes, then renders all changes in one update. This happens via a microtask, so the DOM is updated before the browser paints:
+Updates are batched asynchronously: if multiple props change before the update starts, all changes are captured in the same update. See [rendering](/components/rendering) for more details.
 
 ## `connectedCallback()`
 

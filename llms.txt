@@ -13,6 +13,7 @@
 
 - [Overview](/components/overview.md): Learn about Progressive Web Components and the different approaches to building them to help you decide what fits your use case.
 - [Lifecycle](/components/lifecycle.md): Understand Elena’s Progressive Web Component lifecycle, from connection and rendering to updates and disconnection.
+- [Rendering](/components/rendering.md): Learn how Elena detects changes, batches updates, and efficiently re-renders components.
 - [Options](/components/options.md): Reference for all Elena static class field options including tagName, props, events, element, shadow, and styles.
 - [Props](/components/props.md): Learn how to declare, type, and use props in Elena components, including attribute syncing, reflection, and supported types.
 - [Events](/components/events.md): Learn how to use events with Elena, fire custom events, and document events in the Custom Elements Manifest.
