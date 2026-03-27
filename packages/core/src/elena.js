@@ -13,7 +13,7 @@
  */
 
 import { setProps, getProps, getPropValue, syncAttribute } from "./common/props.js";
-import { html, unsafeHTML, nothing, warn, prefix, defineElement } from "./common/utils.js";
+import { defineElement, html, unsafeHTML, nothing, warn, prefix } from "./common/utils.js";
 import { renderTemplate } from "./common/render.js";
 
 export { html, unsafeHTML, nothing };
