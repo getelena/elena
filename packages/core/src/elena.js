@@ -384,9 +384,11 @@ export function Elena(superClass) {
      * @internal
      */
     _observeChildren() {
+      const constructor = this.constructor;
+
       if (
-        !this.constructor.observe ||
-        this.constructor.shadow ||
+        !constructor.observe ||
+        constructor.shadow ||
         !this._templateStrings ||
         typeof MutationObserver === "undefined"
       ) {
@@ -400,13 +402,7 @@ export function Elena(superClass) {
           }
 
           this._templateStrings = null;
-          this._templateParts = null;
-
-          const newText = this.textContent.trim();
-          if (newText !== this._text) {
-            this._text = newText;
-          }
-
+          this.text = this.textContent.trim();
           this._safeRender();
         });
       }
