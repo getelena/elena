@@ -13,7 +13,7 @@
  */
 
 import { setProps, getProps, getPropValue, syncAttribute } from "./common/props.js";
-import { html, unsafeHTML, nothing, warn, prefix } from "./common/utils.js";
+import { html, unsafeHTML, nothing, warn, prefix, defineElement } from "./common/utils.js";
 import { renderTemplate } from "./common/render.js";
 
 export { html, unsafeHTML, nothing };
@@ -471,8 +471,7 @@ export function Elena(superClass) {
     static define() {
       const tag = this.tagName;
       if (tag) {
-        const customElements = globalThis.customElements;
-        customElements?.get(tag) || customElements?.define(tag, this);
+        defineElement(tag, this);
       } else {
         warn("define() without a tagName.");
       }
