@@ -19,6 +19,7 @@ export function getPropValue(type, value, transform) {
         return value && JSON.stringify(value);
       case "boolean":
         return value ? "" : null;
+      // number, string:
       default:
         return value === "" ? null : value;
     }
