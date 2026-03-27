@@ -41,6 +41,10 @@ function createConfig({ input, output, hasSummary = false, mangleProperties = fa
     terser({
       ecma: 2020,
       module: true,
+      compress: {
+        passes: 2,
+        pure_getters: true,
+      },
       ...(mangleProperties && {
         mangle: {
           properties: {

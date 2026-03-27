@@ -418,6 +418,16 @@ describe("runtime type preservation", () => {
       expect(el.hasAttribute("count")).toBe(true);
       expect(el.getAttribute("count")).toBe("0");
     });
+
+    it("setting null removes the attribute", async () => {
+      const el = await createElement("number-element");
+      el.count = 42;
+      expect(el.getAttribute("count")).toBe("42");
+
+      el.count = null;
+      expect(el.count).toBeNull();
+      expect(el.hasAttribute("count")).toBe(false);
+    });
   });
 
   describe("boolean", () => {

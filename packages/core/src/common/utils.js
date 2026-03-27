@@ -1,3 +1,13 @@
+const prefix = "░█ [ELENA]: ";
+const isArray = Array.isArray;
+
+/**
+ * @param {string} msg
+ * @internal
+ */
+export const warn = msg => console.warn(prefix + msg);
+export { prefix, isArray };
+
 /**
  * Register the Elena Element if the browser supports it.
  *
@@ -5,11 +15,8 @@
  * @param {Function} Element
  */
 export function defineElement(tagName, Element) {
-  if (typeof window !== "undefined" && "customElements" in window) {
-    if (!window.customElements.get(tagName)) {
-      window.customElements.define(tagName, Element);
-    }
-  }
+  const customElements = globalThis.customElements;
+  customElements?.get(tagName) || customElements?.define(tagName, Element);
 }
 
 /**
@@ -31,8 +38,8 @@ export function escapeHtml(str) {
  * @returns {string}
  */
 export function resolveValue(value) {
-  if (Array.isArray(value)) {
-    return value.map(item => resolveItem(item)).join("");
+  if (isArray(value)) {
+    return value.map(resolveItem).join("");
   }
   return resolveItem(value);
 }
@@ -45,7 +52,7 @@ export function resolveValue(value) {
  * @returns {string}
  */
 function resolveItem(value) {
-  return value?.__raw ? String(value) : escapeHtml(String(value ?? ""));
+  return value?.__raw ? String(value) : escapeHtml(value ?? "");
 }
 
 /**
@@ -63,7 +70,7 @@ export function html(strings, ...values) {
     strings,
     values,
     toString: () => {
-      if (str === undefined) {
+      if (str == null) {
         str = strings.reduce((acc, s, i) => {
           return acc + s + resolveValue(values[i]);
         }, "");
@@ -89,7 +96,7 @@ export function unsafeHTML(str) {
  *
  * @type {{ __raw: true, toString(): string }}
  */
-export const nothing = Object.freeze({ __raw: true, toString: () => "" });
+export const nothing = { __raw: true, toString: () => "" };
 
 /**
  * Check if a value contains trusted HTML fragments.
@@ -97,8 +104,7 @@ export const nothing = Object.freeze({ __raw: true, toString: () => "" });
  * @param {*} value
  * @returns {boolean}
  */
-export const isRaw = value =>
-  Array.isArray(value) ? value.some(item => item?.__raw) : value?.__raw;
+export const isRaw = value => (isArray(value) ? value.some(item => item?.__raw) : value?.__raw);
 
 /**
  * Convert a value to its plain text string.
@@ -106,8 +112,7 @@ export const isRaw = value =>
  * @param {*} value
  * @returns {string}
  */
-export const toPlainText = value =>
-  Array.isArray(value) ? value.map(item => String(item ?? "")).join("") : String(value ?? "");
+export const toPlainText = value => (isArray(value) ? value.join("") : String(value ?? ""));
 
 /**
  * Collapse whitespace from a static string part.
@@ -117,8 +122,7 @@ export const toPlainText = value =>
  */
 export function collapseWhitespace(string) {
   return string
-    .replace(/>\n\s*/g, ">") // newline after tag close
-    .replace(/\n\s*</g, "<") // newline before tag open
+    .replace(/(>)\n\s*|\n\s*(<)/g, "$1$2") // newlines adjacent to tags
     .replace(/\n\s*/g, " ") // newline in text content, preserve word boundary
     .replace(/>\s+</g, "><"); // whitespace between tags
 }

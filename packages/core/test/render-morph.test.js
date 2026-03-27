@@ -86,16 +86,16 @@ describe("morphContent edge cases", () => {
 
   it("morphs deeply nested attributes", () => {
     const container = el();
-    const tpl = Object.assign(
+    const template = Object.assign(
       ['<div data-x="', '"><section><span class="deep">inner</span></section></div>'],
       {
         raw: ['<div data-x="', '"><section><span class="deep">inner</span></section></div>'],
       }
     );
-    renderTemplate(container, tpl, ["1"]);
+    renderTemplate(container, template, ["1"]);
     const span = container.querySelector(".deep");
 
-    renderTemplate(container, tpl, ["2"]);
+    renderTemplate(container, template, ["2"]);
     expect(container.querySelector(".deep")).toBe(span);
     expect(container.querySelector("div").getAttribute("data-x")).toBe("2");
   });
@@ -130,11 +130,11 @@ describe("morphContent edge cases", () => {
 describe("createTemplate marker validation", () => {
   it("falls back to morph when value is inside an attribute", () => {
     const container = el();
-    const tpl = Object.assign(['<div class="', '">content</div>'], {
+    const template = Object.assign(['<div class="', '">content</div>'], {
       raw: ['<div class="', '">content</div>'],
     });
-    renderTemplate(container, tpl, ["test"]);
-    expect(container._tplParts).toBeNull();
+    renderTemplate(container, template, ["test"]);
+    expect(container._templateParts).toBeNull();
     expect(container.querySelector("div").getAttribute("class")).toBe("test");
   });
 
@@ -142,65 +142,65 @@ describe("createTemplate marker validation", () => {
     const container = el();
     const t = html`<div>${"text"}</div>`;
     renderTemplate(container, t.strings, t.values);
-    expect(container._tplParts).not.toBeNull();
-    expect(container._tplParts[0]).toBeDefined();
+    expect(container._templateParts).not.toBeNull();
+    expect(container._templateParts[0]).toBeDefined();
   });
 
   it("static template with zero values renders correctly", () => {
     const container = el();
-    const tpl = Object.assign(["<b>static</b>"], { raw: ["<b>static</b>"] });
-    renderTemplate(container, tpl, []);
+    const template = Object.assign(["<b>static</b>"], { raw: ["<b>static</b>"] });
+    renderTemplate(container, template, []);
     expect(container.querySelector("b").textContent).toBe("static");
   });
 });
 
 describe("patchTextNodes edge cases", () => {
-  it("bails out when _tplParts entry is undefined (raw HTML slot)", () => {
+  it("bails out when _templateParts entry is undefined (raw HTML slot)", () => {
     const container = el();
-    const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
-    renderTemplate(container, tpl, [html`<b>raw</b>`]);
-    expect(container._tplParts[0]).toBeUndefined();
+    const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+    renderTemplate(container, template, [html`<b>raw</b>`]);
+    expect(container._templateParts[0]).toBeUndefined();
 
-    const result = renderTemplate(container, tpl, [html`<em>new</em>`]);
+    const result = renderTemplate(container, template, [html`<em>new</em>`]);
     expect(result).toBe(true);
     expect(container.querySelector("em").textContent).toBe("new");
   });
 
   it("patches when array value changes (different toPlainText)", () => {
     const container = el();
-    const tpl = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
-    renderTemplate(container, tpl, [["a"]]);
+    const template = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
+    renderTemplate(container, template, [["a"]]);
     expect(container.querySelector("span").textContent).toBe("a");
 
-    renderTemplate(container, tpl, [["a", "b"]]);
+    renderTemplate(container, template, [["a", "b"]]);
     expect(container.querySelector("span").textContent).toBe("ab");
   });
 
   it("skips patch when array toPlainText is identical", () => {
     const container = el();
-    const tpl = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
-    renderTemplate(container, tpl, [["x", "y"]]);
-    const textNode = container._tplParts[0];
+    const template = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
+    renderTemplate(container, template, [["x", "y"]]);
+    const textNode = container._templateParts[0];
 
-    const result = renderTemplate(container, tpl, [["x", "y"]]);
+    const result = renderTemplate(container, template, [["x", "y"]]);
     expect(result).toBe(false);
-    expect(container._tplParts[0]).toBe(textNode);
+    expect(container._templateParts[0]).toBe(textNode);
   });
 
   it("patches only changed values in a multi-value template", () => {
     const container = el();
-    const tpl = Object.assign(["<p>", " ", " ", "</p>"], {
+    const template = Object.assign(["<p>", " ", " ", "</p>"], {
       raw: ["<p>", " ", " ", "</p>"],
     });
-    renderTemplate(container, tpl, ["a", "b", "c"]);
-    const node0 = container._tplParts[0];
-    const node1 = container._tplParts[1];
-    const node2 = container._tplParts[2];
+    renderTemplate(container, template, ["a", "b", "c"]);
+    const node0 = container._templateParts[0];
+    const node1 = container._templateParts[1];
+    const node2 = container._templateParts[2];
 
-    renderTemplate(container, tpl, ["a", "X", "c"]);
-    expect(container._tplParts[0]).toBe(node0);
-    expect(container._tplParts[1]).toBe(node1);
-    expect(container._tplParts[2]).toBe(node2);
+    renderTemplate(container, template, ["a", "X", "c"]);
+    expect(container._templateParts[0]).toBe(node0);
+    expect(container._templateParts[1]).toBe(node1);
+    expect(container._templateParts[2]).toBe(node2);
     expect(node1.textContent).toBe("X");
     expect(node0.textContent).toBe("a");
     expect(node2.textContent).toBe("c");
@@ -228,8 +228,8 @@ describe("cloneAndPatch edge cases", () => {
 
   it("handles nothing sentinel via clone path", () => {
     const container = el();
-    const tpl = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
-    renderTemplate(container, tpl, [nothing]);
+    const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+    renderTemplate(container, template, [nothing]);
     expect(container.querySelector("div").textContent).toBe("");
   });
 
@@ -238,10 +238,10 @@ describe("cloneAndPatch edge cases", () => {
     const tplA = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
     const tplB = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
     renderTemplate(container, tplA, ["A"]);
-    expect(container._tplStrings).toBe(tplA);
+    expect(container._templateStrings).toBe(tplA);
 
     renderTemplate(container, tplB, ["B"]);
-    expect(container._tplStrings).toBe(tplB);
+    expect(container._templateStrings).toBe(tplB);
     expect(container.querySelector("span").textContent).toBe("B");
   });
 });
@@ -249,10 +249,10 @@ describe("cloneAndPatch edge cases", () => {
 describe("morph whitespace compression", () => {
   it("compresses >  < to >< in fallback path output", () => {
     const container = el();
-    const tpl = Object.assign(['<div class="', '"> <span>a</span> </div>'], {
+    const template = Object.assign(['<div class="', '"> <span>a</span> </div>'], {
       raw: ['<div class="', '"> <span>a</span> </div>'],
     });
-    renderTemplate(container, tpl, ["cls"]);
+    renderTemplate(container, template, ["cls"]);
     const span = container.querySelector("span");
     expect(span).not.toBeNull();
     expect(span.textContent).toBe("a");
