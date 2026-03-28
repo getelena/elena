@@ -214,7 +214,7 @@ declare module "vue" {
 }
 \`\`\`
 
-The Vue Volar extension is required for template type checking.
+The Vue (Official) extension is required for template type checking.
 
 **[View Vue example project](https://github.com/getelena/vue-example-project)**
 
