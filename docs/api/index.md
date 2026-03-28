@@ -30,6 +30,7 @@ description: Full API reference for all Elena packages including @elenajs/core, 
 | `element` | `string` | A CSS selector for the inner element that `this.element` points to (e.g. `".inner"`, `"button"`). Defaults to the first child element when omitted. |
 | `shadow` | `"open" \| "closed"` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host. |
 | `styles` | `CSSStyleSheet \| string \| (CSSStyleSheet \| string)[]` | One or more stylesheets to adopt into the shadow root. Only applies when `shadow` is also set. |
+| `registry` | `CustomElementRegistry` | A scoped registry to associate with this component’s shadow root. Child custom elements inside the shadow root are resolved from this registry instead of the global one. Only applies when `shadow` is also set. Only supported in Chrome 146+, Edge 146+, and Safari 26+. |
 
 ### Host attributes
 
@@ -70,7 +71,7 @@ Attributes that Elena adds to the host element automatically. These are not JS p
 
 | Method | Description |
 |--------|-------------|
-| `ClassName.define()` | Registers the component with the browser using `tagName` option. Call this once after defining your class. Does nothing in non-browser environments. |
+| `ClassName.define(registry?)` | Registers the component using `tagName` option. When called without arguments, registers in the global `customElements` registry. Pass a `CustomElementRegistry` instance to register in a [scoped registry](/components/options#scoped-registration) instead. Does nothing in non-browser environments. |
 | `ClassName.observedAttributes` | The list of attributes the browser should watch for changes, built from `props` option plus the built-in `text` attribute. |
 
 ### Error codes
@@ -115,6 +116,7 @@ elena watch
 | `target` | `string \| string[] \| false` | `false` | Browserslist target(s) for transpilation. When set, enables syntax transforms (e.g. class fields, optional chaining) via `@babel/preset-env` to widen browser support. Example: `["chrome 71", "firefox 69", "safari 12.1"]`. |
 | `terser` | `object` | `{ ecma: 2020, module: true }` | Custom Terser minifier options, merged with the defaults. |
 | `banner` | `string \| false` | `false` | Banner comment prepended to `index.js` and `bundle.js` output files. Use a `@license` JSDoc tag so minifiers preserve it. |
+| `registration` | `"auto" \| "scoped"` | `"auto"` | Controls how components are registered. `"auto"` preserves `.define()` calls in the output. `"scoped"` strips `.define()` calls and generates a `register.js` with a `defineAll(registry?)` helper for [scoped registry](/components/options#scoped-registration) usage. |
 
 ### Error codes
 

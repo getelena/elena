@@ -15,6 +15,8 @@ Elena, the JavaScript library, supports the following browser versions: Chrome 7
 
 **Safari 26.3:** `@scope` rules are not applied to `<input>` and `<textarea>` elements. This is fixed in [Safari 26.4](https://webkit.org/blog/17862/webkit-features-for-safari-26-4/) and newer. When necessary, you can [omit `@scope`](/components/styles#styles-without-scope) and use class based approach instead to go around this issue.
 
+**Scoped registries:** Scoped Custom Element Registries are supported in Chrome 146+, Edge 146+, and Safari 26+. Firefox does not support them yet. Elena’s `define(registry)` degrades gracefully: when `registry` is `undefined`, components register globally. See [Scoped registration](/components/options#scoped-registration) for the fallback pattern.
+
 ## URIs in templates
 
 Elena’s `html` tagged template auto-escapes interpolated values to prevent XSS, but it does not block JavaScript URIs. If you interpolate user input into an `href` or other URL attribute, a value like `javascript:alert(1)` will pass through escaping unchanged:
