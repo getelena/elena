@@ -727,6 +727,91 @@ await element.updateComplete;
 // DOM is now updated
 \`\`\`
 
+---
+
+## Rendering
+
+Elena renders a web component once when it connects to the page. After that, any change to a reactive property triggers an update. Elena performs updates asynchronously so property changes are batched: if there are multiple changes, they are combined into a single render.
+
+### How the DOM is updated
+
+When Elena updates, it calls \`render()\` and compares the result to what is currently in the DOM. It uses two strategies depending on what changed:
+
+- **Patch:** if the template shape is the same, Elena patches only the text nodes that changed. The DOM structure stays intact, preserving element identity, focus state, and scroll position.
+- **Morph:** if the template shape changed, Elena rebuilds the affected portion of the DOM and morphs it into place, updating attributes and text in existing nodes where possible.
+
+### What triggers an update
+
+Elena schedules an update when any of these change:
+
+- A prop value listed in \`static props\` is set to a new value
+- The \`text\` property is updated
+- An observed attribute changes on the host element
+- \`requestUpdate()\` is called manually
+
+All four go through the same path: Elena schedules a batched update, then runs the update cycle. Only the parts of the DOM that changed are updated.
+
+### How prop changes are detected
+
+Props listed in \`static props\` are backed by JavaScript getters and setters. When you assign a new value, the setter compares it to the current value and schedules a re-render if it changed:
+
+\`\`\`js
+// This will trigger an update
+this.variant = "primary";
+
+// This does not: the value is the same as above
+this.variant = "primary";
+\`\`\`
+
+Elena uses strict equality (\`===\`) to compare values. If the new value is the same reference as the old one, no render is scheduled.
+
+By default, props reflect to HTML attributes. When a reflected prop changes, Elena updates the attribute, which triggers \`attributeChangedCallback()\`, which schedules the update. Non-reflected props (declared with \`{ name, reflect: false }\`) skip the attribute and schedule the update directly from the setter.
+
+### Batched updates
+
+Elena never renders synchronously in response to a prop change. Instead, it queues a microtask the first time a change is detected. If more props change before the microtask runs, they are all included in the same update:
+
+\`\`\`js
+// These three changes produce one update, not three
+button.variant = "primary";
+button.disabled = true;
+button.text = "Save";
+\`\`\`
+
+Because microtasks run before the browser paints, the DOM is updated in time for the next frame. There is no visible flicker between changes.
+
+### What Elena cannot detect
+
+Elena tracks prop changes through setters. If a value is mutated in place without going through the setter, Elena has no way to know it changed:
+
+- **Pushing to an array:** \`this.items.push("new")\` mutates the existing array. The setter never fires because the array reference stays the same.
+- **Changing a nested property:** \`this.user.name = "Alex"\` mutates the object in place.
+- **Mutating any object or array** without reassigning the prop.
+
+In these cases, call \`requestUpdate()\` to tell Elena that something changed, or replace the value with a new reference:
+
+\`\`\`js
+// Option 1: requestUpdate
+this.items.push("new item");
+this.requestUpdate();
+
+// Option 2: replace the value
+this.items = [...this.items, "new item"];
+\`\`\`
+
+### Before the first render
+
+Props can be set on an element before it connects to the page. Elena stores these values internally, but does not render until \`connectedCallback()\` runs:
+
+\`\`\`js
+const button = document.createElement("elena-button");
+button.variant = "primary";
+button.text = "Save";
+document.body.appendChild(button); // First render happens here
+\`\`\`
+
+---
+
 ## Registration
 
 Always call \`ClassName.define()\` after the class body to register the element.
@@ -912,7 +997,7 @@ Rules for **Primitive Components** when used with a framework:
 **Known issues:**
 
 - **Firefox 148:** CSS \`@scope\` with \`attr[value]\` selectors had a bug where styles would not apply correctly. Fixed in Firefox 149+. Use the legacy (non-\`@scope\`) pattern as a fallback for older Firefox if needed.
-- **Safari 26.3:** \`@scope\` rules are not applied to \`<input>\` and \`<textarea>\` elements. Fixed in Safari Technology Preview 237, but not yet in a stable release. Workaround: style form controls outside \`@scope\` using namespaced selectors (e.g. \`my-filter input { ... }\`).
+- **Safari 26.3:** \`@scope\` rules are not applied to \`<input>\` and \`<textarea>\` elements. Fixed in Safari 26.4 and newer. Workaround for older versions: style form controls outside \`@scope\` using namespaced selectors (e.g. \`my-filter input { ... }\`).
 
 **URIs in templates:**
 
