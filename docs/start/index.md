@@ -69,7 +69,7 @@ There are three types of Progressive Web Components:
 
 1. **Composite Components** that wrap and enhance the HTML composed inside them. All of their HTML and CSS lives in the Light DOM. You could also call these [HTML Web Components](https://adactio.com/journal/20618).
 2. **Primitive Components** that are self-contained and render their own HTML. All of their CSS lives in the Light DOM together with the base HTML required for rendering the initial&nbsp;state.
-3. **Declarative Components** that are a hybrid of these and utilize [Declarative Shadow DOM](#3-declarative-components).
+3. **Declarative Components** that are a hybrid of these and utilize [Declarative Shadow DOM](#_3-declarative-components).
 
 <img src="/visualization.svg" alt="This image visualizes the three types of Progressive Web Components.">
 
