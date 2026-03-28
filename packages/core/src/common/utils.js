@@ -14,9 +14,9 @@ export { prefix, isArray };
  * @param {string} tagName
  * @param {Function} Element
  */
-export function defineElement(tagName, Element) {
-  const customElements = globalThis.customElements;
-  customElements?.get(tagName) || customElements?.define(tagName, Element);
+export function defineElement(tagName, Element, registry) {
+  const reg = registry ?? globalThis.customElements;
+  reg?.get(tagName) || reg?.define(tagName, Element);
 }
 
 /**
