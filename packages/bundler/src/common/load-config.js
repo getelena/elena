@@ -32,6 +32,10 @@ import { validateConfig } from "./validate-config.js";
  *   `{ ecma: 2020, module: true }`.
  * @property {string|false} [banner] Banner comment prepended to every output file. Use a
  *   `@license` JSDoc tag so minifiers preserve it. Set to `false` (default) to omit.
+ * @property {"auto"|"scoped"} [registration] Controls how components are registered.
+ *   `"auto"` (default) preserves `.define()` calls in the output.
+ *   `"scoped"` strips `.define()` calls and generates a `register.js` helper
+ *   with a `defineAll(registry?)` function for scoped registry usage.
  */
 
 /** @type {Required<ElenaConfig>} */
@@ -44,6 +48,7 @@ const DEFAULTS = {
   target: false,
   terser: { ecma: 2020, module: true },
   banner: false,
+  registration: "auto",
 };
 
 /**

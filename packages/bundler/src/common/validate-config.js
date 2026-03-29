@@ -9,6 +9,7 @@ const KNOWN_KEYS = new Set([
   "target",
   "terser",
   "banner",
+  "registration",
 ]);
 
 /**
@@ -79,5 +80,13 @@ export function validateConfig(config) {
 
   if (config.banner !== undefined && typeof config.banner !== "string" && config.banner !== false) {
     throw new Error(`░█ [ELENA]: Invalid config: "banner" must be a string or false.`);
+  }
+
+  if (
+    config.registration !== undefined &&
+    config.registration !== "auto" &&
+    config.registration !== "scoped"
+  ) {
+    throw new Error(`░█ [ELENA]: Invalid config: "registration" must be "auto" or "scoped".`);
   }
 }

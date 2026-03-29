@@ -23,6 +23,29 @@ describe("shadow DOM", () => {
       expect(el.shadowRoot.mode).toBe("open");
     });
 
+    it("passes static registry to attachShadow as customElementRegistry", async () => {
+      const fakeRegistry = {};
+      class RegistryElement extends Elena(HTMLElement) {
+        static tagName = "shadow-registry-element";
+        static shadow = "open";
+        static registry = fakeRegistry;
+        render() {
+          return html`<span>scoped</span>`;
+        }
+      }
+      RegistryElement.define();
+
+      const el = document.createElement("shadow-registry-element");
+      const spy = vi.spyOn(el, "attachShadow");
+      document.body.appendChild(el);
+
+      expect(spy).toHaveBeenCalledWith({
+        mode: "open",
+        customElementRegistry: fakeRegistry,
+      });
+      spy.mockRestore();
+    });
+
     it("does not re-attach shadow root on reconnection", async () => {
       const el = await createElement("shadow-element");
       const root = el.shadowRoot;
