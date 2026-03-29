@@ -50,3 +50,5 @@ jobs:
           branch: gh-pages
           folder: docs/.vitepress/dist
           clean: true
+          clean-exclude: pr-preview/
+          force: false
