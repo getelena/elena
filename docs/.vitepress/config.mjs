@@ -29,11 +29,14 @@ function copyComponentAssets() {
   };
 }
 
+const pathPrefix = process.env.ELENA_PATH || "/";
+const noIndex = process.env.ELENA_NOINDEX === "true";
+
 export default defineConfig({
   scrollOffset: 86,
   title: "Elena",
   lang: "en-GB",
-  base: "/",
+  base: pathPrefix,
   ignoreDeadLinks: false,
   sitemap: {
     hostname: "https://elenajs.com",
@@ -70,6 +73,7 @@ export default defineConfig({
     );
   },
   head: [
+    ...(noIndex ? [["meta", { name: "robots", content: "noindex, nofollow" }]] : []),
     ["meta", { property: "og:site_name", content: "Elena" }],
     ["meta", { property: "og:type", content: "website" }],
     ["meta", { property: "og:url", content: "https://elenajs.com/" }],
@@ -84,15 +88,19 @@ export default defineConfig({
     ["link", { rel: "icon", href: "/favicon.svg", sizes: "any", type: "image/svg+xml" }],
     ["link", { rel: "apple-touch-icon", href: "/apple-touch-icon.png" }],
     ["link", { rel: "manifest", href: "/manifest.json" }],
-    [
-      "script",
-      {
-        src: "https://cdn.usefathom.com/script.js",
-        "data-spa": "auto",
-        "data-site": "RRTFEBPA",
-        defer: "",
-      },
-    ],
+    ...(noIndex
+      ? []
+      : [
+          [
+            "script",
+            {
+              src: "https://cdn.usefathom.com/script.js",
+              "data-spa": "auto",
+              "data-site": "RRTFEBPA",
+              defer: "",
+            },
+          ],
+        ]),
   ],
   markdown: {
     headers: true,

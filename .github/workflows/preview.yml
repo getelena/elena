@@ -46,8 +46,8 @@ jobs:
           pnpm build
           pnpm --filter @elenajs/docs build
         env:
-          DOCS_PATH_PREFIX: /pr-preview/pr-${{ github.event.number }}/
-          DOCS_NOINDEX: true
+          ELENA_PATH: /pr-preview/pr-${{ github.event.number }}/
+          ELENA_NOINDEX: true
 
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9
