@@ -30,6 +30,7 @@ description: Full API reference for all Elena packages including @elenajs/core, 
 | `element` | `string` | A CSS selector for the inner element that `this.element` points to (e.g. `".inner"`, `"button"`). Defaults to the first child element when omitted. |
 | `shadow` | `"open" \| "closed"` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host. |
 | `styles` | `CSSStyleSheet \| string \| (CSSStyleSheet \| string)[]` | One or more stylesheets to adopt into the shadow root. Only applies when `shadow` is also set. |
+| `observe` | `boolean` | Watches for external child mutations using a `MutationObserver`. When outside code replaces the element's children, Elena re-captures the text content and re-renders. Only applies to Primitive Components without Shadow DOM. |
 
 ### Host attributes
 

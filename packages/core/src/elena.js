@@ -57,6 +57,7 @@ function elementResolver(selector) {
  *   element?: string,
  *   shadow?: "open" | "closed",
  *   styles?: CSSStyleSheet | string | (CSSStyleSheet | string)[],
+ *   observe?: boolean,
  * }} ElenaElementConstructor
  */
 
@@ -151,6 +152,7 @@ export function Elena(superClass) {
         this.firstUpdated();
       }
       this.updated();
+      this._observeChildren();
     }
 
     /**
@@ -377,6 +379,39 @@ export function Elena(superClass) {
     }
 
     /**
+     * Watch for external mutations, re-capture
+     * text contents, and restore the <template>.
+     *
+     * @internal
+     */
+    _observeChildren() {
+      const constructor = this.constructor;
+
+      if (
+        !constructor.observe ||
+        constructor.shadow ||
+        !this._templateStrings ||
+        typeof MutationObserver === "undefined"
+      ) {
+        return;
+      }
+
+      if (!this._observer) {
+        this._observer = new MutationObserver(() => {
+          if (this.element?.isConnected) {
+            return;
+          }
+
+          this._templateStrings = null;
+          this.text = this.textContent.trim();
+          this._safeRender();
+        });
+      }
+
+      this._observer.observe(this, { childList: true });
+    }
+
+    /**
      * Define the element’s HTML here. Return an `html`
      * tagged template. If not overridden, the element connects
      * to the page without rendering anything.
@@ -415,6 +450,7 @@ export function Elena(superClass) {
      */
     disconnectedCallback() {
       super.disconnectedCallback?.();
+      this._observer?.disconnect();
       if (this._events) {
         this._events = false;
 
