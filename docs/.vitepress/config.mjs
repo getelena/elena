@@ -204,6 +204,10 @@ export default defineConfig({
             link: "https://github.com/getelena/elena/releases",
           },
           {
+            text: "Read the release post",
+            link: "https://arielsalminen.com/2026/progressive-web-components/",
+          },
+          {
             text: "Code of conduct",
             link: "/about/code-of-conduct",
           },
