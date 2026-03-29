@@ -1,0 +1,19 @@
+{
+  "skills": [
+    {
+      "name": "elena-authoring",
+      "description": "Critical rules for authoring Elena Progressive Web Components — component types, props, events, templates, lifecycle, mixins, and framework compatibility.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "name": "elena-styles",
+      "description": "Critical CSS rules for Elena components — @scope encapsulation, all:unset reset for Primitives only, SSR hydration pattern, theming, and browser bug workarounds.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "name": "elena-tooling",
+      "description": "Critical rules for the Elena build toolchain — bundler config, CLI scaffolding, Custom Elements Manifest, SSR with @elenajs/ssr, and TypeScript.",
+      "files": ["SKILL.md"]
+    }
+  ]
+}
