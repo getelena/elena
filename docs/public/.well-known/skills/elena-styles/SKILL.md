@@ -40,7 +40,7 @@ Style both the host before hydration AND the rendered inner element with the sam
 
 ```css
 :scope:not([hydrated]),
-.elena-button:is(button) {
+.elena-button {
   font-family: var(--_elena-button-font);
   background: var(--_elena-button-bg);
 }
@@ -139,7 +139,7 @@ Composite Components do NOT include the encapsulation reset. Style the host elem
 
 **Firefox 148**: `@scope` combined with `attr[value]` selectors can be buggy. Fixed in Firefox 149+. For broader Firefox support, use namespaced selectors instead of `@scope`.
 
-**Safari 26.3**: `@scope` rules do not apply to `<input>` and `<textarea>`. Fixed in Safari Technology Preview 237 but not yet in a stable release. Workaround: style form controls outside `@scope` using namespaced selectors, e.g. `elena-input input { ... }`.
+**Safari 26.3**: `@scope` rules do not apply to `<input>` and `<textarea>`. Fixed in Safari 26.4 and newer. Workaround for older versions: style form controls outside `@scope` using namespaced selectors, e.g. `elena-input input { ... }`.
 
 ## Shadow DOM
 
