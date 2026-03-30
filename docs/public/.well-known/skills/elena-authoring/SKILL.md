@@ -13,7 +13,7 @@ description: Critical rules for authoring Elena components. Component types, pro
 Three types — the type determines whether `render()` is present:
 
 - **Primitive**: owns its DOM, MUST have `render()` returning an `html` tagged template. Elena calls `replaceChildren()` on every render.
-- **Composite**: wraps composed children, must NOT have `render()` or `static events`. Never touches light DOM children.
+- **Composite**: wraps composed children, must NOT have `render()`. Never touches light DOM children.
 - **Declarative**: hybrid using `<template shadowrootmode="open">` in the HTML markup. No `render()`.
 
 ## Props
@@ -39,6 +39,7 @@ Three types — the type determines whether `render()` is present:
 - Nested `html` fragments pass through without double-escaping. Plain string values are auto-escaped (XSS-safe).
 - `this.text` captures the element's `textContent` on connect. Use it in `render()` for text content.
 - `unsafeHTML(str)` bypasses escaping — only use for trusted, sanitized content.
+- `html` does NOT block JavaScript URIs. Always validate URLs before interpolating into `href` or other URL attributes: `const safeUrl = /^https?:\/\//.test(url) ? url : "#";`
 
 ## Lifecycle
 
@@ -47,6 +48,7 @@ Three types — the type determines whether `render()` is present:
 - `updated()` — runs after every render, including the first. Runs after `firstUpdated()`.
 - `this.element` is NOT available in `willUpdate()` or `render()` — only in `firstUpdated()` and `updated()`.
 - `requestUpdate()` — manually schedule a re-render when Elena cannot detect a change (e.g. mutating an array in place).
+- `updateComplete` — Promise that resolves after the current render microtask finishes. Use to await DOM updates: `await element.updateComplete`.
 - All lifecycle methods except `willUpdate()` should call `super`.
 
 ## Mixins
