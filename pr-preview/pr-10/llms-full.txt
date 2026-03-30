@@ -543,10 +543,10 @@ To use TypeScript, write your components with inline type annotations instead of
 ```ts
 import { Elena, html } from "@elenajs/core";
 
-export default class Button extends Elena(HTMLElement, {
-  tagName: "elena-button",
-  props: ["variant"],
-}) {
+export default class Button extends Elena(HTMLElement) {
+  static tagName = "elena-button";
+  static props = ["variant"];
+
   /**
    * The style variant of the component.
    * @property
