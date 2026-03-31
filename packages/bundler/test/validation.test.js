@@ -2,7 +2,7 @@
  * Integration tests: Config validation, input/bundle validation,
  * custom config path, silent config miss, and error scenarios.
  */
-import { existsSync, writeFileSync, rmSync, mkdirSync } from "fs";
+import { existsSync, writeFileSync, rmSync } from "fs";
 import { join } from "path";
 import { afterEach, describe, test, expect } from "vitest";
 import { setupDir, runCli } from "./helpers.mjs";
