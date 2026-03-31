@@ -44,5 +44,10 @@
     "release:dry-run": "pnpm install --frozen-lockfile && pnpm lerna version --no-private --no-push --no-git-tag-version",
     "cli": "node packages/cli/src/cli.js",
     "format": "prettier . --write"
+  },
+  "pnpm": {
+    "overrides": {
+      "brace-expansion": "5.0.4"
+    }
   }
 }
