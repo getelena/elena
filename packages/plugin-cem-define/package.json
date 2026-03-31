@@ -1,6 +1,6 @@
 {
   "name": "@elenajs/plugin-cem-define",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.5",
   "description": "CEM analyzer plugin that registers the Elena components in the manifest.",
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
