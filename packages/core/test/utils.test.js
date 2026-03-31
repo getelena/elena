@@ -111,6 +111,7 @@ describe("utils", () => {
       class NoTagName extends Elena(HTMLElement) {}
       expect(() => NoTagName.define()).not.toThrow();
       expect(spy).toHaveBeenCalledWith(expect.stringContaining("define() without a tagName."));
+      expect(spy).toHaveBeenCalledTimes(1);
       spy.mockRestore();
     });
 
@@ -119,6 +120,7 @@ describe("utils", () => {
       class NoOptions extends Elena(HTMLElement) {}
       expect(() => NoOptions.define()).not.toThrow();
       expect(spy).toHaveBeenCalledWith(expect.stringContaining("define() without a tagName."));
+      expect(spy).toHaveBeenCalledTimes(1);
       spy.mockRestore();
     });
   });
