@@ -108,7 +108,7 @@ describe("utils", () => {
   describe("Elena().define()", () => {
     it("is a no-op when options has no tagName", () => {
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
-      class NoTagName extends Elena(HTMLElement, { props: ["foo"] }) {}
+      class NoTagName extends Elena(HTMLElement) {}
       expect(() => NoTagName.define()).not.toThrow();
       spy.mockRestore();
     });
