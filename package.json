@@ -31,7 +31,7 @@
     "eslint": "10.1.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
-    "happy-dom": "20.8.7",
+    "happy-dom": "20.8.8",
     "lerna": "9.0.7",
     "prettier": "3.8.1",
     "vitest": "4.1.1"
