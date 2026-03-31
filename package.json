@@ -4,7 +4,7 @@
   "author": "Elena <hi@elenajs.com>",
   "homepage": "https://elenajs.com/",
   "license": "MIT",
-  "packageManager": "pnpm@10.20.0+sha256.47a3352808501b8d1ef20112273b6a5dcfa53d28a55bcce36d268e878bd6bfe9",
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
   "engines": {
     "node": ">= 22",
     "yarn": "please-use-npm"
@@ -28,13 +28,13 @@
   "devDependencies": {
     "@elenajs/eslint-config": "^1.0.0",
     "@elenajs/prettier-config": "^1.0.0",
-    "eslint": "9.39.2",
+    "eslint": "10.1.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
-    "happy-dom": "20.8.4",
+    "happy-dom": "20.8.9",
     "lerna": "9.0.7",
     "prettier": "3.8.1",
-    "vitest": "4.1.0"
+    "vitest": "4.1.1"
   },
   "scripts": {
     "build": "NX_TASKS_RUNNER_DYNAMIC_OUTPUT=false lerna run build",
@@ -44,5 +44,10 @@
     "release:dry-run": "pnpm install --frozen-lockfile && pnpm lerna version --no-private --no-push --no-git-tag-version",
     "cli": "node packages/cli/src/cli.js",
     "format": "prettier . --write"
+  },
+  "pnpm": {
+    "overrides": {
+      "brace-expansion": "5.0.5"
+    }
   }
 }
