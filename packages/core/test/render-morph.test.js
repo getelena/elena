@@ -4,10 +4,6 @@ import { html, unsafeHTML, nothing } from "../src/elena.js";
 
 const el = () => document.createElement("div");
 
-const attrTpl = Object.assign(['<div class="', '"><span>text</span></div>'], {
-  raw: ['<div class="', '"><span>text</span></div>'],
-});
-
 describe("morphContent edge cases", () => {
   it("appends extra children when new has more nodes", () => {
     const container = el();

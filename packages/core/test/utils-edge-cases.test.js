@@ -3,7 +3,6 @@ import {
   escapeHtml,
   html,
   unsafeHTML,
-  nothing,
   resolveValue,
   isRaw,
   toPlainText,
