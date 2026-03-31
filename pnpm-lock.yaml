@@ -40,8 +40,8 @@ importers:
         specifier: 5.5.5
         version: 5.5.5(eslint-config-prettier@10.1.8(eslint@10.1.0))(eslint@10.1.0)(prettier@3.8.1)
       happy-dom:
-        specifier: 20.8.8
-        version: 20.8.8
+        specifier: 20.8.9
+        version: 20.8.9
       lerna:
         specifier: 9.0.7
         version: 9.0.7(@types/node@25.2.3)
@@ -50,7 +50,7 @@ importers:
         version: 3.8.1
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   docs:
     devDependencies:
@@ -144,7 +144,7 @@ importers:
     devDependencies:
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/cli:
     dependencies:
@@ -154,7 +154,7 @@ importers:
     devDependencies:
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/components:
     devDependencies:
@@ -171,11 +171,11 @@ importers:
         specifier: 9.2.1
         version: 9.2.1
       happy-dom:
-        specifier: 20.8.8
-        version: 20.8.8
+        specifier: 20.8.9
+        version: 20.8.9
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/core:
     devDependencies:
@@ -195,8 +195,8 @@ importers:
         specifier: 4.1.1
         version: 4.1.1(@vitest/browser@4.1.1(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.1.1))(vitest@4.1.1)
       happy-dom:
-        specifier: 20.8.8
-        version: 20.8.8
+        specifier: 20.8.9
+        version: 20.8.9
       lit:
         specifier: 3.3.2
         version: 3.3.2
@@ -214,7 +214,7 @@ importers:
         version: 6.0.2
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/eslint-config:
     dependencies:
@@ -233,7 +233,7 @@ importers:
     devDependencies:
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/plugin-cem-define:
     devDependencies:
@@ -242,7 +242,7 @@ importers:
         version: 0.11.0
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/plugin-cem-prop:
     devDependencies:
@@ -254,7 +254,7 @@ importers:
         version: link:../plugin-cem-define
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/plugin-cem-tag:
     devDependencies:
@@ -266,7 +266,7 @@ importers:
         version: link:../plugin-cem-define
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/plugin-cem-typescript:
     devDependencies:
@@ -278,7 +278,7 @@ importers:
         version: link:../plugin-cem-define
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/plugin-rollup-css:
     dependencies:
@@ -291,7 +291,7 @@ importers:
     devDependencies:
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
   packages/prettier-config: {}
 
@@ -306,7 +306,7 @@ importers:
     devDependencies:
       vitest:
         specifier: 4.1.1
-        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
 
 packages:
 
@@ -4062,8 +4062,8 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@20.8.8:
-    resolution: {integrity: sha512-5/F8wxkNxYtsN0bXfMwIyNLZ9WYsoOYPbmoluqVJqv8KBUbcyKZawJ7uYK4WTX8IHBLYv+VXIwfeNDPy1oKMwQ==}
+  happy-dom@20.8.9:
+    resolution: {integrity: sha512-Tz23LR9T9jOGVZm2x1EPdXqwA37G/owYMxRwU0E4miurAtFsPMQ1d2Jc2okUaSjZqAFz2oEn3FLXC5a0a+siyA==}
     engines: {node: '>=20.0.0'}
 
   hard-rejection@2.1.0:
@@ -8779,7 +8779,7 @@ snapshots:
       '@vitest/mocker': 4.1.1(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
       playwright: 1.58.2
       tinyrainbow: 3.0.3
-      vitest: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+      vitest: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
     transitivePeerDependencies:
       - bufferutil
       - msw
@@ -8795,7 +8795,7 @@ snapshots:
       pngjs: 7.0.0
       sirv: 3.0.2
       tinyrainbow: 3.0.3
-      vitest: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+      vitest: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
       ws: 8.19.0
     transitivePeerDependencies:
       - bufferutil
@@ -8815,7 +8815,7 @@ snapshots:
       obug: 2.1.1
       std-env: 4.0.0
       tinyrainbow: 3.0.3
-      vitest: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
+      vitest: 4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
     optionalDependencies:
       '@vitest/browser': 4.1.1(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.1.1)
 
@@ -10427,7 +10427,7 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@20.8.8:
+  happy-dom@20.8.9:
     dependencies:
       '@types/node': 25.2.3
       '@types/whatwg-mimetype': 3.0.2
@@ -12989,7 +12989,7 @@ snapshots:
       - typescript
       - universal-cookie
 
-  vitest@4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.8)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2)):
+  vitest@4.1.1(@types/node@25.2.3)(@vitest/browser-playwright@4.1.1)(happy-dom@20.8.9)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2)):
     dependencies:
       '@vitest/expect': 4.1.1
       '@vitest/mocker': 4.1.1(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))
@@ -13014,7 +13014,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 25.2.3
       '@vitest/browser-playwright': 4.1.1(playwright@1.58.2)(vite@7.3.1(@types/node@25.2.3)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))(vitest@4.1.1)
-      happy-dom: 20.8.8
+      happy-dom: 20.8.9
     transitivePeerDependencies:
       - msw
 
