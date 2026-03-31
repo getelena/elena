@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { createElement } from "./setup.js";
 import { getPropValue, setProps, getProps, syncAttribute } from "../src/common/props.js";
-import { Elena, html } from "../src/elena.js";
 import "./fixtures/basic-element.js";
 import "./fixtures/boolean-element.js";
 import "./fixtures/number-element.js";

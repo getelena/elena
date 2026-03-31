@@ -3,7 +3,7 @@ import { Elena } from "../src/elena.js";
 import { defineElement, html, nothing, unsafeHTML } from "../src/common/utils.js";
 import { renderTemplate } from "../src/common/render.js";
 import { escapeHtml } from "../src/common/utils.js";
-import NothingElement from "./fixtures/nothing-element.js";
+import "./fixtures/nothing-element.js";
 
 describe("utils", () => {
   describe("renderTemplate fast-path edge cases", () => {

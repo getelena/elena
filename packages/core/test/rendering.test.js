@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { createElement } from "./setup.js";
 import { renderTemplate } from "../src/common/render.js";
 import { html, nothing, unsafeHTML } from "../src/elena.js";

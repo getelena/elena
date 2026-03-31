@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { createElement } from "./setup.js";
 import { Elena, html } from "../src/elena.js";
 

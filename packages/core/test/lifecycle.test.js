@@ -214,7 +214,7 @@ describe("lifecycle", () => {
 
     it("warns when an explicit element selector is set but does not match", async () => {
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
-      const el = await createElement("no-template-element");
+      await createElement("no-template-element");
       expect(spy).toHaveBeenCalledWith(expect.stringContaining("Element not found."));
       spy.mockRestore();
     });
