@@ -110,6 +110,7 @@ describe("utils", () => {
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
       class NoTagName extends Elena(HTMLElement) {}
       expect(() => NoTagName.define()).not.toThrow();
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining("define() without a tagName."));
       spy.mockRestore();
     });
 
@@ -117,6 +118,7 @@ describe("utils", () => {
       const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
       class NoOptions extends Elena(HTMLElement) {}
       expect(() => NoOptions.define()).not.toThrow();
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining("define() without a tagName."));
       spy.mockRestore();
     });
   });
