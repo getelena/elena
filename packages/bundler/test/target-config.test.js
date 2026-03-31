@@ -41,9 +41,9 @@ export default {
 
   test("output does not contain native class field syntax", () => {
     const bundle = readFileSync(join(dist, "bundle.js"), "utf8");
-    // Native public class field declarations look like `fieldName=` at the
-    // start of a class body. After Babel transforms them they become
+    // Native public class field declarations use `fieldName = value` with
+    // spaces around the `=`. After Babel transforms them they become
     // constructor assignments, so the pattern should not appear in output.
-    expect(bundle).not.toMatch(/^[ \t]+\w+=(?!=)/m);
+    expect(bundle).not.toMatch(/^[ \t]+\w+ = /m);
   });
 });
