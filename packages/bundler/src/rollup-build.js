@@ -17,7 +17,6 @@ import { rollup, watch } from "rollup";
 import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
-import minifyHtmlLiterals from "rollup-plugin-minify-html-literals-v3";
 import summary from "rollup-plugin-summary";
 import {
   cssPlugin,
@@ -87,22 +86,7 @@ function buildPlugins({
     );
   }
 
-  plugins.push(
-    cssStaticStylesPlugin(),
-    minifyHtmlLiterals({
-      options: {
-        shouldMinify: template => {
-          const tag = template.tag && template.tag.toLowerCase();
-          return (
-            (tag && (tag.includes("html") || tag.includes("svg"))) ||
-            template.parts.some(({ text }) => /<[a-z]/i.test(text))
-          );
-        },
-      },
-    }),
-    terser(terserOpts),
-    cssPlugin(src)
-  );
+  plugins.push(cssStaticStylesPlugin(), terser(terserOpts), cssPlugin(src));
 
   if (includeCssBundle) {
     plugins.push(cssBundlePlugin(src, "bundle.css"));
