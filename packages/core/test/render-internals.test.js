@@ -615,6 +615,47 @@ describe("render internals", () => {
     });
   });
 
+  describe("cloneAndPatch attribute edge cases", () => {
+    it("handles array value in attribute position", () => {
+      const container = el();
+      const template = Object.assign(['<div class="', '">text</div>'], {
+        raw: ['<div class="', '">text</div>'],
+      });
+      renderTemplate(container, template, [["a", "b"]]);
+      expect(container.querySelector("div").getAttribute("class")).toBe("ab");
+    });
+
+    it("handles null value in attribute position", () => {
+      const container = el();
+      const template = Object.assign(['<div class="', '">text</div>'], {
+        raw: ['<div class="', '">text</div>'],
+      });
+      renderTemplate(container, template, [null]);
+      expect(container.querySelector("div").getAttribute("class")).toBe("");
+    });
+
+    it("handles undefined value in attribute position", () => {
+      const container = el();
+      const template = Object.assign(['<div data-x="', '">text</div>'], {
+        raw: ['<div data-x="', '">text</div>'],
+      });
+      renderTemplate(container, template, [undefined]);
+      expect(container.querySelector("div").getAttribute("data-x")).toBe("");
+    });
+
+    it("skips attribute when placeholder element is unreachable in cloned template", () => {
+      const container = el();
+      // Attribute placeholder inside <template> is unreachable by querySelector
+      const template = Object.assign(
+        ['<div><template><span class="', '"></span></template></div>'],
+        { raw: ['<div><template><span class="', '"></span></template></div>'] }
+      );
+      renderTemplate(container, template, ["test"]);
+      // Rendering should not crash; the attribute simply isn't patched
+      expect(container.querySelector("div")).not.toBeNull();
+    });
+  });
+
   describe("renderTemplate return value", () => {
     it("returns true on first render (full render)", () => {
       const container = el();
