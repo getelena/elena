@@ -1,5 +1,6 @@
 const prefix = "░█ [ELENA]: ";
 const isArray = Array.isArray;
+const RAW = Symbol("elena.raw");
 
 /**
  * @param {string} msg
@@ -52,7 +53,7 @@ export function resolveValue(value) {
  * @returns {string}
  */
 function resolveItem(value) {
-  return value?.__raw ? String(value) : escapeHtml(value ?? "");
+  return value?.[RAW] ? String(value) : escapeHtml(value ?? "");
 }
 
 /**
@@ -61,12 +62,12 @@ function resolveItem(value) {
  *
  * @param {TemplateStringsArray} strings
  * @param {...*} values
- * @returns {{ __raw: true, strings: TemplateStringsArray, values: Array, toString(): string }}
+ * @returns {{ strings: TemplateStringsArray, values: Array, toString(): string }}
  */
 export function html(strings, ...values) {
   let str;
   return {
-    __raw: true,
+    [RAW]: true,
     strings,
     values,
     toString: () => {
@@ -84,19 +85,19 @@ export function html(strings, ...values) {
  * Renders a string as HTML rather than text.
  *
  * @param {string} str - The raw HTML string to trust.
- * @returns {{ __raw: true, toString(): string }}
+ * @returns {{ toString(): string }}
  */
 export function unsafeHTML(str) {
-  return { __raw: true, toString: () => str ?? "" };
+  return { [RAW]: true, toString: () => str ?? "" };
 }
 
 /**
  * A placeholder you can return from a conditional expression
  * inside a template to render nothing.
  *
- * @type {{ __raw: true, toString(): string }}
+ * @type {{ toString(): string }}
  */
-export const nothing = { __raw: true, toString: () => "" };
+export const nothing = { [RAW]: true, toString: () => "" };
 
 /**
  * Check if a value contains trusted HTML fragments.
@@ -104,7 +105,7 @@ export const nothing = { __raw: true, toString: () => "" };
  * @param {*} value
  * @returns {boolean}
  */
-export const isRaw = value => (isArray(value) ? value.some(item => item?.__raw) : value?.__raw);
+export const isRaw = value => (isArray(value) ? value.some(item => item?.[RAW]) : value?.[RAW]);
 
 /**
  * Convert a value to its plain text string.
