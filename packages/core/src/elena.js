@@ -40,7 +40,7 @@ function elementResolver(selector) {
  */
 
 /**
- * @typedef {{ text: string, element: HTMLElement | null, render(): void, willUpdate(): void, firstUpdated(): void, updated(): void, connectedCallback(): void, disconnectedCallback(): void }} ElenaInstanceMembers
+ * @typedef {{ text: string, element: HTMLElement | null, updateComplete: Promise<void>, render(): void, willUpdate(): void, firstUpdated(): void, updated(): void, requestUpdate(): void, connectedCallback(): void, disconnectedCallback(): void }} ElenaInstanceMembers
  */
 
 /**
