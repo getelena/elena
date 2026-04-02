@@ -112,10 +112,10 @@ describe("elenaPropPlugin", () => {
     `);
 
     const decl = manifest.modules[0].declarations.find(d => d.name === "Button");
-    const attrs = (decl.attributes ?? []).map(a => a.name);
-    expect(attrs).toContain("variant");
-    expect(attrs).toContain("disabled");
-    expect(attrs).not.toContain("count");
+    const attrNames = (decl.attributes ?? []).map(a => a.name);
+    expect(attrNames).toContain("variant");
+    expect(attrNames).toContain("disabled");
+    expect(attrNames).not.toContain("count");
   });
 
   test("does not duplicate existing attribute entries", () => {
