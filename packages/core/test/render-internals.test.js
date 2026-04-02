@@ -100,11 +100,15 @@ describe("render internals", () => {
       expect(span.textContent).toBe("world");
     });
 
-    it("attribute-position values leave _templateParts null", () => {
+    it("attribute-position values get patchable parts", () => {
       const container = el();
       renderTemplate(container, attrAndText, ["cls-a", "text"]);
 
-      expect(container._templateParts).toBeNull();
+      expect(container._templateParts).not.toBeNull();
+      // First part is an attribute part [element, attrName]
+      expect(Array.isArray(container._templateParts[0])).toBe(true);
+      // Second part is a text node
+      expect(container._templateParts[1].nodeType).toBe(3);
     });
 
     it("handles multiple attributes with interpolations", () => {

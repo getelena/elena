@@ -162,12 +162,12 @@ describe("_attachShadow edge cases", () => {
     expect(el.shadowRoot).toBeNull();
   });
 
-  it("_renderRoot returns the host for light DOM components", async () => {
+  it("_root returns the host for light DOM components", async () => {
     const el = await createElement("basic-element");
-    expect(el._renderRoot).toBe(el);
+    expect(el._root).toBe(el);
   });
 
-  it("_renderRoot returns shadow root for shadow DOM components", async () => {
+  it("_root returns shadow root for shadow DOM components", async () => {
     class ShadowRootEl extends Elena(HTMLElement) {
       static tagName = "test-shadow-renderroot-int";
       static shadow = "open";
@@ -177,7 +177,7 @@ describe("_attachShadow edge cases", () => {
     }
     ShadowRootEl.define();
     const el = await createElement("test-shadow-renderroot-int");
-    expect(el._renderRoot).toBe(el.shadowRoot);
+    expect(el._root).toBe(el.shadowRoot);
   });
 
   it("shadow component with no static styles skips adoptedStyleSheets", async () => {

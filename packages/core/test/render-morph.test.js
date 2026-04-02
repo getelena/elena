@@ -124,13 +124,14 @@ describe("morphContent edge cases", () => {
 });
 
 describe("createTemplate marker validation", () => {
-  it("falls back to morph when value is inside an attribute", () => {
+  it("uses clone path when value is inside an attribute", () => {
     const container = el();
     const template = Object.assign(['<div class="', '">content</div>'], {
       raw: ['<div class="', '">content</div>'],
     });
     renderTemplate(container, template, ["test"]);
-    expect(container._templateParts).toBeNull();
+    expect(container._templateParts).not.toBeNull();
+    expect(Array.isArray(container._templateParts[0])).toBe(true);
     expect(container.querySelector("div").getAttribute("class")).toBe("test");
   });
 
