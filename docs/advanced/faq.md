@@ -7,7 +7,7 @@ description: Frequently asked questions about Elena, Progressive Web Components,
 
 ## What is Elena?
 
-**Elena is a simple, tiny library (2.6kB) for building [Progressive Web Components](/components/overview).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity.
+**Elena is a simple, tiny library (2.9kB) for building [Progressive Web Components](/components/overview).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity.
 
 ## Can I build normal web components with Elena?
 
@@ -40,7 +40,7 @@ A [Progressive Web Component](/components/overview) is a native Custom Element d
 | | Elena | Lit |
 |---|---|---|
 | **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM |
-| **Size** | 2.6kB | ~5kB |
+| **Size** | 2.9kB | ~5kB |
 | **Templating** | Native tagged template literals with auto-escaping | Custom reactive template engine with directives and binding syntax |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
 | **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires `@lit-labs/ssr` |
