@@ -60,6 +60,7 @@ On the templating side, both use `html` tagged template literals, but Lit has a 
 | | Elena | Stencil |
 |---|---|---|
 | **Approach** | Runtime mixin | Compiler |
+| **Size** | 2.9kB | ~5kB (lazy runtime; varies by output target) |
 | **Language** | Vanilla JavaScript or TypeScript | TypeScript + JSX |
 | **Build step** | Optional | Required |
 | **Templating** | Native tagged template literals with auto-escaping | JSX (compiled via TypeScript) |
@@ -72,6 +73,29 @@ On the templating side, both use `html` tagged template literals, but Lit has a 
 | **Output targets** | Not necessary | Custom elements, React, Angular, Vue wrappers |
 
 Stencil’s standout feature is its output targets: it can generate framework-specific wrappers (React, Angular, Vue) automatically from the same component source. If you need generated bindings for multiple frameworks, Stencil has a clear advantage. Elena, by contrast, works directly with any framework without generated wrappers.
+
+### Elena vs Enhance
+
+[Enhance](https://enhance.dev) is an HTML-first full-stack web framework built on Architect. While both Elena and Enhance share a philosophy of progressive enhancement and Light DOM by default, they operate at very different levels: Elena is a client-side library for building standard web components, while Enhance is a server framework where components are pure functions that render HTML at request time.
+
+| | Elena | Enhance |
+|---|---|---|
+| **Approach** | Runtime mixin | Server framework |
+| **Size** | 2.9kB | No client runtime required; optional upgrade ~2-5kB |
+| **Language** | Vanilla JavaScript or TypeScript | JavaScript (Node.js, or WASM for other runtimes) |
+| **Build step** | Optional | No compile step; requires Enhance server or SSR engine |
+| **Templating** | Native tagged template literals with auto-escaping | Pure functions returning HTML strings |
+| **DOM model** | Light DOM (Shadow DOM opt-in) | Light DOM (Shadow DOM opt-in) |
+| **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Server renders HTML, JavaScript optional |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Server rendering is the primary mode |
+| **Prop reflection** | Reflects all; disable per-prop | Standard `observedAttributes` on client side |
+| **Style encapsulation** | `@scope` + `all: unset` | Server-side selector prefixing |
+| **API** | Static class fields + reactive properties | Pure functions on server; optional class-based upgrade on client |
+| **Portability** | Standard custom elements, works anywhere | Server components are framework-specific; client upgrades are standard |
+
+The fundamental difference is scope. Elena is a standalone library that works directly in the browser and can be used in any environment: static HTML, any framework, any server. Enhance, on the other hand, is a full-stack framework where components are tightly coupled to their server-side rendering engine. 
+
+If you want portable web components that work independently of a specific backend, Elena might be a better fit. If you want a full-stack framework where component rendering is handled entirely by the server, Enhance offers that.
 
 ## What is the performance compared to Lit?
 
