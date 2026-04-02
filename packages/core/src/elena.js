@@ -489,9 +489,6 @@ export function Elena(superClass) {
       }
       if (!this._renderPending) {
         this._renderPending = true;
-        this._updateComplete = new Promise(resolve => {
-          this._resolveUpdate = resolve;
-        });
         queueMicrotask(() => {
           try {
             this._performUpdate();
@@ -523,7 +520,7 @@ export function Elena(superClass) {
         this.updated();
       } finally {
         this._updateComplete = null;
-        resolve();
+        resolve?.();
       }
     }
 
@@ -534,7 +531,15 @@ export function Elena(superClass) {
      * @type {Promise<void>}
      */
     get updateComplete() {
-      return this._updateComplete || Promise.resolve();
+      if (!this._renderPending) {
+        return Promise.resolve();
+      }
+      if (!this._updateComplete) {
+        this._updateComplete = new Promise(resolve => {
+          this._resolveUpdate = resolve;
+        });
+      }
+      return this._updateComplete;
     }
 
     /**
