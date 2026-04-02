@@ -149,13 +149,10 @@ export function Elena(superClass) {
       super.connectedCallback?.();
       this._setupStaticProps();
       this._captureClassFieldDefaults();
-
       if (!this._hydrated && this._text === undefined) {
         this.text = this.textContent.trim();
       }
-
       this._attachShadow();
-
       this._root = this._shadow ?? this.shadowRoot ?? this;
 
       this._runUpdate ??= () => {
@@ -170,13 +167,11 @@ export function Elena(superClass) {
       this._applyRender();
       this._syncProps();
       this._delegateEvents();
-
       if (!this._hydrated) {
         this._hydrated = true;
         this.setAttribute("hydrated", "");
         this.firstUpdated();
       }
-
       this.updated();
     }
 
@@ -520,7 +515,6 @@ export function Elena(superClass) {
       this._renderPending = false;
       const resolve = this._resolveUpdate;
       this._resolveUpdate = null;
-
       try {
         try {
           this.willUpdate();

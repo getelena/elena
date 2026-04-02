@@ -105,7 +105,7 @@ function fullRender(element, strings, values) {
       .replace(/>\s+</g, "><")
       .trim();
 
-    // Morph existing DOM to match new markup instead of replacing it
+    // Morph existing DOM to match new markup instead of replacing it.
     const template = newTemplate();
     template.innerHTML = markup;
     morphContent(element, template.content.childNodes);
@@ -177,8 +177,8 @@ function createTemplate(_strings, valueCount) {
 function cloneAndPatch(element, templateInfo, values) {
   const { _tpl, _attrs } = templateInfo;
   const clone = _tpl.content.cloneNode(true);
-  const parts = Array(values.length);
   const walker = treeWalker(clone);
+  const parts = Array(values.length);
   const markers = [];
   let node;
 
