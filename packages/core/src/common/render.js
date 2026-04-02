@@ -1,11 +1,12 @@
 import { collapseWhitespace, isArray, isRaw, resolveValue, toPlainText } from "./utils.js";
 
 const stringsCache = new WeakMap();
-const markerKey = "e" + ((Math.random() * 1e5) | 0);
+const markerKey = "e" + Math.random().toString(36).slice(2);
 const SHOW_COMMENT = 128;
 const ELEMENT_NODE = 1;
 const TEXT_NODE = 3;
 
+const BETWEEN_TAGS = />\s+</g;
 const newTemplate = () => document.createElement("template");
 const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
 
@@ -54,7 +55,7 @@ function patchTextNodes(element, strings, values) {
     }
 
     element._templateValues[i] = comparable;
-    element._templateParts[i].textContent = toPlainText(v);
+    element._templateParts[i].textContent = String(comparable ?? "");
   }
 
   return true;
@@ -87,7 +88,7 @@ function fullRender(element, strings, values) {
     const renderedValues = values.map(resolveValue);
     const markup = entry._strings
       .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
-      .replace(/>\s+</g, "><")
+      .replace(BETWEEN_TAGS, "><")
       .trim();
 
     // Morph existing DOM to match new markup instead of replacing it.
@@ -212,7 +213,7 @@ function morphContent(parent, nextNodes) {
 }
 
 /**
- * Morhp element’s attributes without rebuilding the DOM.
+ * Morph element’s attributes without rebuilding the DOM.
  *
  * @param {Element} current - The current existing DOM element
  * @param {Element} next - The desired element from the new render
