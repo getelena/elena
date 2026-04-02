@@ -5,7 +5,6 @@ const markerKey = "e" + Math.random().toString(36).slice(2);
 const SHOW_COMMENT = 128;
 const ELEMENT_NODE = 1;
 const TEXT_NODE = 3;
-
 const BETWEEN_TAGS = />\s+</g;
 const newTemplate = () => document.createElement("template");
 const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
