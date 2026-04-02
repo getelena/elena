@@ -98,7 +98,8 @@ function fullRender(element, strings, values) {
   if (entry._template) {
     element._templateParts = cloneAndPatch(element, entry._template, values);
   } else {
-    // Fallback for static templates or templates where marker detection failed
+    // Fallback for static templates or templates where marker detection failed.
+    // White space collapsing here protects against Vue SSR mismatches.
     const renderedValues = values.map(resolveValue);
     const markup = entry._strings
       .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
