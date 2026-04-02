@@ -7,7 +7,7 @@ description: Frequently asked questions about Elena, Progressive Web Components,
 
 ## What is Elena?
 
-**Elena is a simple, tiny library (2.9kB) for building [Progressive Web Components](/components/overview).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity.
+**Elena is a simple, tiny library for building [Progressive Web Components](/components/overview).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity.
 
 ## Can I build normal web components with Elena?
 
