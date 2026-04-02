@@ -110,7 +110,9 @@ export function Elena(superClass) {
         // The attribute is already set and we just need the coerced
         // prop value stored for the next render.
         const current = this._props.get(prop);
-        const coerced = getPropValue(typeof current, newValue, "toProp");
+        const type = typeof current;
+        const coerced =
+          type === "string" ? (newValue ?? "") : getPropValue(type, newValue, "toProp");
         if (coerced !== current) {
           this._props.set(prop, coerced);
         }
@@ -149,6 +151,14 @@ export function Elena(superClass) {
         this.text = this.textContent.trim();
       }
       this._attachShadow();
+      this._root = this._shadow ?? this.shadowRoot ?? this;
+      this._runUpdate ??= () => {
+        try {
+          this._performUpdate();
+        } catch (e) {
+          console.error(prefix, e);
+        }
+      };
       this.willUpdate();
       this._applyRender();
       this._syncProps();
@@ -237,16 +247,6 @@ export function Elena(superClass) {
     }
 
     /**
-     * The root node to render into. Returns the shadow root when shadow mode
-     * is enabled, otherwise the host element itself.
-     *
-     * @type {ShadowRoot | HTMLElement}
-     */
-    get _renderRoot() {
-      return this._shadow ?? this.shadowRoot ?? this;
-    }
-
-    /**
      * Attaches a shadow root and adopts styles on first connect.
      * Only runs when `static shadow` is set on the component class.
      *
@@ -298,7 +298,7 @@ export function Elena(superClass) {
      */
     _applyRender() {
       const constructor = this.constructor;
-      const root = this._renderRoot;
+      const root = this._root;
       const result = this.render();
 
       if (result && result.strings) {
@@ -445,7 +445,7 @@ export function Elena(superClass) {
         return;
       }
 
-      if (!event.bubbles || (!event.composed && this._renderRoot !== this)) {
+      if (!event.bubbles || (!event.composed && this._root !== this)) {
         /** @internal */
         this.dispatchEvent(new Event(event.type, { bubbles: event.bubbles }));
       }
@@ -497,13 +497,7 @@ export function Elena(superClass) {
       }
       if (!this._renderPending) {
         this._renderPending = true;
-        queueMicrotask(() => {
-          try {
-            this._performUpdate();
-          } catch (e) {
-            console.error(prefix, e);
-          }
-        });
+        queueMicrotask(this._runUpdate);
       }
     }
 
