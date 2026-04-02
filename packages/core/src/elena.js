@@ -102,17 +102,25 @@ export function Elena(superClass) {
         return;
       }
 
-      // Set flag so the property setter skips redundant attribute reflection:
-      // the attribute is already at the new value, no need to set it again.
-      this._syncing = true;
-      getProps(this, prop, oldValue, newValue);
-      this._syncing = false;
+      if (oldValue === newValue) {
+        return;
+      }
 
-      // Re-render when attributes change (after initial render).
-      // Guard against re-entrant renders: if render() itself mutates an observed
-      // attribute, skip the recursive call to prevent an infinite loop.
-      if (this._hydrated && oldValue !== newValue && !this._isRendering) {
+      if (this._hydrated && !this._isRendering) {
+        // The attribute is already set and we just need the coerced
+        // prop value stored for the next render.
+        const current = this._props.get(prop);
+        const coerced = getPropValue(typeof current, newValue, "toProp");
+        if (coerced !== current) {
+          this._props.set(prop, coerced);
+        }
         this._safeRender();
+      } else {
+        // Runs pre-hydration or during render.
+        // Goes through the setter so _props is initialized correctly.
+        this._syncing = true;
+        getProps(this, prop, oldValue, newValue);
+        this._syncing = false;
       }
     }
 
