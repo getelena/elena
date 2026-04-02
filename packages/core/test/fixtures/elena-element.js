@@ -7,7 +7,7 @@ export default class BasicElement extends Elena(HTMLElement) {
   variant = "";
 
   render() {
-    return html`<span>${this.variant}</span>`;
+    return html`<span variant="${this.variant}">${this.text}</span>`;
   }
 }
 BasicElement.define();
