@@ -11,7 +11,7 @@ class LitBenchElement extends LitElement {
   }
 
   render() {
-    return html`<span>${this.variant}</span>`;
+    return html`<span variant="${this.variant}"><slot></slot></span>`;
   }
 }
 
