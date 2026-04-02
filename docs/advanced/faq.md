@@ -75,13 +75,13 @@ Stencil’s standout feature is its output targets: it can generate framework-sp
 
 ## What is the performance compared to Lit?
 
-At the time of writing, the performance is very similar in our simulated benchmark tests. According to the benchmarks, Elena is roughly `1.23×` faster than Lit for single element creation and batch creation of up to 1000 web components _(the gap gets smaller though the bigger this number grows, see the below screenshot)._ Re-renders via attribute change are showing identical performance.
+At the time of writing, the performance is very similar in our simulated benchmark tests. According to the benchmarks, Elena is roughly `1.17×` faster than Lit for single element creation with roughly `1.28×` faster re-renders.  Batch creation of up to 1000 web components is pretty much exactly the same.
 
-That said, synthetic benchmarks only measure isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
+That said, our synthetic benchmarks only measure very isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
 
 <img src="/bench.webp" loading="lazy" width="2804" height="1390" alt="Elena bench test suite" />
 
-When you look at the above screenshot, keep in mind that Elena defaults to Light DOM, Lit to Shadow DOM. Enabling Shadow DOM narrows the gap to only a `1.07×` performance gain over Lit for single element creation, and batch creation performs almost identically.
+When looking at the above screenshot, keep in mind that Elena defaults to Light DOM, Lit to Shadow DOM. [Enabling Shadow DOM](/components/options) for Elena makes the performance pretty much identical.
 
 ## How is Elena tested?
 
