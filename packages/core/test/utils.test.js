@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { Elena } from "../src/elena.js";
-import { defineElement, html, nothing, unsafeHTML } from "../src/common/utils.js";
+import { defineElement, html, nothing, unsafeHTML, isRaw } from "../src/common/utils.js";
 import { renderTemplate } from "../src/common/render.js";
 import { escapeHtml } from "../src/common/utils.js";
 import "./fixtures/nothing-element.js";
@@ -130,8 +130,8 @@ describe("utils", () => {
       expect(String(nothing)).toBe("");
     });
 
-    it("is marked as __raw", () => {
-      expect(nothing.__raw).toBe(true);
+    it("is marked as raw", () => {
+      expect(isRaw(nothing)).toBe(true);
     });
 
     it("passes through html`` without escaping", () => {
@@ -201,7 +201,7 @@ describe("utils", () => {
 
     it("nothing vs empty string vs null vs undefined behavioral differences", () => {
       expect(String(nothing)).toBe("");
-      expect(nothing.__raw).toBe(true);
+      expect(isRaw(nothing)).toBe(true);
 
       const withEmpty = html`<span>${""}</span>`;
       expect(String(withEmpty)).toBe("<span></span>");
@@ -218,8 +218,8 @@ describe("utils", () => {
   });
 
   describe("unsafeHTML", () => {
-    it("is marked as __raw", () => {
-      expect(unsafeHTML("<b>bold</b>").__raw).toBe(true);
+    it("is marked as raw", () => {
+      expect(isRaw(unsafeHTML("<b>bold</b>"))).toBe(true);
     });
 
     it("returns the raw string as-is when converted to string", () => {
@@ -302,9 +302,9 @@ describe("utils", () => {
       expect(String(result)).toBe("<span>0</span>");
     });
 
-    it("is marked as __raw", () => {
+    it("is marked as raw", () => {
       const result = html`<span>test</span>`;
-      expect(result.__raw).toBe(true);
+      expect(isRaw(result)).toBe(true);
     });
   });
 
