@@ -57,6 +57,27 @@ function resolveItem(value) {
 }
 
 /**
+ * Lightweight template result.
+ *
+ * @internal
+ */
+class HtmlResult {
+  constructor(strings, values) {
+    this.strings = strings;
+    this.values = values;
+  }
+  toString() {
+    if (this._str == null) {
+      this._str = this.strings.reduce((acc, s, i) => {
+        return acc + s + resolveValue(this.values[i]);
+      }, "");
+    }
+    return this._str;
+  }
+}
+HtmlResult.prototype[RAW] = true;
+
+/**
  * Tagged template for trusted HTML. Use as the return value
  * of render(), or for sub-fragments inside render methods.
  *
@@ -65,20 +86,7 @@ function resolveItem(value) {
  * @returns {{ strings: TemplateStringsArray, values: Array, toString(): string }}
  */
 export function html(strings, ...values) {
-  let str;
-  return {
-    [RAW]: true,
-    strings,
-    values,
-    toString: () => {
-      if (str == null) {
-        str = strings.reduce((acc, s, i) => {
-          return acc + s + resolveValue(values[i]);
-        }, "");
-      }
-      return str;
-    },
-  };
+  return new HtmlResult(strings, values);
 }
 
 /**
