@@ -75,13 +75,13 @@ Stencil’s standout feature is its output targets: it can generate framework-sp
 
 ## What is the performance compared to Lit?
 
-At the time of writing, the performance is very similar in our simulated benchmark tests. According to the benchmarks, Elena is roughly `1.20×` faster than Lit for single element creation and batch creation of up to 1000 web components _(the gap gets smaller though the bigger this number grows, see the below screenshot)._ Lit is roughly `1.19×` faster on re-renders via attribute change.
+At the time of writing, the performance is very similar in our simulated benchmark tests. According to the benchmarks, Elena is roughly `1.23×` faster than Lit for single element creation and batch creation of up to 1000 web components _(the gap gets smaller though the bigger this number grows, see the below screenshot)._ Re-renders via attribute change are showing identical performance.
 
-That said, synthetic benchmarks only measure isolated operations and Lit is much more heavily optimized than Elena. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
+That said, synthetic benchmarks only measure isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
 
 <img src="/bench.webp" loading="lazy" width="2804" height="1390" alt="Elena bench test suite" />
 
-When you look at the above screenshot, keep in mind that Elena defaults to Light DOM, Lit to Shadow DOM. Enabling Shadow DOM narrows the gap to only a `1.06×` performance gain over Lit for single element creation, and batch creation performs identically at a consistent `1.00×`.
+When you look at the above screenshot, keep in mind that Elena defaults to Light DOM, Lit to Shadow DOM. Enabling Shadow DOM narrows the gap to only a `1.07×` performance gain over Lit for single element creation, and batch creation performs almost identically.
 
 ## How is Elena tested?
 
