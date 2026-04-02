@@ -105,7 +105,7 @@ describe("render internals", () => {
       renderTemplate(container, attrAndText, ["cls-a", "text"]);
 
       expect(container._templateParts).not.toBeNull();
-      // First part is an attribute part [element, attrName]
+      // First part is an attribute part [element, attr]
       expect(Array.isArray(container._templateParts[0])).toBe(true);
       // Second part is a text node
       expect(container._templateParts[1].nodeType).toBe(3);

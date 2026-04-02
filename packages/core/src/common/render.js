@@ -5,8 +5,7 @@ const markerKey = "e" + Math.random().toString(36).slice(2);
 const SHOW_COMMENT = 128;
 const ELEMENT_NODE = 1;
 const TEXT_NODE = 3;
-const BETWEEN_TAGS = />\s+</g;
-const ATTR_POSITION = /([^\s"'>/=]+)\s*=\s*["']$/;
+
 const newTemplate = () => document.createElement("template");
 const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
 
@@ -103,7 +102,7 @@ function fullRender(element, strings, values) {
     const renderedValues = values.map(resolveValue);
     const markup = entry._strings
       .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
-      .replace(BETWEEN_TAGS, "><")
+      .replace(/>\s+</g, "><")
       .trim();
 
     // Morph existing DOM to match new markup instead of replacing it
@@ -118,30 +117,29 @@ function fullRender(element, strings, values) {
 }
 
 /**
- * Build a <template> element with comment markers
- * and string placeholders.
+ * Build a <template> element with comment markers and string placeholders.
  *
  * @param {string[]} _strings - Whitespace-collapsed static parts
  * @param {number} valueCount - Number of dynamic values
- * @returns {{ _tpl: HTMLTemplateElement, _attrNames: (string|null)[] } | null}
+ * @returns {{ _tpl: HTMLTemplateElement, _attrs: (string|null)[] } | null}
  */
 function createTemplate(_strings, valueCount) {
-  const commentMarker = `<!--${markerKey}-->`;
-  const attrNames = [];
+  const marker = `<!--${markerKey}-->`;
+  const attrs = [];
   let markup = "";
 
   for (let i = 0; i < _strings.length; i++) {
     markup += _strings[i];
 
     if (i < valueCount) {
-      const match = _strings[i].match(ATTR_POSITION);
+      const match = _strings[i].match(/([^\s"'>/=]+)\s*=\s*["']$/);
 
       if (match) {
-        attrNames.push(match[1]);
+        attrs.push(match[1]);
         markup += markerKey + "_" + i;
       } else {
-        attrNames.push(null);
-        markup += commentMarker;
+        attrs.push(null);
+        markup += marker;
       }
     }
   }
@@ -159,32 +157,32 @@ function createTemplate(_strings, valueCount) {
     }
   }
 
-  const expectedComments = attrNames.filter(n => n === null).length;
+  const expectedComments = attrs.filter(n => n === null).length;
 
   if (commentCount !== expectedComments) {
     return null;
   }
 
-  return { _tpl: template, _attrNames: attrNames };
+  return { _tpl: template, _attrs: attrs };
 }
 
 /**
  * Clone a cached template and replace markers with actual content.
  *
  * @param {HTMLElement} element - The host element to render into
- * @param {{ _tpl: HTMLTemplateElement, _attrNames: (string|null)[] }} templateInfo
+ * @param {{ _tpl: HTMLTemplateElement, _attrs: (string|null)[] }} templateInfo
  * @param {Array} values - Raw interpolated values
  * @returns {Array<Text | [Element, string] | undefined>}
  */
 function cloneAndPatch(element, templateInfo, values) {
-  const { _tpl, _attrNames } = templateInfo;
+  const { _tpl, _attrs } = templateInfo;
   const clone = _tpl.content.cloneNode(true);
   const parts = Array(values.length);
   const walker = treeWalker(clone);
   const markers = [];
   let node;
 
-  // Collect content-position comment markers before modifying the tree
+  // Collect markers before modifying the tree
   while ((node = walker.nextNode())) {
     if (node.data === markerKey) {
       markers.push(node);
@@ -194,31 +192,32 @@ function cloneAndPatch(element, templateInfo, values) {
   let contentIdx = 0;
 
   for (let i = 0; i < values.length; i++) {
-    const attrName = _attrNames[i];
+    const attr = _attrs[i];
 
-    if (attrName) {
+    if (attr) {
       // Find the element with the placeholder value
       const placeholder = markerKey + "_" + i;
-      const el = clone.querySelector(`[${attrName}="${placeholder}"]`);
+      const el = clone.querySelector(`[${attr}="${placeholder}"]`);
 
       if (el) {
         const value = values[i];
         const str = String((isArray(value) ? toPlainText(value) : value) ?? "");
-        el.setAttribute(attrName, str);
-        parts[i] = [el, attrName];
+        el.setAttribute(attr, str);
+        parts[i] = [el, attr];
       }
     } else {
       // Replace comment marker with value
       const marker = markers[contentIdx++];
       const value = values[i];
 
+      // Parse and insert raw HTML as a fragment
       if (isRaw(value)) {
-        // Parse and insert raw HTML as a fragment
         const tmp = newTemplate();
         tmp.innerHTML = resolveValue(value);
         marker.parentNode.replaceChild(tmp.content, marker);
-      } else {
+
         // Create text node with unescaped content
+      } else {
         const textNode = document.createTextNode(toPlainText(value));
         marker.parentNode.replaceChild(textNode, marker);
         parts[i] = textNode;

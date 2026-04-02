@@ -113,13 +113,15 @@ export function Elena(superClass) {
         const type = typeof current;
         const coerced =
           type === "string" ? (newValue ?? "") : getPropValue(type, newValue, "toProp");
+
         if (coerced !== current) {
           this._props.set(prop, coerced);
         }
         this._safeRender();
-      } else {
+
         // Runs pre-hydration or during render.
         // Goes through the setter so _props is initialized correctly.
+      } else {
         this._syncing = true;
         getProps(this, prop, oldValue, newValue);
         this._syncing = false;
@@ -147,11 +149,15 @@ export function Elena(superClass) {
       super.connectedCallback?.();
       this._setupStaticProps();
       this._captureClassFieldDefaults();
+
       if (!this._hydrated && this._text === undefined) {
         this.text = this.textContent.trim();
       }
+
       this._attachShadow();
+
       this._root = this._shadow ?? this.shadowRoot ?? this;
+
       this._runUpdate ??= () => {
         try {
           this._performUpdate();
@@ -159,15 +165,18 @@ export function Elena(superClass) {
           console.error(prefix, e);
         }
       };
+
       this.willUpdate();
       this._applyRender();
       this._syncProps();
       this._delegateEvents();
+
       if (!this._hydrated) {
         this._hydrated = true;
         this.setAttribute("hydrated", "");
         this.firstUpdated();
       }
+
       this.updated();
     }
 
@@ -511,6 +520,7 @@ export function Elena(superClass) {
       this._renderPending = false;
       const resolve = this._resolveUpdate;
       this._resolveUpdate = null;
+
       try {
         try {
           this.willUpdate();
