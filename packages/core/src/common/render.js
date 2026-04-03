@@ -55,7 +55,7 @@ function patchParts(element, strings, values) {
 
     // HTML content (nested templates, arrays)
     if (part._start) {
-      if (isArray(value) && isRaw(value)) {
+      if (isArray(value)) {
         patchRawArray(part, cached, i, value);
       } else if (isRaw(value)) {
         const comparable = toComparable(value);
@@ -206,9 +206,7 @@ function fullRender(element, strings, values) {
   }
 
   element._templateStrings = strings;
-  element._templateValues = values.map(v =>
-    isArray(v) && isRaw(v) ? v.map(item => String(item)) : toComparable(v)
-  );
+  element._templateValues = values.map(toComparable);
 }
 
 /**
