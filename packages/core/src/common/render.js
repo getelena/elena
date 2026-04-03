@@ -1,4 +1,5 @@
-import { collapseWhitespace, isArray, isRaw, resolveValue, toPlainText } from "./utils.js";
+import { isArray, isRaw, toPlainText, parseHTML } from "./utils.js";
+import { collectNodes, collapseWhitespace, resolveValue } from "./utils.js";
 
 const stringsCache = new WeakMap();
 const markerKey = "e" + Math.random().toString(36).slice(2);
@@ -9,35 +10,6 @@ const TEXT_NODE = 3;
 const newTemplate = () => document.createElement("template");
 const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
 const toComparable = v => (isArray(v) || isRaw(v) ? toPlainText(v) : v);
-
-/**
- * Parse an HTML string into a DocumentFragment.
- *
- * @param {string} markup
- * @returns {DocumentFragment}
- */
-const parseHTML = markup => {
-  const t = newTemplate();
-  t.innerHTML = markup;
-  return t.content;
-};
-
-/**
- * Collect live DOM nodes between two boundary comment markers.
- *
- * @param {Comment} start
- * @param {Comment} end
- * @returns {Node[]}
- */
-const collectNodes = (start, end) => {
-  const nodes = [];
-  let node = start.nextSibling;
-  while (node && node !== end) {
-    nodes.push(node);
-    node = node.nextSibling;
-  }
-  return nodes;
-};
 
 /**
  * Render a tagged template into an Elena Element with DOM diffing.
