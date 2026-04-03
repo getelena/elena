@@ -217,17 +217,16 @@ function fullRender(element, strings, values) {
   } else {
     // Fallback for static templates or templates where marker detection failed.
     // White space collapsing here protects against Vue SSR mismatches.
-    const renderedValues = values.map(resolveValue);
-    const markup = entry._strings
-      .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
-      .replace(/>\s+</g, "><")
-      .trim();
+    let markup = "";
+    for (let i = 0; i < entry._strings.length; i++) {
+      markup += entry._strings[i] + (resolveValue(values[i]) ?? "");
+    }
 
     // Morph existing DOM to match new markup instead of replacing it.
     morphNodeList(
       element,
       Array.from(element.childNodes),
-      Array.from(parseHTML(markup).childNodes),
+      Array.from(parseHTML(markup.replace(/>\s+</g, "><").trim()).childNodes),
       null
     );
 
@@ -322,9 +321,7 @@ function cloneAndPatch(element, templateInfo, values) {
       const el = clone.querySelector(`[${attr}="${placeholder}"]`);
 
       if (el) {
-        const value = values[i];
-        const str = String((isArray(value) ? toPlainText(value) : value) ?? "");
-        el.setAttribute(attr, str);
+        el.setAttribute(attr, String(toComparable(values[i]) ?? ""));
         parts[i] = [el, attr];
       }
     } else {
