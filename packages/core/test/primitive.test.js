@@ -114,7 +114,7 @@ describe("Primitive Components", () => {
       expect(spy).toHaveBeenCalled();
     });
 
-    it("does not fire events from old detached element after rebuild", async () => {
+    it("preserves element identity when rendered output is equivalent", async () => {
       const el = await createElement("conditional-event-element");
       const oldElement = el.element;
       const handler = vi.fn();
@@ -125,8 +125,10 @@ describe("Primitive Components", () => {
       el.active = true;
       await el.updateComplete;
 
+      // DOM is preserved because rendered output is equivalent
+      expect(el.element).toBe(oldElement);
       oldElement.click();
-      expect(handler).not.toHaveBeenCalled();
+      expect(handler).toHaveBeenCalledOnce();
     });
   });
 

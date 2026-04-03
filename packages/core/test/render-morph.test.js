@@ -152,14 +152,15 @@ describe("createTemplate marker validation", () => {
 });
 
 describe("patchTextNodes edge cases", () => {
-  it("bails out when _templateParts entry is undefined (raw HTML slot)", () => {
+  it("patches raw HTML values in place via boundary markers", () => {
     const container = el();
     const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
     renderTemplate(container, template, [html`<b>raw</b>`]);
-    expect(container._templateParts[0]).toBeUndefined();
+    expect(container._templateParts[0]._start).toBeDefined();
+    expect(container._templateParts[0]._end).toBeDefined();
 
     const result = renderTemplate(container, template, [html`<em>new</em>`]);
-    expect(result).toBe(true);
+    expect(result).toBe(false);
     expect(container.querySelector("em").textContent).toBe("new");
   });
 

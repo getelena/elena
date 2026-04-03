@@ -227,12 +227,13 @@ describe("render internals", () => {
       expect(container.querySelector("div").textContent).toBe("");
     });
 
-    it("raw HTML value has no fast-patch text node (undefined in _templateParts)", () => {
+    it("raw HTML value stores boundary markers in _templateParts", () => {
       const container = el();
       const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
       renderTemplate(container, template, [html`<b>raw</b>`]);
-      // Raw values can't be fast-patched
-      expect(container._templateParts[0]).toBeUndefined();
+      // Raw values are tracked via boundary comment markers for efficient patching
+      expect(container._templateParts[0]._start.nodeType).toBe(8);
+      expect(container._templateParts[0]._end.nodeType).toBe(8);
     });
 
     it("mix of raw and plain values in same template", () => {
