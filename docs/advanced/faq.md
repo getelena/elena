@@ -99,13 +99,18 @@ If you want portable web components that work independently of a specific backen
 
 ## What is the performance compared to Lit?
 
-At the time of writing, the performance is very similar in our simulated benchmark tests. According to the benchmarks, Elena is roughly `1.17×` faster than Lit in single element creation, and around `1.28×` faster in re-renders.  Batch creation of up to 1000 web components has exactly the same performance.
+At the time of writing, the performance is very similar in our simulated benchmark tests. According to the benchmarks, Elena is roughly `1.20×` faster than Lit in single element creation and re-renders. Batch creation of up to 1000 web components has exactly the same performance.
 
 That said, our synthetic benchmarks only measure very isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
 
-<img src="/bench.webp" loading="lazy" width="2804" height="1390" alt="Elena bench test suite" />
+<img src="/bench.webp" loading="lazy" width="3044" height="1440" alt="Elena bench test suite" />
 
-When looking at the above screenshot, keep in mind that Elena defaults to Light DOM, Lit to Shadow DOM. [Enabling Shadow DOM](/components/options) for Elena makes the performance identical.
+**Note:** Elena defaults to Light DOM while Lit uses Shadow DOM. [Enabling Shadow DOM](/components/options) for Elena makes the performance identical in the first screenshot shared.
+
+The following results are generated with the JS Framework Benchmark suite, which tests more complex operations across JavaScript frameworks. Elena is still fairly competitive even among the heavyweight champions such as Lit and Vue and has smaller memory footprint and size:
+
+<img src="/performance1.png" loading="lazy" width="2888" height="1902" alt="Elena JavaScript Framework benchmark 1" />
+<img src="/performance2.png" loading="lazy" width="2888" height="1588" alt="Elena JavaScript Framework benchmark 2" />
 
 ## How is Elena tested?
 
