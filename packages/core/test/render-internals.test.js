@@ -695,4 +695,188 @@ describe("render internals", () => {
       expect(result).toBe(true);
     });
   });
+
+  describe("patchRawArray", () => {
+    const tpl = Object.assign(["<ul>", "</ul>"], { raw: ["<ul>", "</ul>"] });
+    const items = (...labels) => labels.map(l => html`<li>${l}</li>`);
+    const getLIs = container => Array.from(container.querySelectorAll("li"));
+    const getTexts = container => getLIs(container).map(li => li.textContent);
+
+    const warmup = (container, vals) => {
+      renderTemplate(container, tpl, [vals]);
+      renderTemplate(container, tpl, [vals]);
+    };
+
+    it("enters patchRawArray on re-render with raw array", () => {
+      const container = el();
+      warmup(container, items("a", "b"));
+      const result = renderTemplate(container, tpl, [items("a", "X")]);
+      expect(result).toBe(false);
+      expect(getTexts(container)).toEqual(["a", "X"]);
+    });
+
+    it("fallback morphs when prev cache is not an array", () => {
+      const container = el();
+      renderTemplate(container, tpl, [items("a", "b")]);
+      const result = renderTemplate(container, tpl, [items("x", "y")]);
+      expect(result).toBe(false);
+      expect(getTexts(container)).toEqual(["x", "y"]);
+    });
+
+    it("single item change in the middle", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c"));
+      const lis = getLIs(container);
+
+      renderTemplate(container, tpl, [items("a", "X", "c")]);
+      expect(getTexts(container)).toEqual(["a", "X", "c"]);
+      expect(getLIs(container)[0]).toBe(lis[0]);
+      expect(getLIs(container)[2]).toBe(lis[2]);
+    });
+
+    it("two items change at edges (swap)", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c", "d", "e"));
+      const lis = getLIs(container);
+
+      renderTemplate(container, tpl, [items("X", "b", "c", "d", "Y")]);
+      expect(getTexts(container)).toEqual(["X", "b", "c", "d", "Y"]);
+      expect(getLIs(container)[1]).toBe(lis[1]);
+      expect(getLIs(container)[2]).toBe(lis[2]);
+      expect(getLIs(container)[3]).toBe(lis[3]);
+    });
+
+    it("change at the start only", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c"));
+      const lis = getLIs(container);
+
+      renderTemplate(container, tpl, [items("X", "b", "c")]);
+      expect(getTexts(container)).toEqual(["X", "b", "c"]);
+      expect(getLIs(container)[1]).toBe(lis[1]);
+      expect(getLIs(container)[2]).toBe(lis[2]);
+    });
+
+    it("change at the end only", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c"));
+      const lis = getLIs(container);
+
+      renderTemplate(container, tpl, [items("a", "b", "X")]);
+      expect(getTexts(container)).toEqual(["a", "b", "X"]);
+      expect(getLIs(container)[0]).toBe(lis[0]);
+      expect(getLIs(container)[1]).toBe(lis[1]);
+    });
+
+    it("no changes preserves all DOM nodes", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c"));
+      const lis = getLIs(container);
+
+      renderTemplate(container, tpl, [items("a", "b", "c")]);
+      const newLIs = getLIs(container);
+      expect(newLIs[0]).toBe(lis[0]);
+      expect(newLIs[1]).toBe(lis[1]);
+      expect(newLIs[2]).toBe(lis[2]);
+    });
+
+    it("append items at the end", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c"));
+      const lis = getLIs(container);
+
+      renderTemplate(container, tpl, [items("a", "b", "c", "d", "e")]);
+      expect(getTexts(container)).toEqual(["a", "b", "c", "d", "e"]);
+      expect(getLIs(container)[0]).toBe(lis[0]);
+      expect(getLIs(container)[1]).toBe(lis[1]);
+      expect(getLIs(container)[2]).toBe(lis[2]);
+    });
+
+    it("remove items from the end", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c", "d", "e"));
+      const lis = getLIs(container);
+
+      renderTemplate(container, tpl, [items("a", "b", "c")]);
+      expect(getTexts(container)).toEqual(["a", "b", "c"]);
+      expect(getLIs(container)[0]).toBe(lis[0]);
+      expect(getLIs(container)[1]).toBe(lis[1]);
+      expect(getLIs(container)[2]).toBe(lis[2]);
+    });
+
+    it("remove item from the middle", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c", "d", "e"));
+
+      renderTemplate(container, tpl, [items("a", "b", "d", "e")]);
+      expect(getTexts(container)).toEqual(["a", "b", "d", "e"]);
+    });
+
+    it("insert item in the middle", () => {
+      const container = el();
+      warmup(container, items("a", "b", "d", "e"));
+
+      renderTemplate(container, tpl, [items("a", "b", "c", "d", "e")]);
+      expect(getTexts(container)).toEqual(["a", "b", "c", "d", "e"]);
+    });
+
+    it("clear all items with empty array", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c"));
+
+      renderTemplate(container, tpl, [[]]);
+      expect(getLIs(container).length).toBe(0);
+    });
+
+    it("populate from empty array", () => {
+      const container = el();
+      warmup(container, []);
+
+      renderTemplate(container, tpl, [items("a", "b")]);
+      expect(getTexts(container)).toEqual(["a", "b"]);
+    });
+
+    it("replace all items (no prefix/suffix match)", () => {
+      const container = el();
+      warmup(container, items("a", "b", "c"));
+
+      renderTemplate(container, tpl, [items("x", "y", "z")]);
+      expect(getTexts(container)).toEqual(["x", "y", "z"]);
+    });
+
+    it("single item array change", () => {
+      const container = el();
+      warmup(container, items("a"));
+
+      renderTemplate(container, tpl, [items("b")]);
+      expect(getTexts(container)).toEqual(["b"]);
+    });
+
+    it("large array with single change preserves DOM identity", () => {
+      const container = el();
+      const labels = Array.from({ length: 100 }, (_, i) => String(i));
+      warmup(container, items(...labels));
+      const li50 = getLIs(container)[50];
+      const li99 = getLIs(container)[99];
+
+      labels[25] = "changed";
+      renderTemplate(container, tpl, [items(...labels)]);
+      expect(getLIs(container)[25].textContent).toBe("changed");
+      expect(getLIs(container)[50]).toBe(li50);
+      expect(getLIs(container)[99]).toBe(li99);
+    });
+  });
+
+  describe("patchParts !part guard", () => {
+    it("bails to full render when part is undefined", () => {
+      const container = el();
+      const template = Object.assign(
+        ['<div><template><span class="', '"></span></template></div>'],
+        { raw: ['<div><template><span class="', '"></span></template></div>'] }
+      );
+      renderTemplate(container, template, ["test"]);
+      const result = renderTemplate(container, template, ["new"]);
+      expect(result).toBe(true);
+    });
+  });
 });
