@@ -191,7 +191,7 @@ function fullRender(element, strings, values) {
     // White space collapsing here protects against Vue SSR mismatches.
     let markup = "";
     for (let i = 0; i < entry._strings.length; i++) {
-      markup += entry._strings[i] + (resolveValue(values[i]) ?? "");
+      markup += entry._strings[i] + resolveValue(values[i]);
     }
 
     // Morph existing DOM to match new markup instead of replacing it.
