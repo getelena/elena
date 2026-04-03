@@ -128,8 +128,8 @@ function patchParts(element, strings, values) {
 }
 
 /**
- * Per-item diff for raw arrays using preferenceix/suffix scanning.
- * Finds the common head and tail, then only processes the dirty range.
+ * Per-item diff for raw arrays using prefix/suffix scanning.
+ * Finds the common head and tail, then only processes the changed range.
  *
  * @param {{ _start: Comment, _end: Comment }} part - Boundary markers
  * @param {Array} cached - The element's cached template values
@@ -144,30 +144,21 @@ function patchRawArray(part, cached, i, items) {
 
   // Fall back to full morph if tracking isn't viable
   if (!isArray(prev) || nodes.length !== prev.length) {
-    const fragment = parseHTML(next.join("")).childNodes;
-
-    morphRange(parent, part._start, part._end, fragment);
+    morphRange(parent, part._start, part._end, parseHTML(next.join("")).childNodes);
     cached[i] = next;
-
     return;
   }
 
   // Skip matching items from the start
   let start = 0;
-  while (start < prev.length && start < next.length) {
-    if (next[start] !== prev[start]) {
-      break;
-    }
+  while (start < prev.length && start < next.length && next[start] === prev[start]) {
     start++;
   }
 
   // Skip matching items from the end (without overlapping start)
   let prevEnd = prev.length;
   let nextEnd = next.length;
-  while (prevEnd > start && nextEnd > start) {
-    if (next[nextEnd - 1] !== prev[prevEnd - 1]) {
-      break;
-    }
+  while (prevEnd > start && nextEnd > start && next[nextEnd - 1] === prev[prevEnd - 1]) {
     prevEnd--;
     nextEnd--;
   }
@@ -176,23 +167,25 @@ function patchRawArray(part, cached, i, items) {
   const overlap = Math.min(prevEnd - start, nextEnd - start);
   const reference = nodes[prevEnd] || part._end;
 
-  // Morph items that exist in both old and new
+  // Morph changed items
   for (let j = 0; j < overlap; j++) {
     const idx = start + j;
     if (next[idx] !== prev[idx]) {
-      const frag = parseHTML(next[idx]);
-      const after = nodes[idx + 1] || reference;
-
-      morphNodeList(parent, [nodes[idx]], Array.from(frag.childNodes), after);
+      morphNodeList(
+        parent,
+        [nodes[idx]],
+        Array.from(parseHTML(next[idx]).childNodes),
+        nodes[idx + 1] || reference
+      );
     }
   }
 
-  // Insert items that are entirely new
+  // Insert new items
   for (let j = overlap; j < nextEnd - start; j++) {
     parent.insertBefore(parseHTML(next[start + j]), reference);
   }
 
-  // Remove items that are gone
+  // Remove old items
   for (let j = prevEnd - start - 1; j >= overlap; j--) {
     parent.removeChild(nodes[start + j]);
   }
