@@ -135,32 +135,3 @@ export function collapseWhitespace(string) {
     .replace(/\n\s*/g, " ") // newline in text content, preserve word boundary
     .replace(/>\s+</g, "><"); // whitespace between tags
 }
-
-/**
- * Parse an HTML string into a DocumentFragment.
- *
- * @param {string} markup
- * @returns {DocumentFragment}
- */
-export const parseHTML = markup => {
-  const t = document.createElement("template");
-  t.innerHTML = markup;
-  return t.content;
-};
-
-/**
- * Collect live DOM nodes between two boundary comment markers.
- *
- * @param {Comment} start
- * @param {Comment} end
- * @returns {Node[]}
- */
-export const collectNodes = (start, end) => {
-  const nodes = [];
-  let node = start.nextSibling;
-  while (node && node !== end) {
-    nodes.push(node);
-    node = node.nextSibling;
-  }
-  return nodes;
-};

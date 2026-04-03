@@ -1,5 +1,4 @@
-import { isArray, isRaw, toPlainText, parseHTML } from "./utils.js";
-import { collectNodes, collapseWhitespace, resolveValue } from "./utils.js";
+import { collapseWhitespace, isArray, isRaw, resolveValue, toPlainText } from "./utils.js";
 
 const stringsCache = new WeakMap();
 const markerKey = "e" + Math.random().toString(36).slice(2);
@@ -9,7 +8,6 @@ const TEXT_NODE = 3;
 
 const newTemplate = () => document.createElement("template");
 const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
-const toComparable = v => (isArray(v) || isRaw(v) ? toPlainText(v) : v);
 
 /**
  * Render a tagged template into an Elena Element with DOM diffing.
@@ -30,7 +28,7 @@ export function renderTemplate(element, strings, values) {
 }
 
 /**
- * Patch only changed text nodes, attribute values, and raw ranges.
+ * Patch only changed text nodes and attribute values.
  *
  * @param {HTMLElement} element - The host element with cached template state
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
@@ -38,6 +36,7 @@ export function renderTemplate(element, strings, values) {
  * @returns {boolean} Whether patching was sufficient (false = full render)
  */
 function patchParts(element, strings, values) {
+  // Only works when re-rendering the same template shape
   if (element._templateStrings !== strings || !element._templateParts) {
     return false;
   }
@@ -46,43 +45,20 @@ function patchParts(element, strings, values) {
   const cached = element._templateValues;
 
   for (let i = 0; i < values.length; i++) {
-    const value = values[i];
-    const part = parts[i];
+    const v = values[i];
+    const comparable = isArray(v) ? toPlainText(v) : v;
 
-    if (!part) {
-      return false;
-    }
-
-    // HTML content (nested templates, arrays)
-    if (part._start) {
-      if (isArray(value)) {
-        patchRawArray(part, cached, i, value);
-      } else if (isRaw(value)) {
-        const comparable = toComparable(value);
-
-        if (comparable !== cached[i]) {
-          morphRange(
-            part._start.parentNode,
-            part._start,
-            part._end,
-            parseHTML(resolveValue(value)).childNodes
-          );
-          cached[i] = comparable;
-        }
-      } else {
-        return false;
-      }
-      continue;
-    }
-
-    // Text node or attribute
-    const comparable = toComparable(value);
     if (comparable === cached[i]) {
       continue;
     }
 
-    // Text node or attribute, but value is HTML
-    if (isRaw(value)) {
+    if (isRaw(v)) {
+      return false;
+    }
+
+    const part = parts[i];
+
+    if (!part) {
       return false;
     }
 
@@ -97,72 +73,6 @@ function patchParts(element, strings, values) {
   }
 
   return true;
-}
-
-/**
- * Per-item diff for raw arrays using prefix/suffix scanning.
- * Finds the common head and tail, then only processes the changed range.
- *
- * @param {{ _start: Comment, _end: Comment }} part - Boundary markers
- * @param {Array} cached - The element's cached template values
- * @param {number} i - The value index in the template
- * @param {Array} items - The new array of raw values
- */
-function patchRawArray(part, cached, i, items) {
-  const parent = part._start.parentNode;
-  const prev = cached[i];
-  const next = items.map(item => String(item));
-  const nodes = collectNodes(part._start, part._end);
-
-  // Fall back to full morph if tracking isn't viable
-  if (!isArray(prev) || nodes.length !== prev.length) {
-    morphRange(parent, part._start, part._end, parseHTML(next.join("")).childNodes);
-    cached[i] = next;
-    return;
-  }
-
-  // Skip matching items from the start
-  let start = 0;
-  while (start < prev.length && start < next.length && next[start] === prev[start]) {
-    start++;
-  }
-
-  // Skip matching items from the end (without overlapping start)
-  let prevEnd = prev.length;
-  let nextEnd = next.length;
-  while (prevEnd > start && nextEnd > start && next[nextEnd - 1] === prev[prevEnd - 1]) {
-    prevEnd--;
-    nextEnd--;
-  }
-
-  // Everything between start and end is the changed range
-  const overlap = Math.min(prevEnd - start, nextEnd - start);
-  const reference = nodes[prevEnd] || part._end;
-
-  // Morph changed items
-  for (let j = 0; j < overlap; j++) {
-    const idx = start + j;
-    if (next[idx] !== prev[idx]) {
-      morphNodeList(
-        parent,
-        [nodes[idx]],
-        Array.from(parseHTML(next[idx]).childNodes),
-        nodes[idx + 1] || reference
-      );
-    }
-  }
-
-  // Insert new items
-  for (let j = overlap; j < nextEnd - start; j++) {
-    parent.insertBefore(parseHTML(next[start + j]), reference);
-  }
-
-  // Remove old items
-  for (let j = prevEnd - start - 1; j >= overlap; j--) {
-    parent.removeChild(nodes[start + j]);
-  }
-
-  cached[i] = next;
 }
 
 /**
@@ -189,24 +99,21 @@ function fullRender(element, strings, values) {
   } else {
     // Fallback for static templates or templates where marker detection failed.
     // White space collapsing here protects against Vue SSR mismatches.
-    let markup = "";
-    for (let i = 0; i < entry._strings.length; i++) {
-      markup += entry._strings[i] + resolveValue(values[i]);
-    }
+    const renderedValues = values.map(resolveValue);
+    const markup = entry._strings
+      .reduce((out, str, i) => out + str + (renderedValues[i] ?? ""), "")
+      .replace(/>\s+</g, "><")
+      .trim();
 
     // Morph existing DOM to match new markup instead of replacing it.
-    morphNodeList(
-      element,
-      Array.from(element.childNodes),
-      Array.from(parseHTML(markup.replace(/>\s+</g, "><").trim()).childNodes),
-      null
-    );
-
+    const template = newTemplate();
+    template.innerHTML = markup;
+    morphContent(element, template.content.childNodes);
     element._templateParts = null;
   }
 
   element._templateStrings = strings;
-  element._templateValues = values.map(toComparable);
+  element._templateValues = values.map(v => (isArray(v) ? toPlainText(v) : v));
 }
 
 /**
@@ -250,7 +157,9 @@ function createTemplate(_strings, valueCount) {
     }
   }
 
-  if (commentCount !== attrs.filter(n => n === null).length) {
+  const expectedComments = attrs.filter(n => n === null).length;
+
+  if (commentCount !== expectedComments) {
     return null;
   }
 
@@ -291,26 +200,26 @@ function cloneAndPatch(element, templateInfo, values) {
       const el = clone.querySelector(`[${attr}="${placeholder}"]`);
 
       if (el) {
-        el.setAttribute(attr, String(toComparable(values[i]) ?? ""));
+        const value = values[i];
+        const str = String((isArray(value) ? toPlainText(value) : value) ?? "");
+        el.setAttribute(attr, str);
         parts[i] = [el, attr];
       }
     } else {
       // Replace comment marker with value
       const marker = markers[contentIdx++];
       const value = values[i];
-      const parent = marker.parentNode;
 
+      // Parse and insert raw HTML as a fragment
       if (isRaw(value)) {
-        const start = document.createComment("s");
-        const end = document.createComment("/s");
-        const reference = marker.nextSibling;
-        parent.replaceChild(start, marker);
-        parent.insertBefore(parseHTML(resolveValue(value)), reference);
-        parent.insertBefore(end, reference);
-        parts[i] = { _start: start, _end: end };
+        const tmp = newTemplate();
+        tmp.innerHTML = resolveValue(value);
+        marker.parentNode.replaceChild(tmp.content, marker);
+
+        // Create text node with unescaped content
       } else {
         const textNode = document.createTextNode(toPlainText(value));
-        parent.replaceChild(textNode, marker);
+        marker.parentNode.replaceChild(textNode, marker);
         parts[i] = textNode;
       }
     }
@@ -321,57 +230,37 @@ function cloneAndPatch(element, templateInfo, values) {
 }
 
 /**
- * Morph the nodes between two boundary markers against new nodes.
+ * Patches attributes and text content in-place when structure is stable,
+ * preserving element identity and focus state across re-renders.
  *
  * @param {Node} parent
- * @param {Comment} start - Start boundary marker
- * @param {Comment} end - End boundary marker
  * @param {NodeList} nextNodes - The desired child nodes from the new render
  */
-function morphRange(parent, start, end, nextNodes) {
-  morphNodeList(parent, collectNodes(start, end), Array.from(nextNodes), end);
-}
-
-/**
- * Diff current nodes against next nodes in place.
- *
- * @param {Node} parent
- * @param {Node[]} current - Existing child nodes
- * @param {Node[]} next - Desired child nodes
- * @param {Node|null} reference - Insert new nodes before this node (null = append)
- */
-function morphNodeList(parent, current, next, reference) {
+function morphContent(parent, nextNodes) {
+  const current = Array.from(parent.childNodes);
+  const next = Array.from(nextNodes);
   const len = Math.max(current.length, next.length);
 
   for (let i = 0; i < len; i++) {
     const cur = current[i];
     const nxt = next[i];
 
-    // New node added
     if (!cur) {
-      parent.insertBefore(nxt, reference);
-
-      // Old node removed
+      parent.appendChild(nxt);
     } else if (!nxt) {
       parent.removeChild(cur);
-
-      // Different node type or tag, replace entirely
     } else if (
       cur.nodeType !== nxt.nodeType ||
       (cur.nodeType === ELEMENT_NODE && cur.tagName !== nxt.tagName)
     ) {
       parent.replaceChild(nxt, cur);
-
-      // Same text node, update content
     } else if (cur.nodeType === TEXT_NODE) {
       if (cur.textContent !== nxt.textContent) {
         cur.textContent = nxt.textContent;
       }
-
-      // Same element, recurse into attributes and children
     } else if (cur.nodeType === ELEMENT_NODE) {
       morphAttributes(cur, nxt);
-      morphNodeList(cur, Array.from(cur.childNodes), Array.from(nxt.childNodes), null);
+      morphContent(cur, nxt.childNodes);
     }
   }
 }
