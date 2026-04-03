@@ -5,6 +5,7 @@ import "./fixtures/basic-element.js";
 import "./fixtures/event-element.js";
 import "./fixtures/content-element.js";
 import "./fixtures/conditional-event-element.js";
+import "./fixtures/tag-switch-element.js";
 
 describe("Primitive Components", () => {
   describe("hydration", () => {
@@ -129,6 +130,23 @@ describe("Primitive Components", () => {
       expect(el.element).toBe(oldElement);
       oldElement.click();
       expect(handler).toHaveBeenCalledOnce();
+    });
+
+    it("re-binds events when inner element tag changes", async () => {
+      const el = await createElement("tag-switch-element");
+      const handler = vi.fn();
+      el.addEventListener("click", handler);
+
+      const oldElement = el.element;
+      expect(oldElement.tagName).toBe("BUTTON");
+
+      el.variant = "link";
+      await el.updateComplete;
+
+      expect(el.element.tagName).toBe("A");
+      expect(el.element).not.toBe(oldElement);
+      el.element.click();
+      expect(handler).toHaveBeenCalledTimes(1);
     });
   });
 
