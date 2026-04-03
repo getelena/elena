@@ -112,6 +112,8 @@ The following results are generated with the JS Framework Benchmark suite, which
 <img src="/performance1.png" loading="lazy" width="2888" height="1902" alt="Elena JavaScript Framework benchmark 1" />
 <img src="/performance2.png" loading="lazy" width="2888" height="1588" alt="Elena JavaScript Framework benchmark 2" />
 
+Take the above with a grain of salt though. These are not the official results and are only meant to give a general idea of where Elena stands. Elena is still a young project and the [APIs may evolve and change](#is-elena-production-ready).
+
 ## How is Elena tested?
 
 Elena has a comprehensive automated test suite with 1000+ tests across 57 test files covering unit tests, integration tests, visual diff tests, and benchmark tests:
