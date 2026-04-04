@@ -107,13 +107,6 @@ That said, our synthetic benchmarks only measure very isolated operations. Real-
 
 **Note:** Elena defaults to Light DOM while Lit uses Shadow DOM. [Enabling Shadow DOM](/components/options) for Elena makes the performance identical in the first screenshot shared.
 
-The following results are generated with the JS Framework Benchmark suite, which tests more complex operations across JavaScript frameworks. Elena is still fairly competitive even among the heavyweight champions such as Lit and Vue and has smaller memory footprint and size:
-
-<img src="/performance1.png" loading="lazy" width="2888" height="1902" alt="Elena JavaScript Framework benchmark 1" />
-<img src="/performance2.png" loading="lazy" width="2888" height="1588" alt="Elena JavaScript Framework benchmark 2" />
-
-Take the above with a grain of salt though. These are not the official results and are only meant to give a general idea of where Elena stands. Elena is still a young project and the [APIs may evolve and change](#is-elena-production-ready).
-
 ## How is Elena tested?
 
 Elena has a comprehensive automated test suite with 1000+ tests across 57 test files covering unit tests, integration tests, visual diff tests, and benchmark tests:
