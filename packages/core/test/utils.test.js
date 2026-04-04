@@ -53,7 +53,7 @@ describe("utils", () => {
       expect(textNode.parentNode).toBe(el.querySelector("span"));
     });
 
-    it("replaces _templateParts with fresh nodes after full re-render", () => {
+    it("clears _templateParts and preserves elements after morph re-render", () => {
       // Both values in text positions so mapTextNodes can match them
       const template = Object.assign(["<span>", "</span><span>", "</span>"], {
         raw: ["<span>", "</span><span>", "</span>"],
@@ -61,17 +61,15 @@ describe("utils", () => {
       const el = document.createElement("div");
 
       renderTemplate(el, template, ["A", "B"]);
-      const oldTextNode = el._templateParts[0];
-      expect(oldTextNode.textContent).toBe("A");
+      const oldSpans = el.querySelectorAll("span");
+      expect(oldSpans[0].textContent).toBe("A");
 
-      // Switch first value to raw HTML: forces full re-render
+      // Switch first value to raw HTML: forces full re-render via morph
       renderTemplate(el, template, [html`<b>bold</b>`, "B"]);
-      const newParts = el._templateParts;
-
-      // Old text node is no longer in the element's subtree
-      expect(el.contains(oldTextNode)).toBe(false);
-      // _templateParts was rebuilt with fresh nodes
-      expect(newParts[0]).not.toBe(oldTextNode);
+      // Morph preserves element identity
+      expect(el.querySelectorAll("span")[1]).toBe(oldSpans[1]);
+      // Parts are null because morph updates live DOM in place
+      expect(el._templateParts).toBeNull();
     });
 
     it("fully replaces cache when template shape changes", () => {

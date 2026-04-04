@@ -694,4 +694,60 @@ describe("render internals", () => {
       expect(result).toBe(true);
     });
   });
+
+  describe("morph on re-render", () => {
+    it("preserves element identity when raw HTML sibling changes", () => {
+      const container = el();
+      const template = Object.assign(["<input />", ""], { raw: ["<input />", ""] });
+
+      renderTemplate(container, template, [""]);
+      const input = container.querySelector("input");
+
+      renderTemplate(container, template, [html`<span class="error">bad</span>`]);
+      expect(container.querySelector("input")).toBe(input);
+      expect(container.querySelector(".error").textContent).toBe("bad");
+    });
+
+    it("updates content correctly through multiple morph cycles", () => {
+      const container = el();
+      const template = Object.assign(["<input />", ""], { raw: ["<input />", ""] });
+
+      renderTemplate(container, template, [""]);
+      const input = container.querySelector("input");
+
+      renderTemplate(container, template, [html`<span>first</span>`]);
+      renderTemplate(container, template, [html`<span>second</span>`]);
+      renderTemplate(container, template, [html`<span>third</span>`]);
+
+      expect(container.querySelector("input")).toBe(input);
+      expect(container.querySelector("span").textContent).toBe("third");
+    });
+
+    it("replaces element when tag changes during morph", () => {
+      const container = el();
+      const tplA = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
+      const tplB = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+
+      renderTemplate(container, tplA, ["hello"]);
+      const oldSpan = container.querySelector("span");
+
+      renderTemplate(container, tplB, ["world"]);
+      expect(container.querySelector("span")).toBeNull();
+      expect(container.querySelector("div").textContent).toBe("world");
+      expect(container.querySelector("div")).not.toBe(oldSpan);
+    });
+
+    it("preserves fast path for first render", () => {
+      const container = el();
+      const template = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
+
+      renderTemplate(container, template, ["hello"]);
+      expect(container._templateParts).not.toBeNull();
+
+      // Second render uses fast path (patchParts)
+      const result = renderTemplate(container, template, ["world"]);
+      expect(result).toBe(false);
+      expect(container.querySelector("span").textContent).toBe("world");
+    });
+  });
 });
