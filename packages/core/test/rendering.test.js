@@ -191,9 +191,8 @@ describe("rendering", () => {
         </div>
       `;
       renderTemplate(el, t.strings, t.values);
-      // Whitespace between fragments is preserved, matching plain HTML behavior.
-      // childNodes includes boundary comment markers around each raw fragment.
-      expect(el.querySelector(".inner").childNodes.length).toBe(7);
+      // Whitespace between fragments is preserved, matching plain HTML behavior
+      expect(el.querySelector(".inner").childNodes.length).toBe(3);
       expect(el.querySelector(".inner").children.length).toBe(2);
     });
   });
