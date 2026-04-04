@@ -97,15 +97,13 @@ The fundamental difference is scope. Elena is a standalone library that works di
 
 If you want portable web components that work independently of a specific backend, Elena might be a better fit. If you want a full-stack framework where component rendering is handled entirely by the server, Enhance offers that.
 
-## What is the performance compared to Lit?
+## What is the performance like?
 
-At the time of writing, the performance is very similar in our simulated benchmark tests. According to the benchmarks, Elena is roughly `1.20×` faster than Lit in single element creation and re-renders. Batch creation of up to 1000 web components has exactly the same performance.
+Elena’s progressive approach gives it a significant edge on [First Contentful Paint (FCP)](https://web.dev/articles/fcp). Because Elena renders base HTML and CSS before JavaScript loads, the First Contentful Paint doesn’t depend on it at all. Once JavaScript has loaded and the components become interactive, the performance gap narrows though:
 
-That said, our synthetic benchmarks only measure very isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
+<img src="/bench.webp" loading="lazy" width="3084" height="1840" alt="Elena bench test suite" />
 
-<img src="/bench.webp" loading="lazy" width="3044" height="1440" alt="Elena bench test suite" />
-
-**Note:** Elena defaults to Light DOM while Lit uses Shadow DOM. [Enabling Shadow DOM](/components/options) for Elena makes the performance identical in the first screenshot shared.
+These are synthetic benchmarks that measure isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. The benchmarks can’t reveal the full picture, but they do show where Elena’s architecture pays off: your users see content before any JavaScript has executed.
 
 ## How is Elena tested?
 
