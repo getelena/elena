@@ -225,7 +225,7 @@ function cloneAndPatch(element, templateInfo, values) {
     }
   }
 
-  if (element.childNodes.length > 0) {
+  if (element._templateStrings) {
     morphContent(element, clone.childNodes);
     return null;
   }
