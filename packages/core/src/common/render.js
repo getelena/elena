@@ -225,6 +225,10 @@ function cloneAndPatch(element, templateInfo, values) {
     }
   }
 
+  if (element.childNodes.length > 0) {
+    morphContent(element, clone.childNodes);
+    return null;
+  }
   element.replaceChildren(clone);
   return parts;
 }
