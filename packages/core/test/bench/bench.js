@@ -19,7 +19,38 @@ afterAll(() => {
   console.warn = originalWarn;
 });
 
-describe("Time to first render", () => {
+describe("First Contentful Paint (FCP)", () => {
+  bench("Vanilla Web Component", () => {
+    const el = document.createElement("vanilla-element");
+    document.body.appendChild(el);
+    document.body.removeChild(el);
+  });
+
+  bench("Elena Progressive Web Component", () => {
+    // Elena's first visual render is pure HTML + CSS.
+    // An unregistered custom element simulates this: the browser
+    // parses the markup and applies @scope styles before JS loads.
+    const el = document.createElement("elena-unregistered");
+    document.body.appendChild(el);
+    document.body.removeChild(el);
+  });
+
+  bench("Lit Web Component", async () => {
+    const el = document.createElement("lit-bench-element");
+    document.body.appendChild(el);
+    await el.updateComplete;
+    document.body.removeChild(el);
+  });
+
+  bench("Stencil Web Component", async () => {
+    const el = document.createElement("stencil-bench-element");
+    document.body.appendChild(el);
+    await el.updateComplete;
+    document.body.removeChild(el);
+  });
+});
+
+describe("Time to interactive (TTI)", () => {
   bench("Vanilla Web Component", () => {
     const el = document.createElement("vanilla-element");
     el.textContent = "Demo";
@@ -51,7 +82,7 @@ describe("Time to first render", () => {
   });
 });
 
-describe("Batch creation of 100 components", () => {
+describe("TTI / 100 components", () => {
   bench("100 Vanilla Web Components", () => {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < 100; i++) {
@@ -103,7 +134,7 @@ describe("Batch creation of 100 components", () => {
   });
 });
 
-describe("Batch creation of 500 components", () => {
+describe("TTI / 500 components", () => {
   bench("500 Vanilla Web Components", () => {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < 500; i++) {
@@ -155,8 +186,8 @@ describe("Batch creation of 500 components", () => {
   });
 });
 
-describe("Batch creation of 1000 components", () => {
-  bench("1000 Vanilla Web Components", () => {
+describe("TTI / 1,000 components", () => {
+  bench("1,000 Vanilla Web Components", () => {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < 1000; i++) {
       const el = document.createElement("vanilla-element");
@@ -167,7 +198,7 @@ describe("Batch creation of 1000 components", () => {
     document.body.innerHTML = "";
   });
 
-  bench("1000 Elena Progressive Web Components", () => {
+  bench("1,000 Elena Progressive Web Components", () => {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < 1000; i++) {
       const el = document.createElement("basic-element");
@@ -178,7 +209,7 @@ describe("Batch creation of 1000 components", () => {
     document.body.innerHTML = "";
   });
 
-  bench("1000 Lit Web Components", async () => {
+  bench("1,000 Lit Web Components", async () => {
     const els = [];
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < 1000; i++) {
@@ -192,10 +223,62 @@ describe("Batch creation of 1000 components", () => {
     document.body.innerHTML = "";
   });
 
-  bench("1000 Stencil Web Components", async () => {
+  bench("1,000 Stencil Web Components", async () => {
     const els = [];
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < 1000; i++) {
+      const el = document.createElement("stencil-bench-element");
+      el.textContent = "test" + i;
+      fragment.appendChild(el);
+      els.push(el);
+    }
+    document.body.appendChild(fragment);
+    await Promise.all(els.map(el => el.updateComplete));
+    document.body.innerHTML = "";
+  });
+});
+
+describe("TTI / 10,000 components", () => {
+  bench("10,000 Vanilla Web Components", () => {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < 10000; i++) {
+      const el = document.createElement("vanilla-element");
+      el.textContent = "test" + i;
+      fragment.appendChild(el);
+    }
+    document.body.appendChild(fragment);
+    document.body.innerHTML = "";
+  });
+
+  bench("10,000 Elena Progressive Web Components", () => {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < 10000; i++) {
+      const el = document.createElement("basic-element");
+      el.textContent = "test" + i;
+      fragment.appendChild(el);
+    }
+    document.body.appendChild(fragment);
+    document.body.innerHTML = "";
+  });
+
+  bench("10,000 Lit Web Components", async () => {
+    const els = [];
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < 10000; i++) {
+      const el = document.createElement("lit-bench-element");
+      el.textContent = "test" + i;
+      fragment.appendChild(el);
+      els.push(el);
+    }
+    document.body.appendChild(fragment);
+    await Promise.all(els.map(el => el.updateComplete));
+    document.body.innerHTML = "";
+  });
+
+  bench("10,000 Stencil Web Components", async () => {
+    const els = [];
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < 10000; i++) {
       const el = document.createElement("stencil-bench-element");
       el.textContent = "test" + i;
       fragment.appendChild(el);

@@ -12,6 +12,8 @@ export default defineConfig({
       provider: playwright({ launch: { headless: true } }),
       instances: [{ browser: "chromium" }],
     },
-    include: ["test/bench/**/*.bench.js"],
+    benchmark: {
+      include: ["test/bench/**/*.js"],
+    },
   },
 });
