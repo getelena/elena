@@ -43,6 +43,7 @@ module.exports = [
       "test/**/*",
       "coverage/*",
       "**/coverage/*",
+      "**/stencil-element.js",
     ],
   },
 ];
