@@ -1,4 +1,4 @@
-import { collapseWhitespace, isArray, isRaw, resolveValue, toPlainText } from "./utils.js";
+import { collapseWhitespace, isArray, isRaw, nothing, resolveValue, toPlainText } from "./utils.js";
 
 const stringsCache = new WeakMap();
 const markerKey = "e" + Math.random().toString(36).slice(2);
@@ -52,7 +52,7 @@ function patchParts(element, strings, values) {
       continue;
     }
 
-    if (isRaw(v)) {
+    if (isRaw(v) && v !== nothing) {
       return false;
     }
 
@@ -211,7 +211,7 @@ function cloneAndPatch(element, templateInfo, values) {
       const value = values[i];
 
       // Parse and insert raw HTML as a fragment
-      if (isRaw(value)) {
+      if (isRaw(value) && value !== nothing) {
         const tmp = newTemplate();
         tmp.innerHTML = resolveValue(value);
         marker.parentNode.replaceChild(tmp.content, marker);
