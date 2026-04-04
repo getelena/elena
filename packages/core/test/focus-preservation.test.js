@@ -213,8 +213,6 @@ describe("focus preservation", () => {
       const tplB = Object.assign(["<a>", "</a>"], { raw: ["<a>", "</a>"] });
 
       renderTemplate(container, tplA, ["click"]);
-      const button = container.querySelector("button");
-
       renderTemplate(container, tplB, ["link"]);
       expect(container.querySelector("button")).toBeNull();
       expect(container.querySelector("a").textContent).toBe("link");
