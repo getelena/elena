@@ -46,7 +46,7 @@ Three types — the type determines whether `render()` is present:
 - `willUpdate()` — runs before every render. Must NOT call `super`. Use for derived state.
 - `firstUpdated()` — runs once after the first render. `this.element` is available here.
 - `updated()` — runs after every render, including the first. Runs after `firstUpdated()`.
-- `this.element` is NOT available in `willUpdate()` or `render()` — only in `firstUpdated()` and `updated()`.
+- `this.element` is available in `render()`, lifecycle methods, and custom methods. It is resolved after the first render completes.
 - `requestUpdate()` — manually schedule a re-render when Elena cannot detect a change (e.g. mutating an array in place).
 - `updateComplete` — Promise that resolves after the current render microtask finishes. Use to await DOM updates: `await element.updateComplete`.
 - All lifecycle methods except `willUpdate()` should call `super`.

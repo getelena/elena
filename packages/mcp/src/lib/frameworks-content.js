@@ -17,7 +17,7 @@ Since Elena ships as ES modules, you can load your components directly on a webp
 
 This registers all Elena components globally as standard HTML tags.
 
-**[View plain HTML example project](https://github.com/getelena/html-example-project)**
+**[View plain HTML example project →](https://github.com/getelena/html-example-project)**
 
 ---
 
@@ -43,7 +43,7 @@ This registers all Elena components globally, making them available as standard 
 
 For server-side rendering with Eleventy, see the SSR guide's "Pre-rendering with Eleventy" section.
 
-**[View Eleventy example project](https://github.com/getelena/eleventy-example-project)**
+**[View Eleventy example project →](https://github.com/getelena/eleventy-example-project)**
 
 ---
 
@@ -92,7 +92,7 @@ declare module "react" {
 }
 \`\`\`
 
-**[View Next.js example project](https://github.com/getelena/next-example-project)**
+**[View Next.js example project →](https://github.com/getelena/next-example-project)**
 
 ---
 
@@ -145,7 +145,7 @@ declare module "react/jsx-dev-runtime" {
 
 Make sure \`tsconfig.json\` includes the \`src\` directory, then restart the TypeScript server in your editor after adding the file.
 
-**[View React example project](https://github.com/getelena/react-example-project)**
+**[View React example project →](https://github.com/getelena/react-example-project)**
 
 ---
 
@@ -175,9 +175,9 @@ declare module "svelte/elements" {
 }
 \`\`\`
 
-The Svelte for VS Code extension is required for template type checking.
+The [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) extension is required for template type checking.
 
-**[View Svelte example project](https://github.com/getelena/svelte-example-project)**
+**[View Svelte example project →](https://github.com/getelena/svelte-example-project)**
 
 ---
 
@@ -214,9 +214,9 @@ declare module "vue" {
 }
 \`\`\`
 
-The Vue (Official) extension is required for template type checking.
+The [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension is required for template type checking.
 
-**[View Vue example project](https://github.com/getelena/vue-example-project)**
+**[View Vue example project →](https://github.com/getelena/vue-example-project)**
 
 ---
 
@@ -258,7 +258,9 @@ export class AppComponent {
 | Dynamic attribute | \`[attr.variant]="value"\`        |
 | Reactive state    | \`signal()\` from \`@angular/core\` |
 
-**[View Angular example project](https://github.com/getelena/angular-example-project)**
+**[View Angular example project →](https://github.com/getelena/angular-example-project)**
+
+> **Tip:** The provided examples import the existing \`@elenajs/components\` for demo purposes. Replace it with your own component library for production usage.
 
 ### Dynamic text in Angular
 
@@ -282,5 +284,8 @@ React 17 does not pass non-primitive props (arrays, objects) or event handlers t
 
 React 17 SSR hydration can also conflict with Elena: Elena's \`connectedCallback\` fires \`replaceChildren()\` while React is reconciling its hydration tree, causing mismatch errors. Use React 18+ or ensure Elena elements render only client-side.
 
-> **Tip:** The provided examples import the existing \`@elenajs/components\` for demo purposes. Replace it with your own component library for production usage.
+## Next steps
+
+- For integration rules and framework-specific notes, see Known issues.
+- For SSR-specific notes, see Server-side rendering.
 `;
