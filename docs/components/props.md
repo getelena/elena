@@ -3,7 +3,7 @@ title: Props
 description: Learn how to declare, type, and use props in Elena components, including attribute syncing, reflection, and supported types.
 ---
 
-# Props
+# Props <VersionBadge />
 
 Props are values you pass to an Elena component. Declare them in `static props` and Elena will keep them in sync with HTML attributes, and re-render the components whenever they&nbsp;change.
 
