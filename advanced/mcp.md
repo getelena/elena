@@ -140,7 +140,7 @@ A best-practices review checklist for existing Elena components. Pass your compo
 
 ## Skills&#x20;
 
-Elena also provices [agent skills](https://github.com/cloudflare/agent-skills-discovery-rfc) to complement the `@elenajs/mcp`. Once installed, your coding agent automatically has context on Elena component authoring patterns without additional setup. Use skills for general authoring guidance; use MCP when you need dynamic tools like component scaffolding and CEM lookup.
+Elena also provides [agent skills](https://github.com/cloudflare/agent-skills-discovery-rfc) to complement the `@elenajs/mcp`. Once installed, your coding agent automatically has context on Elena component authoring patterns without additional setup. Use skills for general authoring guidance; use MCP when you need dynamic tools like component scaffolding and CEM lookup.
 
 ### Install
 
