@@ -6,6 +6,7 @@ class VanillaElement extends HTMLElement {
   constructor() {
     super();
     this._variant = "";
+    this.attachShadow({ mode: "open" });
   }
 
   get variant() {
@@ -31,7 +32,7 @@ class VanillaElement extends HTMLElement {
     this._render();
 
     // To mimic similar functionality
-    const elementRef = this.querySelector("span");
+    const elementRef = this.shadowRoot.querySelector("span");
     this._updated(elementRef);
   }
 
@@ -43,7 +44,7 @@ class VanillaElement extends HTMLElement {
   }
 
   _render() {
-    this.innerHTML = `<span>${this._variant}</span>`;
+    this.shadowRoot.innerHTML = `<span variant="${this._variant}"><slot></slot></span>`;
   }
 }
 

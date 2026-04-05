@@ -1,7 +1,7 @@
-import { collapseWhitespace, isArray, isRaw, resolveValue, toPlainText } from "./utils.js";
+import { collapseWhitespace, isArray, isRaw, nothing, resolveValue, toPlainText } from "./utils.js";
 
 const stringsCache = new WeakMap();
-const markerKey = "e" + ((Math.random() * 1e5) | 0);
+const markerKey = "e" + Math.random().toString(36).slice(2);
 const SHOW_COMMENT = 128;
 const ELEMENT_NODE = 1;
 const TEXT_NODE = 3;
@@ -11,8 +11,8 @@ const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
 
 /**
  * Render a tagged template into an Elena Element with DOM diffing.
- * Returns true if the DOM was fully rebuilt, false if only text
- * nodes were patched in place.
+ * Returns true if the DOM was fully rebuilt, false if parts were
+ * patched in place.
  *
  * @param {HTMLElement} element
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
@@ -20,7 +20,7 @@ const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
  * @returns {boolean}
  */
 export function renderTemplate(element, strings, values) {
-  if (patchTextNodes(element, strings, values)) {
+  if (patchParts(element, strings, values)) {
     return false;
   }
   fullRender(element, strings, values);
@@ -28,40 +28,55 @@ export function renderTemplate(element, strings, values) {
 }
 
 /**
- * Fast path: patch only the text nodes whose values changed.
+ * Patch only changed text nodes and attribute values.
  *
  * @param {HTMLElement} element - The host element with cached template state
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
  * @param {Array} values - Dynamic interpolated values
  * @returns {boolean} Whether patching was sufficient (false = full render)
  */
-function patchTextNodes(element, strings, values) {
+function patchParts(element, strings, values) {
   // Only works when re-rendering the same template shape
   if (element._templateStrings !== strings || !element._templateParts) {
     return false;
   }
 
+  const parts = element._templateParts;
+  const cached = element._templateValues;
+
   for (let i = 0; i < values.length; i++) {
     const v = values[i];
     const comparable = isArray(v) ? toPlainText(v) : v;
 
-    if (comparable === element._templateValues[i]) {
+    if (comparable === cached[i]) {
       continue;
     }
 
-    if (isRaw(v) || !element._templateParts[i]) {
+    if (isRaw(v) && v !== nothing) {
       return false;
     }
 
-    element._templateValues[i] = comparable;
-    element._templateParts[i].textContent = toPlainText(v);
+    const part = parts[i];
+
+    if (!part) {
+      return false;
+    }
+
+    cached[i] = comparable;
+    const str = String(comparable ?? "");
+
+    if (part.nodeType) {
+      part.textContent = str;
+    } else {
+      part[0].setAttribute(part[1], str);
+    }
   }
 
   return true;
 }
 
 /**
- * Cold path: clone a cached <template> and patch in values.
+ * Clone a cached <template> and patch in values.
  *
  * @param {HTMLElement} element - The host element to render into
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
@@ -82,7 +97,7 @@ function fullRender(element, strings, values) {
   if (entry._template) {
     element._templateParts = cloneAndPatch(element, entry._template, values);
   } else {
-    // Fallback for attribute-position values or static templates.
+    // Fallback for static templates or templates where marker detection failed.
     // White space collapsing here protects against Vue SSR mismatches.
     const renderedValues = values.map(resolveValue);
     const markup = entry._strings
@@ -102,45 +117,66 @@ function fullRender(element, strings, values) {
 }
 
 /**
- * Build a <template> element with comment markers.
+ * Build a <template> element with comment markers and string placeholders.
  *
  * @param {string[]} _strings - Whitespace-collapsed static parts
  * @param {number} valueCount - Number of dynamic values
- * @returns {HTMLTemplateElement | null}
+ * @returns {{ _tpl: HTMLTemplateElement, _attrs: (string|null)[] } | null}
  */
 function createTemplate(_strings, valueCount) {
   const marker = `<!--${markerKey}-->`;
-  const markup = _strings
-    .reduce((out, str, i) => out + str + (i < valueCount ? marker : ""), "")
-    .trim();
+  const attrs = [];
+  let markup = "";
 
-  const template = newTemplate();
-  template.innerHTML = markup;
+  for (let i = 0; i < _strings.length; i++) {
+    markup += _strings[i];
 
-  // Mismatch means this template shape cannot use the clone path.
-  const walker = treeWalker(template.content);
-  let count = 0;
+    if (i < valueCount) {
+      const match = _strings[i].match(/([^\s"'>/=]+)\s*=\s*["']$/);
 
-  while (walker.nextNode()) {
-    if (walker.currentNode.data === markerKey) {
-      count++;
+      if (match) {
+        attrs.push(match[1]);
+        markup += markerKey + "_" + i;
+      } else {
+        attrs.push(null);
+        markup += marker;
+      }
     }
   }
 
-  return count === valueCount ? template : null;
+  const template = newTemplate();
+  template.innerHTML = markup.trim();
+
+  // Mismatch means this template shape cannot use the clone path.
+  const walker = treeWalker(template.content);
+  let commentCount = 0;
+
+  while (walker.nextNode()) {
+    if (walker.currentNode.data === markerKey) {
+      commentCount++;
+    }
+  }
+
+  const expectedComments = attrs.filter(n => n === null).length;
+
+  if (commentCount !== expectedComments) {
+    return null;
+  }
+
+  return { _tpl: template, _attrs: attrs };
 }
 
 /**
- * Clone a cached template and replace comment markers
- * with actual content.
+ * Clone a cached template and replace markers with actual content.
  *
  * @param {HTMLElement} element - The host element to render into
- * @param {HTMLTemplateElement} template - Cached template with markers
+ * @param {{ _tpl: HTMLTemplateElement, _attrs: (string|null)[] }} templateInfo
  * @param {Array} values - Raw interpolated values
- * @returns {Array<Text | undefined>} Text node map for fast-path patching
+ * @returns {Array<Text | [Element, string] | undefined>}
  */
-function cloneAndPatch(element, template, values) {
-  const clone = template.content.cloneNode(true);
+function cloneAndPatch(element, templateInfo, values) {
+  const { _tpl, _attrs } = templateInfo;
+  const clone = _tpl.content.cloneNode(true);
   const walker = treeWalker(clone);
   const parts = Array(values.length);
   const markers = [];
@@ -153,24 +189,46 @@ function cloneAndPatch(element, template, values) {
     }
   }
 
-  for (let i = 0; i < markers.length; i++) {
-    const value = values[i];
+  let contentIdx = 0;
 
-    if (isRaw(value)) {
-      // Raw HTML: parse and insert as fragment
-      const tmp = newTemplate();
-      tmp.innerHTML = resolveValue(value);
-      markers[i].parentNode.replaceChild(tmp.content, markers[i]);
+  for (let i = 0; i < values.length; i++) {
+    const attr = _attrs[i];
 
-      // Raw values can't be fast-patched; leave parts undefined
+    if (attr) {
+      // Find the element with the placeholder value
+      const placeholder = markerKey + "_" + i;
+      const el = clone.querySelector(`[${attr}="${placeholder}"]`);
+
+      if (el) {
+        const value = values[i];
+        const str = String((isArray(value) ? toPlainText(value) : value) ?? "");
+        el.setAttribute(attr, str);
+        parts[i] = [el, attr];
+      }
     } else {
-      // Create text node with unescaped content
-      const textNode = document.createTextNode(toPlainText(value));
-      markers[i].parentNode.replaceChild(textNode, markers[i]);
-      parts[i] = textNode;
+      // Replace comment marker with value
+      const marker = markers[contentIdx++];
+      const value = values[i];
+
+      // Parse and insert raw HTML as a fragment
+      if (isRaw(value) && value !== nothing) {
+        const tmp = newTemplate();
+        tmp.innerHTML = resolveValue(value);
+        marker.parentNode.replaceChild(tmp.content, marker);
+
+        // Create text node with unescaped content
+      } else {
+        const textNode = document.createTextNode(toPlainText(value));
+        marker.parentNode.replaceChild(textNode, marker);
+        parts[i] = textNode;
+      }
     }
   }
 
+  if (element._templateStrings) {
+    morphContent(element, clone.childNodes);
+    return null;
+  }
   element.replaceChildren(clone);
   return parts;
 }
@@ -212,7 +270,7 @@ function morphContent(parent, nextNodes) {
 }
 
 /**
- * Morhp element’s attributes without rebuilding the DOM.
+ * Morph element’s attributes without rebuilding the DOM.
  *
  * @param {Element} current - The current existing DOM element
  * @param {Element} next - The desired element from the new render

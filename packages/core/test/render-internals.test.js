@@ -100,11 +100,15 @@ describe("render internals", () => {
       expect(span.textContent).toBe("world");
     });
 
-    it("attribute-position values leave _templateParts null", () => {
+    it("attribute-position values get patchable parts", () => {
       const container = el();
       renderTemplate(container, attrAndText, ["cls-a", "text"]);
 
-      expect(container._templateParts).toBeNull();
+      expect(container._templateParts).not.toBeNull();
+      // First part is an attribute part [element, attr]
+      expect(Array.isArray(container._templateParts[0])).toBe(true);
+      // Second part is a text node
+      expect(container._templateParts[1].nodeType).toBe(3);
     });
 
     it("handles multiple attributes with interpolations", () => {
@@ -611,6 +615,47 @@ describe("render internals", () => {
     });
   });
 
+  describe("cloneAndPatch attribute edge cases", () => {
+    it("handles array value in attribute position", () => {
+      const container = el();
+      const template = Object.assign(['<div class="', '">text</div>'], {
+        raw: ['<div class="', '">text</div>'],
+      });
+      renderTemplate(container, template, [["a", "b"]]);
+      expect(container.querySelector("div").getAttribute("class")).toBe("ab");
+    });
+
+    it("handles null value in attribute position", () => {
+      const container = el();
+      const template = Object.assign(['<div class="', '">text</div>'], {
+        raw: ['<div class="', '">text</div>'],
+      });
+      renderTemplate(container, template, [null]);
+      expect(container.querySelector("div").getAttribute("class")).toBe("");
+    });
+
+    it("handles undefined value in attribute position", () => {
+      const container = el();
+      const template = Object.assign(['<div data-x="', '">text</div>'], {
+        raw: ['<div data-x="', '">text</div>'],
+      });
+      renderTemplate(container, template, [undefined]);
+      expect(container.querySelector("div").getAttribute("data-x")).toBe("");
+    });
+
+    it("skips attribute when placeholder element is unreachable in cloned template", () => {
+      const container = el();
+      // Attribute placeholder inside <template> is unreachable by querySelector
+      const template = Object.assign(
+        ['<div><template><span class="', '"></span></template></div>'],
+        { raw: ['<div><template><span class="', '"></span></template></div>'] }
+      );
+      renderTemplate(container, template, ["test"]);
+      // Rendering should not crash; the attribute simply isn't patched
+      expect(container.querySelector("div")).not.toBeNull();
+    });
+  });
+
   describe("renderTemplate return value", () => {
     it("returns true on first render (full render)", () => {
       const container = el();
@@ -647,6 +692,62 @@ describe("render internals", () => {
       renderTemplate(container, template, ["text"]);
       const result = renderTemplate(container, template, [html`<b>raw</b>`]);
       expect(result).toBe(true);
+    });
+  });
+
+  describe("morph on re-render", () => {
+    it("preserves element identity when raw HTML sibling changes", () => {
+      const container = el();
+      const template = Object.assign(["<input />", ""], { raw: ["<input />", ""] });
+
+      renderTemplate(container, template, [""]);
+      const input = container.querySelector("input");
+
+      renderTemplate(container, template, [html`<span class="error">bad</span>`]);
+      expect(container.querySelector("input")).toBe(input);
+      expect(container.querySelector(".error").textContent).toBe("bad");
+    });
+
+    it("updates content correctly through multiple morph cycles", () => {
+      const container = el();
+      const template = Object.assign(["<input />", ""], { raw: ["<input />", ""] });
+
+      renderTemplate(container, template, [""]);
+      const input = container.querySelector("input");
+
+      renderTemplate(container, template, [html`<span>first</span>`]);
+      renderTemplate(container, template, [html`<span>second</span>`]);
+      renderTemplate(container, template, [html`<span>third</span>`]);
+
+      expect(container.querySelector("input")).toBe(input);
+      expect(container.querySelector("span").textContent).toBe("third");
+    });
+
+    it("replaces element when tag changes during morph", () => {
+      const container = el();
+      const tplA = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
+      const tplB = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
+
+      renderTemplate(container, tplA, ["hello"]);
+      const oldSpan = container.querySelector("span");
+
+      renderTemplate(container, tplB, ["world"]);
+      expect(container.querySelector("span")).toBeNull();
+      expect(container.querySelector("div").textContent).toBe("world");
+      expect(container.querySelector("div")).not.toBe(oldSpan);
+    });
+
+    it("preserves fast path for first render", () => {
+      const container = el();
+      const template = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
+
+      renderTemplate(container, template, ["hello"]);
+      expect(container._templateParts).not.toBeNull();
+
+      // Second render uses fast path (patchParts)
+      const result = renderTemplate(container, template, ["world"]);
+      expect(result).toBe(false);
+      expect(container.querySelector("span").textContent).toBe("world");
     });
   });
 });

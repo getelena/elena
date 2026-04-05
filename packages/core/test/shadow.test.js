@@ -474,18 +474,20 @@ describe("shadow DOM", () => {
       delete root.innerHTML;
     });
 
-    it("_templateParts holds live DOM nodes inside shadow root", () => {
+    it("cold-path re-render morphs shadow DOM and clears _templateParts", () => {
       const el = createElement("shadow-element", { label: "Hello" });
       const root = el.shadowRoot;
-      const textNode = root._templateParts[0];
-      expect(textNode.textContent).toBe("Hello");
+      expect(root._templateParts[0].textContent).toBe("Hello");
+      const oldButton = root.querySelector("button");
 
       // Different strings ref forces cold-path fullRender
       const t = html`<button>${"World"}</button>`;
       renderTemplate(root, t.strings, t.values);
-      const newTextNode = root._templateParts[0];
-      expect(newTextNode.textContent).toBe("World");
-      expect(root.contains(newTextNode)).toBe(true);
+      // Morph preserves element identity when structure is stable
+      expect(root.querySelector("button")).toBe(oldButton);
+      expect(oldButton.textContent).toBe("World");
+      // Parts are null because morph updates live DOM in place
+      expect(root._templateParts).toBeNull();
     });
 
     it("template cache stays coherent after disconnect and reconnect", async () => {
