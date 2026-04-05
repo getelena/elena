@@ -61,7 +61,7 @@ describe("Primitive Components", () => {
       expect(el.element).toBe(el.querySelector(".inner"));
     });
 
-    it("is preserved across fast-path re-renders", async () => {
+    it("is preserved across re-renders", async () => {
       const el = await createElement("basic-element", { label: "Hello" });
       const ref = el.element;
 

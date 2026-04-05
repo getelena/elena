@@ -68,7 +68,7 @@ export function syncAttribute(element, name, value) {
  * at class-creation time. Values are stored per-instance
  * via a `_props` Map that is lazily created.
  *
- * @param {Function} proto - The class prototype
+ * @param {Object} proto - The class prototype
  * @param {string[]} propNames - Prop names to define
  * @param {Set<string>} [noReflect] - Props that should not reflect to attributes
  */
