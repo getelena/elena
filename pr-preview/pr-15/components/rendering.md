@@ -5,7 +5,7 @@ description: >-
   components.
 ---
 
-# Rendering
+# Rendering&#x20;
 
 Elena renders a web component once when it connects to the page. After that, any change to a [reactive property](/components/props) triggers an update. Elena performs updates asynchronously so property changes are batched: if there are multiple changes, they are combined into a single render.
 
