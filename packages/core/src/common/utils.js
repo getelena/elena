@@ -113,7 +113,7 @@ export const nothing = { [RAW]: true, toString: () => "" };
  * @param {*} value
  * @returns {boolean}
  */
-export const isRaw = value => (isArray(value) ? value.some(item => item?.[RAW]) : value?.[RAW]);
+export const isRaw = value => (isArray(value) ? value.some(item => item?.[RAW]) : !!value?.[RAW]);
 
 /**
  * Convert a value to its plain text string.

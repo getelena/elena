@@ -306,7 +306,7 @@ const ALL_WS = /[^\t\n\r ]/;
  * @returns {boolean}
  */
 function hasPrimitiveRender(ComponentClass) {
-  // Fast path: component defines its own render method.
+  // Component defines its own render method.
   if (Object.hasOwn(ComponentClass.prototype, "render")) {
     return true;
   }

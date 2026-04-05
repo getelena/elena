@@ -40,7 +40,7 @@ function elementResolver(selector) {
  */
 
 /**
- * @typedef {{ text: string, element: HTMLElement | null, updateComplete: Promise<void>, render(): void, willUpdate(): void, firstUpdated(): void, updated(): void, requestUpdate(): void, connectedCallback(): void, disconnectedCallback(): void }} ElenaInstanceMembers
+ * @typedef {{ text: string, element: HTMLElement | null, updateComplete: Promise<void>, render(): void, willUpdate(): void, firstUpdated(): void, updated(): void, requestUpdate(): void, connectedCallback(): void, disconnectedCallback(): void, adoptedCallback(): void, attributeChangedCallback(prop: string, oldValue: string | null, newValue: string | null): void }} ElenaInstanceMembers
  */
 
 /**
@@ -92,8 +92,8 @@ export function Elena(superClass) {
      * Updates the matching prop and re-renders if needed.
      *
      * @param {string} prop
-     * @param {string} oldValue
-     * @param {string} newValue
+     * @param {string | null} oldValue
+     * @param {string | null} newValue
      */
     attributeChangedCallback(prop, oldValue, newValue) {
       super.attributeChangedCallback?.(prop, oldValue, newValue);
@@ -314,7 +314,7 @@ export function Elena(superClass) {
         const rebuilt = renderTemplate(root, result.strings, result.values);
 
         // Re-resolve element ref when the DOM was fully rebuilt.
-        // Fast-path text node patching leaves the DOM structure intact,
+        // patch() and morph() leave the DOM structure intact,
         // so the existing ref is still valid.
         if (rebuilt) {
           const oldElement = this.element;
@@ -447,6 +447,7 @@ export function Elena(superClass) {
      * events in Shadow DOM (change, submit, reset).
      * Composed bubbling events (click, input) pass through on their own.
      *
+     * @param {Event} event
      * @internal
      */
     handleEvent(event) {
