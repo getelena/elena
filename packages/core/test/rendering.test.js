@@ -7,7 +7,6 @@ import "./fixtures/attr-element.js";
 import "./fixtures/multiline-element.js";
 import "./fixtures/complex-element.js";
 
-// Helper fixture for multi-value fast path test
 const multiValueTemplate = Object.assign(
   ["<span class='one'>", "</span><span class='two'>", "</span><span class='three'>", "</span>"],
   {
@@ -146,22 +145,20 @@ describe("rendering", () => {
       expect(el.querySelector(".inner").textContent).toBe("hello world");
     });
 
-    it("maintains clean whitespace after text-only re-render (fast path)", async () => {
+    it("maintains clean whitespace after text-only re-render", async () => {
       const el = createElement("multiline-element", { label: "First", type: "button" });
       expect(el.querySelector(".btn").textContent).toBe("First");
 
-      // Fast path re-render: patches text node directly
+      // Patches text node directly
       el.setAttribute("label", "Second");
       await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("Second");
       expect(el.innerHTML).not.toMatch(/>\s+</);
     });
 
-    it("maintains clean whitespace after attribute-position re-render (cold path)", async () => {
+    it("maintains clean whitespace after attribute-position re-render", async () => {
       const el = createElement("multiline-element", { label: "Click", type: "button" });
       expect(el.querySelector(".btn").textContent).toBe("Click");
-
-      // Cold path re-render: type is in attribute position, forces fullRender
       el.setAttribute("type", "submit");
       await el.updateComplete;
       expect(el.querySelector(".btn").getAttribute("type")).toBe("submit");
@@ -223,7 +220,7 @@ describe("rendering", () => {
       const el = createElement("attr-element", { label: "Hello", variant: "default" });
       const textNode = el.querySelector(".inner").firstChild;
 
-      // Change attribute-position value: forces cold-path fallback
+      // Change attribute-position value
       el.setAttribute("variant", "primary");
       await el.updateComplete;
       expect(el.getAttribute("variant")).toBe("primary");
@@ -249,15 +246,14 @@ describe("rendering", () => {
         },
       });
 
-      // Trigger re-render with same value: fast path skips innerHTML
+      // Trigger re-render with same value: patch() skips innerHTML
       el.render();
       expect(innerHTMLCallCount).toBe(0);
 
-      // Clean up
       delete el.innerHTML;
     });
 
-    it("patches text node with null value on fast path", async () => {
+    it("patches text node with null value", async () => {
       const el = createElement("basic-element", { label: "Hello" });
       el.setAttribute("label", "");
       await el.updateComplete;
@@ -269,19 +265,19 @@ describe("rendering", () => {
       const innerEl = el.element;
 
       el.setAttribute("label", "World");
-      // Inner element should be same object (DOM preserved by fast path)
+      // Inner element should be same object
       expect(el.element).toBe(innerEl);
       expect(el.querySelector(".inner")).toBe(innerEl);
     });
   });
 
   describe("template cache lifecycle", () => {
-    it("cold-path re-render morphs DOM and clears _templateParts", () => {
+    it("re-render morphs DOM and clears _templateParts", () => {
       const el = createElement("basic-element", { label: "Hello" });
       expect(el._templateParts[0].textContent).toBe("Hello");
       const oldSpan = el.querySelector(".inner");
 
-      // Different strings ref (from this call site) forces cold-path fullRender
+      // Different strings ref (from this call site) forces morph()
       const t = html`<span class="inner">${"World"}</span>`;
       renderTemplate(el, t.strings, t.values);
       // Morph preserves element identity when structure is stable
@@ -301,11 +297,11 @@ describe("rendering", () => {
       el.remove();
       container.appendChild(el);
 
-      // After reconnect, fast-path should still work with cached parts
+      // After reconnect, patch() should still work with cached parts
       el.setAttribute("label", "World");
       await el.updateComplete;
       expect(el.querySelector(".inner").textContent).toBe("World");
-      // Same text node was patched (not a full re-render)
+      // Same text node was patched (not a full morph())
       expect(el._templateParts[0]).toBe(textNode);
     });
 
@@ -484,7 +480,7 @@ describe("rendering", () => {
     });
   });
 
-  describe("fast path with multiple values", () => {
+  describe("with multiple values", () => {
     it("preserves unchanged text node identity while patching changed node", () => {
       const el = document.createElement("div");
 
@@ -498,14 +494,14 @@ describe("rendering", () => {
       expect(twoNode.textContent).toBe("B");
       expect(threeNode.textContent).toBe("C");
 
-      // Re-render: change only the middle value (fast path for unchanged)
+      // Re-render: change only the middle value
       renderTemplate(el, multiValueTemplate, ["A", "B2", "C"]);
 
       // The unchanged nodes should still be the same objects (not recreated)
       expect(el.querySelector(".one").firstChild).toBe(oneNode);
       expect(el.querySelector(".three").firstChild).toBe(threeNode);
 
-      // The changed node should be the same object but with updated content (patched in-place)
+      // The changed node should be the same object but with updated content
       expect(el.querySelector(".two").firstChild).toBe(twoNode);
       expect(twoNode.textContent).toBe("B2");
     });

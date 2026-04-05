@@ -3,7 +3,6 @@ import { renderTemplate } from "../src/common/render.js";
 import { html, nothing } from "../src/elena.js";
 
 describe("array rendering in templates", () => {
-  /** @returns {HTMLDivElement} */
   const el = () => document.createElement("div");
 
   it("array of strings renders as joined text (no commas)", () => {
@@ -139,7 +138,7 @@ describe("array rendering in templates", () => {
     expect(anchors[1].textContent).toBe("C");
   });
 
-  it("array with changing length triggers full render", () => {
+  it("array with changing length triggers a morph", () => {
     const container = el();
 
     const t1 = html`<ul>${["a"].map(i => html`<li>${i}</li>`)}</ul>`;
@@ -153,7 +152,7 @@ describe("array rendering in templates", () => {
     expect(container.querySelectorAll("li").length).toBe(2);
   });
 
-  it("array of plain strings on fast path re-render", () => {
+  it("array of plain strings is patched into place", () => {
     const container = el();
 
     function render(items) {
@@ -170,7 +169,7 @@ describe("array rendering in templates", () => {
     expect(container.querySelector("span").textContent).toBe("ab");
   });
 
-  it("array of plain strings updates text on fast path when values change", () => {
+  it("array of plain strings updates only text when values change", () => {
     const container = el();
 
     function render(items) {
@@ -183,7 +182,7 @@ describe("array rendering in templates", () => {
 
     const t2 = render(["x", "y", "z"]);
     const result = renderTemplate(container, t2.strings, t2.values);
-    expect(result).toBe(false); // patched via fast path
+    expect(result).toBe(false); // patched
     expect(container.querySelector("span").textContent).toBe("xyz");
   });
 });
