@@ -15,7 +15,19 @@ Elena, the JavaScript library, supports the following browser versions: Chrome 7
 
 **Safari 26.3:** `@scope` rules are not applied to `<input>` and `<textarea>` elements. This is fixed in [Safari 26.4](https://webkit.org/blog/17862/webkit-features-for-safari-26-4/) and newer. When necessary, you can [omit `@scope`](/components/styles#styles-without-scope) and use class based approach instead to go around this issue.
 
-**Scoped registries:** Scoped Custom Element Registries are supported in Chrome 146+, Edge 146+, and Safari 26+. Firefox does not support them yet. Elena’s `define(registry)` degrades gracefully: when `registry` is `undefined`, components register globally. See [Scoped registration](/components/options#scoped-registration) for the fallback pattern.
+**Scoped registries:** Scoped Custom Element Registries are supported in Chrome 146+, Edge 146+, and Safari 26+. Firefox does not support them yet. Elena’s `define(registry)` degrades gracefully: when `registry` is `undefined`, components register globally. Feature-detect the `CustomElementRegistry` constructor before creating a scoped registry:
+
+```js
+const registry = typeof CustomElementRegistry === "function"
+  ? new CustomElementRegistry()
+  : undefined;
+
+// Falls back to global registration when scoped registries
+// are not supported.
+Button.define(registry);
+```
+
+See [Scoped registration](/components/options#scoped-registration) for more details.
 
 ## URIs in templates
 
