@@ -414,7 +414,7 @@ When naming Custom Element attributes, follow these rules:
 
 - **Valid characters:** Lowercase ASCII letters (a-z) and hyphens (-) only.
 - **Short:** Keep prop names short and single-word where possible.
-- **Reserved names:** Property names must not conflict with existing standardized HTMLElement prototype members (e.g. \`title\`, \`hidden\`, \`id\`, \`style\`, \`className\`, \`innerHTML\`, \`textContent\`). Note: \`text\` is also reserved — it is Elena's built-in reactive text property.
+- **Reserved names:** Property names must not conflict with existing standardized HTMLElement prototype members. Note: \`text\` is also reserved — it is Elena's built-in reactive text property. Reserved names include: \`align\`, \`title\`, \`lang\`, \`translate\`, \`dir\`, \`dataset\`, \`hidden\`, \`tabIndex\`, \`accessKey\`, \`draggable\`, \`spellcheck\`, \`autocapitalize\`, \`contentEditable\`, \`isContentEditable\`, \`inputMode\`, \`offsetParent\`, \`offsetTop\`, \`offsetLeft\`, \`offsetWidth\`, \`offsetHeight\`, \`style\`, \`innerText\`, \`outerText\`, \`oncopy\`, \`oncut\`, \`onpaste\`, \`onabort\`, \`onblur\`, \`oncancel\`, \`oncanplay\`, \`oncanplaythrough\`, \`onchange\`, \`onclick\`, \`onclose\`, \`oncontextmenu\`, \`oncuechange\`, \`ondblclick\`, \`ondrag\`, \`ondragend\`, \`ondragenter\`, \`ondragleave\`, \`ondragover\`, \`ondragstart\`, \`ondrop\`, \`ondurationchange\`, \`onemptied\`, \`onended\`, \`onerror\`, \`onfocus\`, \`onfocusin\`, \`onfocusout\`, \`oninput\`, \`oninvalid\`, \`onkeydown\`, \`onkeypress\`, \`onkeyup\`, \`onload\`, \`onloadeddata\`, \`onloadedmetadata\`, \`onloadstart\`, \`onmousedown\`, \`onmouseenter\`, \`onmouseleave\`, \`onmousemove\`, \`onmouseout\`, \`onmouseover\`, \`onmouseup\`, \`onmousewheel\`, \`onpause\`, \`onplay\`, \`onplaying\`, \`onprogress\`, \`onratechange\`, \`onreset\`, \`onresize\`, \`onscroll\`, \`onseeked\`, \`onseeking\`, \`onselect\`, \`onstalled\`, \`onsubmit\`, \`onsuspend\`, \`ontimeupdate\`, \`ontoggle\`, \`onvolumechange\`, \`onwaiting\`, \`onwheel\`, \`onauxclick\`, \`ongotpointercapture\`, \`onlostpointercapture\`, \`onpointerdown\`, \`onpointermove\`, \`onpointerup\`, \`onpointercancel\`, \`onpointerover\`, \`onpointerout\`, \`onpointerenter\`, \`onpointerleave\`, \`onselectstart\`, \`onselectionchange\`, \`nonce\`, \`click\`, \`focus\`, \`blur\`, \`namespaceURI\`, \`prefix\`, \`localName\`, \`tagName\`, \`id\`, \`className\`, \`classList\`, \`slot\`, \`attributes\`, \`shadowRoot\`, \`assignedSlot\`, \`innerHTML\`, \`outerHTML\`, \`scrollTop\`, \`scrollLeft\`, \`scrollWidth\`, \`scrollHeight\`, \`clientTop\`, \`clientLeft\`, \`clientWidth\`, \`clientHeight\`, \`attributeStyleMap\`, \`onbeforecopy\`, \`onbeforecut\`, \`onbeforepaste\`, \`onsearch\`, \`previousElementSibling\`, \`nextElementSibling\`, \`children\`, \`firstElementChild\`, \`lastElementChild\`, \`childElementCount\`, \`onfullscreenchange\`, \`onfullscreenerror\`, \`onwebkitfullscreenchange\`, \`onwebkitfullscreenerror\`, \`setPointerCapture\`, \`releasePointerCapture\`, \`hasPointerCapture\`, \`hasAttributes\`, \`getAttributeNames\`, \`getAttribute\`, \`getAttributeNS\`, \`setAttribute\`, \`setAttributeNS\`, \`removeAttribute\`, \`removeAttributeNS\`, \`hasAttribute\`, \`hasAttributeNS\`, \`toggleAttribute\`, \`getAttributeNode\`, \`getAttributeNodeNS\`, \`setAttributeNode\`, \`setAttributeNodeNS\`, \`removeAttributeNode\`, \`closest\`, \`matches\`, \`webkitMatchesSelector\`, \`attachShadow\`, \`getElementsByTagName\`, \`getElementsByTagNameNS\`, \`getElementsByClassName\`, \`insertAdjacentElement\`, \`insertAdjacentText\`, \`insertAdjacentHTML\`, \`requestPointerLock\`, \`getClientRects\`, \`getBoundingClientRect\`, \`scrollIntoView\`, \`scroll\`, \`scrollTo\`, \`scrollBy\`, \`scrollIntoViewIfNeeded\`, \`animate\`, \`computedStyleMap\`, \`before\`, \`after\`, \`replaceWith\`, \`remove\`, \`prepend\`, \`append\`, \`querySelector\`, \`querySelectorAll\`, \`requestFullscreen\`, \`webkitRequestFullScreen\`, \`webkitRequestFullscreen\`, \`part\`, \`createShadowRoot\`, \`getDestinationInsertionPoints\`, \`nodeType\`, \`nodeName\`, \`baseURI\`, \`isConnected\`, \`ownerDocument\`, \`parentNode\`, \`parentElement\`, \`childNodes\`, \`firstChild\`, \`lastChild\`, \`previousSibling\`, \`nextSibling\`, \`nodeValue\`, \`textContent\`, \`hasChildNodes\`, \`getRootNode\`, \`normalize\`, \`cloneNode\`, \`isEqualNode\`, \`isSameNode\`, \`compareDocumentPosition\`, \`contains\`, \`lookupPrefix\`, \`lookupNamespaceURI\`, \`isDefaultNamespace\`, \`insertBefore\`, \`appendChild\`, \`replaceChild\`, \`removeChild\`.
 
 ## Props
 
@@ -660,7 +660,7 @@ Use \`@cssprop\` JSDoc on the component class. \`@elenajs/bundler\` transforms t
 
 ### Shadow DOM
 
-For full style isolation, Elena supports opt-in Shadow DOM via \`static shadow = "open" | "closed"\` and \`static styles\`. Elena renders into the shadow root, external styles cannot reach in, and \`@scope\` is not needed. However, Shadow DOM eliminates progressive enhancement: nothing is visible until JavaScript runs. CSS custom properties still pierce shadow boundaries for theming.
+For full style isolation, Elena supports opt-in Shadow DOM via \`static shadow = "open" | "closed"\` and \`static styles\`. Elena renders into the shadow root, external styles cannot reach in, and \`@scope\` is not needed. However, without Declarative Shadow DOM, Shadow DOM eliminates progressive enhancement: nothing is visible until JavaScript runs. CSS custom properties still pierce shadow boundaries for theming.
 
 \`\`\`js
 import styles from "./button.css" with { type: "css" };
@@ -727,6 +727,27 @@ await element.updateComplete;
 // DOM is now updated
 \`\`\`
 
+### Custom Methods
+
+You can define your own methods on any Elena component:
+
+\`\`\`js
+export default class Button extends Elena(HTMLElement) {
+  focus() {
+    this.element?.focus();
+  }
+}
+\`\`\`
+
+Use \`@internal\` in JSDoc to mark methods that are implementation details and should not be part of the public API:
+
+\`\`\`js
+/** @internal */
+_buildLabel() {
+  return \\\`\\\${this.firstName} \\\${this.lastName}\\\`;
+}
+\`\`\`
+
 ---
 
 ## Rendering
@@ -737,7 +758,7 @@ Elena renders a web component once when it connects to the page. After that, any
 
 When Elena updates, it calls \`render()\` and compares the result to what is currently in the DOM. It uses two strategies depending on what changed:
 
-- **Patch:** if the template shape is the same, Elena patches only the text nodes that changed. The DOM structure stays intact, preserving element identity, focus state, and scroll position.
+- **Patch:** if the template shape is the same, Elena patches only the text nodes and attribute values that changed. The DOM structure stays intact, preserving element identity, focus state, and scroll position.
 - **Morph:** if the template shape changed, Elena rebuilds the affected portion of the DOM and morphs it into place, updating attributes and text in existing nodes where possible.
 
 ### What triggers an update
