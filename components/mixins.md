@@ -5,7 +5,7 @@ description: >-
   Progressive Web Components.
 ---
 
-# Mixins
+# Mixins&#x20;
 
 Mixins are a standard JavaScript pattern for sharing behavior across [Progressive Web Components](/components/overview). Since Elena’s `Elena()` factory is itself a mixin, custom mixins compose naturally with it.
 

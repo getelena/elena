@@ -5,7 +5,7 @@ description: >-
   events, element, shadow, and styles.
 ---
 
-# Options
+# Options&#x20;
 
 Elena components are configured using static class fields:
 

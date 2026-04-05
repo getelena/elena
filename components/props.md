@@ -5,7 +5,7 @@ description: >-
   attribute syncing, reflection, and supported types.
 ---
 
-# Props
+# Props&#x20;
 
 Props are values you pass to an Elena component. Declare them in `static props` and Elena will keep them in sync with HTML attributes, and re-render the components whenever they change.
 

@@ -5,7 +5,7 @@ description: >-
   Web Components to make them work reliably across the custom element lifecycle.
 ---
 
-# Styles
+# Styles&#x20;
 
 These guidelines cover the approaches we recommend when styling [Progressive Web Components](/components/overview) to make them work reliably across the custom element lifecycle. You can craft the CSS however works best for your project, but the patterns below help avoid some common pitfalls.
 
