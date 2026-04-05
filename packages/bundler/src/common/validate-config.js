@@ -43,6 +43,9 @@ export function validateConfig(config) {
     if (config.output.sourcemap !== undefined && typeof config.output.sourcemap !== "boolean") {
       throw new Error(`░█ [ELENA]: Invalid config: "output.sourcemap" must be a boolean.`);
     }
+    if (config.output.filename !== undefined && typeof config.output.filename !== "string") {
+      throw new Error(`░█ [ELENA]: Invalid config: "output.filename" must be a string.`);
+    }
   }
 
   if (config.bundle !== undefined && typeof config.bundle !== "string" && config.bundle !== false) {

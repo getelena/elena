@@ -70,6 +70,7 @@ export default {
     dir: "dist",
     format: "esm",
     sourcemap: true,
+    filename: "bundle.js",
   },
 
   // Entry for the single-file bundle. Set to false to disable.
@@ -104,6 +105,7 @@ export default {
 | `output.dir`       | `string`                      | `"dist"`         | Output directory for compiled files.                                                                                                                                                |
 | `output.format`    | `string`                      | `"esm"`          | Rollup output format.                                                                                                                                                               |
 | `output.sourcemap` | `boolean`                     | `true`           | Whether to emit sourcemaps.                                                                                                                                                         |
+| `output.filename`  | `string`                      | `"bundle.js"`    | Output filename for the single-file bundle. The CSS bundle filename is derived by replacing the `.js` extension with `.css`.                                                        |
 | `bundle`           | `string \| false`             | `"src/index.js"` | Entry point for the single-file bundle. Auto-detects `src/index.ts` if no `.js` entry exists. Set to `false` to disable.                                                           |
 | `plugins`          | `Plugin[]`                    | `[]`             | Additional Rollup plugins appended after the built-in set.                                                                                                                          |
 | `analyze`          | `object \| false`             | `{ plugins: [] }` | CEM analysis options. Set to `false` to skip Custom Elements Manifest generation, TypeScript declarations, and JSX types entirely.                                                   |

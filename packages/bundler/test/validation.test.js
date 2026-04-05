@@ -77,6 +77,14 @@ describe("Config validation", () => {
     expect(output).toContain('"terser" must be an object');
   });
 
+  test("rejects output.filename with wrong type", () => {
+    tmpDir = setupDir(`export default { output: { filename: 123 } };`);
+    const result = runCli(tmpDir);
+    expect(result.status).not.toBe(0);
+    const output = result.stderr + result.stdout;
+    expect(output).toContain('"output.filename" must be a string');
+  });
+
   test("warns about unknown config keys", () => {
     tmpDir = setupDir(`export default { unknownKey: true };`);
     const result = runCli(tmpDir);
@@ -161,6 +169,18 @@ export default {
     const result = runCli(tmpDir);
     expect(result.status).toBe(0);
     expect(existsSync(join(tmpDir, "dist", "marker.txt"))).toBe(true);
+  });
+});
+
+describe("Custom output filename", () => {
+  test("bundle uses custom filename from output.filename", () => {
+    tmpDir = setupDir(`export default { output: { filename: "my-library.js" }, analyze: false };`);
+    const result = runCli(tmpDir);
+    expect(result.status).toBe(0);
+    expect(existsSync(join(tmpDir, "dist", "my-library.js"))).toBe(true);
+    expect(existsSync(join(tmpDir, "dist", "my-library.css"))).toBe(true);
+    expect(existsSync(join(tmpDir, "dist", "bundle.js"))).toBe(false);
+    expect(existsSync(join(tmpDir, "dist", "bundle.css"))).toBe(false);
   });
 });
 
