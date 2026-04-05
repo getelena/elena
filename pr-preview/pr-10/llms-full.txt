@@ -1296,7 +1296,7 @@ description: >-
   the Custom Elements Manifest.
 ---
 
-# Events
+# Events&#x20;
 
 ## Delegated events
 
@@ -1955,7 +1955,7 @@ description: >-
   rendering to updates and disconnection.
 ---
 
-# Lifecycle
+# Lifecycle&#x20;
 
 Elena’s component lifecycle has two parts: the standard custom element lifecycle, and a reactive update cycle triggered by property changes.
 
@@ -2607,7 +2607,7 @@ description: >-
   custom methods on your Progressive Web Components.
 ---
 
-# Methods
+# Methods&#x20;
 
 Elena extends the standard [custom elements lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks) with a reactive update cycle. All lifecycle methods can be extended by calling `super`.
 
@@ -2745,7 +2745,7 @@ description: >-
   Progressive Web Components.
 ---
 
-# Mixins
+# Mixins&#x20;
 
 Mixins are a standard JavaScript pattern for sharing behavior across [Progressive Web Components](/components/overview). Since Elena’s `Elena()` factory is itself a mixin, custom mixins compose naturally with it.
 
@@ -2893,7 +2893,7 @@ description: >-
   events, element, shadow, and styles.
 ---
 
-# Options
+# Options&#x20;
 
 Elena components are configured using static class fields:
 
@@ -3044,7 +3044,7 @@ description: >-
   attribute syncing, reflection, and supported types.
 ---
 
-# Props
+# Props&#x20;
 
 Props are values you pass to an Elena component. Declare them in `static props` and Elena will keep them in sync with HTML attributes, and re-render the components whenever they change.
 
@@ -3650,7 +3650,7 @@ description: >-
   components.
 ---
 
-# Rendering
+# Rendering&#x20;
 
 Elena renders a web component once when it connects to the page. After that, any change to a [reactive property](/components/props) triggers an update. Elena performs updates asynchronously so property changes are batched: if there are multiple changes, they are combined into a single render.
 
@@ -4227,7 +4227,7 @@ description: >-
   Web Components to make them work reliably across the custom element lifecycle.
 ---
 
-# Styles
+# Styles&#x20;
 
 These guidelines cover the approaches we recommend when styling [Progressive Web Components](/components/overview) to make them work reliably across the custom element lifecycle. You can craft the CSS however works best for your project, but the patterns below help avoid some common pitfalls.
 
@@ -4539,7 +4539,7 @@ description: >-
   literal, including conditionals, loops, and XSS-safe interpolation.
 ---
 
-# Templates
+# Templates&#x20;
 
 Elena uses an HTML-based template syntax built on JavaScript [tagged template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals).
 

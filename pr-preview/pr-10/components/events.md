@@ -5,7 +5,7 @@ description: >-
   the Custom Elements Manifest.
 ---
 
-# Events
+# Events&#x20;
 
 ## Delegated events
 
