@@ -83,7 +83,7 @@ describe("SVG rendering", () => {
       expect(container.querySelector("circle")).not.toBeNull();
     });
 
-    it("re-renders SVG text content on fast path", () => {
+    it("re-renders SVG text content", () => {
       const container = el();
       const strings = Object.assign(["<svg><text>", "</text></svg>"], {
         raw: ["<svg><text>", "</text></svg>"],
@@ -93,7 +93,7 @@ describe("SVG rendering", () => {
       expect(container.querySelector("text").textContent).toBe("First");
 
       const result = renderTemplate(container, strings, ["Second"]);
-      expect(result).toBe(false); // fast path
+      expect(result).toBe(false);
       expect(container.querySelector("text").textContent).toBe("Second");
     });
 
@@ -169,7 +169,7 @@ describe("MathML rendering", () => {
       expect(mns[1].textContent).toBe("2");
     });
 
-    it("re-renders MathML text content on fast path", () => {
+    it("re-renders MathML text content", () => {
       const container = el();
       const strings = Object.assign(["<math><mn>", "</mn></math>"], {
         raw: ["<math><mn>", "</mn></math>"],
@@ -179,7 +179,7 @@ describe("MathML rendering", () => {
       expect(container.querySelector("mn").textContent).toBe("42");
 
       const result = renderTemplate(container, strings, ["99"]);
-      expect(result).toBe(false); // fast path
+      expect(result).toBe(false);
       expect(container.querySelector("mn").textContent).toBe("99");
     });
 

@@ -245,18 +245,18 @@ describe("render internals", () => {
   });
 
   describe("re-render path transitions", () => {
-    it("clone path → fast path on re-render with changed text", () => {
+    it("morph → patch on re-render with changed text", () => {
       const container = el();
       renderTemplate(container, singleText, ["hello"]);
       const textNode = container._templateParts[0];
 
       const result = renderTemplate(container, singleText, ["world"]);
-      expect(result).toBe(false); // patched, no full render
+      expect(result).toBe(false); // patched in place
       expect(container.querySelector("span").textContent).toBe("world");
       expect(container._templateParts[0]).toBe(textNode);
     });
 
-    it("fast path → full render when template shape changes", () => {
+    it("patch → morph when template shape changes", () => {
       const tplA = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
       const tplB = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
       const container = el();
@@ -273,15 +273,12 @@ describe("render internals", () => {
       const container = el();
       const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
 
-      // 1. Plain text
       renderTemplate(container, template, ["hello"]);
       expect(container.querySelector("div").textContent).toBe("hello");
 
-      // 2. Switch to raw HTML: forces full render
       renderTemplate(container, template, [html`<b>bold</b>`]);
       expect(container.querySelector("b").textContent).toBe("bold");
 
-      // 3. Back to plain text: forces full render (raw → non-raw change)
       renderTemplate(container, template, ["plain again"]);
       expect(container.querySelector("div").textContent).toBe("plain again");
       expect(container.querySelector("b")).toBeNull();
@@ -301,7 +298,7 @@ describe("render internals", () => {
       expect(container.querySelector("span").textContent).toBe("");
     });
 
-    it("unsafeHTML content change triggers full re-render", () => {
+    it("unsafeHTML content change triggers morph", () => {
       const container = el();
       const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
 
@@ -336,7 +333,7 @@ describe("render internals", () => {
       expect(container.querySelector("span").textContent).toBe("a b");
     });
 
-    it("adjacent interpolations re-render independently on fast path", () => {
+    it("adjacent interpolations re-render independently", () => {
       const container = el();
       renderTemplate(container, threeTexts, ["a", "b", "c"]);
       expect(container.querySelector("p").textContent).toBe("a b c");
@@ -588,7 +585,7 @@ describe("render internals", () => {
   });
 
   describe("rapid successive renders", () => {
-    it("many fast-path updates produce correct final state", () => {
+    it("many updates produce correct final state", () => {
       const container = el();
       renderTemplate(container, singleText, ["start"]);
 
@@ -600,7 +597,7 @@ describe("render internals", () => {
       expect(container._templateParts[0].textContent).toBe("value-99");
     });
 
-    it("alternating full and fast renders stay consistent", () => {
+    it("alternating patch() and morph() renders stay consistent", () => {
       const container = el();
       const tplA = Object.assign(["<b>", "</b>"], { raw: ["<b>", "</b>"] });
       const tplB = Object.assign(["<i>", "</i>"], { raw: ["<i>", "</i>"] });
@@ -657,13 +654,13 @@ describe("render internals", () => {
   });
 
   describe("renderTemplate return value", () => {
-    it("returns true on first render (full render)", () => {
+    it("returns true on first render", () => {
       const container = el();
       const result = renderTemplate(container, singleText, ["hello"]);
       expect(result).toBe(true);
     });
 
-    it("returns false on fast-path re-render", () => {
+    it("returns false on patch() maning DOM did not need a rebuid", () => {
       const container = el();
       renderTemplate(container, singleText, ["a"]);
       const result = renderTemplate(container, singleText, ["b"]);
@@ -686,7 +683,7 @@ describe("render internals", () => {
       expect(result).toBe(true);
     });
 
-    it("returns true when raw HTML value changes on fast path", () => {
+    it("returns true when raw HTML value changes", () => {
       const container = el();
       const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
       renderTemplate(container, template, ["text"]);
@@ -695,7 +692,7 @@ describe("render internals", () => {
     });
   });
 
-  describe("morph on re-render", () => {
+  describe("morph() on re-render", () => {
     it("preserves element identity when raw HTML sibling changes", () => {
       const container = el();
       const template = Object.assign(["<input />", ""], { raw: ["<input />", ""] });
@@ -737,14 +734,14 @@ describe("render internals", () => {
       expect(container.querySelector("div")).not.toBe(oldSpan);
     });
 
-    it("preserves fast path for first render", () => {
+    it("preserves patch() for first render", () => {
       const container = el();
       const template = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
 
       renderTemplate(container, template, ["hello"]);
       expect(container._templateParts).not.toBeNull();
 
-      // Second render uses fast path (patchParts)
+      // Second render uses patch()
       const result = renderTemplate(container, template, ["world"]);
       expect(result).toBe(false);
       expect(container.querySelector("span").textContent).toBe("world");

@@ -20,10 +20,10 @@ const treeWalker = node => document.createTreeWalker(node, SHOW_COMMENT);
  * @returns {boolean}
  */
 export function renderTemplate(element, strings, values) {
-  if (patchParts(element, strings, values)) {
+  if (patch(element, strings, values)) {
     return false;
   }
-  fullRender(element, strings, values);
+  morph(element, strings, values);
   return true;
 }
 
@@ -33,9 +33,9 @@ export function renderTemplate(element, strings, values) {
  * @param {HTMLElement} element - The host element with cached template state
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
  * @param {Array} values - Dynamic interpolated values
- * @returns {boolean} Whether patching was sufficient (false = full render)
+ * @returns {boolean} Whether patching was sufficient (false = do morph instead)
  */
-function patchParts(element, strings, values) {
+function patch(element, strings, values) {
   // Only works when re-rendering the same template shape
   if (element._templateStrings !== strings || !element._templateParts) {
     return false;
@@ -76,13 +76,13 @@ function patchParts(element, strings, values) {
 }
 
 /**
- * Clone a cached <template> and patch in values.
+ * Clone a cached <template> and morph in new structure.
  *
  * @param {HTMLElement} element - The host element to render into
  * @param {TemplateStringsArray} strings - Static parts of the tagged template
  * @param {Array} values - Dynamic interpolated values
  */
-function fullRender(element, strings, values) {
+function morph(element, strings, values) {
   let entry = stringsCache.get(strings);
 
   if (!entry) {
@@ -117,7 +117,7 @@ function fullRender(element, strings, values) {
 }
 
 /**
- * Build a <template> element with comment markers and string placeholders.
+ * Create a <template> element with comment markers and string placeholders.
  *
  * @param {string[]} _strings - Whitespace-collapsed static parts
  * @param {number} valueCount - Number of dynamic values
@@ -172,7 +172,7 @@ function createTemplate(_strings, valueCount) {
  * @param {HTMLElement} element - The host element to render into
  * @param {{ _tpl: HTMLTemplateElement, _attrs: (string|null)[] }} templateInfo
  * @param {Array} values - Raw interpolated values
- * @returns {Array<Text | [Element, string] | undefined>}
+ * @returns {Array<Text | [Element, string] | undefined> | null}
  */
 function cloneAndPatch(element, templateInfo, values) {
   const { _tpl, _attrs } = templateInfo;

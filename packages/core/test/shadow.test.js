@@ -434,7 +434,7 @@ describe("shadow DOM", () => {
   });
 
   describe("DOM diffing", () => {
-    it("text node identity preserved across re-renders (fast path)", async () => {
+    it("text node identity preserved across re-renders", async () => {
       const el = await createElement("shadow-element", { label: "Hello" });
       const root = el.shadowRoot;
       const textNode = root.querySelector("button").firstChild;
@@ -466,21 +466,20 @@ describe("shadow DOM", () => {
         },
       });
 
-      // Trigger re-render with same value: fast path skips innerHTML
+      // Trigger re-render with same value
       el.render();
       expect(innerHTMLCallCount).toBe(0);
 
-      // Clean up
       delete root.innerHTML;
     });
 
-    it("cold-path re-render morphs shadow DOM and clears _templateParts", () => {
+    it("re-render morphs shadow DOM and clears _templateParts", () => {
       const el = createElement("shadow-element", { label: "Hello" });
       const root = el.shadowRoot;
       expect(root._templateParts[0].textContent).toBe("Hello");
       const oldButton = root.querySelector("button");
 
-      // Different strings ref forces cold-path fullRender
+      // Different strings ref forces morph()
       const t = html`<button>${"World"}</button>`;
       renderTemplate(root, t.strings, t.values);
       // Morph preserves element identity when structure is stable
@@ -499,15 +498,15 @@ describe("shadow DOM", () => {
       el.remove();
       document.body.appendChild(el);
 
-      // After reconnect, fast-path should still work with cached parts
+      // After reconnect, patch() should still work with cached parts
       el.setAttribute("label", "World");
       await el.updateComplete;
       expect(root.querySelector("button").textContent).toBe("World");
-      // Same text node was patched (not a full re-render)
+      // Same text node was patched (not a full morph())
       expect(root._templateParts[0]).toBe(textNode);
     });
 
-    it("element ref is preserved across fast-path re-renders", async () => {
+    it("element ref is preserved across patch() re-renders", async () => {
       const el = await createElement("shadow-element", { label: "Hello" });
       const ref = el.element;
 

@@ -6,20 +6,20 @@ import { escapeHtml } from "../src/common/utils.js";
 import "./fixtures/nothing-element.js";
 
 describe("utils", () => {
-  describe("renderTemplate fast-path edge cases", () => {
+  describe("renderTemplate patch() edge cases", () => {
     const tplStrings = Object.assign(["<span>", "</span>"], { raw: ["<span>", "</span>"] });
 
-    it("patches text node with null value on fast path", () => {
+    it("patches text node with null value", () => {
       const el = document.createElement("div");
       renderTemplate(el, tplStrings, ["Hello"]);
       expect(el.querySelector("span").textContent).toBe("Hello");
 
-      // Re-render with null: same strings ref triggers fast path
+      // Re-render with null
       renderTemplate(el, tplStrings, [null]);
       expect(el.querySelector("span").textContent).toBe("");
     });
 
-    it("patches text node with undefined value on fast path", () => {
+    it("patches text node with undefined value", () => {
       const el = document.createElement("div");
       renderTemplate(el, tplStrings, ["Hello"]);
 
@@ -27,7 +27,7 @@ describe("utils", () => {
       expect(el.querySelector("span").textContent).toBe("");
     });
 
-    it("triggers full render when raw html value changes on fast path", () => {
+    it("triggers patch render when raw html value changes", () => {
       const template = Object.assign(["<div>", "</div>"], { raw: ["<div>", "</div>"] });
       const el = document.createElement("div");
 
@@ -35,7 +35,7 @@ describe("utils", () => {
       renderTemplate(el, template, ["text"]);
       expect(el.querySelector("div").textContent).toBe("text");
 
-      // Re-render with a raw html value: forces full render
+      // Re-render with a raw html value
       renderTemplate(el, template, [html`<b>bold</b>`]);
       expect(el.querySelector("div").querySelector("b").textContent).toBe("bold");
     });
@@ -53,7 +53,7 @@ describe("utils", () => {
       expect(textNode.parentNode).toBe(el.querySelector("span"));
     });
 
-    it("clears _templateParts and preserves elements after morph re-render", () => {
+    it("clears _templateParts and preserves elements after morph()", () => {
       // Both values in text positions so mapTextNodes can match them
       const template = Object.assign(["<span>", "</span><span>", "</span>"], {
         raw: ["<span>", "</span><span>", "</span>"],
@@ -156,21 +156,18 @@ describe("utils", () => {
       document.body.removeChild(el);
     });
 
-    it("on fast path: prior nothing render followed by value renders correctly", async () => {
+    it("prior nothing render followed by value renders correctly", async () => {
       const el = document.createElement("nothing-element");
       document.body.appendChild(el);
 
-      // Start with active=false (nothing)
       el.active = false;
       await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("");
 
-      // Change label while active is false: should not affect output
       el.label = "New Label";
       await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("");
 
-      // Activate: fast path re-renders, should show new label
       el.active = true;
       await el.updateComplete;
       expect(el.querySelector(".btn").textContent).toBe("New Label");
@@ -179,7 +176,7 @@ describe("utils", () => {
     });
 
     it("avoids false string in output", () => {
-      // Contrast: if we interpolated false directly, it would become "false"
+      // If we interpolated false directly, it becomes "false"
       const result = html`<span>${false}</span>`;
       expect(String(result)).toBe("<span>false</span>");
 
