@@ -309,7 +309,7 @@ export function Elena(superClass) {
         const rebuilt = renderTemplate(root, result.strings, result.values);
 
         // Re-resolve element ref when the DOM was fully rebuilt.
-        // Fast-path text node patching leaves the DOM structure intact,
+        // patch() and morph() leave the DOM structure intact,
         // so the existing ref is still valid.
         if (rebuilt) {
           const oldElement = this.element;
