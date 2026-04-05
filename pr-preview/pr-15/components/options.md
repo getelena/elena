@@ -33,6 +33,10 @@ export default class Button extends Elena(HTMLElement) {
   // Stylesheets to adopt into the shadow root.
   // Only required when using Shadow DOM.
   static styles = styles;
+
+  // Scoped registry for this component's shadow root.
+  // Only applies when using Shadow DOM.
+  static registry = registry;
 }
 
 // Register the custom element after the class body is defined.
