@@ -31,6 +31,10 @@ export default class Button extends Elena(HTMLElement) {
   // Stylesheets to adopt into the shadow root.
   // Only required when using Shadow DOM.
   static styles = styles;
+
+  // Scoped registry for this component's shadow root.
+  // Only applies when using Shadow DOM.
+  static registry = registry;
 }
 
 // Register the custom element after the class body is defined.
@@ -50,6 +54,7 @@ Button.define();
 | `element` | `string` | A CSS selector for the inner element that `this.element` points to (e.g. `".inner"`, `"button"`). Defaults to the first child element when omitted. `this.element` is available in `render()`, lifecycle methods, and custom methods. |
 | `shadow` | `"open" \| "closed"` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host, fully isolating styles and DOM from the rest of the page. |
 | `styles` | `CSSStyleSheet \| string \| (CSSStyleSheet \| string)[]` | One or more stylesheets to adopt into the shadow root. Only applies when `shadow` is also set. Pass a `CSSStyleSheet` via [CSS Module Scripts](https://web.dev/articles/css-module-scripts), or a raw CSS string. |
+| `registry` | `CustomElementRegistry` | A [scoped registry](#scoped-registration) to associate with this component's shadow root. Child custom elements inside the shadow root are resolved from this registry instead of the global one. Only applies when `shadow` is also set. Chrome 146+, Edge 146+, Safari 26+. |
 
 ## Registering a component
 
@@ -59,4 +64,17 @@ Call `define()` on the class to register it as a custom element. Elena reads the
 Button.define();
 ```
 
-For more on declaring props, default values, and reflection, see [Props](./props).
+### Scoped registration
+
+Pass a `CustomElementRegistry` to `define()` to register a component in a [Scoped Custom Element Registry](https://developer.chrome.com/blog/scoped-registries) instead of the global one:
+
+```js
+const registry = new CustomElementRegistry();
+Button.define(registry);
+```
+
+Scoped registries isolate custom element definitions per shadow root. For details about browser compatibility, see [known issues](/advanced/gotchas).
+
+## Next steps
+
+- For more on declaring props, default values, and reflection, see [Props](./props).

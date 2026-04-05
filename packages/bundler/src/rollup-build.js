@@ -32,6 +32,94 @@ const TREESHAKE = {
   propertyReadSideEffects: false,
 };
 
+const DEFINE_CALL_RE = /^\s*\w+\.define\(\);\s*$/gm;
+const SIDE_EFFECT_IMPORT_RE = /^\s*import\s+["'][^"']+["']\s*;\s*$/gm;
+
+/**
+ * Rollup plugin that strips `.define()` calls and side-effect-only
+ * component imports from the output. Used with `registration: "scoped"`.
+ *
+ * @returns {import("rollup").Plugin}
+ */
+function stripRegistrationPlugin() {
+  return {
+    name: "elena-strip-registration",
+    transform(code, id) {
+      if (!id.endsWith(".js") && !id.endsWith(".ts")) {
+        return null;
+      }
+      const stripped = code.replace(DEFINE_CALL_RE, "").replace(SIDE_EFFECT_IMPORT_RE, "");
+      if (stripped === code) {
+        return null;
+      }
+      return { code: stripped, map: null };
+    },
+  };
+}
+
+/**
+ * Rollup plugin that emits a `register.js` module exporting a
+ * `defineAll(registry?)` helper and re-exporting all component classes.
+ * Used with `registration: "scoped"`.
+ *
+ * @param {string} src - Source directory (e.g. `"src"`).
+ * @returns {import("rollup").Plugin}
+ */
+function emitRegisterPlugin(src) {
+  return {
+    name: "elena-emit-register",
+    generateBundle(_, bundle) {
+      // Collect component modules from the emitted chunks.
+      const components = [];
+      for (const [fileName, chunk] of Object.entries(bundle)) {
+        if (chunk.type !== "chunk") {
+          continue;
+        }
+        // Check the original module source for static tagName.
+        for (const moduleId of Object.keys(chunk.modules)) {
+          const info = this.getModuleInfo(moduleId);
+          if (!info || !info.code) {
+            continue;
+          }
+          if (/static\s+tagName\s*=/.test(info.code)) {
+            const match = info.code.match(/(?:export\s+default\s+)?class\s+(\w+)/);
+            if (match) {
+              components.push({ className: match[1], importPath: `./${fileName}` });
+            }
+          }
+        }
+      }
+
+      if (components.length === 0) {
+        return;
+      }
+
+      const imports = components
+        .map(c => `import { default as ${c.className} } from "${c.importPath}";`)
+        .join("\n");
+      const definealls = components.map(c => `  ${c.className}.define(registry);`).join("\n");
+      const exports = components.map(c => c.className).join(", ");
+
+      const source = [
+        imports,
+        "",
+        `export function defineAll(registry) {`,
+        definealls,
+        `}`,
+        "",
+        `export { ${exports} };`,
+        "",
+      ].join("\n");
+
+      this.emitFile({
+        type: "asset",
+        fileName: "register.js",
+        source,
+      });
+    },
+  };
+}
+
 /**
  * Suppress noisy Rollup warnings.
  *
@@ -117,6 +205,7 @@ export function createRollupConfig(options = {}) {
   const target = options.target ?? false;
   const terserOpts = options.terser ?? { ecma: 2020, module: true };
   const banner = options.banner || undefined;
+  const scoped = options.registration === "scoped";
 
   if (!existsSync(src)) {
     throw new Error(
@@ -145,19 +234,24 @@ export function createRollupConfig(options = {}) {
     );
   }
 
+  const scopedPlugins = scoped ? [stripRegistrationPlugin(), emitRegisterPlugin(src)] : [];
+
   const configs = [
     {
       input: entries,
-      plugins: buildPlugins({
-        src,
-        outdir,
-        hasSummary: false,
-        includeCssBundle: true,
-        extraPlugins,
-        hasTs,
-        target,
-        terserOpts,
-      }),
+      plugins: [
+        ...scopedPlugins,
+        ...buildPlugins({
+          src,
+          outdir,
+          hasSummary: false,
+          includeCssBundle: true,
+          extraPlugins,
+          hasTs,
+          target,
+          terserOpts,
+        }),
+      ],
       output: {
         ...(banner && {
           banner: chunk => (chunk.fileName === "index.js" ? banner : ""),
@@ -174,18 +268,22 @@ export function createRollupConfig(options = {}) {
   ];
 
   if (bundle) {
+    const bundleScoped = scoped ? [stripRegistrationPlugin()] : [];
     configs.push({
       input: bundle,
-      plugins: buildPlugins({
-        src,
-        outdir,
-        hasSummary: true,
-        includeCssBundle: false,
-        extraPlugins,
-        hasTs,
-        target,
-        terserOpts,
-      }),
+      plugins: [
+        ...bundleScoped,
+        ...buildPlugins({
+          src,
+          outdir,
+          hasSummary: true,
+          includeCssBundle: false,
+          extraPlugins,
+          hasTs,
+          target,
+          terserOpts,
+        }),
+      ],
       output: { banner, format, sourcemap, file: `${outdir}/bundle.js` },
       preserveEntrySignatures: "strict",
       treeshake: TREESHAKE,

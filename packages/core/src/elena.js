@@ -49,7 +49,7 @@ function elementResolver(selector) {
 
 /**
  * @typedef {(new (...args: any[]) => HTMLElement & ElenaInstanceMembers) & {
- *   define(): void,
+ *   define(registry?: CustomElementRegistry): void,
  *   readonly observedAttributes: string[],
  *   tagName?: string,
  *   props?: (string | ElenaPropObject)[],
@@ -57,6 +57,7 @@ function elementResolver(selector) {
  *   element?: string,
  *   shadow?: "open" | "closed",
  *   styles?: CSSStyleSheet | string | (CSSStyleSheet | string)[],
+ *   registry?: CustomElementRegistry,
  * }} ElenaElementConstructor
  */
 
@@ -267,7 +268,11 @@ export function Elena(superClass) {
       // In that case skip attachShadow() but still adopt styles below.
       // Store the reference so closed shadow roots remain accessible.
       if (!this._shadow && !this.shadowRoot) {
-        this._shadow = this.attachShadow({ mode: component.shadow });
+        const options = { mode: component.shadow };
+        if (component.registry) {
+          options.customElementRegistry = component.registry;
+        }
+        this._shadow = this.attachShadow(options);
       }
 
       const shadowRoot = this._shadow ?? this.shadowRoot;
@@ -480,11 +485,14 @@ export function Elena(superClass) {
      * Registers the component as a custom element using `static tagName`.
      * Call this on your component class after the class body is defined,
      * not on the Elena mixin itself.
+     *
+     * @param {CustomElementRegistry} [registry] - A scoped registry to register in.
+     *   When omitted, registers in the global `customElements` registry.
      */
-    static define() {
+    static define(registry) {
       const tag = this.tagName;
       if (tag) {
-        defineElement(tag, this);
+        defineElement(tag, this, registry);
       } else {
         warn("define() without a tagName.");
       }

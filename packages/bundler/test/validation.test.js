@@ -77,6 +77,14 @@ describe("Config validation", () => {
     expect(output).toContain('"terser" must be an object');
   });
 
+  test("rejects registration with wrong value", () => {
+    tmpDir = setupDir(`export default { registration: "invalid" };`);
+    const result = runCli(tmpDir);
+    expect(result.status).not.toBe(0);
+    const output = result.stderr + result.stdout;
+    expect(output).toContain('"registration" must be "auto" or "scoped"');
+  });
+
   test("warns about unknown config keys", () => {
     tmpDir = setupDir(`export default { unknownKey: true };`);
     const result = runCli(tmpDir);
