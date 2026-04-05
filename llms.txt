@@ -42,6 +42,6 @@
 - [Become an Elena sponsor](/about/sponsor.md): Elena’s privacy policy and data practices.
 - [Code of conduct](/about/code-of-conduct.md): Elena’s code of conduct for contributors and community members.
 - [Live examples with @elenajs/ssr](/examples/pre-rendered.md): Live demo of Elena’s Progressive Web Components pre-rendered with @elenajs/ssr and progressively enhanced with JavaScript.
+- [Meet the team](/about/team.md): The development of Elena is guided by an international team that is actively involved in the maintenance of the core project.
 - [Playground](/playground.md): Interactive playground for building Elena Progressive Web Components.
 - [Privacy policy](/about/privacy.md): Elena’s privacy policy and data practices.
-- [Untitled](/about/team.md)
