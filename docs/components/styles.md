@@ -3,7 +3,7 @@ title: Styles
 description: These guidelines cover the approaches we recommend when styling Progressive Web Components to make them work reliably across the custom element lifecycle.
 ---
 
-# Styles
+# Styles <VersionBadge />
 
 These guidelines cover the approaches we recommend when styling [Progressive Web Components](/components/overview) to make them work reliably across the custom element lifecycle. You can craft the&nbsp;CSS however works best for your project, but the patterns below help avoid some common&nbsp;pitfalls.
 

@@ -3,6 +3,7 @@ import DefaultTheme from "vitepress/theme-without-fonts";
 import { useRoute } from "vitepress";
 import { initCodeblockFold } from "./codeblock-fold.mjs";
 import GitHubStar from "./components/GitHubStar.vue";
+import VersionBadge from "./components/VersionBadge.vue";
 import "./custom.css";
 import "./styles/playground.css";
 import "../../public/components/bundle.css";
@@ -24,5 +25,6 @@ export default {
   },
   enhanceApp({ app }) {
     app.component("Playground", PlaygroundWrapper);
+    app.component("VersionBadge", VersionBadge);
   },
 };
