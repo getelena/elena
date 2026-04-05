@@ -3,7 +3,7 @@ title: Methods
 description: Learn about Elena’s lifecycle methods, utility methods, and how to define custom methods on your Progressive Web Components.
 ---
 
-# Methods
+# Methods <VersionBadge />
 
 Elena extends the standard [custom elements lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks) with a reactive update cycle. All lifecycle methods can be extended by calling `super`.
 

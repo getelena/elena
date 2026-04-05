@@ -3,7 +3,7 @@ title: Events
 description: Learn how to use events with Elena, fire custom events, and document events in the Custom Elements Manifest.
 ---
 
-# Events
+# Events <VersionBadge />
 
 ## Delegated events
 

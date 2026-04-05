@@ -3,7 +3,7 @@ title: Options
 description: Reference for all Elena static class field options including tagName, props, events, element, shadow, and styles.
 ---
 
-# Options
+# Options <VersionBadge />
 
 Elena components are configured using static class fields:
 
