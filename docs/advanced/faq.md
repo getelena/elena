@@ -7,7 +7,7 @@ description: Frequently asked questions about Elena, Progressive Web Components,
 
 ## What is Elena?
 
-**Elena is a simple, tiny library (2.6kB) for building [Progressive Web Components](/components/overview).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity.
+**Elena is a simple, tiny library for building [Progressive Web Components](/components/overview).** Unlike most web component libraries, Elena doesn’t force JavaScript for everything. You can load HTML and CSS first, then use JavaScript to progressively add interactivity.
 
 ## Can I build normal web components with Elena?
 
@@ -40,7 +40,7 @@ A [Progressive Web Component](/components/overview) is a native Custom Element d
 | | Elena | Lit |
 |---|---|---|
 | **DOM model** | Light DOM (Shadow DOM opt-in) | Shadow DOM |
-| **Size** | 2.6kB | ~5kB |
+| **Size** | 2.9kB | ~5kB |
 | **Templating** | Native tagged template literals with auto-escaping | Custom reactive template engine with directives and binding syntax |
 | **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Requires JavaScript for rendering |
 | **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Requires `@lit-labs/ssr` |
@@ -60,6 +60,7 @@ On the templating side, both use `html` tagged template literals, but Lit has a 
 | | Elena | Stencil |
 |---|---|---|
 | **Approach** | Runtime mixin | Compiler |
+| **Size** | 2.9kB | ~5kB (lazy runtime; varies by output target) |
 | **Language** | Vanilla JavaScript or TypeScript | TypeScript + JSX |
 | **Build step** | Optional | Required |
 | **Templating** | Native tagged template literals with auto-escaping | JSX (compiled via TypeScript) |
@@ -73,15 +74,36 @@ On the templating side, both use `html` tagged template literals, but Lit has a 
 
 Stencil’s standout feature is its output targets: it can generate framework-specific wrappers (React, Angular, Vue) automatically from the same component source. If you need generated bindings for multiple frameworks, Stencil has a clear advantage. Elena, by contrast, works directly with any framework without generated wrappers.
 
-## What is the performance compared to Lit?
+### Elena vs Enhance
 
-At the time of writing, the performance is very similar in our simulated benchmark tests. According to the benchmarks, Elena is roughly `1.20×` faster than Lit for single element creation and batch creation of up to 1000 web components _(the gap gets smaller though the bigger this number grows, see the below screenshot)._ Lit is roughly `1.19×` faster on re-renders via attribute change.
+[Enhance](https://enhance.dev) is an HTML-first full-stack web framework built on Architect. While both Elena and Enhance share a philosophy of progressive enhancement and Light DOM by default, they operate at very different levels: Elena is a client-side library for building standard web components, while Enhance is a server framework where components are pure functions that render HTML at request time.
 
-That said, synthetic benchmarks only measure isolated operations and Lit is much more heavily optimized than Elena. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. Our benchmark tests can’t reveal the full picture.
+| | Elena | Enhance |
+|---|---|---|
+| **Approach** | Runtime mixin | Server framework |
+| **Size** | 2.9kB | No client runtime required; optional upgrade ~2-5kB |
+| **Language** | Vanilla JavaScript or TypeScript | JavaScript (Node.js, or WASM for other runtimes) |
+| **Build step** | Optional | No compile step; requires Enhance server or SSR engine |
+| **Templating** | Native tagged template literals with auto-escaping | Pure functions returning HTML strings |
+| **DOM model** | Light DOM (Shadow DOM opt-in) | Light DOM (Shadow DOM opt-in) |
+| **Progressive enhancement** | HTML & CSS first, JavaScript enhances after | Server renders HTML, JavaScript optional |
+| **SSR** | Works out of the box; optional `@elenajs/ssr` for components with `render()` | Server rendering is the primary mode |
+| **Prop reflection** | Reflects all; disable per-prop | Standard `observedAttributes` on client side |
+| **Style encapsulation** | `@scope` + `all: unset` | Server-side selector prefixing |
+| **API** | Static class fields + reactive properties | Pure functions on server; optional class-based upgrade on client |
+| **Portability** | Standard custom elements, works anywhere | Server components are framework-specific; client upgrades are standard |
 
-<img src="/bench.webp" loading="lazy" width="2804" height="1390" alt="Elena bench test suite" />
+The fundamental difference is scope. Elena is a standalone library that works directly in the browser and can be used in any environment: static HTML, any framework, any server. Enhance, on the other hand, is a full-stack framework where components are tightly coupled to their server-side rendering engine. 
 
-When you look at the above screenshot, keep in mind that Elena defaults to Light DOM, Lit to Shadow DOM. Enabling Shadow DOM narrows the gap to only a `1.06×` performance gain over Lit for single element creation, and batch creation performs identically at a consistent `1.00×`.
+If you want portable web components that work independently of a specific backend, Elena might be a better fit. If you want a full-stack framework where component rendering is handled entirely by the server, Enhance offers that.
+
+## What is the performance like?
+
+Elena’s progressive approach gives it a significant edge on [First Contentful Paint (FCP)](https://web.dev/articles/fcp). Because Elena renders base HTML and CSS before JavaScript loads, the First Contentful Paint doesn’t depend on it at all. Once JavaScript has loaded and the components become interactive, the performance gap narrows though:
+
+<img src="/bench.webp" loading="lazy" width="3084" height="1840" alt="Elena bench test suite" />
+
+These are synthetic benchmarks that measure isolated operations. Real-world performance depends on what you’re building: how many components are on the page, how often they re-render, how complex your templates are, and how your styles are structured. The benchmarks can’t reveal the full picture, but they do show where Elena’s architecture pays off: your users see content before any JavaScript has executed.
 
 ## How is Elena tested?
 

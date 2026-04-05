@@ -40,7 +40,7 @@ function elementResolver(selector) {
  */
 
 /**
- * @typedef {{ text: string, element: HTMLElement | null, render(): void, willUpdate(): void, firstUpdated(): void, updated(): void, connectedCallback(): void, disconnectedCallback(): void }} ElenaInstanceMembers
+ * @typedef {{ text: string, element: HTMLElement | null, updateComplete: Promise<void>, render(): void, willUpdate(): void, firstUpdated(): void, updated(): void, requestUpdate(): void, connectedCallback(): void, disconnectedCallback(): void }} ElenaInstanceMembers
  */
 
 /**
@@ -103,17 +103,29 @@ export function Elena(superClass) {
         return;
       }
 
-      // Set flag so the property setter skips redundant attribute reflection:
-      // the attribute is already at the new value, no need to set it again.
-      this._syncing = true;
-      getProps(this, prop, oldValue, newValue);
-      this._syncing = false;
+      if (oldValue === newValue) {
+        return;
+      }
 
-      // Re-render when attributes change (after initial render).
-      // Guard against re-entrant renders: if render() itself mutates an observed
-      // attribute, skip the recursive call to prevent an infinite loop.
-      if (this._hydrated && oldValue !== newValue && !this._isRendering) {
+      if (this._hydrated && !this._isRendering) {
+        // The attribute is already set and we just need the coerced
+        // prop value stored for the next render.
+        const current = this._props.get(prop);
+        const type = typeof current;
+        const coerced =
+          type === "string" ? (newValue ?? "") : getPropValue(type, newValue, "toProp");
+
+        if (coerced !== current) {
+          this._props.set(prop, coerced);
+        }
         this._safeRender();
+
+        // Runs pre-hydration or during render.
+        // Goes through the setter so _props is initialized correctly.
+      } else {
+        this._syncing = true;
+        getProps(this, prop, oldValue, newValue);
+        this._syncing = false;
       }
     }
 
@@ -142,6 +154,16 @@ export function Elena(superClass) {
         this.text = this.textContent.trim();
       }
       this._attachShadow();
+      this._root = this._shadow ?? this.shadowRoot ?? this;
+
+      this._runUpdate ??= () => {
+        try {
+          this._performUpdate();
+        } catch (e) {
+          console.error(prefix, e);
+        }
+      };
+
       this.willUpdate();
       this._applyRender();
       this._syncProps();
@@ -230,16 +252,6 @@ export function Elena(superClass) {
     }
 
     /**
-     * The root node to render into. Returns the shadow root when shadow mode
-     * is enabled, otherwise the host element itself.
-     *
-     * @type {ShadowRoot | HTMLElement}
-     */
-    get _renderRoot() {
-      return this._shadow ?? this.shadowRoot ?? this;
-    }
-
-    /**
      * Attaches a shadow root and adopts styles on first connect.
      * Only runs when `static shadow` is set on the component class.
      *
@@ -295,7 +307,7 @@ export function Elena(superClass) {
      */
     _applyRender() {
       const constructor = this.constructor;
-      const root = this._renderRoot;
+      const root = this._root;
       const result = this.render();
 
       if (result && result.strings) {
@@ -442,7 +454,7 @@ export function Elena(superClass) {
         return;
       }
 
-      if (!event.bubbles || (!event.composed && this._renderRoot !== this)) {
+      if (!event.bubbles || (!event.composed && this._root !== this)) {
         /** @internal */
         this.dispatchEvent(new Event(event.type, { bubbles: event.bubbles }));
       }
@@ -497,16 +509,7 @@ export function Elena(superClass) {
       }
       if (!this._renderPending) {
         this._renderPending = true;
-        this._updateComplete = new Promise(resolve => {
-          this._resolveUpdate = resolve;
-        });
-        queueMicrotask(() => {
-          try {
-            this._performUpdate();
-          } catch (e) {
-            console.error(prefix, e);
-          }
-        });
+        queueMicrotask(this._runUpdate);
       }
     }
 
@@ -531,7 +534,7 @@ export function Elena(superClass) {
         this.updated();
       } finally {
         this._updateComplete = null;
-        resolve();
+        resolve?.();
       }
     }
 
@@ -542,7 +545,15 @@ export function Elena(superClass) {
      * @type {Promise<void>}
      */
     get updateComplete() {
-      return this._updateComplete || Promise.resolve();
+      if (!this._renderPending) {
+        return Promise.resolve();
+      }
+      if (!this._updateComplete) {
+        this._updateComplete = new Promise(resolve => {
+          this._resolveUpdate = resolve;
+        });
+      }
+      return this._updateComplete;
     }
 
     /**

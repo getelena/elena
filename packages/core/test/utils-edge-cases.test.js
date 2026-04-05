@@ -142,8 +142,12 @@ describe("isRaw", () => {
     expect(isRaw("hello")).toBeFalsy();
   });
 
-  it("returns true for an object with __raw", () => {
-    expect(isRaw({ __raw: true })).toBe(true);
+  it("returns false for a plain object with __raw property", () => {
+    expect(isRaw({ __raw: true })).toBeFalsy();
+  });
+
+  it("returns true for html tagged template result", () => {
+    expect(isRaw(html`test`)).toBe(true);
   });
 
   it("returns true for an array with at least one raw item", () => {

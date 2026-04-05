@@ -5,6 +5,7 @@ import "./fixtures/basic-element.js";
 import "./fixtures/event-element.js";
 import "./fixtures/content-element.js";
 import "./fixtures/conditional-event-element.js";
+import "./fixtures/tag-switch-element.js";
 
 describe("Primitive Components", () => {
   describe("hydration", () => {
@@ -114,7 +115,7 @@ describe("Primitive Components", () => {
       expect(spy).toHaveBeenCalled();
     });
 
-    it("does not fire events from old detached element after rebuild", async () => {
+    it("preserves element identity when rendered output is equivalent", async () => {
       const el = await createElement("conditional-event-element");
       const oldElement = el.element;
       const handler = vi.fn();
@@ -125,8 +126,27 @@ describe("Primitive Components", () => {
       el.active = true;
       await el.updateComplete;
 
+      // DOM is preserved because rendered output is equivalent
+      expect(el.element).toBe(oldElement);
       oldElement.click();
-      expect(handler).not.toHaveBeenCalled();
+      expect(handler).toHaveBeenCalledOnce();
+    });
+
+    it("re-binds events when inner element tag changes", async () => {
+      const el = await createElement("tag-switch-element");
+      const handler = vi.fn();
+      el.addEventListener("click", handler);
+
+      const oldElement = el.element;
+      expect(oldElement.tagName).toBe("BUTTON");
+
+      el.variant = "link";
+      await el.updateComplete;
+
+      expect(el.element.tagName).toBe("A");
+      expect(el.element).not.toBe(oldElement);
+      el.element.click();
+      expect(handler).toHaveBeenCalledTimes(1);
     });
   });
 

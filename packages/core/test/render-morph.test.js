@@ -124,13 +124,14 @@ describe("morphContent edge cases", () => {
 });
 
 describe("createTemplate marker validation", () => {
-  it("falls back to morph when value is inside an attribute", () => {
+  it("uses clone path when value is inside an attribute", () => {
     const container = el();
     const template = Object.assign(['<div class="', '">content</div>'], {
       raw: ['<div class="', '">content</div>'],
     });
     renderTemplate(container, template, ["test"]);
-    expect(container._templateParts).toBeNull();
+    expect(container._templateParts).not.toBeNull();
+    expect(Array.isArray(container._templateParts[0])).toBe(true);
     expect(container.querySelector("div").getAttribute("class")).toBe("test");
   });
 
@@ -239,6 +240,80 @@ describe("cloneAndPatch edge cases", () => {
     renderTemplate(container, tplB, ["B"]);
     expect(container._templateStrings).toBe(tplB);
     expect(container.querySelector("span").textContent).toBe("B");
+  });
+});
+
+describe("morphContent with same-tag elements via static templates", () => {
+  it("morphs same-tag elements in-place when static template changes", () => {
+    const container = el();
+    const tpl1 = Object.assign(['<div><span class="a">old</span></div>'], {
+      raw: ['<div><span class="a">old</span></div>'],
+    });
+    const tpl2 = Object.assign(['<div><span class="b">new</span></div>'], {
+      raw: ['<div><span class="b">new</span></div>'],
+    });
+    renderTemplate(container, tpl1, []);
+    const div = container.querySelector("div");
+    const span = container.querySelector("span");
+
+    renderTemplate(container, tpl2, []);
+    expect(container.querySelector("div")).toBe(div);
+    expect(container.querySelector("span")).toBe(span);
+    expect(span.getAttribute("class")).toBe("b");
+    expect(span.textContent).toBe("new");
+  });
+
+  it("morphs nested elements recursively preserving identity", () => {
+    const container = el();
+    const tpl1 = Object.assign(['<section><div><p class="x">text1</p></div></section>'], {
+      raw: ['<section><div><p class="x">text1</p></div></section>'],
+    });
+    const tpl2 = Object.assign(['<section><div><p class="y">text2</p></div></section>'], {
+      raw: ['<section><div><p class="y">text2</p></div></section>'],
+    });
+    renderTemplate(container, tpl1, []);
+    const section = container.querySelector("section");
+    const p = container.querySelector("p");
+
+    renderTemplate(container, tpl2, []);
+    expect(container.querySelector("section")).toBe(section);
+    expect(container.querySelector("p")).toBe(p);
+    expect(p.getAttribute("class")).toBe("y");
+    expect(p.textContent).toBe("text2");
+  });
+
+  it("morphs attributes: adds new, updates changed, removes old", () => {
+    const container = el();
+    const tpl1 = Object.assign(['<div data-a="1" data-b="2">text</div>'], {
+      raw: ['<div data-a="1" data-b="2">text</div>'],
+    });
+    const tpl2 = Object.assign(['<div data-a="9" data-c="3">text</div>'], {
+      raw: ['<div data-a="9" data-c="3">text</div>'],
+    });
+    renderTemplate(container, tpl1, []);
+    const div = container.querySelector("div");
+
+    renderTemplate(container, tpl2, []);
+    expect(container.querySelector("div")).toBe(div);
+    expect(div.getAttribute("data-a")).toBe("9");
+    expect(div.hasAttribute("data-b")).toBe(false);
+    expect(div.getAttribute("data-c")).toBe("3");
+  });
+
+  it("preserves comment nodes without crashing during morph", () => {
+    const container = el();
+    const tpl1 = Object.assign(["<div><!-- comment --><span>a</span></div>"], {
+      raw: ["<div><!-- comment --><span>a</span></div>"],
+    });
+    const tpl2 = Object.assign(["<div><!-- comment --><span>b</span></div>"], {
+      raw: ["<div><!-- comment --><span>b</span></div>"],
+    });
+    renderTemplate(container, tpl1, []);
+    const span = container.querySelector("span");
+
+    renderTemplate(container, tpl2, []);
+    expect(container.querySelector("span")).toBe(span);
+    expect(span.textContent).toBe("b");
   });
 });
 
