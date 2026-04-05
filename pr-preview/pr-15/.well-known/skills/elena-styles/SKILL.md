@@ -145,4 +145,4 @@ Composite Components do NOT include the encapsulation reset. Style the host elem
 
 Opt in with `static shadow = "open"` and `static styles`. Elena renders into the shadow root. `@scope` is not needed inside Shadow DOM. CSS custom properties still pierce the shadow boundary for theming.
 
-**Warning:** Shadow DOM breaks progressive enhancement: nothing is visible until JavaScript runs. See Declarative Shadow DOM (`<template shadowrootmode="open">`) for a standards-based alternative.
+**Warning:** Without Declarative Shadow DOM, Shadow DOM breaks progressive enhancement: nothing is visible until JavaScript runs. See Declarative Shadow DOM (`<template shadowrootmode="open">`) for a standards-based alternative.

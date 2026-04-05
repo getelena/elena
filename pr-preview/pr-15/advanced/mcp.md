@@ -140,7 +140,7 @@ A best-practices review checklist for existing Elena components. Pass your compo
 
 ## Skills&#x20;
 
-Elena also provices [agent skills](https://github.com/cloudflare/agent-skills-discovery-rfc) to complement the `@elenajs/mcp`. Once installed, your coding agent automatically has context on Elena component authoring patterns without additional setup. Use skills for general authoring guidance; use MCP when you need dynamic tools like component scaffolding and CEM lookup.
+Elena also provides [agent skills](https://github.com/cloudflare/agent-skills-discovery-rfc) to complement the `@elenajs/mcp`. Once installed, your coding agent automatically has context on Elena component authoring patterns without additional setup. Use skills for general authoring guidance; use MCP when you need dynamic tools like component scaffolding and CEM lookup.
 
 ### Install
 
@@ -157,3 +157,14 @@ The CLI fetches the skills index and lets you choose which skills to install. Sk
 | `elena-authoring` | Component types, props, events, templates, lifecycle, mixins and framework compatibility rules. |
 | `elena-styles` | CSS encapsulation, reset, SSR hydration patterns, theming and browser bug workarounds. |
 | `elena-tooling` | Bundler config, CLI scaffolding, Custom Elements Manifest, server-side rendering and TypeScript. |
+
+## LLMs.txt
+
+Elena’s documentation website publishes machine-readable text files that AI assistants and LLMs can consume directly:
+
+| URL | Description |
+| --- | --- |
+| [`/llms.txt`](https://elenajs.com/llms.txt) | Page index with titles and descriptions for every documentation page. |
+| [`/llms-full.txt`](https://elenajs.com/llms-full.txt) | Full documentation content in a single file. |
+
+Every documentation page is also available as plain markdown by appending `.md` to the URL (e.g. [`/components/props.md`](https://elenajs.com/components/props.md)). These files are generated automatically at build time and always reflect the latest published docs. Use them when you need to give an LLM context on Elena without installing any packages.
