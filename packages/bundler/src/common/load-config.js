@@ -9,6 +9,8 @@ import { validateConfig } from "./validate-config.js";
  * @property {string} [dir]        Output directory for individual modules, CSS, and CEM artifacts.
  * @property {string} [format]     Rollup output format (default: `"esm"`).
  * @property {boolean} [sourcemap] Whether to emit sourcemaps (default: `true`).
+ * @property {string} [filename]   Output filename for the bundle (default: `"bundle.js"`).
+ *   The CSS bundle filename is derived by replacing the `.js` extension with `.css`.
  */
 
 /**
