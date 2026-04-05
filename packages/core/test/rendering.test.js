@@ -276,19 +276,19 @@ describe("rendering", () => {
   });
 
   describe("template cache lifecycle", () => {
-    it("_templateParts holds live DOM nodes after cold-path re-render", () => {
+    it("cold-path re-render morphs DOM and clears _templateParts", () => {
       const el = createElement("basic-element", { label: "Hello" });
-      const oldTextNode = el._templateParts[0];
-      expect(oldTextNode.textContent).toBe("Hello");
+      expect(el._templateParts[0].textContent).toBe("Hello");
+      const oldSpan = el.querySelector(".inner");
 
       // Different strings ref (from this call site) forces cold-path fullRender
       const t = html`<span class="inner">${"World"}</span>`;
       renderTemplate(el, t.strings, t.values);
-      const newTextNode = el._templateParts[0];
-      expect(newTextNode.textContent).toBe("World");
-      // Old text node is no longer in the element's subtree, new one is
-      expect(el.contains(oldTextNode)).toBe(false);
-      expect(el.contains(newTextNode)).toBe(true);
+      // Morph preserves element identity when structure is stable
+      expect(el.querySelector(".inner")).toBe(oldSpan);
+      expect(oldSpan.textContent).toBe("World");
+      // Parts are null because morph updates live DOM in place
+      expect(el._templateParts).toBeNull();
     });
 
     it("cache stays coherent after disconnect and reconnect", async () => {

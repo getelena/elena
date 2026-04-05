@@ -42,9 +42,6 @@ jobs:
           cache: pnpm
           registry-url: "https://registry.npmjs.org"
 
-      - name: Upgrade npm
-        run: npm install -g npm@latest
-
       - name: Install and Build
         run: |
           pnpm install

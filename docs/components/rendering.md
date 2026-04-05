@@ -11,7 +11,7 @@ Elena renders a web component once when it connects to the page. After that, any
 
 When Elena updates, it calls `render()` and compares the result to what is currently in the DOM. It uses two strategies depending on what changed:
 
-- **Patch:** if the template shape is the same, Elena patches only the text nodes that changed. The DOM structure stays intact, preserving element identity, focus state, and scroll position.
+- **Patch:** if the template shape is the same, Elena patches only the text nodes and attribute values that changed. The DOM structure stays intact, preserving element identity, focus state, and scroll position.
 - **Morph:** if the template shape changed, Elena rebuilds the affected portion of the DOM and morphs it into place, updating attributes and text in existing nodes where possible.
 
 ## What triggers an update
