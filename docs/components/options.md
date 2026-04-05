@@ -25,6 +25,9 @@ export default class Button extends Elena(HTMLElement) {
   // Omit when the target is the firstElementChild (faster default).
   static element = ".my-button";
 
+  // Watch for external child mutations and re-render.
+  static observe = true;
+
   // Enable Shadow DOM (opt-in for those who need it).
   static shadow = "open";
 
@@ -50,6 +53,7 @@ Button.define();
 | `element` | `string` | A CSS selector for the inner element that `this.element` points to (e.g. `".inner"`, `"button"`). Defaults to the first child element when omitted. `this.element` is available in `render()`, lifecycle methods, and custom methods. |
 | `shadow` | `"open" \| "closed"` | Attaches a shadow root to the host element. Elena renders into the shadow root instead of the host, fully isolating styles and DOM from the rest of the page. |
 | `styles` | `CSSStyleSheet \| string \| (CSSStyleSheet \| string)[]` | One or more stylesheets to adopt into the shadow root. Only applies when `shadow` is also set. Pass a `CSSStyleSheet` via [CSS Module Scripts](https://web.dev/articles/css-module-scripts), or a raw CSS string. |
+| `observe` | `boolean` | Watches for external child mutations using a `MutationObserver`. When outside code replaces the element's children, Elena re-captures the text content and re-renders. Only applies to Primitive Components without Shadow DOM. |
 
 ## Registering a component
 
